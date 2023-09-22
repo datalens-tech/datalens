@@ -6,11 +6,23 @@ Now it is available as an Open Source project.
 
 ## Getting started
 
+### Installing Docker
+
+DataLens requires Docker to be installed. Follow this instructions depending on the platform you use:
+
+- [macOS](https://docs.docker.com/desktop/install/mac-install/)
+- [Linux](https://docs.docker.com/engine/install/)
+- [Windows](https://docs.docker.com/desktop/install/windows-install/)
+
+### Running containers
+
+Use the following command to start DataLens containers:
+
 ```bash
 HC=1 docker compose up
 ```
 
-This command will launch all three required containers to run DataLens and UI will be available on port 8080.
+This command will launch all containers required to run DataLens and UI will be available on http://localhost:8080
 
 <details>
       <summary>Notice on Highcharts usage</summary>
