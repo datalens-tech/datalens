@@ -1,0 +1,37 @@
+---
+CONNECTORS:
+  CHYT:
+    CONN_CHYT_DEFAULT_CLIQUE: '*ch_public'
+    CONN_CHYT_FORBIDDEN_CLIQUES: []
+    CONN_CHYT_PUBLIC_CLIQUES: []
+CONNECTOR_AVAILABILITY:
+  sections: []
+  uncategorized:
+    - availability: free
+      conn_type: clickhouse
+    - availability: free
+      conn_type: postgres
+    - availability: free
+      conn_type: chyt
+  visible_connectors: []
+CORS_ALLOWED_HEADERS:
+- Content-Type
+- X-Request-ID
+- X-DL-TenantId
+- X-CSRF-Token
+- X-DL-Allow-Superuser
+- X-DL-Sudo
+CORS_ALLOWED_ORIGINS:
+- '*'
+CORS_EXPOSE_HEADERS:
+- X-Request-ID
+CSRF_HEADER_NAME: X-CSRF-Token
+CSRF_METHODS:
+- POST
+- PUT
+- DELETE
+CSRF_TIME_LIMIT: 43200
+DL_CRY_ACTUAL_KEY_ID: '0'
+DL_CRY_KEYMAP: {}
+SENTRY_DSN_DATASET_API: ''
+SENTRY_ENABLED: false
