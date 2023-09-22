@@ -7,6 +7,7 @@ Now it is available as an Open Source project.
 ## Getting started
 
 ```bash
+git clone https://github.com/datalens-tech/datalens && cd datalens
 HC=1 docker compose up
 ```
 
