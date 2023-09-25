@@ -8,7 +8,7 @@ Now it is available as an Open Source project.
 
 ### Installing Docker
 
-DataLens requires Docker to be installed. Follow this instructions depending on the platform you use:
+DataLens requires Docker to be installed. Follow these instructions depending on the platform you use:
 
 - [macOS](https://docs.docker.com/desktop/install/mac-install/)
 - [Linux](https://docs.docker.com/engine/install/)
