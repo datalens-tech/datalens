@@ -20,7 +20,12 @@ Use the following command to start DataLens containers:
 
 ```bash
 git clone https://github.com/datalens-tech/datalens && cd datalens
+
+# with demo database
 HC=1 docker compose up
+
+# with persistent database
+US_POSTGRES_DSN_LIST="postgres://..." HC=1 docker compose up
 ```
 
 This command will launch all containers required to run DataLens and UI will be available on http://localhost:8080
