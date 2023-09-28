@@ -72,7 +72,7 @@ services:
       MASTER_TOKEN: "fake-us-master-token"
       PG_TEST_DATA: 1
       CH_DEMO_DATA: 1
-      HC: ${HC:-1}
+      HC: ${HC:-0}
     ports:
       - "50500:80"
 
@@ -91,4 +91,4 @@ services:
       APP_INSTALLATION: "opensource"
       AUTH_POLICY: "disabled"
       NODE_EXTRA_CA_CERTS: "/usr/local/share/ca-certificates/cert.pem"
-      HC: ${HC:-1}
+      HC: ${HC:-0}
