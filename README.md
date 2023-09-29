@@ -50,4 +50,4 @@ We are releasing DataLens with first minimal set of available connectors (clickh
 
 **Where can I find persistent application data storage?**
 
-We use the `.us-data` folder to store PostgreSQL data permanently. You can delete this folder if you want, it will be recreated with the demo data after restarting the `us` container.
+We use the `.us-data` folder to store PostgreSQL data permanently. You can delete this folder if you want, it will be recreated with the demo data after restarting the `datalens-us` container.

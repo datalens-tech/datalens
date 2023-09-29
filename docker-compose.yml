@@ -2,6 +2,7 @@ version: '3.7'
 
 services:
   pg-compeng:
+    container_name: datalens-pg-compeng
     image: postgres:13-alpine
     environment:
       POSTGRES_PASSWORD: "postgres"
@@ -9,6 +10,7 @@ services:
       POSTGRES_USER: postgres
 
   control-api:
+    container_name: datalens-control-api
     image: ghcr.io/datalens-tech/datalens-control-api:0.2037.0
     environment:
       BI_API_UWSGI_WORKERS_COUNT: 4
@@ -28,6 +30,7 @@ services:
       - ./backend-configs:/etc/backend-configs
 
   data-api:
+    container_name: datalens-data-api
     image: ghcr.io/datalens-tech/datalens-data-api:0.2037.0
     environment:
       GUNICORN_WORKERS_COUNT: 5
@@ -51,6 +54,7 @@ services:
       - ./backend-configs:/etc/backend-configs
 
   pg-us:
+    container_name: datalens-pg-us
     image: postgres:13-alpine
     environment:
       POSTGRES_DB: us-db-ci_purgeable
@@ -63,6 +67,7 @@ services:
     image: ghusta/postgres-world-db:2.10
 
   us:
+    container_name: datalens-us
     image: ghcr.io/datalens-tech/datalens-us:0.92.0
     depends_on:
       - pg-us
@@ -78,6 +83,7 @@ services:
       - "50500:80"
 
   datalens:
+    container_name: datalens-ui
     image: ghcr.io/datalens-tech/datalens-ui:0.795.0
     ports:
       - 8080:80
