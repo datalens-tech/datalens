@@ -50,13 +50,14 @@ services:
     volumes:
       - ./backend-configs:/etc/backend-configs
 
-
   pg-us:
     image: postgres:13-alpine
     environment:
       POSTGRES_DB: us-db-ci_purgeable
       POSTGRES_USER: us
       POSTGRES_PASSWORD: us
+    volumes:
+      - ./us-data:/var/lib/postgresql/data
 
   postgres-connection:
     image: ghusta/postgres-world-db:2.10

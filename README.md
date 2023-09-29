@@ -45,3 +45,9 @@ DataLens consists of the three main parts:
 ## What's already available
 
 We are releasing DataLens with first minimal set of available connectors (clickhouse, clickhouse over ytsaurus and postgresql) as well as other core functionality such as data processing engine and user interface. However, to kick off this project in a reasonable timeframe we chose to drop some of the features out of the first release: this version does not contain middleware and components for user sessions, object ACLs and multitenancy (although code contains entry-points for such extensions). We are planning to add missing features based on our understanding of community priorities and your feedback.
+
+## FAQ
+
+**Where can I find persistent application data storage?**
+
+We use the `.us-data` folder to store PostgreSQL data permanently. You can delete this folder if you want, it will be recreated with the demo data after restarting the `us` container.
