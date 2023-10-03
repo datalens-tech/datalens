@@ -68,16 +68,16 @@ services:
 
   us:
     container_name: datalens-us
-    image: ghcr.io/datalens-tech/datalens-us:0.92.0
+    image: ghcr.io/datalens-tech/datalens-us:0.96.0
     depends_on:
       - pg-us
     environment:
       APP_INSTALLATION: "opensource"
       APP_ENV: "prod"
-      POSTGRES_DSN_LIST: ${US_POSTGRES_DSN_LIST:-postgres://us:us@pg-us:5432/us-db-ci_purgeable}
       MASTER_TOKEN: "fake-us-master-token"
-      PG_TEST_DATA: 1
-      CH_DEMO_DATA: 1
+      POSTGRES_DSN_LIST: ${US_POSTGRES_DSN_LIST:-postgres://us:us@pg-us:5432/us-db-ci_purgeable}
+      SKIP_INSTALL_DB_EXTENSIONS: ${US_SKIP_INSTALL_DB_EXTENSIONS:-0}
+      USE_DEMO_DATA: ${USE_DEMO_DATA:-1}
       HC: ${HC:-0}
     ports:
       - "50500:80"

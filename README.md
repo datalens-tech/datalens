@@ -24,8 +24,16 @@ git clone https://github.com/datalens-tech/datalens && cd datalens
 # with demo database
 HC=1 docker compose up
 
-# with persistent database
+# with external database
 US_POSTGRES_DSN_LIST="postgres://..." HC=1 docker compose up
+```
+
+Use the additional parameter `US_SKIP_INSTALL_DB_EXTENSIONS=1` if the external database user doesn't have access to install extensions. In this case, you should manually install extensions before launching the app:
+```sql
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+CREATE EXTENSION IF NOT EXISTS btree_gin;
+CREATE EXTENSION IF NOT EXISTS btree_gist;
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 ```
 
 This command will launch all containers required to run DataLens and UI will be available on http://localhost:8080
