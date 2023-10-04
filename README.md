@@ -25,15 +25,7 @@ git clone https://github.com/datalens-tech/datalens && cd datalens
 HC=1 docker compose up
 
 # with external database
-US_POSTGRES_DSN_LIST="postgres://..." HC=1 docker compose up
-```
-
-Use the additional parameter `US_SKIP_INSTALL_DB_EXTENSIONS=1` if the external database user doesn't have access to install extensions. In this case, you should manually install extensions before launching the app:
-```sql
-CREATE EXTENSION IF NOT EXISTS pg_trgm;
-CREATE EXTENSION IF NOT EXISTS btree_gin;
-CREATE EXTENSION IF NOT EXISTS btree_gist;
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+US_POSTGRES_DSN_LIST="postgres://{user}:{password}@{host}:{port}/{database}?ssl=true" HC=1 docker compose up
 ```
 
 This command will launch all containers required to run DataLens and UI will be available on http://localhost:8080
@@ -64,3 +56,24 @@ We are releasing DataLens with first minimal set of available connectors (clickh
 **Where can I find persistent application data storage?**
 
 We use the `.us-data` folder to store PostgreSQL data permanently. You can delete this folder if you want, it will be recreated with the demo data after restarting the `datalens-us` container.
+
+**I use external database and `datalens-us` container does not start.**
+
+This may be caused because of external database user doesn't have permission to install extensions. Use the additional parameter `US_SKIP_INSTALL_DB_EXTENSIONS=1` to skip this step, but in this case you should manually install extensions before launching the app:
+
+```sql
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+CREATE EXTENSION IF NOT EXISTS btree_gin;
+CREATE EXTENSION IF NOT EXISTS btree_gist;
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+```
+
+**Can I use cluster in the `US_POSTGRES_DSN_LIST` param?**
+
+Yes, you can write all cluster hosts separated by commas:
+
+`US_POSTGRES_DSN_LIST="postgres://{user}:{password}@{host_1}:{port}/{database}?ssl=true,postgres://{user}:{password}@{host_2}:{port}/{database}?ssl=true,postgres://{user}:{password}@{host_3}:{port}/{database}?ssl=true" ...`
+
+**For connecting to my external database I need to use an additional certificate.**
+
+You can add additional certificates for database to `./us-extra-certs/root.crt`, they will be used for connecting to database from the `datalens-us` container.

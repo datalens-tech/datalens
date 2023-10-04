@@ -79,10 +79,13 @@ services:
       SKIP_INSTALL_DB_EXTENSIONS: ${US_SKIP_INSTALL_DB_EXTENSIONS:-0}
       USE_DEMO_DATA: ${USE_DEMO_DATA:-1}
       HC: ${HC:-0}
+      NODE_EXTRA_CA_CERTS: /us-extra-certs/root.crt
     ports:
       - "50500:80"
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    volumes:
+      - ./us-extra-certs:/us-extra-certs
 
   datalens:
     container_name: datalens-ui
