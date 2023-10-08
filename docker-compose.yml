@@ -61,7 +61,7 @@ services:
       POSTGRES_USER: us
       POSTGRES_PASSWORD: us
     volumes:
-      - ./us-data:/var/lib/postgresql/data
+      - ./metadata:/var/lib/postgresql/data
 
   postgres-connection:
     image: ghusta/postgres-world-db:2.10
@@ -75,17 +75,17 @@ services:
       APP_INSTALLATION: "opensource"
       APP_ENV: "prod"
       MASTER_TOKEN: "fake-us-master-token"
-      POSTGRES_DSN_LIST: ${US_POSTGRES_DSN_LIST:-postgres://us:us@pg-us:5432/us-db-ci_purgeable}
-      SKIP_INSTALL_DB_EXTENSIONS: ${US_SKIP_INSTALL_DB_EXTENSIONS:-0}
+      POSTGRES_DSN_LIST: ${METADATA_POSTGRES_DSN_LIST:-postgres://us:us@pg-us:5432/us-db-ci_purgeable}
+      SKIP_INSTALL_DB_EXTENSIONS: ${METADATA_SKIP_INSTALL_DB_EXTENSIONS:-0}
       USE_DEMO_DATA: ${USE_DEMO_DATA:-1}
       HC: ${HC:-0}
-      NODE_EXTRA_CA_CERTS: /us-extra-certs/root.crt
+      NODE_EXTRA_CA_CERTS: /certs/root.crt
     ports:
       - "50500:80"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
-      - ./us-extra-certs:/us-extra-certs
+      - ./certs:/certs
 
   datalens:
     container_name: datalens-ui
