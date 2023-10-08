@@ -68,7 +68,7 @@ CREATE EXTENSION IF NOT EXISTS btree_gist;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 ```
 
-**Can I use cluster in the `US_POSTGRES_DSN_LIST` param?**
+**My PostgresSQL cluster has multiple hosts, how can I specify them in `METADATA_POSTGRES_DSN_LIST` param?**
 
 Yes, you can write all cluster hosts separated by commas:
 
