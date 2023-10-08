@@ -25,7 +25,7 @@ git clone https://github.com/datalens-tech/datalens && cd datalens
 HC=1 docker compose up
 
 # with external database
-US_POSTGRES_DSN_LIST="postgres://{user}:{password}@{host}:{port}/{database}?ssl=true" HC=1 docker compose up
+METADATA_POSTGRES_DSN_LIST="postgres://{user}:{password}@{host}:{port}/{database}?ssl=true" HC=1 docker compose up
 ```
 
 This command will launch all containers required to run DataLens and UI will be available on http://localhost:8080
