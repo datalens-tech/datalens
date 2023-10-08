@@ -76,4 +76,4 @@ Yes, you can write all cluster hosts separated by commas:
 
 **How can I specify custom certificate for connecting to metadata database?**
 
-You can add additional certificates for database to `./us-extra-certs/root.crt`, they will be used for connecting to database from the `datalens-us` container.
+You can add additional certificates for database to `./certs/root.crt`, they will be used for connecting to database from the `datalens-us` container.
