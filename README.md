@@ -74,6 +74,6 @@ Yes, you can write all cluster hosts separated by commas:
 
 `US_POSTGRES_DSN_LIST="postgres://{user}:{password}@{host_1}:{port}/{database}?ssl=true,postgres://{user}:{password}@{host_2}:{port}/{database}?ssl=true,postgres://{user}:{password}@{host_3}:{port}/{database}?ssl=true" ...`
 
-**For connecting to my external database I need to use an additional certificate.**
+**How can I specify custom certificate for connecting to metadata database?**
 
 You can add additional certificates for database to `./us-extra-certs/root.crt`, they will be used for connecting to database from the `datalens-us` container.
