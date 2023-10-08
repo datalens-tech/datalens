@@ -53,7 +53,7 @@ We are releasing DataLens with first minimal set of available connectors (clickh
 
 ## FAQ
 
-**Where can I find persistent application data storage?**
+**Where does DataLens store it's metadata?**
 
 We use the `us-data` folder to store PostgreSQL data. If you want to start over, you can delete this folder: it will be recreated with demo objects on the next start of the `datalens-us` container.
 
