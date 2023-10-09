@@ -21,10 +21,9 @@ Use the following command to start DataLens containers:
 ```bash
 git clone https://github.com/datalens-tech/datalens && cd datalens
 
-# with demo database
 HC=1 docker compose up
 
-# with external database
+# or with an external metadata database
 METADATA_POSTGRES_DSN_LIST="postgres://{user}:{password}@{host}:{port}/{database}" HC=1 docker compose up
 ```
 
