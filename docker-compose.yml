@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 
 services:
   pg-compeng:
@@ -18,7 +18,7 @@ services:
       RQE_FORCE_OFF: 1
       DL_CRY_ACTUAL_KEY_ID: key_1
       DL_CRY_KEY_VAL_ID_key_1: "h1ZpilcYLYRdWp7Nk8X1M1kBPiUi8rdjz9oBfHyUKIk="
-      RQE_SECRET_KEY: ''
+      RQE_SECRET_KEY: ""
       US_HOST: "http://us"
       US_MASTER_TOKEN: "fake-us-master-token"
       CONFIG_PATH: "/etc/backend-configs/api.yaml"
@@ -37,7 +37,7 @@ services:
       RQE_FORCE_OFF: 1
       CACHES_ON: 0
       MUTATIONS_CACHES_ON: 0
-      RQE_SECRET_KEY: ''
+      RQE_SECRET_KEY: ""
       DL_CRY_ACTUAL_KEY_ID: key_1
       DL_CRY_KEY_VAL_ID_key_1: "h1ZpilcYLYRdWp7Nk8X1M1kBPiUi8rdjz9oBfHyUKIk="
       BI_COMPENG_PG_ON: 1
@@ -61,26 +61,31 @@ services:
       POSTGRES_USER: us
       POSTGRES_PASSWORD: us
     volumes:
-      - ./us-data:/var/lib/postgresql/data
+      - ./metadata:/var/lib/postgresql/data
 
   postgres-connection:
     image: ghusta/postgres-world-db:2.10
 
   us:
     container_name: datalens-us
-    image: ghcr.io/datalens-tech/datalens-us:0.92.0
+    image: ghcr.io/datalens-tech/datalens-us:0.96.0
     depends_on:
       - pg-us
     environment:
       APP_INSTALLATION: "opensource"
       APP_ENV: "prod"
-      POSTGRES_DSN_LIST: "postgres://us:us@pg-us:5432/us-db-ci_purgeable"
       MASTER_TOKEN: "fake-us-master-token"
-      PG_TEST_DATA: 1
-      CH_DEMO_DATA: 1
+      POSTGRES_DSN_LIST: ${METADATA_POSTGRES_DSN_LIST:-postgres://us:us@pg-us:5432/us-db-ci_purgeable}
+      SKIP_INSTALL_DB_EXTENSIONS: ${METADATA_SKIP_INSTALL_DB_EXTENSIONS:-0}
+      USE_DEMO_DATA: ${USE_DEMO_DATA:-1}
       HC: ${HC:-0}
+      NODE_EXTRA_CA_CERTS: /certs/root.crt
     ports:
       - "50500:80"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./certs:/certs
 
   datalens:
     container_name: datalens-ui
