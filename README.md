@@ -57,9 +57,9 @@ We are releasing DataLens with first minimal set of available connectors (clickh
 
 We use the `metadata` folder to store PostgreSQL data. If you want to start over, you can delete this folder: it will be recreated with demo objects on the next start of the `datalens-us` container.
 
-**I use the `METADATA_POSTGRES_DSN_LIST` param for external metadata database and app does not start. What could be the reason?**
+**I use the `METADATA_POSTGRES_DSN_LIST` param for external metadata database and the app doesn't start. What could be the reason?**
 
-We use some PostgresSQL extensions for the metadata database and the application checks for them on startup and tries to install them if they are not already installed. Check your database user's rights for installing extensions by trying to install them manually:
+We use some PostgresSQL extensions for the metadata database and the application checks them at startup and tries to install them if they haven't been already installed. Check your database user's rights for installing extensions by trying to install them manually:
 
 ```sql
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
@@ -68,16 +68,16 @@ CREATE EXTENSION IF NOT EXISTS btree_gist;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 ```
 
-If this attempt is unsuccessful, try to install dependencies by database admin and add param `METADATA_SKIP_INSTALL_DB_EXTENSIONS=1` on startup, this parameter allows app to skip installing extensions.
+If this attempt is unsuccessful, try to install dependencies by database admin and add param `METADATA_SKIP_INSTALL_DB_EXTENSIONS=1` on startup, this parameter allows the app to skip installing extensions.
 
-If you're using managed database it's also possible that extensions for your database cluster are controlled by external system and could be changed only using it's UI or API. In that case, consult with documentation for managed database service that you're using. Don't forget to add `METADATA_SKIP_INSTALL_DB_EXTENSIONS=1` after installing extensions this way.
+If you're using managed database, it's also possible that extensions for your database cluster are controlled by external system and could be changed only using it's UI or API. In such case, consult with documentation for managed database service which you're using. Don't forget to add `METADATA_SKIP_INSTALL_DB_EXTENSIONS=1` after installing extensions this way.
 
 **My PostgresSQL cluster has multiple hosts, how can I specify them in `METADATA_POSTGRES_DSN_LIST` param?**
 
-Yes, you can write all cluster hosts separated by commas:
+You can write all cluster hosts separated by commas:
 
 `METADATA_POSTGRES_DSN_LIST="postgres://{user}:{password}@{host_1}:{port}/{database},postgres://{user}:{password}@{host_2}:{port}/{database},postgres://{user}:{password}@{host_3}:{port}/{database}" ...`
 
 **How can I specify custom certificate for connecting to metadata database?**
 
-You can add additional certificates for database to `./certs/root.crt`, they will be used for connecting to database from the `datalens-us` container.
+You can add additional certificates to database in `./certs/root.crt`, they will be used to connect to the database from the `datalens-us` container.
