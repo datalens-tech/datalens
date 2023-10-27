@@ -68,7 +68,7 @@ services:
 
   us:
     container_name: datalens-us
-    image: ghcr.io/datalens-tech/datalens-us:0.96.0
+    image: ghcr.io/datalens-tech/datalens-us:0.110.0
     depends_on:
       - pg-us
     environment:
@@ -89,7 +89,7 @@ services:
 
   datalens:
     container_name: datalens-ui
-    image: ghcr.io/datalens-tech/datalens-ui:0.795.0
+    image: ghcr.io/datalens-tech/datalens-ui:0.955.0
     ports:
       - 8080:80
     depends_on:
