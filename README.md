@@ -4,6 +4,11 @@
 
 Now it is available as an [Open Source project](https://datalens.tech).
 
+## Cloud Providers
+Below is a list of cloud providers offering DataLens as a service:
+1. [Yandex Cloud](https://datalens.yandex.com) platform
+2. [DoubleCloud](https://double.cloud/services/doublecloud-visualization/) platform
+
 ## Getting started
 
 ### Installing Docker
