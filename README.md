@@ -50,6 +50,11 @@ DataLens consists of the three main parts:
 
 We are releasing DataLens with first minimal set of available connectors (clickhouse, clickhouse over ytsaurus and postgresql) as well as other core functionality such as data processing engine and user interface. However, to kick off this project in a reasonable timeframe we have chosen to drop some of the features out of the first release: this version does not contain middleware and components for user sessions, object ACLs and multitenancy (although code contains entry-points for such extensions). We are planning to add missing features based on our understanding of community priorities and your feedback.
 
+## Cloud Providers
+Below is a list of cloud providers offering DataLens as a service:
+1. [Yandex Cloud](https://datalens.yandex.com) platform
+2. [DoubleCloud](https://double.cloud/services/doublecloud-visualization/) platform
+
 ## FAQ
 
 #### Where does DataLens store it's metadata?
