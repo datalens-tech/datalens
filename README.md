@@ -85,3 +85,6 @@ You can write all cluster hosts separated by commas:
 #### How can I specify custom certificate for connecting to metadata database?
 
 You can add additional certificates to the database in `./certs/root.crt`, they will be used to connect to the database from the `datalens-us` container.
+
+If `datalens-us` container does not start even though you provided correct certificates, try to change `METADATA_POSTGRES_DSN_LIST` like this:
+`METADATA_POSTGRES_DSN_LIST="postgres://{user}:{password}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert=/certs/root.crt"`
