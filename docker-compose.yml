@@ -11,7 +11,7 @@ services:
 
   control-api:
     container_name: datalens-control-api
-    image: ghcr.io/datalens-tech/datalens-control-api:0.2038.0
+    image: ghcr.io/datalens-tech/datalens-control-api:0.2038.1
     environment:
       BI_API_UWSGI_WORKERS_COUNT: 4
       CONNECTOR_AVAILABILITY_VISIBLE: "clickhouse,postgres,chyt"
@@ -31,7 +31,7 @@ services:
 
   data-api:
     container_name: datalens-data-api
-    image: ghcr.io/datalens-tech/datalens-data-api:0.2038.0
+    image: ghcr.io/datalens-tech/datalens-data-api:0.2038.1
     environment:
       GUNICORN_WORKERS_COUNT: 5
       RQE_FORCE_OFF: 1
@@ -53,6 +53,17 @@ services:
     volumes:
       - ./backend-configs:/etc/backend-configs
 
+  pg-demo-connection:
+    container_name: datalens-pg-demo-connection
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_DB: demo
+      POSTGRES_USER: demo
+      POSTGRES_PASSWORD: demo
+    volumes:
+      - ./pg-demo-connection/init:/docker-entrypoint-initdb.d
+      - ./pg-demo-connection/data:/var/lib/postgresql/data
+
   pg-us:
     container_name: datalens-pg-us
     image: postgres:13-alpine
@@ -63,12 +74,9 @@ services:
     volumes:
       - ./metadata:/var/lib/postgresql/data
 
-  postgres-connection:
-    image: ghusta/postgres-world-db:2.10
-
   us:
     container_name: datalens-us
-    image: ghcr.io/datalens-tech/datalens-us:0.110.0
+    image: ghcr.io/datalens-tech/datalens-us:0.116.0
     depends_on:
       - pg-us
     environment:
@@ -96,7 +104,7 @@ services:
       - us
       - control-api
       - data-api
-      - postgres-connection
+      - pg-demo-connection
     environment:
       APP_MODE: "full"
       APP_ENV: "production"
