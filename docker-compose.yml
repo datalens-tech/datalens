@@ -110,5 +110,8 @@ services:
       APP_ENV: "production"
       APP_INSTALLATION: "opensource"
       AUTH_POLICY: "disabled"
+      US_ENDPOINT: "http://us"
+      BI_API_ENDPOINT: "http://control-api:8080"
+      BI_DATA_ENDPOINT: "http://data-api:8080"
       NODE_EXTRA_CA_CERTS: "/usr/local/share/ca-certificates/cert.pem"
       HC: ${HC:-0}
