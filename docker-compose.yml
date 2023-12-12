@@ -89,7 +89,7 @@ services:
       HC: ${HC:-0}
       NODE_EXTRA_CA_CERTS: /certs/root.crt
     ports:
-      - "50500:80"
+      - "8083:80"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
