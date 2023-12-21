@@ -11,7 +11,7 @@ services:
 
   control-api:
     container_name: datalens-control-api
-    image: ghcr.io/datalens-tech/datalens-control-api:0.2038.1
+    image: ghcr.io/datalens-tech/datalens-control-api:0.2040.0
     environment:
       BI_API_UWSGI_WORKERS_COUNT: 4
       CONNECTOR_AVAILABILITY_VISIBLE: "clickhouse,postgres,chyt"
@@ -31,7 +31,7 @@ services:
 
   data-api:
     container_name: datalens-data-api
-    image: ghcr.io/datalens-tech/datalens-data-api:0.2038.1
+    image: ghcr.io/datalens-tech/datalens-data-api:0.2040.0
     environment:
       GUNICORN_WORKERS_COUNT: 5
       RQE_FORCE_OFF: 1
@@ -76,7 +76,7 @@ services:
 
   us:
     container_name: datalens-us
-    image: ghcr.io/datalens-tech/datalens-us:0.116.0
+    image: ghcr.io/datalens-tech/datalens-us:0.132.0
     depends_on:
       - pg-us
     environment:
@@ -97,7 +97,7 @@ services:
 
   datalens:
     container_name: datalens-ui
-    image: ghcr.io/datalens-tech/datalens-ui:0.955.0
+    image: ghcr.io/datalens-tech/datalens-ui:0.1113.0
     ports:
       - 8080:80
     depends_on:
