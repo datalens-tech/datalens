@@ -12,6 +12,14 @@
 
 - Updated system dependencies to fix vulnerabilities
 - datalens-ui and datalens-us containers switched to rootless mode
+- Fix table markup sorting
+- Fix colors and shapes by field with prefix/postfix in title
+- Fix ColorMode behaviour for bar charts
+- New datepicker with relative dates for parameters in QL
+- Add beta relations on dashboards
+- Improve create dash entry without filling name first
+- Collections & workbooks sorting fix
+- Improve mobile dashboard page, added TOC & improve header mobile view
 
 
 ## 2023-11-24
