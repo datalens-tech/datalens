@@ -12,7 +12,6 @@
 
 - Updated system dependencies to fix vulnerabilities.  
 - datalens-ui and datalens-us containers switched to rootless mode.  
-- Some small improvements.
 
 
 ## 2023-11-24
