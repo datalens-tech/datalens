@@ -10,6 +10,7 @@
 - Added export to Excel feature
 - Fix opening dash widget dialog with active widget tab
 - Small interface improvements and bugfixies
+- Fixed Apple M-series chips compatibility
 
 ## 2023-12-21
 
