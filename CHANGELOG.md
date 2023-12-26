@@ -4,6 +4,7 @@
 ## 2023-12-26
 
 ### Updated images
+- datalens-us: 0.132.0 -> 0.133.0
 - datalens-ui: 0.1113.0 -> 0.1137.0
 
 ### Changed
