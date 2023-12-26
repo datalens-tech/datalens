@@ -1,5 +1,18 @@
 # Changelog
 
+
+## 2023-12-26
+
+### Updated images
+- datalens-us: 0.132.0 -> 0.133.0
+- datalens-ui: 0.1113.0 -> 0.1137.0
+
+### Changed
+- Added export to Excel feature
+- Fix opening dash widget dialog with active widget tab
+- Small interface improvements and bugfixies
+- Fixed Apple M-series chips compatibility
+
 ## 2023-12-21
 
 ### Updated images
