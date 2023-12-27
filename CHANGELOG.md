@@ -1,5 +1,14 @@
 # Changelog
 
+## 2023-12-27
+
+### Updated images
+- datalens-control-api: 0.2040.0 -> 0.2042.0
+- datalens-data-api: 0.2040.0 -> 0.2042.0
+
+### Changed
+
+- Enabled YDB connector
 
 ## 2023-12-26
 
