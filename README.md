@@ -38,6 +38,18 @@ This command will launch all containers required to run DataLens and UI will be 
 
 </details>
 
+## How to update
+
+Just pull the new `docker-compose.yml` and restart.
+
+```
+docker compose down
+git pull
+docker compose up
+```
+
+All your user settings will be stored in the `metadata` folder.
+
 ## Parts of the project
 
 DataLens consists of the three main parts:
