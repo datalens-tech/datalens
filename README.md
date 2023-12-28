@@ -42,7 +42,7 @@ This command will launch all containers required to run DataLens and UI will be 
 
 Just pull the new `docker-compose.yml` and restart.
 
-```
+```bash
 docker compose down
 git pull
 docker compose up
