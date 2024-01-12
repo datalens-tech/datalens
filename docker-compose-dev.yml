@@ -23,6 +23,9 @@ services:
       US_MASTER_TOKEN: "fake-us-master-token"
       CONFIG_PATH: "/etc/backend-configs/api.yaml"
   
+    ports:
+      - 8081:8080
+  
     depends_on:
       - us
     volumes:
@@ -44,6 +47,9 @@ services:
       US_HOST: "http://us"
       US_MASTER_TOKEN: "fake-us-master-token"
       CONFIG_PATH: "/etc/backend-configs/api.yaml"
+  
+    ports:
+      - 8082:8080
   
     depends_on:
       - us
@@ -86,6 +92,9 @@ services:
       USE_DEMO_DATA: ${USE_DEMO_DATA:-1}
       HC: ${HC:-0}
       NODE_EXTRA_CA_CERTS: /certs/root.crt
+  
+    ports:
+      - "8083:80"
 
     extra_hosts:
       - "host.docker.internal:host-gateway"

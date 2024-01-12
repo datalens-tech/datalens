@@ -11,7 +11,7 @@ services:
 
   control-api:
     container_name: datalens-control-api
-    image: ghcr.io/datalens-tech/datalens-control-api:0.2042.0
+    image: ghcr.io/datalens-tech/datalens-control-api:{{ controlApiVersion }}
     environment:
       BI_API_UWSGI_WORKERS_COUNT: 4
       CONNECTOR_AVAILABILITY_VISIBLE: "clickhouse,postgres,chyt,ydb"
@@ -22,7 +22,10 @@ services:
       US_HOST: "http://us"
       US_MASTER_TOKEN: "fake-us-master-token"
       CONFIG_PATH: "/etc/backend-configs/api.yaml"
-  
+{% if "DEV_MODE"|env(false) %}  
+    ports:
+      - 8081:8080
+{% endif %}  
     depends_on:
       - us
     volumes:
@@ -30,7 +33,7 @@ services:
 
   data-api:
     container_name: datalens-data-api
-    image: ghcr.io/datalens-tech/datalens-data-api:0.2042.0
+    image: ghcr.io/datalens-tech/datalens-data-api:{{ dataApiVersion }}
     environment:
       GUNICORN_WORKERS_COUNT: 5
       RQE_FORCE_OFF: 1
@@ -44,7 +47,10 @@ services:
       US_HOST: "http://us"
       US_MASTER_TOKEN: "fake-us-master-token"
       CONFIG_PATH: "/etc/backend-configs/api.yaml"
-  
+{% if "DEV_MODE"|env(false) %}  
+    ports:
+      - 8082:8080
+{% endif %}  
     depends_on:
       - us
       - pg-compeng
@@ -74,7 +80,7 @@ services:
 
   us:
     container_name: datalens-us
-    image: ghcr.io/datalens-tech/datalens-us:0.133.0
+    image: ghcr.io/datalens-tech/datalens-us:{{ usVersion }}
     depends_on:
       - pg-us
     environment:
@@ -86,7 +92,10 @@ services:
       USE_DEMO_DATA: ${USE_DEMO_DATA:-1}
       HC: ${HC:-0}
       NODE_EXTRA_CA_CERTS: /certs/root.crt
-
+{% if "DEV_MODE"|env(false) %}  
+    ports:
+      - "8083:80"
+{% endif %}
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
@@ -94,7 +103,7 @@ services:
 
   datalens:
     container_name: datalens-ui
-    image: ghcr.io/datalens-tech/datalens-ui:0.1137.0
+    image: ghcr.io/datalens-tech/datalens-ui:{{ uiVersion }}
     ports:
       - 8080:80
     depends_on:

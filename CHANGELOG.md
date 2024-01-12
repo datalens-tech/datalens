@@ -1,5 +1,8 @@
 # Changelog
 
+## 2023-01-15
+- Add `docker-compose-dev.yml`
+
 ## 2023-12-27
 
 ### Updated images

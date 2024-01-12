@@ -100,3 +100,8 @@ You can add additional certificates to the database in `./certs/root.crt`, they 
 
 If `datalens-us` container does not start even though you provided correct certificates, try to change `METADATA_POSTGRES_DSN_LIST` like this:
 `METADATA_POSTGRES_DSN_LIST="postgres://{user}:{password}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert=/certs/root.crt"`
+
+
+#### Why do i see two compose files: docker-compose.yml & docker-compose-dev.yml?
+
+`docker-compose-dev.yml` is a special compose file that is needed only for development purposes. When you run DataLens in production mode, you always need to use `docker-compose.yml`. The `docker-compose up` command uses it by default. 
