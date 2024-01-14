@@ -1,0 +1,51 @@
+on:
+  workflow_dispatch:
+    inputs:
+      versionName:
+        description: 'Name of version  (ie 5.5.0)'
+        required: true
+
+name: Release
+  
+jobs:
+  update_compose_files:
+    name: build files
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: Create release branch
+        run: git checkout -b release/v${{ github.event.inputs.versionName }}
+      - name: Initialize mandatory git config
+        run: |
+         git config user.name "GitHub Actions"
+         git config user.email noreply@github.com
+      - name: build docker-compose.yml
+        uses: cuchi/jinja2-action@v1.2.2
+        with:
+          template: templates/docker-compose.j2
+          output_file: ./docker-compose.yml
+          data_file: ./versions-config.json
+          data_format: json
+      - name: build docker-compose-dev.yml
+        uses: cuchi/jinja2-action@v1.2.2
+        with:
+          template: templates/docker-compose-dev.j2
+          output_file: ./docker-compose-dev.yml
+          data_file: ./versions-config.json
+          data_format: json
+      - name: Commit changelog and manifest files
+        id: make-commit
+        run: |
+            git add docker-compose.yml docker-compose-dev.yml
+            git commit --message "Prepare release ${{ github.event.inputs.versionName }}"
+            echo "::set-output name=commit::$(git rev-parse HEAD)"
+      - name: Push new branch
+        run: git push origin release/v${{ github.event.inputs.versionName }}
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+            token: ${{ secrets.GITHUB_TOKEN }}
+            branch: release/v${{ github.event.inputs.versionName }}
+            base: main
+            title: v${{ github.event.inputs.versionName }}
