@@ -1,13 +1,9 @@
 on:
     workflow_dispatch:
     pull_request:
-       paths:
-        - 'docker-compose*.yml'
     push:
       branches:    
         - main
-      paths:
-        - 'docker-compose*.yml'
   
 name: Check docker-compose for updates
 
