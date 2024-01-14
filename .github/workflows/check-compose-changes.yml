@@ -19,7 +19,7 @@ jobs:
           - name: check git diff  
             run: |
                   check_diff() {
-                    echo $(git diff --name-only origin/main...HEAD | grep -E  'docker-compose[A-Za-z0-9.-]+.yml' | wc -l)    
+                    echo $(git diff --name-only origin/main...HEAD | grep -E  'docker-compose([A-Za-z0-9.-]+)?.yml' | wc -l)    
                   }
                   
                   if [ "$(check_diff)" -eq 0 ]; then
