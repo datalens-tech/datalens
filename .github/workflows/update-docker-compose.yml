@@ -25,7 +25,7 @@ jobs:
         with:
           template: templates/docker-compose-dev.j2
           output_file: ./docker-compose-dev.yml
-          data_file: versions-config.json
+          data_file: ./versions-config.json
           data_format: json
       - name: Commit and push docker-compose-*.yml
         uses: EndBug/add-and-commit@v9
