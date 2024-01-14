@@ -6,7 +6,7 @@ on:
       paths:
         - 'docker-compose*.yml'
   
-name: Update docker-compose
+name: Check docker-compose for updates
 
 jobs:
     check_modified_compose_files:
