@@ -13,6 +13,8 @@ jobs:
     name: build files
     runs-on: ubuntu-latest
     steps:
+      - name: checkout
+        uses: actions/checkout@v2
       - name: build docker-compose.yml
         uses: cuchi/jinja2-action@v1.2.2
         with:
