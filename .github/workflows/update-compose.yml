@@ -1,0 +1,38 @@
+on:
+  pull_request:
+    paths:
+      - 'version-config.json'
+
+name: Update docker-compose.yml docker-compose-dev.yml
+  
+jobs:
+  update_compose_files:
+    name: build files
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: build docker-compose.yml
+        uses: cuchi/jinja2-action@v1.2.2
+        with:
+          template: templates/docker-compose.j2
+          output_file: ./docker-compose.yml
+          data_file: ./versions-config.json
+          data_format: json
+      - name: build docker-compose-dev.yml
+        uses: cuchi/jinja2-action@v1.2.2
+        with:
+          template: templates/docker-compose-dev.j2
+          output_file: ./docker-compose-dev.yml
+          data_file: ./versions-config.json
+          data_format: json
+      - name: Initialize mandatory git config
+        run: |
+           git config user.name "GitHub Actions"
+           git config user.email noreply@github.com
+      - name: Commit compose files
+        id: make-commit
+        run: |
+            git add docker-compose.yml docker-compose-dev.yml
+            git commit --message "update docker-compose.yml docker-compose-dev.yml"
+            git push
