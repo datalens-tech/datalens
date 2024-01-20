@@ -29,6 +29,12 @@ METADATA_POSTGRES_DSN_LIST="postgres://{user}:{password}@{host}:{port}/{database
 
 This command will launch all containers required to run DataLens and UI will be available on http://localhost:8080
 
+If you want to use a different port (e.g. `8081`), you can set it using the `UI_PORT` env variable:
+
+```bash
+UI_PORT=8081 docker compose up
+```
+
 <details>
       <summary>Notice on Highcharts usage</summary>
 

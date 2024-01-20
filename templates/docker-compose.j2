@@ -105,7 +105,7 @@ services:
     container_name: datalens-ui
     image: ghcr.io/datalens-tech/datalens-ui:{{ uiVersion }}
     ports:
-      - ${DATALENS_PORT:-8080}:80
+      - ${UI_PORT:-8080}:80
     depends_on:
       - us
       - control-api
