@@ -1,5 +1,8 @@
 # Changelog
 
+## 2023-01-20
+- Add `UI_PORT` env param
+
 ## 2023-01-15
 - Add `docker-compose-dev.yml`
 
