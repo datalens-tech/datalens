@@ -7,13 +7,13 @@
 - datalens-ui: 0.1137.0 -> 0.1245.0
 
 ### Changed
-- Add line support for d3 visualizations (ui:334)[https://github.com/datalens-tech/datalens-ui/pull/334]
-- Add shapes support for d3 visualizations (ui:516)[https://github.com/datalens-tech/datalens-ui/pull/516]
-- Add postgres env vars for US (us:54)[https://github.com/datalens-tech/datalens-us/pull/54]
-- Allow select/deselect table rows with action params by metaKey+click (ui:475)[https://github.com/datalens-tech/datalens-ui/pull/475]
-- Disable old relations (ui:518)[https://github.com/datalens-tech/datalens-ui/pull/518]
-- Fix removing comments in QL charts (ui:523)[https://github.com/datalens-tech/datalens-ui/pull/523]
-- Fix chart autoHeight calculation (ui:482)[https://github.com/datalens-tech/datalens-ui/pull/482]
+- Add line support for d3 visualizations [ui:334](https://github.com/datalens-tech/datalens-ui/pull/334)
+- Add shapes support for d3 visualizations [ui:516](https://github.com/datalens-tech/datalens-ui/pull/516)
+- Add postgres env vars for US [us:54](https://github.com/datalens-tech/datalens-us/pull/54)
+- Allow select/deselect table rows with action params by metaKey+click [ui:475](https://github.com/datalens-tech/datalens-ui/pull/475)
+- Disable old relations [ui:518](https://github.com/datalens-tech/datalens-ui/pull/518)
+- Fix removing comments in QL charts [ui:523](https://github.com/datalens-tech/datalens-ui/pull/523)
+- Fix chart autoHeight calculation [ui:482](https://github.com/datalens-tech/datalens-ui/pull/482)
 
 ## 2024-01-24
 
