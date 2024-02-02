@@ -1,5 +1,17 @@
 # Changelog
 
+## 2024-02-02
+
+### Updated images
+- datalens-us: 0.143.0 -> 0.149.0
+- datalens-ui: 0.1245.0 -> 0.1268.0
+
+### Changed
+- Changed hide retry on some errors ([ui:#532](https://github.com/datalens-tech/datalens-ui/pull/532))
+- Fix charts with params and datasets relations ([ui:#521](https://github.com/datalens-tech/datalens-ui/pull/521))
+- Fix save button behaviour for QL charts ([ui:#548](https://github.com/datalens-tech/datalens-ui/pull/548))
+- Fix bundlesize ([ui:#551](https://github.com/datalens-tech/datalens-ui/pull/551))
+
 ## 2024-01-26
 
 ### Updated images
