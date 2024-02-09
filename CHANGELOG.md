@@ -1,5 +1,18 @@
 # Changelog
 
+## 2024-02-09
+
+### Updated images
+- datalens-us: 0.149.0 -> 0.157.0
+- datalens-ui: 0.1268.0 -> 0.1296.0
+
+### Changed
+- Support inner label in datepicker control ([ui:#566](https://github.com/datalens-tech/datalens-ui/pull/566))
+- Add required selector option ([ui:#563](https://github.com/datalens-tech/datalens-ui/pull/563))
+- Add dash ActionPanel animation ([ui:#560](https://github.com/datalens-tech/datalens-ui/pull/560))
+- Fix remove alias area, fix alias controls icons displaying ([ui:#585](https://github.com/datalens-tech/datalens-ui/pull/585))
+- Fix flat table gradient coloring ([ui:#559](https://github.com/datalens-tech/datalens-ui/pull/559))
+
 ## 2024-02-02
 
 ### Updated images
