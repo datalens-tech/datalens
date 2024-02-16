@@ -1,5 +1,18 @@
 # Changelog
 
+## 2024-02-16
+
+### Updated images
+- datalens-us: 0.157.0 -> 0.159.0
+- datalens-ui: 0.1296.0 -> 0.1316.0
+
+### Changed
+
+- Refactored logic of displaying new relations ([ui:#602](https://github.com/datalens-tech/datalens-ui/pull/602))
+- Fix preload dark theme ([ui:#610](https://github.com/datalens-tech/datalens-ui/pull/610))
+- Fix chart coloring with null value ([ui:#593](https://github.com/datalens-tech/datalens-ui/pull/593))
+- Fix axis labels formatting for bar charts  ([ui:#592](https://github.com/datalens-tech/datalens-ui/pull/592))
+
 ## 2024-02-09
 
 ### Updated images
