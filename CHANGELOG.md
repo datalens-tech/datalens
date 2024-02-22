@@ -1,5 +1,15 @@
 # Changelog
 
+## 2024-02-22
+
+### Updated images
+- datalens-control-api: 0.2046.0 -> 0.2048.2
+- datalens-data-api: 0.2046.0 -> 0.2048.2
+
+### Changes
+
+- Minor improvements
+
 ## 2024-02-16
 
 ### Updated images
