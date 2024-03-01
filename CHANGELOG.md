@@ -1,5 +1,33 @@
 # Changelog
 
+## 2024-03-01
+
+### Updated images
+
+- datalens-ui: 0.1316.0 -> 0.1384.0
+
+### Changes
+
+- Workbook page redesign ([ui:#562](https://github.com/datalens-tech/datalens-ui/pull/562))
+- Fix displaying alias modal on select ignore link ([ui:#623](https://github.com/datalens-tech/datalens-ui/pull/623))
+- Fix background color for null values in flat table ([ui:#634](https://github.com/datalens-tech/datalens-ui/pull/634))
+- Fix title selection for segments ([ui:#637](https://github.com/datalens-tech/datalens-ui/pull/637))
+- Add dnd for sorting manual values on settings ([ui:#677](https://github.com/datalens-tech/datalens-ui/pull/677))
+- Add opening anchor links in self instead of blank ([ui:#689](https://github.com/datalens-tech/datalens-ui/pull/689))
+
+
+#### Some improvements for relations:
+
+- New relations improvements ([ui:#647](https://github.com/datalens-tech/datalens-ui/pull/647))
+- Fix aliases validation for the same dataset ([ui:#652](https://github.com/datalens-tech/datalens-ui/pull/652))
+- Add problematic alias to error output ([ui:#654](https://github.com/datalens-tech/datalens-ui/pull/654))
+- Fix invalid popup height ([ui:#664](https://github.com/datalens-tech/datalens-ui/pull/664))
+- Dialog relations fix & improve disconnect action ([ui:#669](https://github.com/datalens-tech/datalens-ui/pull/669))
+- Alias modal fix ([ui:#684](https://github.com/datalens-tech/datalens-ui/pull/684))
+- Fix some relations cases with external controls ([ui:#685](https://github.com/datalens-tech/datalens-ui/pull/685))
+- Fix relations for QL chart ([ui:#691](https://github.com/datalens-tech/datalens-ui/pull/691))
+- Returning a lost icon ([ui:#693](https://github.com/datalens-tech/datalens-ui/pull/693))
+
 ## 2024-02-22
 
 ### Updated images
