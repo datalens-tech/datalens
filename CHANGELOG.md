@@ -16,7 +16,7 @@
 - Add opening anchor links in self instead of blank ([ui:#689](https://github.com/datalens-tech/datalens-ui/pull/689))
 
 
-#### Some improvements for the new relations:
+#### Some improvements for relations:
 
 - New relations improvements ([ui:#647](https://github.com/datalens-tech/datalens-ui/pull/647))
 - Fix aliases validation for the same dataset ([ui:#652](https://github.com/datalens-tech/datalens-ui/pull/652))
