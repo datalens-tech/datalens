@@ -1,5 +1,14 @@
 # Changelog
 
+## 2024-03-01
+
+### Updated images
+
+- datalens-ui: 0.1316.0 -> 0.1384.0
+
+### Changes
+
+
 ## 2024-02-22
 
 ### Updated images
