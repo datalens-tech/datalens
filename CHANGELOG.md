@@ -1,6 +1,5 @@
 # Changelog
 
-
 ## 2024-03-07
 
 ### Updated images
@@ -16,7 +15,6 @@
 - Fix column width setting in QL charts ([ui:#713](https://github.com/datalens-tech/datalens-ui/pull/713))
 - Fix parameter with a default value of 0 ([ui:#719](https://github.com/datalens-tech/datalens-ui/pull/719))
 - Fix charts tabs displaying on dashboards in corner cases ([ui:#723](https://github.com/datalens-tech/datalens-ui/pull/723))
-
 
 ## 2024-03-01
 
