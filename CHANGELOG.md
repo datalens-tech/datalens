@@ -1,5 +1,21 @@
 # Changelog
 
+## 2024-03-07
+
+### Updated images
+
+- datalens-us: 0.159.0 -> 0.168.0
+- datalens-ui: 0.1384.0 -> 0.1410.0
+
+### Changes
+
+- Reduce alias list in add popup for controls ([ui:#700](https://github.com/datalens-tech/datalens-ui/pull/700))
+- Fix pivot table(no data + totals + bar) ([ui:#699](https://github.com/datalens-tech/datalens-ui/pull/699))
+- Add current dash tab highlight in dash tabs popup ([ui:#706](https://github.com/datalens-tech/datalens-ui/pull/706))
+- Fix column width setting in QL charts ([ui:#713](https://github.com/datalens-tech/datalens-ui/pull/713))
+- Fix parameter with a default value of 0 ([ui:#719](https://github.com/datalens-tech/datalens-ui/pull/719))
+- Fix charts tabs displaying on dashboards in corner cases ([ui:#723](https://github.com/datalens-tech/datalens-ui/pull/723))
+
 ## 2024-03-01
 
 ### Updated images
