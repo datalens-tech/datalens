@@ -1,5 +1,25 @@
 # Changelog
 
+## 2024-03-16
+
+### Updated images
+
+- datalens-us: 0.168.0 -> 0.175.0
+- datalens-ui: 0.1410.0 -> 0.1440.0
+
+### Changes
+
+- Unify empty states styles ([ui:#731](https://github.com/datalens-tech/datalens-ui/pull/731))
+- Switched to `@diplodoc/transform` v4, changed markdown default styles ([ui:#740](https://github.com/datalens-tech/datalens-ui/pull/740))
+- Minor improvements for mobile version ([ui:#763](https://github.com/datalens-tech/datalens-ui/pull/763))
+
+#### Some improvements for relations:
+
+- Improve disable dash relations select ([ui:#767](https://github.com/datalens-tech/datalens-ui/pull/767))
+- Fix displaying saved new dash relation, disable close relations modal by esc and click by outside ([ui:#759](https://github.com/datalens-tech/datalens-ui/pull/759))
+- Add indirect relation unknown relations support ([ui:#758](https://github.com/datalens-tech/datalens-ui/pull/758))
+- Fix random aliases deletion ([ui:#770](https://github.com/datalens-tech/datalens-ui/pull/770))
+
 ## 2024-03-07
 
 ### Updated images
