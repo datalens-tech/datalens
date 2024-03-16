@@ -10,7 +10,7 @@
 ### Changes
 
 - Unify empty states styles ([ui:#731](https://github.com/datalens-tech/datalens-ui/pull/731))
-- Switched to `@diplodoc/transform` v4 ([ui:#740](https://github.com/datalens-tech/datalens-ui/pull/740))
+- Switched to `@diplodoc/transform` v4, changed markdown default styles ([ui:#740](https://github.com/datalens-tech/datalens-ui/pull/740))
 - Minor improvements for mobile version ([ui:#763](https://github.com/datalens-tech/datalens-ui/pull/763))
 
 #### Some improvements for relations:
