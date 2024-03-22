@@ -1,5 +1,16 @@
 # Changelog
 
+## 2024-03-22
+
+- datalens-us: 0.175.0 -> 0.179.0
+- datalens-ui: 0.1440.0 -> 0.1462.0
+
+### Changes
+- Fix nginx port 80 permission denied on ubuntu 16 ([ui:#797](https://github.com/datalens-tech/datalens-ui/pull/797))
+- Fix ql tabs styles ([ui:#795](https://github.com/datalens-tech/datalens-ui/pull/795))
+- Fix both way connection selection total connections reset for dash relations ([ui:#777](https://github.com/datalens-tech/datalens-ui/pull/777))
+- Fix subtotals for NULL values for pivot tables ([ui:#776](https://github.com/datalens-tech/datalens-ui/pull/776))
+
 ## 2024-03-18
 
 ### Updated images
