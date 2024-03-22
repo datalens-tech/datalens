@@ -80,7 +80,7 @@ services:
 
   us:
     container_name: datalens-us
-    image: ghcr.io/datalens-tech/datalens-us:0.175.0
+    image: ghcr.io/datalens-tech/datalens-us:0.179.0
     depends_on:
       - pg-us
     environment:
@@ -94,7 +94,7 @@ services:
       NODE_EXTRA_CA_CERTS: /certs/root.crt
   
     ports:
-      - "8083:80"
+      - "8083:8083"
 
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -103,9 +103,9 @@ services:
 
   datalens:
     container_name: datalens-ui
-    image: ghcr.io/datalens-tech/datalens-ui:0.1440.0
+    image: ghcr.io/datalens-tech/datalens-ui:0.1462.0
     ports:
-      - ${UI_PORT:-8080}:80
+      - ${UI_PORT:-8080}:8080
     depends_on:
       - us
       - control-api
