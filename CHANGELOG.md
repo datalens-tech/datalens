@@ -7,7 +7,7 @@
 
 ### Changes
 
-- Add dataset optimize join(required) field ([ui:#810](https://github.com/datalens-tech/datalens-ui/pull/810))
+- Add dataset optimize join (required) field ([ui:#810](https://github.com/datalens-tech/datalens-ui/pull/810))
 - Enable chart filtering other chart ([ui:#827](https://github.com/datalens-tech/datalens-ui/pull/827))
 - Fix chart-chart filtration setting in widget dialog ([ui:#823](https://github.com/datalens-tech/datalens-ui/pull/823))
 - Improve render time for multidataset charts data ([ui:#820](https://github.com/datalens-tech/datalens-ui/pull/820))
