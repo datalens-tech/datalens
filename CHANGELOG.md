@@ -1,5 +1,14 @@
 # Changelog
 
+## 2024-04-05
+
+- datalens-us: 0.184.0 -> 0.185.0
+- datalens-ui: 0.1485.0 -> 0.1488.0
+
+### Changes
+
+- Fix flat table with totals and without data ([ui:#834](https://github.com/datalens-tech/datalens-ui/pull/834))
+
 ## 2024-04-01
 
 - datalens-us: 0.179.0 -> 0.184.0
