@@ -1,5 +1,18 @@
 # Changelog
 
+## 2024-04-15
+
+- datalens-us: 0.185.0 -> 0.189.0
+- datalens-ui: 0.1488.0 -> 0.1532.0
+
+### Changes
+
+- Fix custom palettes in QL charts ([ui:#835](https://github.com/datalens-tech/datalens-ui/pull/835))
+- Fix pivot table with page number over limit ([ui:#839](https://github.com/datalens-tech/datalens-ui/pull/839))
+- Fix default displaying retry button for chart edit modes ([ui:#845](https://github.com/datalens-tech/datalens-ui/pull/845))
+- Fix double request on Run button click in QL ([ui:#852](https://github.com/datalens-tech/datalens-ui/pull/852))
+- Add text&title widget autoheight setting ([ui:#880](https://github.com/datalens-tech/datalens-ui/pull/880))
+
 ## 2024-04-05
 
 - datalens-us: 0.184.0 -> 0.185.0
