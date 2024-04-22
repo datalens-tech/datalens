@@ -1,5 +1,24 @@
 # Changelog
 
+## 2024-04-22
+
+- datalens-us: 0.189.0 -> 0.192.0
+- datalens-ui: 0.1532.0 -> 0.1564.0
+
+### Changes
+
+- Fix color and ellipsis styles in Breadcrumbs ([ui:#882](https://github.com/datalens-tech/datalens-ui/pull/882))
+- Fix chart inspector dialog styles ([ui:#910](https://github.com/datalens-tech/datalens-ui/pull/910))
+- Remove extra rerenders on text widgets ([ui:#911](https://github.com/datalens-tech/datalens-ui/pull/911))
+- Fix autoheight in texts widgets with formula & magiclinks ([ui:#912](https://github.com/datalens-tech/datalens-ui/pull/912))
+
+Markdown text widget improvements:
+- Fix markdown chart autoheight on cut expand ([ui:#889](https://github.com/datalens-tech/datalens-ui/pull/889))
+- Add markdown term, remove overflow on higher widget wrapper ([ui:#890](https://github.com/datalens-tech/datalens-ui/pull/890))
+- Add markdown colorify ([ui:#894](https://github.com/datalens-tech/datalens-ui/pull/894))
+- Yfm bugfixes ([ui:#899](https://github.com/datalens-tech/datalens-ui/pull/899))
+- Fix term popup background ([ui:#904](https://github.com/datalens-tech/datalens-ui/pull/904))
+
 ## 2024-04-15
 
 - datalens-us: 0.185.0 -> 0.189.0
