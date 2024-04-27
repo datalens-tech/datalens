@@ -1,5 +1,25 @@
 # Changelog
 
+## 2024-04-27
+
+- datalens-ui: 0.1564.0 -> 0.1586.0
+
+### Changes
+
+- Improve calendar component in connections ([ui:#913](https://github.com/datalens-tech/datalens-ui/pull/913))
+- Refactor mobile header + mobile fixes ([ui:#918](https://github.com/datalens-tech/datalens-ui/pull/918))
+- Fix breadcrumbs styles for full-width stretching ([ui:#922](https://github.com/datalens-tech/datalens-ui/pull/922))
+- Fix dash white body background ([ui:#924](https://github.com/datalens-tech/datalens-ui/pull/924))
+
+Markdown text widget improvements:
+- Fix term display ([ui:#914](https://github.com/datalens-tech/datalens-ui/pull/914))
+- Add focus grid item z-index ([ui:#905](https://github.com/datalens-tech/datalens-ui/pull/905))
+- Enable focusable elements for dashkit ([ui:#915](https://github.com/datalens-tech/datalens-ui/pull/915))
+- Fix hr in yfm ([ui:#926](https://github.com/datalens-tech/datalens-ui/pull/926))
+- Support term color ([ui:#929](https://github.com/datalens-tech/datalens-ui/pull/929))
+- Fix yfm term jump ([ui:#931](https://github.com/datalens-tech/datalens-ui/pull/931))
+- Fix latex render after edit ([ui:#933](https://github.com/datalens-tech/datalens-ui/pull/933))
+
 ## 2024-04-22
 
 - datalens-us: 0.189.0 -> 0.192.0
