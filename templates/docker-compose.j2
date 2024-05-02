@@ -14,7 +14,7 @@ services:
     image: ghcr.io/datalens-tech/datalens-control-api:{{ controlApiVersion }}
     environment:
       BI_API_UWSGI_WORKERS_COUNT: 4
-      CONNECTOR_AVAILABILITY_VISIBLE: "clickhouse,postgres,chyt,ydb"
+      CONNECTOR_AVAILABILITY_VISIBLE: "clickhouse,postgres,chyt,ydb,mysql,greenplum"
       RQE_FORCE_OFF: 1
       DL_CRY_ACTUAL_KEY_ID: key_1
       DL_CRY_KEY_VAL_ID_key_1: "h1ZpilcYLYRdWp7Nk8X1M1kBPiUi8rdjz9oBfHyUKIk="

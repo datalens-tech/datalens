@@ -17,6 +17,10 @@ CONNECTOR_AVAILABILITY:
       conn_type: chyt
     - availability: free
       conn_type: ydb
+    - availability: free
+      conn_type: mysql
+    - availability: free
+      conn_type: greenplum
   visible_connectors: []
 CORS_ALLOWED_HEADERS:
 - Content-Type

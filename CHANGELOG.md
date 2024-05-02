@@ -1,5 +1,23 @@
 # Changelog
 
+## 2024-05-02
+
+### Updated images
+- datalens-control-api: 0.2058.0 -> 0.2080.0
+- datalens-data-api: 0.2058.0 -> 0.2080.0
+
+### Changes
+
+- Add image markup ([backend:#408](https://github.com/datalens-tech/datalens-backend/pull/408))
+- Allow to disable joins optimization ([backend:#329](https://github.com/datalens-tech/datalens-backend/pull/329))
+- Allow null as a default for LAG in CH ([backend:#395](https://github.com/datalens-tech/datalens-backend/pull/395)
+- Typed query processor improvements
+- Add execution timeout to PG, ClickHouse connectors
+- Enable MySQL as connector type ([backend:#409](https://github.com/datalens-tech/datalens-backend/pull/409))
+- Enable Greenplum as connector type ([backend:#410](https://github.com/datalens-tech/datalens-backend/pull/410))
+
+[Full changelog](https://github.com/datalens-tech/datalens-backend/releases/tag/v0.2080.0).
+
 ## 2024-04-27
 
 - datalens-ui: 0.1564.0 -> 0.1586.0
