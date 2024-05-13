@@ -70,7 +70,9 @@ services:
       POSTGRES_USER: us
       POSTGRES_PASSWORD: us
     volumes:
+
       - ./metadata:/var/lib/postgresql/data
+
 
   us:
     container_name: datalens-us
@@ -91,6 +93,8 @@ services:
       - "host.docker.internal:host-gateway"
     volumes:
       - ./certs:/certs
+
+
 
   datalens:
     container_name: datalens-ui
