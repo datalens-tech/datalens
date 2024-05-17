@@ -76,9 +76,11 @@ services:
       POSTGRES_USER: us
       POSTGRES_PASSWORD: us
     volumes:
-      - ./metadata:/var/lib/postgresql/data 
+      - ./metadata:/var/lib/postgresql/data
+ 
     ports:
       - "5432:5432"
+
 
   us:
     container_name: datalens-us
@@ -120,7 +122,6 @@ services:
       retries: 5
       start_period: '20s'
       
-
   zitadel:
     restart: 'always'
     image: 'ghcr.io/zitadel/zitadel:v2.51.3'

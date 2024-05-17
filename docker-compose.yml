@@ -70,7 +70,6 @@ services:
       POSTGRES_USER: us
       POSTGRES_PASSWORD: us
     volumes:
-
       - ./metadata:/var/lib/postgresql/data
 
 
