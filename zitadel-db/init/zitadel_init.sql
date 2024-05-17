@@ -1,7 +1,3 @@
-CREATE DATABASE zitadel;
-GRANT ALL PRIVILEGES ON DATABASE zitadel TO us;
-\c zitadel;
-
 --
 -- PostgreSQL database dump
 --
@@ -27,7 +23,7 @@ SET row_security = off;
 CREATE SCHEMA adminapi;
 
 
-ALTER SCHEMA adminapi OWNER TO us;
+ALTER SCHEMA adminapi OWNER TO zit;
 
 --
 -- Name: auth; Type: SCHEMA; Schema: -; Owner: us
@@ -36,7 +32,7 @@ ALTER SCHEMA adminapi OWNER TO us;
 CREATE SCHEMA auth;
 
 
-ALTER SCHEMA auth OWNER TO us;
+ALTER SCHEMA auth OWNER TO zit;
 
 --
 -- Name: eventstore; Type: SCHEMA; Schema: -; Owner: us
@@ -45,7 +41,7 @@ ALTER SCHEMA auth OWNER TO us;
 CREATE SCHEMA eventstore;
 
 
-ALTER SCHEMA eventstore OWNER TO us;
+ALTER SCHEMA eventstore OWNER TO zit;
 
 --
 -- Name: logstore; Type: SCHEMA; Schema: -; Owner: us
@@ -54,7 +50,7 @@ ALTER SCHEMA eventstore OWNER TO us;
 CREATE SCHEMA logstore;
 
 
-ALTER SCHEMA logstore OWNER TO us;
+ALTER SCHEMA logstore OWNER TO zit;
 
 --
 -- Name: projections; Type: SCHEMA; Schema: -; Owner: us
@@ -63,7 +59,7 @@ ALTER SCHEMA logstore OWNER TO us;
 CREATE SCHEMA projections;
 
 
-ALTER SCHEMA projections OWNER TO us;
+ALTER SCHEMA projections OWNER TO zit;
 
 --
 -- Name: system; Type: SCHEMA; Schema: -; Owner: us
@@ -72,7 +68,7 @@ ALTER SCHEMA projections OWNER TO us;
 CREATE SCHEMA system;
 
 
-ALTER SCHEMA system OWNER TO us;
+ALTER SCHEMA system OWNER TO zit;
 
 SET default_tablespace = '';
 
@@ -91,7 +87,7 @@ CREATE TABLE adminapi.current_sequences (
 );
 
 
-ALTER TABLE adminapi.current_sequences OWNER TO us;
+ALTER TABLE adminapi.current_sequences OWNER TO zit;
 
 --
 -- Name: failed_events; Type: TABLE; Schema: adminapi; Owner: us
@@ -107,7 +103,7 @@ CREATE TABLE adminapi.failed_events (
 );
 
 
-ALTER TABLE adminapi.failed_events OWNER TO us;
+ALTER TABLE adminapi.failed_events OWNER TO zit;
 
 --
 -- Name: locks; Type: TABLE; Schema: adminapi; Owner: us
@@ -121,7 +117,7 @@ CREATE TABLE adminapi.locks (
 );
 
 
-ALTER TABLE adminapi.locks OWNER TO us;
+ALTER TABLE adminapi.locks OWNER TO zit;
 
 --
 -- Name: styling; Type: TABLE; Schema: adminapi; Owner: us
@@ -153,7 +149,7 @@ CREATE TABLE adminapi.styling (
 );
 
 
-ALTER TABLE adminapi.styling OWNER TO us;
+ALTER TABLE adminapi.styling OWNER TO zit;
 
 --
 -- Name: styling2; Type: TABLE; Schema: adminapi; Owner: us
@@ -186,7 +182,7 @@ CREATE TABLE adminapi.styling2 (
 );
 
 
-ALTER TABLE adminapi.styling2 OWNER TO us;
+ALTER TABLE adminapi.styling2 OWNER TO zit;
 
 --
 -- Name: auth_requests; Type: TABLE; Schema: auth; Owner: us
@@ -203,7 +199,7 @@ CREATE TABLE auth.auth_requests (
 );
 
 
-ALTER TABLE auth.auth_requests OWNER TO us;
+ALTER TABLE auth.auth_requests OWNER TO zit;
 
 --
 -- Name: current_sequences; Type: TABLE; Schema: auth; Owner: us
@@ -218,7 +214,7 @@ CREATE TABLE auth.current_sequences (
 );
 
 
-ALTER TABLE auth.current_sequences OWNER TO us;
+ALTER TABLE auth.current_sequences OWNER TO zit;
 
 --
 -- Name: failed_events; Type: TABLE; Schema: auth; Owner: us
@@ -234,7 +230,7 @@ CREATE TABLE auth.failed_events (
 );
 
 
-ALTER TABLE auth.failed_events OWNER TO us;
+ALTER TABLE auth.failed_events OWNER TO zit;
 
 --
 -- Name: idp_configs; Type: TABLE; Schema: auth; Owner: us
@@ -267,7 +263,7 @@ CREATE TABLE auth.idp_configs (
 );
 
 
-ALTER TABLE auth.idp_configs OWNER TO us;
+ALTER TABLE auth.idp_configs OWNER TO zit;
 
 --
 -- Name: idp_configs2; Type: TABLE; Schema: auth; Owner: us
@@ -301,7 +297,7 @@ CREATE TABLE auth.idp_configs2 (
 );
 
 
-ALTER TABLE auth.idp_configs2 OWNER TO us;
+ALTER TABLE auth.idp_configs2 OWNER TO zit;
 
 --
 -- Name: idp_providers; Type: TABLE; Schema: auth; Owner: us
@@ -322,7 +318,7 @@ CREATE TABLE auth.idp_providers (
 );
 
 
-ALTER TABLE auth.idp_providers OWNER TO us;
+ALTER TABLE auth.idp_providers OWNER TO zit;
 
 --
 -- Name: idp_providers2; Type: TABLE; Schema: auth; Owner: us
@@ -344,7 +340,7 @@ CREATE TABLE auth.idp_providers2 (
 );
 
 
-ALTER TABLE auth.idp_providers2 OWNER TO us;
+ALTER TABLE auth.idp_providers2 OWNER TO zit;
 
 --
 -- Name: locks; Type: TABLE; Schema: auth; Owner: us
@@ -358,7 +354,7 @@ CREATE TABLE auth.locks (
 );
 
 
-ALTER TABLE auth.locks OWNER TO us;
+ALTER TABLE auth.locks OWNER TO zit;
 
 --
 -- Name: org_project_mapping; Type: TABLE; Schema: auth; Owner: us
@@ -372,7 +368,7 @@ CREATE TABLE auth.org_project_mapping (
 );
 
 
-ALTER TABLE auth.org_project_mapping OWNER TO us;
+ALTER TABLE auth.org_project_mapping OWNER TO zit;
 
 --
 -- Name: org_project_mapping2; Type: TABLE; Schema: auth; Owner: us
@@ -387,7 +383,7 @@ CREATE TABLE auth.org_project_mapping2 (
 );
 
 
-ALTER TABLE auth.org_project_mapping2 OWNER TO us;
+ALTER TABLE auth.org_project_mapping2 OWNER TO zit;
 
 --
 -- Name: refresh_tokens; Type: TABLE; Schema: auth; Owner: us
@@ -414,7 +410,7 @@ CREATE TABLE auth.refresh_tokens (
 );
 
 
-ALTER TABLE auth.refresh_tokens OWNER TO us;
+ALTER TABLE auth.refresh_tokens OWNER TO zit;
 
 --
 -- Name: tokens; Type: TABLE; Schema: auth; Owner: us
@@ -440,7 +436,7 @@ CREATE TABLE auth.tokens (
 );
 
 
-ALTER TABLE auth.tokens OWNER TO us;
+ALTER TABLE auth.tokens OWNER TO zit;
 
 --
 -- Name: user_external_idps; Type: TABLE; Schema: auth; Owner: us
@@ -460,7 +456,7 @@ CREATE TABLE auth.user_external_idps (
 );
 
 
-ALTER TABLE auth.user_external_idps OWNER TO us;
+ALTER TABLE auth.user_external_idps OWNER TO zit;
 
 --
 -- Name: user_external_idps2; Type: TABLE; Schema: auth; Owner: us
@@ -481,7 +477,7 @@ CREATE TABLE auth.user_external_idps2 (
 );
 
 
-ALTER TABLE auth.user_external_idps2 OWNER TO us;
+ALTER TABLE auth.user_external_idps2 OWNER TO zit;
 
 --
 -- Name: user_sessions; Type: TABLE; Schema: auth; Owner: us
@@ -511,7 +507,7 @@ CREATE TABLE auth.user_sessions (
 );
 
 
-ALTER TABLE auth.user_sessions OWNER TO us;
+ALTER TABLE auth.user_sessions OWNER TO zit;
 
 --
 -- Name: users; Type: TABLE; Schema: auth; Owner: us
@@ -563,7 +559,7 @@ CREATE TABLE auth.users (
 );
 
 
-ALTER TABLE auth.users OWNER TO us;
+ALTER TABLE auth.users OWNER TO zit;
 
 --
 -- Name: users2; Type: TABLE; Schema: auth; Owner: us
@@ -618,7 +614,7 @@ CREATE TABLE auth.users2 (
 );
 
 
-ALTER TABLE auth.users2 OWNER TO us;
+ALTER TABLE auth.users2 OWNER TO zit;
 
 --
 -- Name: events2; Type: TABLE; Schema: eventstore; Owner: us
@@ -640,7 +636,7 @@ CREATE TABLE eventstore.events2 (
 );
 
 
-ALTER TABLE eventstore.events2 OWNER TO us;
+ALTER TABLE eventstore.events2 OWNER TO zit;
 
 --
 -- Name: system_seq; Type: SEQUENCE; Schema: eventstore; Owner: us
@@ -654,7 +650,7 @@ CREATE SEQUENCE eventstore.system_seq
     CACHE 1;
 
 
-ALTER TABLE eventstore.system_seq OWNER TO us;
+ALTER TABLE eventstore.system_seq OWNER TO zit;
 
 --
 -- Name: unique_constraints; Type: TABLE; Schema: eventstore; Owner: us
@@ -667,7 +663,7 @@ CREATE TABLE eventstore.unique_constraints (
 );
 
 
-ALTER TABLE eventstore.unique_constraints OWNER TO us;
+ALTER TABLE eventstore.unique_constraints OWNER TO zit;
 
 --
 -- Name: access; Type: TABLE; Schema: logstore; Owner: us
@@ -687,7 +683,7 @@ CREATE TABLE logstore.access (
 );
 
 
-ALTER TABLE logstore.access OWNER TO us;
+ALTER TABLE logstore.access OWNER TO zit;
 
 --
 -- Name: execution; Type: TABLE; Schema: logstore; Owner: us
@@ -704,7 +700,7 @@ CREATE TABLE logstore.execution (
 );
 
 
-ALTER TABLE logstore.execution OWNER TO us;
+ALTER TABLE logstore.execution OWNER TO zit;
 
 --
 -- Name: actions3; Type: TABLE; Schema: projections; Owner: us
@@ -726,7 +722,7 @@ CREATE TABLE projections.actions3 (
 );
 
 
-ALTER TABLE projections.actions3 OWNER TO us;
+ALTER TABLE projections.actions3 OWNER TO zit;
 
 --
 -- Name: apps6; Type: TABLE; Schema: projections; Owner: us
@@ -745,7 +741,7 @@ CREATE TABLE projections.apps6 (
 );
 
 
-ALTER TABLE projections.apps6 OWNER TO us;
+ALTER TABLE projections.apps6 OWNER TO zit;
 
 --
 -- Name: apps6_api_configs; Type: TABLE; Schema: projections; Owner: us
@@ -760,7 +756,7 @@ CREATE TABLE projections.apps6_api_configs (
 );
 
 
-ALTER TABLE projections.apps6_api_configs OWNER TO us;
+ALTER TABLE projections.apps6_api_configs OWNER TO zit;
 
 --
 -- Name: apps6_oidc_configs; Type: TABLE; Schema: projections; Owner: us
@@ -789,7 +785,7 @@ CREATE TABLE projections.apps6_oidc_configs (
 );
 
 
-ALTER TABLE projections.apps6_oidc_configs OWNER TO us;
+ALTER TABLE projections.apps6_oidc_configs OWNER TO zit;
 
 --
 -- Name: apps6_saml_configs; Type: TABLE; Schema: projections; Owner: us
@@ -804,7 +800,7 @@ CREATE TABLE projections.apps6_saml_configs (
 );
 
 
-ALTER TABLE projections.apps6_saml_configs OWNER TO us;
+ALTER TABLE projections.apps6_saml_configs OWNER TO zit;
 
 --
 -- Name: apps7; Type: TABLE; Schema: projections; Owner: us
@@ -823,7 +819,7 @@ CREATE TABLE projections.apps7 (
 );
 
 
-ALTER TABLE projections.apps7 OWNER TO us;
+ALTER TABLE projections.apps7 OWNER TO zit;
 
 --
 -- Name: apps7_api_configs; Type: TABLE; Schema: projections; Owner: us
@@ -838,7 +834,7 @@ CREATE TABLE projections.apps7_api_configs (
 );
 
 
-ALTER TABLE projections.apps7_api_configs OWNER TO us;
+ALTER TABLE projections.apps7_api_configs OWNER TO zit;
 
 --
 -- Name: apps7_oidc_configs; Type: TABLE; Schema: projections; Owner: us
@@ -867,7 +863,7 @@ CREATE TABLE projections.apps7_oidc_configs (
 );
 
 
-ALTER TABLE projections.apps7_oidc_configs OWNER TO us;
+ALTER TABLE projections.apps7_oidc_configs OWNER TO zit;
 
 --
 -- Name: apps7_saml_configs; Type: TABLE; Schema: projections; Owner: us
@@ -882,7 +878,7 @@ CREATE TABLE projections.apps7_saml_configs (
 );
 
 
-ALTER TABLE projections.apps7_saml_configs OWNER TO us;
+ALTER TABLE projections.apps7_saml_configs OWNER TO zit;
 
 --
 -- Name: auth_requests; Type: TABLE; Schema: projections; Owner: us
@@ -907,7 +903,7 @@ CREATE TABLE projections.auth_requests (
 );
 
 
-ALTER TABLE projections.auth_requests OWNER TO us;
+ALTER TABLE projections.auth_requests OWNER TO zit;
 
 --
 -- Name: authn_keys2; Type: TABLE; Schema: projections; Owner: us
@@ -930,7 +926,7 @@ CREATE TABLE projections.authn_keys2 (
 );
 
 
-ALTER TABLE projections.authn_keys2 OWNER TO us;
+ALTER TABLE projections.authn_keys2 OWNER TO zit;
 
 --
 -- Name: current_sequences; Type: TABLE; Schema: projections; Owner: us
@@ -945,7 +941,7 @@ CREATE TABLE projections.current_sequences (
 );
 
 
-ALTER TABLE projections.current_sequences OWNER TO us;
+ALTER TABLE projections.current_sequences OWNER TO zit;
 
 --
 -- Name: current_states; Type: TABLE; Schema: projections; Owner: us
@@ -964,7 +960,7 @@ CREATE TABLE projections.current_states (
 );
 
 
-ALTER TABLE projections.current_states OWNER TO us;
+ALTER TABLE projections.current_states OWNER TO zit;
 
 --
 -- Name: custom_texts2; Type: TABLE; Schema: projections; Owner: us
@@ -985,7 +981,7 @@ CREATE TABLE projections.custom_texts2 (
 );
 
 
-ALTER TABLE projections.custom_texts2 OWNER TO us;
+ALTER TABLE projections.custom_texts2 OWNER TO zit;
 
 --
 -- Name: device_auth_requests; Type: TABLE; Schema: projections; Owner: us
@@ -1003,7 +999,7 @@ CREATE TABLE projections.device_auth_requests (
 );
 
 
-ALTER TABLE projections.device_auth_requests OWNER TO us;
+ALTER TABLE projections.device_auth_requests OWNER TO zit;
 
 --
 -- Name: device_auth_requests2; Type: TABLE; Schema: projections; Owner: us
@@ -1022,7 +1018,7 @@ CREATE TABLE projections.device_auth_requests2 (
 );
 
 
-ALTER TABLE projections.device_auth_requests2 OWNER TO us;
+ALTER TABLE projections.device_auth_requests2 OWNER TO zit;
 
 --
 -- Name: domain_policies2; Type: TABLE; Schema: projections; Owner: us
@@ -1044,7 +1040,7 @@ CREATE TABLE projections.domain_policies2 (
 );
 
 
-ALTER TABLE projections.domain_policies2 OWNER TO us;
+ALTER TABLE projections.domain_policies2 OWNER TO zit;
 
 --
 -- Name: executions; Type: TABLE; Schema: projections; Owner: us
@@ -1062,7 +1058,7 @@ CREATE TABLE projections.executions (
 );
 
 
-ALTER TABLE projections.executions OWNER TO us;
+ALTER TABLE projections.executions OWNER TO zit;
 
 --
 -- Name: failed_events; Type: TABLE; Schema: projections; Owner: us
@@ -1078,7 +1074,7 @@ CREATE TABLE projections.failed_events (
 );
 
 
-ALTER TABLE projections.failed_events OWNER TO us;
+ALTER TABLE projections.failed_events OWNER TO zit;
 
 --
 -- Name: failed_events2; Type: TABLE; Schema: projections; Owner: us
@@ -1097,7 +1093,7 @@ CREATE TABLE projections.failed_events2 (
 );
 
 
-ALTER TABLE projections.failed_events2 OWNER TO us;
+ALTER TABLE projections.failed_events2 OWNER TO zit;
 
 --
 -- Name: flow_triggers3; Type: TABLE; Schema: projections; Owner: us
@@ -1115,7 +1111,7 @@ CREATE TABLE projections.flow_triggers3 (
 );
 
 
-ALTER TABLE projections.flow_triggers3 OWNER TO us;
+ALTER TABLE projections.flow_triggers3 OWNER TO zit;
 
 --
 -- Name: idp_login_policy_links5; Type: TABLE; Schema: projections; Owner: us
@@ -1134,7 +1130,7 @@ CREATE TABLE projections.idp_login_policy_links5 (
 );
 
 
-ALTER TABLE projections.idp_login_policy_links5 OWNER TO us;
+ALTER TABLE projections.idp_login_policy_links5 OWNER TO zit;
 
 --
 -- Name: idp_templates5; Type: TABLE; Schema: projections; Owner: us
@@ -1159,7 +1155,7 @@ CREATE TABLE projections.idp_templates5 (
 );
 
 
-ALTER TABLE projections.idp_templates5 OWNER TO us;
+ALTER TABLE projections.idp_templates5 OWNER TO zit;
 
 --
 -- Name: idp_templates5_apple; Type: TABLE; Schema: projections; Owner: us
@@ -1176,7 +1172,7 @@ CREATE TABLE projections.idp_templates5_apple (
 );
 
 
-ALTER TABLE projections.idp_templates5_apple OWNER TO us;
+ALTER TABLE projections.idp_templates5_apple OWNER TO zit;
 
 --
 -- Name: idp_templates5_azure; Type: TABLE; Schema: projections; Owner: us
@@ -1193,7 +1189,7 @@ CREATE TABLE projections.idp_templates5_azure (
 );
 
 
-ALTER TABLE projections.idp_templates5_azure OWNER TO us;
+ALTER TABLE projections.idp_templates5_azure OWNER TO zit;
 
 --
 -- Name: idp_templates5_github; Type: TABLE; Schema: projections; Owner: us
@@ -1208,7 +1204,7 @@ CREATE TABLE projections.idp_templates5_github (
 );
 
 
-ALTER TABLE projections.idp_templates5_github OWNER TO us;
+ALTER TABLE projections.idp_templates5_github OWNER TO zit;
 
 --
 -- Name: idp_templates5_github_enterprise; Type: TABLE; Schema: projections; Owner: us
@@ -1226,7 +1222,7 @@ CREATE TABLE projections.idp_templates5_github_enterprise (
 );
 
 
-ALTER TABLE projections.idp_templates5_github_enterprise OWNER TO us;
+ALTER TABLE projections.idp_templates5_github_enterprise OWNER TO zit;
 
 --
 -- Name: idp_templates5_gitlab; Type: TABLE; Schema: projections; Owner: us
@@ -1241,7 +1237,7 @@ CREATE TABLE projections.idp_templates5_gitlab (
 );
 
 
-ALTER TABLE projections.idp_templates5_gitlab OWNER TO us;
+ALTER TABLE projections.idp_templates5_gitlab OWNER TO zit;
 
 --
 -- Name: idp_templates5_gitlab_self_hosted; Type: TABLE; Schema: projections; Owner: us
@@ -1257,7 +1253,7 @@ CREATE TABLE projections.idp_templates5_gitlab_self_hosted (
 );
 
 
-ALTER TABLE projections.idp_templates5_gitlab_self_hosted OWNER TO us;
+ALTER TABLE projections.idp_templates5_gitlab_self_hosted OWNER TO zit;
 
 --
 -- Name: idp_templates5_google; Type: TABLE; Schema: projections; Owner: us
@@ -1272,7 +1268,7 @@ CREATE TABLE projections.idp_templates5_google (
 );
 
 
-ALTER TABLE projections.idp_templates5_google OWNER TO us;
+ALTER TABLE projections.idp_templates5_google OWNER TO zit;
 
 --
 -- Name: idp_templates5_jwt; Type: TABLE; Schema: projections; Owner: us
@@ -1288,7 +1284,7 @@ CREATE TABLE projections.idp_templates5_jwt (
 );
 
 
-ALTER TABLE projections.idp_templates5_jwt OWNER TO us;
+ALTER TABLE projections.idp_templates5_jwt OWNER TO zit;
 
 --
 -- Name: idp_templates5_ldap2; Type: TABLE; Schema: projections; Owner: us
@@ -1322,7 +1318,7 @@ CREATE TABLE projections.idp_templates5_ldap2 (
 );
 
 
-ALTER TABLE projections.idp_templates5_ldap2 OWNER TO us;
+ALTER TABLE projections.idp_templates5_ldap2 OWNER TO zit;
 
 --
 -- Name: idp_templates5_oauth2; Type: TABLE; Schema: projections; Owner: us
@@ -1341,7 +1337,7 @@ CREATE TABLE projections.idp_templates5_oauth2 (
 );
 
 
-ALTER TABLE projections.idp_templates5_oauth2 OWNER TO us;
+ALTER TABLE projections.idp_templates5_oauth2 OWNER TO zit;
 
 --
 -- Name: idp_templates5_oidc; Type: TABLE; Schema: projections; Owner: us
@@ -1358,7 +1354,7 @@ CREATE TABLE projections.idp_templates5_oidc (
 );
 
 
-ALTER TABLE projections.idp_templates5_oidc OWNER TO us;
+ALTER TABLE projections.idp_templates5_oidc OWNER TO zit;
 
 --
 -- Name: idp_templates5_saml; Type: TABLE; Schema: projections; Owner: us
@@ -1375,7 +1371,7 @@ CREATE TABLE projections.idp_templates5_saml (
 );
 
 
-ALTER TABLE projections.idp_templates5_saml OWNER TO us;
+ALTER TABLE projections.idp_templates5_saml OWNER TO zit;
 
 --
 -- Name: idp_templates6; Type: TABLE; Schema: projections; Owner: us
@@ -1401,7 +1397,7 @@ CREATE TABLE projections.idp_templates6 (
 );
 
 
-ALTER TABLE projections.idp_templates6 OWNER TO us;
+ALTER TABLE projections.idp_templates6 OWNER TO zit;
 
 --
 -- Name: idp_templates6_apple; Type: TABLE; Schema: projections; Owner: us
@@ -1418,7 +1414,7 @@ CREATE TABLE projections.idp_templates6_apple (
 );
 
 
-ALTER TABLE projections.idp_templates6_apple OWNER TO us;
+ALTER TABLE projections.idp_templates6_apple OWNER TO zit;
 
 --
 -- Name: idp_templates6_azure; Type: TABLE; Schema: projections; Owner: us
@@ -1435,7 +1431,7 @@ CREATE TABLE projections.idp_templates6_azure (
 );
 
 
-ALTER TABLE projections.idp_templates6_azure OWNER TO us;
+ALTER TABLE projections.idp_templates6_azure OWNER TO zit;
 
 --
 -- Name: idp_templates6_github; Type: TABLE; Schema: projections; Owner: us
@@ -1450,7 +1446,7 @@ CREATE TABLE projections.idp_templates6_github (
 );
 
 
-ALTER TABLE projections.idp_templates6_github OWNER TO us;
+ALTER TABLE projections.idp_templates6_github OWNER TO zit;
 
 --
 -- Name: idp_templates6_github_enterprise; Type: TABLE; Schema: projections; Owner: us
@@ -1468,7 +1464,7 @@ CREATE TABLE projections.idp_templates6_github_enterprise (
 );
 
 
-ALTER TABLE projections.idp_templates6_github_enterprise OWNER TO us;
+ALTER TABLE projections.idp_templates6_github_enterprise OWNER TO zit;
 
 --
 -- Name: idp_templates6_gitlab; Type: TABLE; Schema: projections; Owner: us
@@ -1483,7 +1479,7 @@ CREATE TABLE projections.idp_templates6_gitlab (
 );
 
 
-ALTER TABLE projections.idp_templates6_gitlab OWNER TO us;
+ALTER TABLE projections.idp_templates6_gitlab OWNER TO zit;
 
 --
 -- Name: idp_templates6_gitlab_self_hosted; Type: TABLE; Schema: projections; Owner: us
@@ -1499,7 +1495,7 @@ CREATE TABLE projections.idp_templates6_gitlab_self_hosted (
 );
 
 
-ALTER TABLE projections.idp_templates6_gitlab_self_hosted OWNER TO us;
+ALTER TABLE projections.idp_templates6_gitlab_self_hosted OWNER TO zit;
 
 --
 -- Name: idp_templates6_google; Type: TABLE; Schema: projections; Owner: us
@@ -1514,7 +1510,7 @@ CREATE TABLE projections.idp_templates6_google (
 );
 
 
-ALTER TABLE projections.idp_templates6_google OWNER TO us;
+ALTER TABLE projections.idp_templates6_google OWNER TO zit;
 
 --
 -- Name: idp_templates6_jwt; Type: TABLE; Schema: projections; Owner: us
@@ -1530,7 +1526,7 @@ CREATE TABLE projections.idp_templates6_jwt (
 );
 
 
-ALTER TABLE projections.idp_templates6_jwt OWNER TO us;
+ALTER TABLE projections.idp_templates6_jwt OWNER TO zit;
 
 --
 -- Name: idp_templates6_ldap2; Type: TABLE; Schema: projections; Owner: us
@@ -1564,7 +1560,7 @@ CREATE TABLE projections.idp_templates6_ldap2 (
 );
 
 
-ALTER TABLE projections.idp_templates6_ldap2 OWNER TO us;
+ALTER TABLE projections.idp_templates6_ldap2 OWNER TO zit;
 
 --
 -- Name: idp_templates6_oauth2; Type: TABLE; Schema: projections; Owner: us
@@ -1583,7 +1579,7 @@ CREATE TABLE projections.idp_templates6_oauth2 (
 );
 
 
-ALTER TABLE projections.idp_templates6_oauth2 OWNER TO us;
+ALTER TABLE projections.idp_templates6_oauth2 OWNER TO zit;
 
 --
 -- Name: idp_templates6_oidc; Type: TABLE; Schema: projections; Owner: us
@@ -1600,7 +1596,7 @@ CREATE TABLE projections.idp_templates6_oidc (
 );
 
 
-ALTER TABLE projections.idp_templates6_oidc OWNER TO us;
+ALTER TABLE projections.idp_templates6_oidc OWNER TO zit;
 
 --
 -- Name: idp_templates6_saml; Type: TABLE; Schema: projections; Owner: us
@@ -1617,7 +1613,7 @@ CREATE TABLE projections.idp_templates6_saml (
 );
 
 
-ALTER TABLE projections.idp_templates6_saml OWNER TO us;
+ALTER TABLE projections.idp_templates6_saml OWNER TO zit;
 
 --
 -- Name: idp_user_links3; Type: TABLE; Schema: projections; Owner: us
@@ -1637,7 +1633,7 @@ CREATE TABLE projections.idp_user_links3 (
 );
 
 
-ALTER TABLE projections.idp_user_links3 OWNER TO us;
+ALTER TABLE projections.idp_user_links3 OWNER TO zit;
 
 --
 -- Name: idps3; Type: TABLE; Schema: projections; Owner: us
@@ -1660,7 +1656,7 @@ CREATE TABLE projections.idps3 (
 );
 
 
-ALTER TABLE projections.idps3 OWNER TO us;
+ALTER TABLE projections.idps3 OWNER TO zit;
 
 --
 -- Name: idps3_jwt_config; Type: TABLE; Schema: projections; Owner: us
@@ -1676,7 +1672,7 @@ CREATE TABLE projections.idps3_jwt_config (
 );
 
 
-ALTER TABLE projections.idps3_jwt_config OWNER TO us;
+ALTER TABLE projections.idps3_jwt_config OWNER TO zit;
 
 --
 -- Name: idps3_oidc_config; Type: TABLE; Schema: projections; Owner: us
@@ -1696,7 +1692,7 @@ CREATE TABLE projections.idps3_oidc_config (
 );
 
 
-ALTER TABLE projections.idps3_oidc_config OWNER TO us;
+ALTER TABLE projections.idps3_oidc_config OWNER TO zit;
 
 --
 -- Name: instance_domains; Type: TABLE; Schema: projections; Owner: us
@@ -1713,7 +1709,7 @@ CREATE TABLE projections.instance_domains (
 );
 
 
-ALTER TABLE projections.instance_domains OWNER TO us;
+ALTER TABLE projections.instance_domains OWNER TO zit;
 
 --
 -- Name: instance_features2; Type: TABLE; Schema: projections; Owner: us
@@ -1729,7 +1725,7 @@ CREATE TABLE projections.instance_features2 (
 );
 
 
-ALTER TABLE projections.instance_features2 OWNER TO us;
+ALTER TABLE projections.instance_features2 OWNER TO zit;
 
 --
 -- Name: instance_members4; Type: TABLE; Schema: projections; Owner: us
@@ -1748,7 +1744,7 @@ CREATE TABLE projections.instance_members4 (
 );
 
 
-ALTER TABLE projections.instance_members4 OWNER TO us;
+ALTER TABLE projections.instance_members4 OWNER TO zit;
 
 --
 -- Name: instances; Type: TABLE; Schema: projections; Owner: us
@@ -1768,7 +1764,7 @@ CREATE TABLE projections.instances (
 );
 
 
-ALTER TABLE projections.instances OWNER TO us;
+ALTER TABLE projections.instances OWNER TO zit;
 
 --
 -- Name: keys4; Type: TABLE; Schema: projections; Owner: us
@@ -1786,7 +1782,7 @@ CREATE TABLE projections.keys4 (
 );
 
 
-ALTER TABLE projections.keys4 OWNER TO us;
+ALTER TABLE projections.keys4 OWNER TO zit;
 
 --
 -- Name: keys4_certificate; Type: TABLE; Schema: projections; Owner: us
@@ -1800,7 +1796,7 @@ CREATE TABLE projections.keys4_certificate (
 );
 
 
-ALTER TABLE projections.keys4_certificate OWNER TO us;
+ALTER TABLE projections.keys4_certificate OWNER TO zit;
 
 --
 -- Name: keys4_private; Type: TABLE; Schema: projections; Owner: us
@@ -1814,7 +1810,7 @@ CREATE TABLE projections.keys4_private (
 );
 
 
-ALTER TABLE projections.keys4_private OWNER TO us;
+ALTER TABLE projections.keys4_private OWNER TO zit;
 
 --
 -- Name: keys4_public; Type: TABLE; Schema: projections; Owner: us
@@ -1828,7 +1824,7 @@ CREATE TABLE projections.keys4_public (
 );
 
 
-ALTER TABLE projections.keys4_public OWNER TO us;
+ALTER TABLE projections.keys4_public OWNER TO zit;
 
 --
 -- Name: label_policies3; Type: TABLE; Schema: projections; Owner: us
@@ -1864,7 +1860,7 @@ CREATE TABLE projections.label_policies3 (
 );
 
 
-ALTER TABLE projections.label_policies3 OWNER TO us;
+ALTER TABLE projections.label_policies3 OWNER TO zit;
 
 --
 -- Name: limits; Type: TABLE; Schema: projections; Owner: us
@@ -1882,7 +1878,7 @@ CREATE TABLE projections.limits (
 );
 
 
-ALTER TABLE projections.limits OWNER TO us;
+ALTER TABLE projections.limits OWNER TO zit;
 
 --
 -- Name: lockout_policies2; Type: TABLE; Schema: projections; Owner: us
@@ -1903,7 +1899,7 @@ CREATE TABLE projections.lockout_policies2 (
 );
 
 
-ALTER TABLE projections.lockout_policies2 OWNER TO us;
+ALTER TABLE projections.lockout_policies2 OWNER TO zit;
 
 --
 -- Name: lockout_policies3; Type: TABLE; Schema: projections; Owner: us
@@ -1924,7 +1920,7 @@ CREATE TABLE projections.lockout_policies3 (
 );
 
 
-ALTER TABLE projections.lockout_policies3 OWNER TO us;
+ALTER TABLE projections.lockout_policies3 OWNER TO zit;
 
 --
 -- Name: locks; Type: TABLE; Schema: projections; Owner: us
@@ -1938,7 +1934,7 @@ CREATE TABLE projections.locks (
 );
 
 
-ALTER TABLE projections.locks OWNER TO us;
+ALTER TABLE projections.locks OWNER TO zit;
 
 --
 -- Name: login_names3_domains; Type: TABLE; Schema: projections; Owner: us
@@ -1953,7 +1949,7 @@ CREATE TABLE projections.login_names3_domains (
 );
 
 
-ALTER TABLE projections.login_names3_domains OWNER TO us;
+ALTER TABLE projections.login_names3_domains OWNER TO zit;
 
 --
 -- Name: login_names3_policies; Type: TABLE; Schema: projections; Owner: us
@@ -1967,7 +1963,7 @@ CREATE TABLE projections.login_names3_policies (
 );
 
 
-ALTER TABLE projections.login_names3_policies OWNER TO us;
+ALTER TABLE projections.login_names3_policies OWNER TO zit;
 
 --
 -- Name: login_names3_users; Type: TABLE; Schema: projections; Owner: us
@@ -1982,7 +1978,7 @@ CREATE TABLE projections.login_names3_users (
 );
 
 
-ALTER TABLE projections.login_names3_users OWNER TO us;
+ALTER TABLE projections.login_names3_users OWNER TO zit;
 
 --
 -- Name: login_names3; Type: VIEW; Schema: projections; Owner: us
@@ -2014,7 +2010,7 @@ CREATE VIEW projections.login_names3 AS
              LEFT JOIN projections.login_names3_domains domains ON ((policy_users.must_be_domain AND (policy_users.resource_owner = domains.resource_owner) AND (policy_users.instance_id = domains.instance_id))))) login_names3;
 
 
-ALTER TABLE projections.login_names3 OWNER TO us;
+ALTER TABLE projections.login_names3 OWNER TO zit;
 
 --
 -- Name: login_policies5; Type: TABLE; Schema: projections; Owner: us
@@ -2050,7 +2046,7 @@ CREATE TABLE projections.login_policies5 (
 );
 
 
-ALTER TABLE projections.login_policies5 OWNER TO us;
+ALTER TABLE projections.login_policies5 OWNER TO zit;
 
 --
 -- Name: mail_templates2; Type: TABLE; Schema: projections; Owner: us
@@ -2069,7 +2065,7 @@ CREATE TABLE projections.mail_templates2 (
 );
 
 
-ALTER TABLE projections.mail_templates2 OWNER TO us;
+ALTER TABLE projections.mail_templates2 OWNER TO zit;
 
 --
 -- Name: message_texts2; Type: TABLE; Schema: projections; Owner: us
@@ -2095,7 +2091,7 @@ CREATE TABLE projections.message_texts2 (
 );
 
 
-ALTER TABLE projections.message_texts2 OWNER TO us;
+ALTER TABLE projections.message_texts2 OWNER TO zit;
 
 --
 -- Name: milestones; Type: TABLE; Schema: projections; Owner: us
@@ -2111,7 +2107,7 @@ CREATE TABLE projections.milestones (
 );
 
 
-ALTER TABLE projections.milestones OWNER TO us;
+ALTER TABLE projections.milestones OWNER TO zit;
 
 --
 -- Name: notification_policies; Type: TABLE; Schema: projections; Owner: us
@@ -2131,7 +2127,7 @@ CREATE TABLE projections.notification_policies (
 );
 
 
-ALTER TABLE projections.notification_policies OWNER TO us;
+ALTER TABLE projections.notification_policies OWNER TO zit;
 
 --
 -- Name: notification_providers; Type: TABLE; Schema: projections; Owner: us
@@ -2150,7 +2146,7 @@ CREATE TABLE projections.notification_providers (
 );
 
 
-ALTER TABLE projections.notification_providers OWNER TO us;
+ALTER TABLE projections.notification_providers OWNER TO zit;
 
 --
 -- Name: oidc_settings2; Type: TABLE; Schema: projections; Owner: us
@@ -2170,7 +2166,7 @@ CREATE TABLE projections.oidc_settings2 (
 );
 
 
-ALTER TABLE projections.oidc_settings2 OWNER TO us;
+ALTER TABLE projections.oidc_settings2 OWNER TO zit;
 
 --
 -- Name: org_domains2; Type: TABLE; Schema: projections; Owner: us
@@ -2190,7 +2186,7 @@ CREATE TABLE projections.org_domains2 (
 );
 
 
-ALTER TABLE projections.org_domains2 OWNER TO us;
+ALTER TABLE projections.org_domains2 OWNER TO zit;
 
 --
 -- Name: org_members4; Type: TABLE; Schema: projections; Owner: us
@@ -2209,7 +2205,7 @@ CREATE TABLE projections.org_members4 (
 );
 
 
-ALTER TABLE projections.org_members4 OWNER TO us;
+ALTER TABLE projections.org_members4 OWNER TO zit;
 
 --
 -- Name: org_metadata2; Type: TABLE; Schema: projections; Owner: us
@@ -2228,7 +2224,7 @@ CREATE TABLE projections.org_metadata2 (
 );
 
 
-ALTER TABLE projections.org_metadata2 OWNER TO us;
+ALTER TABLE projections.org_metadata2 OWNER TO zit;
 
 --
 -- Name: orgs1; Type: TABLE; Schema: projections; Owner: us
@@ -2247,7 +2243,7 @@ CREATE TABLE projections.orgs1 (
 );
 
 
-ALTER TABLE projections.orgs1 OWNER TO us;
+ALTER TABLE projections.orgs1 OWNER TO zit;
 
 --
 -- Name: password_age_policies2; Type: TABLE; Schema: projections; Owner: us
@@ -2268,7 +2264,7 @@ CREATE TABLE projections.password_age_policies2 (
 );
 
 
-ALTER TABLE projections.password_age_policies2 OWNER TO us;
+ALTER TABLE projections.password_age_policies2 OWNER TO zit;
 
 --
 -- Name: password_complexity_policies2; Type: TABLE; Schema: projections; Owner: us
@@ -2292,7 +2288,7 @@ CREATE TABLE projections.password_complexity_policies2 (
 );
 
 
-ALTER TABLE projections.password_complexity_policies2 OWNER TO us;
+ALTER TABLE projections.password_complexity_policies2 OWNER TO zit;
 
 --
 -- Name: personal_access_tokens3; Type: TABLE; Schema: projections; Owner: us
@@ -2312,7 +2308,7 @@ CREATE TABLE projections.personal_access_tokens3 (
 );
 
 
-ALTER TABLE projections.personal_access_tokens3 OWNER TO us;
+ALTER TABLE projections.personal_access_tokens3 OWNER TO zit;
 
 --
 -- Name: privacy_policies3; Type: TABLE; Schema: projections; Owner: us
@@ -2335,7 +2331,7 @@ CREATE TABLE projections.privacy_policies3 (
 );
 
 
-ALTER TABLE projections.privacy_policies3 OWNER TO us;
+ALTER TABLE projections.privacy_policies3 OWNER TO zit;
 
 --
 -- Name: project_grant_members4; Type: TABLE; Schema: projections; Owner: us
@@ -2356,7 +2352,7 @@ CREATE TABLE projections.project_grant_members4 (
 );
 
 
-ALTER TABLE projections.project_grant_members4 OWNER TO us;
+ALTER TABLE projections.project_grant_members4 OWNER TO zit;
 
 --
 -- Name: project_grants4; Type: TABLE; Schema: projections; Owner: us
@@ -2376,7 +2372,7 @@ CREATE TABLE projections.project_grants4 (
 );
 
 
-ALTER TABLE projections.project_grants4 OWNER TO us;
+ALTER TABLE projections.project_grants4 OWNER TO zit;
 
 --
 -- Name: project_members4; Type: TABLE; Schema: projections; Owner: us
@@ -2395,7 +2391,7 @@ CREATE TABLE projections.project_members4 (
 );
 
 
-ALTER TABLE projections.project_members4 OWNER TO us;
+ALTER TABLE projections.project_members4 OWNER TO zit;
 
 --
 -- Name: project_roles4; Type: TABLE; Schema: projections; Owner: us
@@ -2414,7 +2410,7 @@ CREATE TABLE projections.project_roles4 (
 );
 
 
-ALTER TABLE projections.project_roles4 OWNER TO us;
+ALTER TABLE projections.project_roles4 OWNER TO zit;
 
 --
 -- Name: projects4; Type: TABLE; Schema: projections; Owner: us
@@ -2436,7 +2432,7 @@ CREATE TABLE projections.projects4 (
 );
 
 
-ALTER TABLE projections.projects4 OWNER TO us;
+ALTER TABLE projections.projects4 OWNER TO zit;
 
 --
 -- Name: quotas; Type: TABLE; Schema: projections; Owner: us
@@ -2453,7 +2449,7 @@ CREATE TABLE projections.quotas (
 );
 
 
-ALTER TABLE projections.quotas OWNER TO us;
+ALTER TABLE projections.quotas OWNER TO zit;
 
 --
 -- Name: quotas_notifications; Type: TABLE; Schema: projections; Owner: us
@@ -2471,7 +2467,7 @@ CREATE TABLE projections.quotas_notifications (
 );
 
 
-ALTER TABLE projections.quotas_notifications OWNER TO us;
+ALTER TABLE projections.quotas_notifications OWNER TO zit;
 
 --
 -- Name: quotas_periods; Type: TABLE; Schema: projections; Owner: us
@@ -2485,7 +2481,7 @@ CREATE TABLE projections.quotas_periods (
 );
 
 
-ALTER TABLE projections.quotas_periods OWNER TO us;
+ALTER TABLE projections.quotas_periods OWNER TO zit;
 
 --
 -- Name: restrictions2; Type: TABLE; Schema: projections; Owner: us
@@ -2503,7 +2499,7 @@ CREATE TABLE projections.restrictions2 (
 );
 
 
-ALTER TABLE projections.restrictions2 OWNER TO us;
+ALTER TABLE projections.restrictions2 OWNER TO zit;
 
 --
 -- Name: secret_generators2; Type: TABLE; Schema: projections; Owner: us
@@ -2526,7 +2522,7 @@ CREATE TABLE projections.secret_generators2 (
 );
 
 
-ALTER TABLE projections.secret_generators2 OWNER TO us;
+ALTER TABLE projections.secret_generators2 OWNER TO zit;
 
 --
 -- Name: security_policies2; Type: TABLE; Schema: projections; Owner: us
@@ -2543,7 +2539,7 @@ CREATE TABLE projections.security_policies2 (
 );
 
 
-ALTER TABLE projections.security_policies2 OWNER TO us;
+ALTER TABLE projections.security_policies2 OWNER TO zit;
 
 --
 -- Name: sessions8; Type: TABLE; Schema: projections; Owner: us
@@ -2578,7 +2574,7 @@ CREATE TABLE projections.sessions8 (
 );
 
 
-ALTER TABLE projections.sessions8 OWNER TO us;
+ALTER TABLE projections.sessions8 OWNER TO zit;
 
 --
 -- Name: sms_configs2; Type: TABLE; Schema: projections; Owner: us
@@ -2596,7 +2592,7 @@ CREATE TABLE projections.sms_configs2 (
 );
 
 
-ALTER TABLE projections.sms_configs2 OWNER TO us;
+ALTER TABLE projections.sms_configs2 OWNER TO zit;
 
 --
 -- Name: sms_configs2_twilio; Type: TABLE; Schema: projections; Owner: us
@@ -2611,7 +2607,7 @@ CREATE TABLE projections.sms_configs2_twilio (
 );
 
 
-ALTER TABLE projections.sms_configs2_twilio OWNER TO us;
+ALTER TABLE projections.sms_configs2_twilio OWNER TO zit;
 
 --
 -- Name: smtp_configs1; Type: TABLE; Schema: projections; Owner: us
@@ -2634,7 +2630,7 @@ CREATE TABLE projections.smtp_configs1 (
 );
 
 
-ALTER TABLE projections.smtp_configs1 OWNER TO us;
+ALTER TABLE projections.smtp_configs1 OWNER TO zit;
 
 --
 -- Name: smtp_configs2; Type: TABLE; Schema: projections; Owner: us
@@ -2659,7 +2655,7 @@ CREATE TABLE projections.smtp_configs2 (
 );
 
 
-ALTER TABLE projections.smtp_configs2 OWNER TO us;
+ALTER TABLE projections.smtp_configs2 OWNER TO zit;
 
 --
 -- Name: system_features; Type: TABLE; Schema: projections; Owner: us
@@ -2674,7 +2670,7 @@ CREATE TABLE projections.system_features (
 );
 
 
-ALTER TABLE projections.system_features OWNER TO us;
+ALTER TABLE projections.system_features OWNER TO zit;
 
 --
 -- Name: targets; Type: TABLE; Schema: projections; Owner: us
@@ -2696,7 +2692,7 @@ CREATE TABLE projections.targets (
 );
 
 
-ALTER TABLE projections.targets OWNER TO us;
+ALTER TABLE projections.targets OWNER TO zit;
 
 --
 -- Name: user_auth_methods4; Type: TABLE; Schema: projections; Owner: us
@@ -2717,7 +2713,7 @@ CREATE TABLE projections.user_auth_methods4 (
 );
 
 
-ALTER TABLE projections.user_auth_methods4 OWNER TO us;
+ALTER TABLE projections.user_auth_methods4 OWNER TO zit;
 
 --
 -- Name: user_grants4; Type: TABLE; Schema: projections; Owner: us
@@ -2741,7 +2737,7 @@ CREATE TABLE projections.user_grants4 (
 );
 
 
-ALTER TABLE projections.user_grants4 OWNER TO us;
+ALTER TABLE projections.user_grants4 OWNER TO zit;
 
 --
 -- Name: user_grants5; Type: TABLE; Schema: projections; Owner: us
@@ -2765,7 +2761,7 @@ CREATE TABLE projections.user_grants5 (
 );
 
 
-ALTER TABLE projections.user_grants5 OWNER TO us;
+ALTER TABLE projections.user_grants5 OWNER TO zit;
 
 --
 -- Name: user_metadata5; Type: TABLE; Schema: projections; Owner: us
@@ -2783,7 +2779,7 @@ CREATE TABLE projections.user_metadata5 (
 );
 
 
-ALTER TABLE projections.user_metadata5 OWNER TO us;
+ALTER TABLE projections.user_metadata5 OWNER TO zit;
 
 --
 -- Name: user_schemas; Type: TABLE; Schema: projections; Owner: us
@@ -2802,7 +2798,7 @@ CREATE TABLE projections.user_schemas (
 );
 
 
-ALTER TABLE projections.user_schemas OWNER TO us;
+ALTER TABLE projections.user_schemas OWNER TO zit;
 
 --
 -- Name: users10; Type: TABLE; Schema: projections; Owner: us
@@ -2821,7 +2817,7 @@ CREATE TABLE projections.users10 (
 );
 
 
-ALTER TABLE projections.users10 OWNER TO us;
+ALTER TABLE projections.users10 OWNER TO zit;
 
 --
 -- Name: users10_humans; Type: TABLE; Schema: projections; Owner: us
@@ -2844,7 +2840,7 @@ CREATE TABLE projections.users10_humans (
 );
 
 
-ALTER TABLE projections.users10_humans OWNER TO us;
+ALTER TABLE projections.users10_humans OWNER TO zit;
 
 --
 -- Name: users10_machines; Type: TABLE; Schema: projections; Owner: us
@@ -2860,7 +2856,7 @@ CREATE TABLE projections.users10_machines (
 );
 
 
-ALTER TABLE projections.users10_machines OWNER TO us;
+ALTER TABLE projections.users10_machines OWNER TO zit;
 
 --
 -- Name: users10_notifications; Type: TABLE; Schema: projections; Owner: us
@@ -2877,7 +2873,7 @@ CREATE TABLE projections.users10_notifications (
 );
 
 
-ALTER TABLE projections.users10_notifications OWNER TO us;
+ALTER TABLE projections.users10_notifications OWNER TO zit;
 
 --
 -- Name: users12; Type: TABLE; Schema: projections; Owner: us
@@ -2896,7 +2892,7 @@ CREATE TABLE projections.users12 (
 );
 
 
-ALTER TABLE projections.users12 OWNER TO us;
+ALTER TABLE projections.users12 OWNER TO zit;
 
 --
 -- Name: users12_humans; Type: TABLE; Schema: projections; Owner: us
@@ -2920,7 +2916,7 @@ CREATE TABLE projections.users12_humans (
 );
 
 
-ALTER TABLE projections.users12_humans OWNER TO us;
+ALTER TABLE projections.users12_humans OWNER TO zit;
 
 --
 -- Name: users12_machines; Type: TABLE; Schema: projections; Owner: us
@@ -2936,7 +2932,7 @@ CREATE TABLE projections.users12_machines (
 );
 
 
-ALTER TABLE projections.users12_machines OWNER TO us;
+ALTER TABLE projections.users12_machines OWNER TO zit;
 
 --
 -- Name: users12_notifications; Type: TABLE; Schema: projections; Owner: us
@@ -2954,7 +2950,7 @@ CREATE TABLE projections.users12_notifications (
 );
 
 
-ALTER TABLE projections.users12_notifications OWNER TO us;
+ALTER TABLE projections.users12_notifications OWNER TO zit;
 
 --
 -- Name: assets; Type: TABLE; Schema: system; Owner: us
@@ -2972,7 +2968,7 @@ CREATE TABLE system.assets (
 );
 
 
-ALTER TABLE system.assets OWNER TO us;
+ALTER TABLE system.assets OWNER TO zit;
 
 --
 -- Name: encryption_keys; Type: TABLE; Schema: system; Owner: us
@@ -2984,7 +2980,7 @@ CREATE TABLE system.encryption_keys (
 );
 
 
-ALTER TABLE system.encryption_keys OWNER TO us;
+ALTER TABLE system.encryption_keys OWNER TO zit;
 
 --
 -- Data for Name: current_sequences; Type: TABLE DATA; Schema: adminapi; Owner: us
