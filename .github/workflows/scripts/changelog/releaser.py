@@ -58,7 +58,7 @@ class ChangelogFormatter:
     @staticmethod
     def clean_pr_title(title: str) -> str:
         prefix_patterns_to_remove = [
-            r"^\[?(DLPROJECTS|CHARTS|BI|YCDOCS)-\d+\]?[ .:]*",
+            r"^\[?(DLPROJECTS|CHARTS|BI|YCDOCS|DOCSUP)-\d+\]?[ .:]*",
         ]
 
         for pattern in prefix_patterns_to_remove:
