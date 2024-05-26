@@ -5,7 +5,7 @@ from pathlib import Path
 
 import requests
 
-from releaser import request_with_retries, make_auth_headers
+from releaser import request_with_retries, make_gh_auth_headers
 
 
 def find_release_by_tag(repo_full_name: str, headers: dict[str, str], release_tag: str) -> str:
@@ -54,6 +54,6 @@ if __name__ == "__main__":
             changelog_body += new_line
             new_line = f.readline()
 
-    gh_auth_headers = make_auth_headers()
+    gh_auth_headers = make_gh_auth_headers()
     release_to_update = find_release_by_tag(args.root_repo_name, gh_auth_headers, release_tag)
     update_release_body(args.root_repo_name, gh_auth_headers, release_to_update, changelog_body)

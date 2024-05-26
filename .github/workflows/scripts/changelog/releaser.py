@@ -82,7 +82,7 @@ class ChangelogFormatter:
         return pr_message
 
 
-def make_auth_headers() -> dict[str, str]:
+def make_gh_auth_headers() -> dict[str, str]:
     gh_token = os.getenv("GH_TOKEN")
     gh_auth_headers: dict[str, str] = {}
 
@@ -200,15 +200,6 @@ def gather_changelog(cfg: dict[str, Any], repos_dir: Path, gh_headers: dict[str,
             ]
 
             for pr in prs_info:
-                if pr['number'] == 345:  # TODO remove debug
-                    pr["labels"] = ["component/connectors", "component/datasets", "type/new-feature"]
-                if pr['number'] == 344:
-                    pr["labels"] = ["type/CI"]
-                if pr['number'] in (365, 367):
-                    pr["labels"] = ["type/breaking-change"]
-                if pr['number'] == 372:
-                    pr["labels"] = ["component/connectors"]
-
                 pr_components = []
                 for component in changelog_config["component_tags"]["tags"]:
                     prefix = changelog_config["component_tags"]["prefix"]
@@ -222,19 +213,13 @@ def gather_changelog(cfg: dict[str, Any], repos_dir: Path, gh_headers: dict[str,
                         for idx, section in enumerate(changelog_config["section_tags"]["tags"])
                         if f"{changelog_config['section_tags']['prefix']}{section['id']}" in pr["labels"]
                     ),
-                    (999999, "Other"),
+                    (999999, cfg["other_changes_section"]),  # changes without a section (type)
                 )
 
                 changelog[section].append((
                     pr["mergedAt"],
                     CF.pr(pr_components, pr["title"], pr["number"], repository["url"]),
                 ))
-
-                # _debug_pr_cnt -= 1  # TODO remove debug
-                # if _debug_pr_cnt <= 0:
-                #     break
-            # if _debug_pr_cnt <= 0:  # TODO remove debug
-            #     break
 
     return changelog
 
@@ -316,7 +301,7 @@ if __name__ == "__main__":
     fill_helper_maps(changelog_config, current_image_versions, new_repo_versions)
 
     # Gather changes
-    gh_auth_headers = make_auth_headers()
+    gh_auth_headers = make_gh_auth_headers()
     latest_release = get_latest_repo_release(args.root_repo_name, gh_auth_headers)
     new_release = release_bump_version(latest_release, args.release_type)
     CF = ChangelogFormatter

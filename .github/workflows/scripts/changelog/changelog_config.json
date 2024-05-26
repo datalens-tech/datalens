@@ -40,6 +40,7 @@
   ],
   "changelog_include_label": "changelog",
   "images_versions_section": "Image versions",
+  "other_changes_section": "Other",
   "no_changes_message": "Minor improvements",
   "section_tags": {
     "prefix": "type/",
