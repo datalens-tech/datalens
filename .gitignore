@@ -1,3 +1,7 @@
+repos/
+venv/
+**/__pycache__/
+**/scripts/changelog/outputs.txt
 metadata
 pg-demo-connection/data
 certs

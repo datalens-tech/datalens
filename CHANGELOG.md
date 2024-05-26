@@ -1,4 +1,22 @@
-# Changelog
+## v1.1.0 (2024-03-17)
+
+### Image versions
+- datalens-control-api: 0.2061.0-rc.1 -> 0.2063.0-rc.1 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2061.0-rc.1...v0.2063.0-rc.1))
+- datalens-data-api: 0.2061.0-rc.1 -> 0.2063.0-rc.1 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2061.0-rc.1...v0.2063.0-rc.1))
+- datalens-ui: 0.1316.0
+- datalens-us: 0.159.0
+- test update
+
+### Other
+- ci: release prerelease in parallel with build images step. [datalens-tech/datalens-backend#361](https://github.com/datalens-tech/datalens-backend/pull/361)
+- Remove useless null check. [datalens-tech/datalens-backend#360](https://github.com/datalens-tech/datalens-backend/pull/360)
+
+
+## v1.0.0 (2024-05-26)
+
+### Changes
+- Introduce the new versioning system
+
 
 ## 2024-05-20
 
