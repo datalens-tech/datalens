@@ -1,3 +1,55 @@
+## v1.2.0 (2024-05-26)
+
+### Image versions
+- datalens-control-api: 0.2063.0-rc.1 -> 0.2066.0-rc.1 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2063.0-rc.1...v0.2066.0-rc.1))
+- datalens-data-api: 0.2063.0-rc.1 -> 0.2066.0-rc.1 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2063.0-rc.1...v0.2066.0-rc.1))
+- datalens-ui: 0.1316.0 -> 0.1330.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.1316.0...v0.1330.0))
+- datalens-us: 0.159.0 -> 0.170.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.159.0...v0.170.0))
+
+### Breaking changes
+- Fix bigquery dependencies (add a required pyarrow extra). [datalens-tech/datalens-backend#365](https://github.com/datalens-tech/datalens-backend/pull/365)
+- Implemented typed query processor factories in SR. [datalens-tech/datalens-backend#367](https://github.com/datalens-tech/datalens-backend/pull/367)
+
+### New features
+- **Connectors**, **Datasets**. Removing ExecutorBasedMixin. Part 2. [datalens-tech/datalens-backend#345](https://github.com/datalens-tech/datalens-backend/pull/345)
+
+### CI
+- Fixed circular import dependencies in api connector. [datalens-tech/datalens-backend#344](https://github.com/datalens-tech/datalens-backend/pull/344)
+
+### Other
+- Improve GroupControls behavior. [datalens-tech/datalens-ui#596](https://github.com/datalens-tech/datalens-ui/pull/596)
+- Fix the test falling at midnight. [datalens-tech/datalens-ui#618](https://github.com/datalens-tech/datalens-ui/pull/618)
+- Fix i18n flow. [datalens-tech/datalens-ui#617](https://github.com/datalens-tech/datalens-ui/pull/617)
+- Fix export forbidden fail in chartEditor. [datalens-tech/datalens-ui#620](https://github.com/datalens-tech/datalens-ui/pull/620)
+- Fix buttons position on mobile fullscreen. [datalens-tech/datalens-ui#603](https://github.com/datalens-tech/datalens-ui/pull/603)
+- Fix dashboard publish link xss. [datalens-tech/datalens-ui#612](https://github.com/datalens-tech/datalens-ui/pull/612)
+- Fix resolveUsersByIds mock. [datalens-tech/datalens-ui#621](https://github.com/datalens-tech/datalens-ui/pull/621)
+- Fix displaying alias modal on select ignore link. [datalens-tech/datalens-ui#623](https://github.com/datalens-tech/datalens-ui/pull/623)
+- Workbook page redesign. [datalens-tech/datalens-ui#562](https://github.com/datalens-tech/datalens-ui/pull/562)
+- Add changelog label to release comment. [datalens-tech/datalens-ui#626](https://github.com/datalens-tech/datalens-ui/pull/626)
+- Disable test and lints for translation branches. [datalens-tech/datalens-ui#625](https://github.com/datalens-tech/datalens-ui/pull/625)
+- Add new label to release. [datalens-tech/datalens-ui#627](https://github.com/datalens-tech/datalens-ui/pull/627)
+- Change onRender -> onLoad for MarkupWidget. [datalens-tech/datalens-ui#629](https://github.com/datalens-tech/datalens-ui/pull/629)
+- Update docker-compose.e2e.yml. [datalens-tech/datalens-ui#628](https://github.com/datalens-tech/datalens-ui/pull/628)
+- Update @gravity-ui/gateway. [datalens-tech/datalens-us#77](https://github.com/datalens-tech/datalens-us/pull/77)
+- Add migration for change index tenants_billing_instance_service_id_id on UNIQUE. [datalens-tech/datalens-us#76](https://github.com/datalens-tech/datalens-us/pull/76)
+- Some naming fixes. [datalens-tech/datalens-us#78](https://github.com/datalens-tech/datalens-us/pull/78)
+- Add foreign key (entry_id, tenant_id) for favorites. [datalens-tech/datalens-us#79](https://github.com/datalens-tech/datalens-us/pull/79)
+- Remove favorites migration. [datalens-tech/datalens-us#80](https://github.com/datalens-tech/datalens-us/pull/80)
+- Add foreign key (entry_id, tenant_id) for favorites (2). [datalens-tech/datalens-us#81](https://github.com/datalens-tech/datalens-us/pull/81)
+- Add yadocs to file connections. [datalens-tech/datalens-us#82](https://github.com/datalens-tech/datalens-us/pull/82)
+- Added branding column to tenants table. [datalens-tech/datalens-us#85](https://github.com/datalens-tech/datalens-us/pull/85)
+- Specify correct data source spec in GP dsrc migrator (inherit GP dsrc migrator from PG). [datalens-tech/datalens-backend#336](https://github.com/datalens-tech/datalens-backend/pull/336)
+- Move some model-related modules to dl_model_tools. [datalens-tech/datalens-backend#363](https://github.com/datalens-tech/datalens-backend/pull/363)
+- Moved a couple of modules out of dl_core. [datalens-tech/datalens-backend#362](https://github.com/datalens-tech/datalens-backend/pull/362)
+- Fixes in function ref texts. [datalens-tech/datalens-backend#364](https://github.com/datalens-tech/datalens-backend/pull/364)
+- Add existing operation codes for us client. [datalens-tech/datalens-backend#369](https://github.com/datalens-tech/datalens-backend/pull/369)
+- Get rid of templateTenantId. [datalens-tech/datalens-us#83](https://github.com/datalens-tech/datalens-us/pull/83)
+- Add new error for existing serviceInstanceIdPrefix in cofig. [datalens-tech/datalens-us#88](https://github.com/datalens-tech/datalens-us/pull/88)
+- Added branding handlers. [datalens-tech/datalens-us#86](https://github.com/datalens-tech/datalens-us/pull/86)
+- **Connectors**. Implemented CachedTypedQueryProcessor. [datalens-tech/datalens-backend#372](https://github.com/datalens-tech/datalens-backend/pull/372)
+
+
 ## v1.1.0 (2024-03-17)
 
 ### Image versions
