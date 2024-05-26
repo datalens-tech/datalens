@@ -1,0 +1,41 @@
+name: Update release
+
+on:
+  pull_request:
+    branches:
+      - 'main'
+    paths:
+      - 'CHANGELOG.md'
+
+permissions:
+  contents: write
+
+jobs:
+  run_if:
+    if: startsWith(github.head_ref, 'release/')
+    name: "Sync changelog"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: "${{ github.event.inputs.branch }}"
+          fetch-depth: 0
+
+      - name: Setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install python dependencies
+        working-directory: .github/workflows/scripts/changelog
+        run: pip install -r requirements.txt
+
+      - name: Update release from changelog
+        working-directory: .github/workflows/scripts/changelog
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python update_release.py \
+            --changelog-path="../../../../CHANGELOG.md" \
+            --root-repo-name=${{ github.repository_owner }}/${{ github.event.repository.name }}
