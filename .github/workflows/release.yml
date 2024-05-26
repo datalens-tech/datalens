@@ -116,17 +116,15 @@ jobs:
       - name: Create PR
         env:
           GH_TOKEN: ${{ github.token }}
-          # robot secret so that PRs have activated actions
-#          GH_TOKEN: ${{ secrets.UPDATE_MAINREPO_VERSION_TOKEN }}
         run: |
           pr_body="
             This PR is created by a GitHub action.
             
             Navigate to the [release page](${{ steps.gather_changelog.outputs.release_url }}) to validate the release description.
             
-            Do not edit the description manually, instead edit the \`CHANGELOG.md\` file in this PR and the release will be updated automatically.
+            If the description needs changing, do not edit the description manually, instead edit the \`CHANGELOG.md\` file in this PR and the release will be updated automatically.
             
-            When you are ready to confirm this release, merge this PR and publish the release."
+            When you are ready to confirm this release, merge this PR and publish the release (in that order, to keep release tags consistent)."
           
           pr_link=$(gh pr create \
             --title "Release DataLens v${{ steps.gather_changelog.outputs.release_version }}" \

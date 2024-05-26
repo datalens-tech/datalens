@@ -34,7 +34,6 @@
 - Update @gravity-ui/gateway. [datalens-tech/datalens-us#77](https://github.com/datalens-tech/datalens-us/pull/77)
 - Add migration for change index tenants_billing_instance_service_id_id on UNIQUE. [datalens-tech/datalens-us#76](https://github.com/datalens-tech/datalens-us/pull/76)
 - Some naming fixes. [datalens-tech/datalens-us#78](https://github.com/datalens-tech/datalens-us/pull/78)
-- Add foreign key (entry_id, tenant_id) for favorites. [datalens-tech/datalens-us#79](https://github.com/datalens-tech/datalens-us/pull/79)
 - Remove favorites migration. [datalens-tech/datalens-us#80](https://github.com/datalens-tech/datalens-us/pull/80)
 - Add foreign key (entry_id, tenant_id) for favorites (2). [datalens-tech/datalens-us#81](https://github.com/datalens-tech/datalens-us/pull/81)
 - Add yadocs to file connections. [datalens-tech/datalens-us#82](https://github.com/datalens-tech/datalens-us/pull/82)
