@@ -1,7 +1,7 @@
-## v1.0.0 (2024-05-26)
+## v1.0.0 (2024-05-28)
 
 ### Changes
-- Introduce the new versioning system
+- Introducing the new versioning system
 
 
 ## 2024-05-20
