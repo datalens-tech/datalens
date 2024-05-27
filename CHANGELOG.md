@@ -1,3 +1,29 @@
+## v1.5.0 (2024-05-27)
+
+### Image versions
+- datalens-control-api: 0.2087.0-rc.1 -> 0.2088.0-rc.1 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2087.0-rc.1...v0.2088.0-rc.1))
+- datalens-data-api: 0.2087.0-rc.1 -> 0.2088.0-rc.1 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2087.0-rc.1...v0.2088.0-rc.1))
+- datalens-ui: 0.1360.0 -> 0.1370.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.1360.0...v0.1370.0))
+- datalens-us: 0.190.0 -> 0.195.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.190.0...v0.195.0))
+
+### Changes
+- Disable old relations tests by flag. [datalens-tech/datalens-ui#672](https://github.com/datalens-tech/datalens-ui/pull/672)
+- Remove stub for workbook isolation interruption. [datalens-tech/datalens-ui#670](https://github.com/datalens-tech/datalens-ui/pull/670)
+- Fix E2E report on test failure. [datalens-tech/datalens-ui#674](https://github.com/datalens-tech/datalens-ui/pull/674)
+- fix dataLabel for bar chart. [datalens-tech/datalens-ui#675](https://github.com/datalens-tech/datalens-ui/pull/675)
+- Fix metric page view. [datalens-tech/datalens-ui#676](https://github.com/datalens-tech/datalens-ui/pull/676)
+- Dialog relations fix & improve disconnect action. [datalens-tech/datalens-ui#669](https://github.com/datalens-tech/datalens-ui/pull/669)
+- Fix axis mode for combined chart. [datalens-tech/datalens-ui#678](https://github.com/datalens-tech/datalens-ui/pull/678)
+- Refactored wizards geolayer tests. [datalens-tech/datalens-ui#679](https://github.com/datalens-tech/datalens-ui/pull/679)
+- Up markdown-it-link-attributes. [datalens-tech/datalens-ui#680](https://github.com/datalens-tech/datalens-ui/pull/680)
+- Fix "Connection terminated unexpectedly" from knex. [datalens-tech/datalens-us#111](https://github.com/datalens-tech/datalens-us/pull/111)
+- Fix deletion of workbooks when deleting a collection. [datalens-tech/datalens-us#112](https://github.com/datalens-tech/datalens-us/pull/112)
+- build(deps): bump express from 4.18.2 to 4.19.2. [datalens-tech/datalens-us#105](https://github.com/datalens-tech/datalens-us/pull/105)
+- build(deps): bump follow-redirects from 1.15.2 to 1.15.6. [datalens-tech/datalens-us#94](https://github.com/datalens-tech/datalens-us/pull/94)
+- Update snyk-container.yml. [datalens-tech/datalens-us#113](https://github.com/datalens-tech/datalens-us/pull/113)
+- Fix for mypy. [datalens-tech/datalens-backend#449](https://github.com/datalens-tech/datalens-backend/pull/449)
+
+
 ## v1.4.0 (2024-05-26)
 
 ### Image versions
