@@ -5,26 +5,13 @@ from pathlib import Path
 
 import requests
 
-from releaser import request_with_retries, make_gh_auth_headers
+import github_helpers as gh
 
 
-def find_release_by_tag(repo_full_name: str, headers: dict[str, str], release_tag: str) -> str:
-    release_resp = request_with_retries(
-        functools.partial(
-            requests.get,
-            url=f"https://api.github.com/repos/{repo_full_name}/releases",
-            headers=headers,
-        )
-    )
-    release_resp.raise_for_status()
-    release = next((release for release in release_resp.json() if release["tag_name"] == release_tag), None)
-    if release is None:
-        raise RuntimeError(f'Could not find a release by tag "{release_tag}"') from e
-    return release["id"]
+def update_release_body(repo_full_name: str, headers: dict[str, str], release_id: str, new_body: str) -> str:
+    """ Updates the release description with the passed content, returns release url """
 
-
-def update_release_body(repo_full_name: str, headers: dict[str, str], release_id: str, new_body: str) -> None:
-    release_resp = request_with_retries(
+    release_resp = gh.request_with_retries(
         functools.partial(
             requests.patch,
             url=f"https://api.github.com/repos/{repo_full_name}/releases/{release_id}",
@@ -35,7 +22,7 @@ def update_release_body(repo_full_name: str, headers: dict[str, str], release_id
         )
     )
     release_resp.raise_for_status()
-    print(release_resp.json()["html_url"])
+    return release_resp.json()["html_url"]
 
 
 if __name__ == "__main__":
@@ -54,6 +41,7 @@ if __name__ == "__main__":
             changelog_body += new_line
             new_line = f.readline()
 
-    gh_auth_headers = make_gh_auth_headers()
-    release_to_update = find_release_by_tag(args.root_repo_name, gh_auth_headers, release_tag)
-    update_release_body(args.root_repo_name, gh_auth_headers, release_to_update, changelog_body)
+    gh_auth_headers = gh.make_gh_auth_headers_from_env()
+    release_to_update = gh.find_release_by_tag(args.root_repo_name, gh_auth_headers, release_tag)
+    release_url = update_release_body(args.root_repo_name, gh_auth_headers, release_to_update, changelog_body)
+    print("Successfully updated release:",  release_url)

@@ -2,33 +2,30 @@ from __future__ import annotations
 
 import argparse
 import datetime
-import functools
 import logging
-import os
 import re
-import subprocess
-import time
-import urllib
+import json
 from collections import defaultdict
+from typing import Any
 from pathlib import Path
 
-import json
-from typing import Callable, Any
-
 import requests
+
+import github_helpers as gh
 
 
 logging.basicConfig(level=logging.INFO)
 LOGGER = logging.getLogger(__name__)
 
-GH_API_MAX_RETRIES = 15
-GH_API_RETRY_DELAY = 10
-
 OUTPUTS_FILE = "outputs.txt"
 
+TChangelogSectionKey = tuple[int, str]  # weight, name
+TChangelogEntry = tuple[str, str]  # creation timestamp, content
+TChangelog = dict[TChangelogSectionKey, list[TChangelogEntry]]
+
 # helper maps
-IMG_VERSIONS_BY_NAME: dict[str, dict[str, str]] = defaultdict(dict)  # {"img_name": {"from": "str", "to": "str"}}
-REPO_VERSIONS: dict[str, dict[str, str]] = defaultdict(dict)  # {"repo_name": {"from": "str", "to": "str"}}
+IMG_VERSIONS_BY_NAME: dict[str, dict[str, str]] = defaultdict(dict)  # {"img_name": {"from": "1.0.0", "to": "1.1.0"}}
+REPO_VERSIONS: dict[str, dict[str, str]] = defaultdict(dict)  # {"repo_name": {"from": "v1.0.0", "to": "v1.1.0"}}
 REPO_CFG_BY_IMG: dict[str, dict[str, Any]] = {}  # {"img_name": repo_cfg}
 
 
@@ -82,34 +79,8 @@ class ChangelogFormatter:
         return pr_message
 
 
-def make_gh_auth_headers() -> dict[str, str]:
-    gh_token = os.getenv("GH_TOKEN")
-    gh_auth_headers: dict[str, str] = {}
-
-    if gh_token is None:
-        LOGGER.warning("No GH_TOKEN provided, all requests will be sent w/o authentication")
-    else:
-        LOGGER.info("Got GH_TOKEN from env")
-        gh_auth_headers["Authorization"] = f"Bearer {gh_token}"
-
-    return gh_auth_headers
-
-
-def get_latest_repo_release(repo_full_name: str, headers: dict[str, str]) -> str:
-    release_resp = request_with_retries(
-        functools.partial(
-            requests.get,
-            url=f"https://api.github.com/repos/{repo_full_name}/releases/latest",
-            headers=headers,
-        )
-    )
-    release_resp.raise_for_status()
-    latest_release = release_resp.json()["name"].split(" ")[0]
-    return latest_release
-
-
 def release_bump_version(version: str, release_type: str) -> str:
-    major, minor, patch = map(int, version.lstrip("v").split("."))
+    major, minor, patch = map(int, normalize_version(version).split("."))
     if release_type == "major":
         major += 1
     elif release_type == "minor":
@@ -123,23 +94,16 @@ def release_bump_version(version: str, release_type: str) -> str:
     return new_release
 
 
-def request_with_retries(req_func: Callable[[], requests.Response]) -> requests.Response:
-    retries = 0
-    while retries < GH_API_MAX_RETRIES:
-        resp = req_func()
-
-        if resp.status_code in (403, 429) and int(resp.headers.get("X-RateLimit-Remaining", -1)) == 0 or resp.status_code >= 500:
-            LOGGER.info(f"Got status {resp.status_code} on try {retries + 1}, going to retry in {GH_API_RETRY_DELAY}s...")
-            retries += 1
-            time.sleep(GH_API_RETRY_DELAY)
-        else:
-            return resp
-
-
 def normalize_tag(tag: str) -> str:
     """ Ensures there is a "v" at the beginning """
 
     return "v" + tag.lstrip("v")
+
+
+def normalize_version(version: str) -> str:
+    """ Ensures there is no "v" at the beginning """
+
+    return version.lstrip("v")
 
 
 def prepend_file(filename: str, content: str) -> None:
@@ -149,82 +113,12 @@ def prepend_file(filename: str, content: str) -> None:
         f.write(content + "\n" + old_data)
 
 
-TChangelog = dict[tuple[int, str], list[tuple[datetime.datetime, str]]]
+def write_output(content: str) -> None:
+    with open(OUTPUTS_FILE, "a") as f:
+        f.write(content)
 
 
-def gather_changelog(cfg: dict[str, Any], repos_dir: Path, gh_headers: dict[str, str]) -> TChangelog:
-    changelog: TChangelog = defaultdict(list)
-    CF = ChangelogFormatter
-
-    for repository in cfg["repositories"]:
-        repo_full_name = "/".join(repository["url"].split("/")[-2:])
-        tag_from, tag_to = REPO_VERSIONS[repository["name"]]["from"], REPO_VERSIONS[repository["name"]]["to"]
-
-        git_log = subprocess.run(
-            ["git", "log", f"{tag_from}..{tag_to}", "--format=%H\t%s"],
-            capture_output=True,
-            text=True,
-            cwd=repos_dir / repository["name"],
-        )
-        raw_records = git_log.stdout.strip().split("\n")
-        commits = [
-            dict(
-                sha=(parts := record.split("\t"))[0],
-                message=parts[1],
-            ) for record in raw_records if record
-        ]
-
-        for commit in commits:
-            params = dict(
-                # q=f"repo:{repo_full_name}+type:pr+is:merged+{commit['sha']}+label:{changelog_config['changelog_include_label']}"  # TODO bring back after debug
-                q=f"repo:{repo_full_name}+type:pr+is:merged+{commit['sha']}"
-            )
-            params_str = urllib.parse.urlencode(params, safe=':+')
-
-            prs_info_raw = request_with_retries(
-                functools.partial(
-                    requests.get,
-                    url="https://api.github.com/search/issues",
-                    headers=gh_headers,
-                    params=params_str,
-                )
-            )
-            prs_info_raw.raise_for_status()
-            prs_info = [
-                {
-                    "title": pr_raw["title"],
-                    "number": pr_raw["number"],
-                    "mergedAt": pr_raw['pull_request']['merged_at'],
-                    "labels": [label["name"] for label in pr_raw.get("labels", [])]
-                } for pr_raw in prs_info_raw.json()['items']
-            ]
-
-            for pr in prs_info:
-                pr_components = []
-                for component in changelog_config["component_tags"]["tags"]:
-                    prefix = changelog_config["component_tags"]["prefix"]
-                    tag = prefix + component["id"]
-                    if tag in pr["labels"]:
-                        pr_components.append(component["text"])
-
-                section = next(  # sortable section tuple: weight (order idx in config) and name
-                    (
-                        (idx, section["text"])
-                        for idx, section in enumerate(changelog_config["section_tags"]["tags"])
-                        if f"{changelog_config['section_tags']['prefix']}{section['id']}" in pr["labels"]
-                    ),
-                    (999999, cfg["other_changes_section"]),  # changes without a section (type)
-                )
-
-                changelog[section].append((
-                    pr["mergedAt"],
-                    CF.pr(pr_components, pr["title"], pr["number"], repository["url"]),
-                ))
-
-    return changelog
-
-
-def fill_helper_maps(
+def populate_helper_maps(
     changelog_config: dict[str, Any],
     current_image_versions: dict[str, str],
     new_repo_versions: dict[str, str],
@@ -240,7 +134,10 @@ def fill_helper_maps(
             new_tag = current_image_versions[img["version_descriptor"]]
             if existing_tag:
                 new_tag = min(new_tag, existing_tag)
-                LOGGER.info(f"Got multiple different image tags for {img['name']}, picking the older one for the starting version ({new_tag})")
+                LOGGER.info(
+                    f"Got multiple image tags for {img['name']}, "
+                    f"picking the older one for the starting version ({new_tag})"
+                )
             REPO_VERSIONS[repo["name"]]["from"] = new_tag
 
     for repo_name, new_version in new_repo_versions.items():
@@ -258,32 +155,88 @@ def fill_helper_maps(
         # save result image to map
         repo_images = next(repo["images"] for repo in changelog_config["repositories"] if repo["name"] == repo_name)
         for img in repo_images:
-            IMG_VERSIONS_BY_NAME[img["name"]]["to"] = REPO_VERSIONS[repo_name]["to"].lstrip("v")
+            IMG_VERSIONS_BY_NAME[img["name"]]["to"] = normalize_version(REPO_VERSIONS[repo_name]["to"])
 
 
-def write_output(content: str) -> None:
-    with open(OUTPUTS_FILE, "a") as f:
-        f.write(content)
+
+def gather_changelog(cfg: dict[str, Any], repos_dir: Path, gh_headers: dict[str, str]) -> TChangelog:
+    changelog: TChangelog = defaultdict(list)
+    CF = ChangelogFormatter
+    other_changes_section = (999999, cfg["other_changes_section"])  # max weight to put it at the end
+
+    for repository in cfg["repositories"]:
+        repo_full_name = "/".join(repository["url"].split("/")[-2:])
+
+        commits = gh.get_commits_between_tags(
+            tag_from=REPO_VERSIONS[repository["name"]]["from"],
+            tag_to=REPO_VERSIONS[repository["name"]]["to"],
+            repo_path=repos_dir / repository["name"],
+        )
+
+        for commit in commits:
+            prs_info = gh.get_pull_requests_by_commit(repo_full_name, commit, gh_headers)
+
+            for pr in prs_info:
+                pr_components = []
+                for component in changelog_config["component_tags"]["tags"]:
+                    prefix = changelog_config["component_tags"]["prefix"]
+                    tag = prefix + component["id"]
+                    if tag in pr.labels:
+                        pr_components.append(component["text"])
+
+                section = next(  # sortable section tuple: weight (order idx in config) and name
+                    (
+                        (idx, section["text"])
+                        for idx, section in enumerate(changelog_config["section_tags"]["tags"])
+                        if f"{changelog_config['section_tags']['prefix']}{section['id']}" in pr.labels
+                    ),
+                    other_changes_section,  # changes without a section (type)
+                )
+
+                changelog[section].append((
+                    pr.merged_at,
+                    CF.pr(pr_components, pr.title, pr.number, repository["url"]),
+                ))
+
+    if len(changelog) == 1 and changelog.get(other_changes_section) is not None:
+        # switch to a prettier section title if all changes are untyped
+        changelog = {
+            (0, changelog_config["single_section_title"]): changelog[other_changes_section]
+        }
+
+    return changelog
 
 
 if __name__ == "__main__":
+    print(
+        'Note: this script operates under the assumption that repo version tag is '
+        'the same as the image version tag up to the leading "v"'
+    )
+
     parser = argparse.ArgumentParser(prog="DataLens Changelog Gatherer")
-    # this script operates under the assumption that repo version tag is the same as the image version tag up to the leading "v"
     parser.add_argument("--config-path", required=True, type=Path, help="path to changelog_config.json")
     parser.add_argument("--root-repo-name", default="datalens-tech/datalens")
     parser.add_argument("--repos-dir", type=Path, default=Path("./repos"))
     parser.add_argument("--changelog-path", type=Path, default=Path("../../../../CHANGELOG.md"))
-    parser.add_argument("--version-config-path", required=True, type=Path)
+    parser.add_argument("--version-config-path", required=True, type=Path, help="path to versionn_config.json")
     parser.add_argument("--release-type", choices=("major", "minor", "patch"), default="minor")
     parser.add_argument("--new-repo-versions", required=True, help=(
         'a new version for each repo, space separated in the format "name:tag",'
         ' e.g. "datalens-backend:v0.2.0 datalens-ui:v0.3.0"'
     ))
-    parser.add_argument("--create-release", default=False, action="store_true", help="whether to create a GitHub release in the root repo")
-    parser.add_argument("--make-outputs", default=False, action="store_true", help="Whether to output into a file")
+    parser.add_argument("--create-release", default=False, action="store_true", help=(
+        "whether to create a GitHub release in the root repo"
+    ))
+    parser.add_argument("--dry-run", default=False, action="store_true", help=(
+        "do not modify files or create a Github release"
+    ))
+    parser.add_argument("--make-outputs", default=False, action="store_true", help="whether to create outputs file")
 
     # Load configs
     args = parser.parse_args()
+    dry_run = args.dry_run
+    if dry_run and args.create_release:
+        print("Note: --create-release is ignored in a dry run")
 
     with open(args.config_path, "r") as f:
         changelog_config: dict[str, Any] = json.load(f)
@@ -292,17 +245,16 @@ if __name__ == "__main__":
         current_image_versions: dict[str, str] = json.load(f)
 
     new_repo_versions: dict[str, str] = {}
-    print(args.new_repo_versions)
     for item in args.new_repo_versions.strip().split(" "):
         repo_name, new_version = item.split(":")
-        new_repo_versions[repo_name] = new_version.lstrip("v")
+        new_repo_versions[repo_name] = normalize_version(new_version)
 
     # Prepare helper mappings
-    fill_helper_maps(changelog_config, current_image_versions, new_repo_versions)
+    populate_helper_maps(changelog_config, current_image_versions, new_repo_versions)
 
     # Gather changes
-    gh_auth_headers = make_gh_auth_headers()
-    latest_release = get_latest_repo_release(args.root_repo_name, gh_auth_headers)
+    gh_auth_headers = gh.make_gh_auth_headers_from_env()
+    latest_release = gh.get_latest_repo_release(args.root_repo_name, gh_auth_headers)
     new_release = release_bump_version(latest_release, args.release_type)
     CF = ChangelogFormatter
     changelog = gather_changelog(changelog_config, args.repos_dir, gh_auth_headers)
@@ -332,29 +284,33 @@ if __name__ == "__main__":
         changelog_lines.extend(CF.li(line[1]) for line in sorted(section_lines, key=lambda i: i[0]))
         # ^ PRs sorted by mergedAt
     if no_changes:
-        changelog_lines.append(CF.section("Changes"))
+        changelog_lines.append(CF.section(changelog_config["single_section_title"]))
         changelog_lines.append(CF.li(changelog_config["no_changes_message"]))
 
     changelog_result = "\n".join(changelog_lines) + "\n\n"
-    print(changelog_result)
+    print("Changelog content:", changelog_result, sep="\n")
 
     # Write new version to file
     if args.make_outputs:
-        write_output(f"release_version={new_release.lstrip('v')}\n")
+        write_output(f"release_version={normalize_version(new_release)}\n")
 
     # Update changelog & create release
-    prepend_file(args.changelog_path, changelog_result)
+    if not dry_run:
+        prepend_file(args.changelog_path, changelog_result)
 
     # Update image versions
-    with open(args.version_config_path, "w") as f:
-        new_image_versions: dict[str, str] = {}
-        for repo in changelog_config["repositories"]:
-            for img in repo["images"]:
-                new_image_versions[img["version_descriptor"]] = IMG_VERSIONS_BY_NAME[img["name"]]["to"]
-        json.dump(new_image_versions, f, indent=4, sort_keys=True)
+    new_image_versions: dict[str, str] = {}
+    for repo in changelog_config["repositories"]:
+        for img in repo["images"]:
+            new_image_versions[img["version_descriptor"]] = IMG_VERSIONS_BY_NAME[img["name"]]["to"]
+    if not dry_run:
+        with open(args.version_config_path, "w") as f:
+            json.dump(new_image_versions, f, indent=4, sort_keys=True)
+    else:
+        print("New image versions contents:", json.dumps(new_image_versions, indent=4, sort_keys=True), sep="\n")
 
     # Create GitHub release
-    if args.create_release:
+    if args.create_release and not dry_run:
         release_resp = requests.post(
             f"https://api.github.com/repos/{args.root_repo_name}/releases",
             headers=gh_auth_headers,
@@ -371,7 +327,7 @@ if __name__ == "__main__":
         release_resp.raise_for_status()
         resp_body = release_resp.json()
         release_url = resp_body.get('html_url')
-        LOGGER.info(f"Release response body: {resp_body}")
-        LOGGER.info(f"Successfully created release: {release_url}")
+        print(f"Release response body: {resp_body}")
+        print(f"Successfully created a release: {release_url}")
         if args.make_outputs:
             write_output(f"release_url={release_url}\n")

@@ -1,7 +1,6 @@
 {
   "repositories": [
     {
-      "tag": "ui",
       "name": "datalens-ui",
       "url": "https://github.com/datalens-tech/datalens-ui",
       "images": [
@@ -12,7 +11,6 @@
       ]
     },
     {
-      "tag": "backend",
       "name": "datalens-backend",
       "url": "https://github.com/datalens-tech/datalens-backend",
       "images": [
@@ -27,7 +25,6 @@
       ]
     },
     {
-      "tag": "us",
       "name": "datalens-us",
       "url": "https://github.com/datalens-tech/datalens-us",
       "images": [
@@ -41,6 +38,7 @@
   "changelog_include_label": "changelog",
   "images_versions_section": "Image versions",
   "other_changes_section": "Other",
+  "single_section_title": "Changes",
   "no_changes_message": "Minor improvements",
   "section_tags": {
     "prefix": "type/",
