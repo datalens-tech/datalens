@@ -138,8 +138,5 @@ jobs:
   call_update_compose:
     needs: [run]
     uses: KonstantAnxiety/datalens-chng/.github/workflows/update-compose.yml@main
-    permissions:
-      contents: write
-      packages: read
     with:
       pr_head: ${{ needs.run.outputs.branch }}

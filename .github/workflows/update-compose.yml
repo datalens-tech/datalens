@@ -8,8 +8,7 @@ on:
 name: Update docker-compose.yml docker-compose-dev.yml
 permissions:
   contents: write
-  packages: read
-  
+
 jobs:
   update_compose_files:
     name: build files
