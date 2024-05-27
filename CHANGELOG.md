@@ -1,3 +1,15 @@
+## v1.6.0 (2024-05-27)
+
+### Image versions
+- datalens-control-api: 0.2088.0-rc.1
+- datalens-data-api: 0.2088.0-rc.1
+- datalens-ui: 0.1370.0 -> 0.1380.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.1370.0...v0.1380.0))
+- datalens-us: 0.195.0 -> 0.198.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.195.0...v0.198.0))
+
+### Changes
+- Add dnd for sorting manual values on settings. [datalens-tech/datalens-ui#677](https://github.com/datalens-tech/datalens-ui/pull/677)
+
+
 ## v1.5.0 (2024-05-27)
 
 ### Image versions
