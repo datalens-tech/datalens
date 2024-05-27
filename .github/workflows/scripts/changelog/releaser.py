@@ -174,7 +174,9 @@ def gather_changelog(cfg: dict[str, Any], repos_dir: Path, gh_headers: dict[str,
         )
 
         for commit in commits:
-            prs_info = gh.get_pull_requests_by_commit(repo_full_name, commit, gh_headers)
+            prs_info = gh.get_pull_requests_by_commit(
+                repo_full_name, commit, gh_headers, changelog_config['changelog_include_label']
+            )
 
             for pr in prs_info:
                 pr_components = []

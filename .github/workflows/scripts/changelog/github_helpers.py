@@ -5,7 +5,7 @@ import subprocess
 import time
 import urllib
 from pathlib import Path
-from typing import Callable
+from typing import Callable, Optional
 
 import attr
 import requests
@@ -89,12 +89,11 @@ def get_commits_between_tags(tag_from: str, tag_to: str, repo_path: Path) -> lis
 
     return commits
 
-def get_pull_requests_by_commit(repo_full_name: str, commit: CommitInfo, auth_headers: dict) -> list[PullRequestInfo]:
-    params = dict(
-        # q=f"repo:{repo_full_name}+type:pr+is:merged+{commit.sha}+label:{changelog_config['changelog_include_label']}"  # TODO bring back after debug
-        q=f"repo:{repo_full_name}+type:pr+is:merged+{commit.sha}"
-    )
-    params_str = urllib.parse.urlencode(params, safe=':+')
+def get_pull_requests_by_commit(repo_full_name: str, commit: CommitInfo, auth_headers: dict, include_label: Optional[str] = None) -> list[PullRequestInfo]:
+    search_str = f"repo:{repo_full_name}+type:pr+is:merged+{commit.sha}"
+    if include_label is not None:
+        search_str += f"+label:{include_label}"
+    params_str = urllib.parse.urlencode(dict(q=search_str), safe=':+')
 
     prs_info_raw = request_with_retries(
         functools.partial(
