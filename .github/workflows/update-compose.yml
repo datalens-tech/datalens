@@ -8,14 +8,13 @@ on:
 name: Update docker-compose.yml docker-compose-dev.yml
 permissions:
   contents: write
+  packages: read
   
 jobs:
   update_compose_files:
     name: build files
     runs-on: ubuntu-latest
     steps:
-      - name: asdf
-        run: echo "${{ github.event.pull_request.head.ref }}${{ inputs.pr_head }}"
       - name: checkout
         uses: actions/checkout@v4
         with:
