@@ -28,6 +28,8 @@ Use the following labels to assign a pull request to a component,
 which will put its name in front of the pull request title:
 - `component/charts` -> Charts
 - `component/connectors` -> Connectors
+- `component/navigation` -> Navigation
+- `component/general` -> General components
 - `component/dashboards` -> Dashboards
 - `component/datasets` -> Datasets
 - `component/auth` -> Auth

@@ -93,6 +93,14 @@
         "text": "Connectors"
       },
       {
+        "id": "navigation",
+        "text": "Navigation"
+      },
+      {
+        "id": "general",
+        "text": "General components"
+      },
+      {
         "id": "dashboards",
         "text": "Dashboards"
       },
