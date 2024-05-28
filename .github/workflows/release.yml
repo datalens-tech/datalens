@@ -137,6 +137,6 @@ jobs:
 
   call_update_compose:
     needs: [run]
-    uses: KonstantAnxiety/datalens-chng/.github/workflows/update-compose.yml@main
+    uses: datalens-tech/datalens/.github/workflows/update-compose.yml@main
     with:
       pr_head: ${{ needs.run.outputs.branch }}
