@@ -18,6 +18,11 @@ For a pull request to be included in the changelog, add a `{changelog_label}` la
 
 Other labels can be used to control which section the changes end up in and the component that will be mentioned.
 
+Each pull request can be assigned to a single section – if more than one section (type) label is assigned
+to a pull request, then the one that is above in the changelog-config will be chosen. A pull request can be assigned
+to any number of components, they will appear in a changelog record in the order in which they are specified
+in the changelog-config.
+
 Use the following labels to assign a pull request to a section:
 {sections_labels_list}
 
