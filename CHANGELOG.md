@@ -1,5 +1,17 @@
 # Changelog
 
+## 2024-05-30
+
+- datalens-control-api: 0.2080.0 -> 0.2091.0
+- datalens-data-api: 0.2080.0 -> 0.2091.0
+
+### Changes
+
+- Add IMAGE markup formula ([backend:#422](https://github.com/datalens-tech/datalens-backend/pull/422))
+- Add load_preview_by_default field to datasets ([backend:#433](https://github.com/datalens-tech/datalens-backend/pull/433))
+- Add rate limiting config ([backend:#441](https://github.com/datalens-tech/datalens-backend/pull/441))
+- Add trace_id to logging contexts ([backend:#442](https://github.com/datalens-tech/datalens-backend/pull/442))
+
 ## 2024-05-28
 
 - datalens-us: 0.202.0 -> 0.204.0
