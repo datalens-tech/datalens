@@ -1,10 +1,14 @@
 on:
   pull_request:
+  workflow_call:
+    inputs:
+      pr_head:
+        type: string
 
 name: Update docker-compose.yml docker-compose-dev.yml
 permissions:
   contents: write
-  
+
 jobs:
   update_compose_files:
     name: build files
@@ -13,7 +17,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
+          ref: "${{ github.event.pull_request.head.ref }}${{ inputs.pr_head }}"
       - name: setup python
         uses: actions/setup-python@v5
         with:
