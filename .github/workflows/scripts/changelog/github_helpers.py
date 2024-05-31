@@ -56,25 +56,39 @@ def get_latest_repo_release(repo_full_name: str, headers: dict[str, str]) -> str
 
 def request_with_retries(
     req_func: Callable[[], requests.Response],
-    max_retries: int = 15,
+    max_retries: int = 20,
     retry_delay: int = 10,
 ) -> requests.Response:
 
-    def _is_retriable(response: requests.Response) -> bool:
-        return (
-            response.status_code == 403 or
-            response.status_code >= 500 or
-            response.status_code == 429 and int(resp.headers.get("X-RateLimit-Remaining", -1)) == 0
-        )
+    def _get_retry_delay(response: requests.Response) -> Optional[int]:
+        if response.status_code == 403 and "X-RateLimit-Remaining" not in resp.headers or response.status_code >= 500:
+            return retry_delay
+
+        if response.status_code in (403, 429):
+            if int(resp.headers.get("X-RateLimit-Remaining", -1)) > 0:
+                return retry_delay
+
+            ratelimit_reset = int(resp.headers.get("X-RateLimit-Reset", -1))
+            if ratelimit_reset > 0:
+                current_timestamp = int(datetime.datetime.now().timestamp())
+                return ratelimit_reset - current_timestamp + 1
+
+        return None
 
     retries = 0
+    resp = req_func()
     while retries < max_retries:
-        resp = req_func()
-
-        if _is_retriable(resp):
-            LOGGER.info(f"Got status {resp.status_code} on try {retries + 1}, going to retry in {retry_delay}s...")
-            retries += 1
-            time.sleep(retry_delay)
+        if resp.status_code != 200:
+            delay = _get_retry_delay(resp)
+            if delay is not None:
+                LOGGER.info(f"Got status {resp.status_code} on try {retries + 1}, going to retry in {delay}s...")
+                retries += 1
+                if retries >= max_retries:
+                    resp.raise_for_status()
+                    raise RuntimeError(f"Reached maximum of retries, last response: {resp}")
+                time.sleep(delay)
+            else:
+                resp.raise_for_status()
         else:
             return resp
 
