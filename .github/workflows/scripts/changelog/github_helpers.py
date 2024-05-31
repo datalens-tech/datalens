@@ -59,11 +59,19 @@ def request_with_retries(
     max_retries: int = 15,
     retry_delay: int = 10,
 ) -> requests.Response:
+
+    def _is_retriable(response: requests.Response) -> bool:
+        return (
+            response.status_code == 403 or
+            response.status_code >= 500 or
+            response.status_code == 429 and int(resp.headers.get("X-RateLimit-Remaining", -1)) == 0
+        )
+
     retries = 0
     while retries < max_retries:
         resp = req_func()
 
-        if resp.status_code in (403, 429) and int(resp.headers.get("X-RateLimit-Remaining", -1)) == 0 or resp.status_code >= 500:
+        if _is_retriable(resp):
             LOGGER.info(f"Got status {resp.status_code} on try {retries + 1}, going to retry in {retry_delay}s...")
             retries += 1
             time.sleep(retry_delay)
