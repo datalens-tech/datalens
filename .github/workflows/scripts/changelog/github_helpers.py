@@ -85,7 +85,7 @@ def request_with_retries(
                 retries += 1
                 if retries >= max_retries:
                     resp.raise_for_status()
-                    raise RuntimeError(f"Reached maximum of retries, last response: {resp}")
+                    raise RuntimeError(f"Reached maximum number of retries, last response: {resp}")
                 time.sleep(delay)
             else:
                 resp.raise_for_status()
