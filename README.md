@@ -109,3 +109,26 @@ If `datalens-us` container does not start even though you provided correct certi
 #### Why do i see two compose files: docker-compose.yml & docker-compose-dev.yml?
 
 `docker-compose-dev.yml` is a special compose file that is needed only for development purposes. When you run DataLens in production mode, you always need to use `docker-compose.yml`. The `docker-compose up` command uses it by default. 
+
+
+#### What are the minimum system requirements?
+
+* datalens-ui - 512 MB RAM
+
+* datalens-data-api - 1 GB RAM
+
+* datalens-control-api - 512 MB RAM
+
+* datalens-us - 512 MB RAM
+
+* datalens-pg-compeng - 1 GB RAM
+
+* datalens-pg-us - 512 MB RAM
+
+Summary:
+
+* RAM - 4 GB
+
+* CPU - 2 CORES
+
+This is minimal basic system requirements for OpenSource DataLens installation. Аctual consumption of VM resources depends on the complexity of requests to connections, connections types, the number of users and processing speed at the source level
