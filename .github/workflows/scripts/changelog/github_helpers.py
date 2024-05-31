@@ -76,8 +76,8 @@ def request_with_retries(
         return None
 
     retries = 0
-    resp = req_func()
     while retries < max_retries:
+        resp = req_func()
         if resp.status_code != 200:
             delay = _get_retry_delay(resp)
             if delay is not None:
