@@ -22,7 +22,9 @@ services:
       US_HOST: "http://us:8083"
       US_MASTER_TOKEN: "fake-us-master-token"
       CONFIG_PATH: "/etc/backend-configs/api.yaml"
-{% if "DEV_MODE"|env(false) %}  
+{% if "DEV_MODE"|env(false) %}
+      SERVICE_CLIENT_ID=bi
+      SERVICE_CLIENT_SECRET=4rKnCliKAmqfQUK0H1JVk6mvWhtGSXZfTdNrcUvAzlILNneA7n4PjddWRLYvTHVK  
     ports:
       - 8081:8080
 {% endif %}  
@@ -47,7 +49,9 @@ services:
       US_HOST: "http://us:8083"
       US_MASTER_TOKEN: "fake-us-master-token"
       CONFIG_PATH: "/etc/backend-configs/api.yaml"
-{% if "DEV_MODE"|env(false) %}  
+{% if "DEV_MODE"|env(false) %}
+      SERVICE_CLIENT_ID=bi
+      SERVICE_CLIENT_SECRET=4rKnCliKAmqfQUK0H1JVk6mvWhtGSXZfTdNrcUvAzlILNneA7n4PjddWRLYvTHVK
     ports:
       - 8082:8080
 {% endif %}  
@@ -79,7 +83,7 @@ services:
       - ./metadata:/var/lib/postgresql/data
 {% if "DEV_MODE"|env(false) %} 
     ports:
-      - "5432:5432"
+      - "8086:5432"
 {% endif %}
 
   us:
@@ -96,7 +100,13 @@ services:
       USE_DEMO_DATA: ${USE_DEMO_DATA:-1}
       HC: ${HC:-0}
       NODE_EXTRA_CA_CERTS: /certs/root.crt
-{% if "DEV_MODE"|env(false) %}  
+{% if "DEV_MODE"|env(false) %}
+      ZITADEL=false
+      ZITADEL_URI=http://localhost:8085
+      CLIENT_ID=269829931184226314@datalens
+      CLIENT_SECRET=GRCfRsteLvSqolF122loogYU2oa7LhufWTdS6WCmiOcmSH48rqTmZOKAtLB0A4YT
+      SERVICE_CLIENT_ID=us
+      SERVICE_CLIENT_SECRET=bB6PrbvqgOjnBh5aoTQNZPFE7dysSnSAfZ2Li7vpJwp0AzamSxZNkA0guvkWrtz1  
     ports:
       - "8083:8083"
 {% endif %}
@@ -108,7 +118,7 @@ services:
 {% if "DEV_MODE"|env(false) %}
   zitadel-db:
     restart: 'always'
-    image: postgres:13-alpine
+    image: postgres:16-alpine
     environment:
       POSTGRES_DB: zitadel
       POSTGRES_USER: zit
@@ -166,3 +176,14 @@ services:
       BI_DATA_ENDPOINT: "http://data-api:8080"
       NODE_EXTRA_CA_CERTS: "/usr/local/share/ca-certificates/cert.pem"
       HC: ${HC:-0}
+{% if "DEV_MODE"|env(false) %}
+      ZITADEL=false
+      CLIENT_ID=269829931184226314@datalens
+      CLIENT_SECRET=GRCfRsteLvSqolF122loogYU2oa7LhufWTdS6WCmiOcmSH48rqTmZOKAtLB0A4YT
+      ZITADEL_PROJECT_ID=269829807099871242
+      ZITADEL_URI=http://localhost:8085
+      APP_HOST_URI=http://localhost:8080
+      ZITADEL_COOKIE_SECRET=!@OUVOF$@E@%F^&@$*ER!F
+      SERVICE_CLIENT_ID=charts
+      SERVICE_CLIENT_SECRET=uvdZDsiZJslDj8bKbTlKR43oMHqEiNGppxhMjCQWqQXkHUmGpW2iuLYNJ5tdmmlL
+{% endif %}
