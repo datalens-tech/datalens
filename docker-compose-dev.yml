@@ -23,8 +23,8 @@ services:
       US_MASTER_TOKEN: "fake-us-master-token"
       CONFIG_PATH: "/etc/backend-configs/api.yaml"
 
-      SERVICE_CLIENT_ID=bi
-      SERVICE_CLIENT_SECRET=4rKnCliKAmqfQUK0H1JVk6mvWhtGSXZfTdNrcUvAzlILNneA7n4PjddWRLYvTHVK  
+      SERVICE_CLIENT_ID: "bi"
+      SERVICE_CLIENT_SECRET: "4rKnCliKAmqfQUK0H1JVk6mvWhtGSXZfTdNrcUvAzlILNneA7n4PjddWRLYvTHVK"
     ports:
       - 8081:8080
   
@@ -50,8 +50,8 @@ services:
       US_MASTER_TOKEN: "fake-us-master-token"
       CONFIG_PATH: "/etc/backend-configs/api.yaml"
 
-      SERVICE_CLIENT_ID=bi
-      SERVICE_CLIENT_SECRET=4rKnCliKAmqfQUK0H1JVk6mvWhtGSXZfTdNrcUvAzlILNneA7n4PjddWRLYvTHVK
+      SERVICE_CLIENT_ID: "bi"
+      SERVICE_CLIENT_SECRET: "4rKnCliKAmqfQUK0H1JVk6mvWhtGSXZfTdNrcUvAzlILNneA7n4PjddWRLYvTHVK"
     ports:
       - 8082:8080
   
@@ -101,12 +101,12 @@ services:
       HC: ${HC:-0}
       NODE_EXTRA_CA_CERTS: /certs/root.crt
 
-      ZITADEL=false
-      ZITADEL_URI=http://localhost:8085
-      CLIENT_ID=269829931184226314@datalens
-      CLIENT_SECRET=GRCfRsteLvSqolF122loogYU2oa7LhufWTdS6WCmiOcmSH48rqTmZOKAtLB0A4YT
-      SERVICE_CLIENT_ID=us
-      SERVICE_CLIENT_SECRET=bB6PrbvqgOjnBh5aoTQNZPFE7dysSnSAfZ2Li7vpJwp0AzamSxZNkA0guvkWrtz1  
+      ZITADEL: "false"
+      ZITADEL_URI: "http://localhost:8085"
+      CLIENT_ID: "269829931184226314@datalens"
+      CLIENT_SECRET: "GRCfRsteLvSqolF122loogYU2oa7LhufWTdS6WCmiOcmSH48rqTmZOKAtLB0A4YT"
+      SERVICE_CLIENT_ID: "us"
+      SERVICE_CLIENT_SECRET: "bB6PrbvqgOjnBh5aoTQNZPFE7dysSnSAfZ2Li7vpJwp0AzamSxZNkA0guvkWrtz1"
     ports:
       - "8083:8083"
 
@@ -177,12 +177,12 @@ services:
       NODE_EXTRA_CA_CERTS: "/usr/local/share/ca-certificates/cert.pem"
       HC: ${HC:-0}
 
-      ZITADEL=false
-      CLIENT_ID=269829931184226314@datalens
-      CLIENT_SECRET=GRCfRsteLvSqolF122loogYU2oa7LhufWTdS6WCmiOcmSH48rqTmZOKAtLB0A4YT
-      ZITADEL_PROJECT_ID=269829807099871242
-      ZITADEL_URI=http://localhost:8085
-      APP_HOST_URI=http://localhost:8080
-      ZITADEL_COOKIE_SECRET=!@OUVOF$@E@%F^&@$*ER!F
-      SERVICE_CLIENT_ID=charts
-      SERVICE_CLIENT_SECRET=uvdZDsiZJslDj8bKbTlKR43oMHqEiNGppxhMjCQWqQXkHUmGpW2iuLYNJ5tdmmlL
+      ZITADEL: "false"
+      CLIENT_ID: "269829931184226314@datalens"
+      CLIENT_SECRET: "GRCfRsteLvSqolF122loogYU2oa7LhufWTdS6WCmiOcmSH48rqTmZOKAtLB0A4YT"
+      ZITADEL_PROJECT_ID: "269829807099871242"
+      ZITADEL_URI: "http://localhost:8085"
+      APP_HOST_URI: "http://localhost:8080"
+      ZITADEL_COOKIE_SECRET: "!@OUVOF$@E@%F^&@$*ER!F"
+      SERVICE_CLIENT_ID: "charts"
+      SERVICE_CLIENT_SECRET: "uvdZDsiZJslDj8bKbTlKR43oMHqEiNGppxhMjCQWqQXkHUmGpW2iuLYNJ5tdmmlL"
