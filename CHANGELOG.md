@@ -1,3 +1,21 @@
+## v1.0.1 (2024-06-05)
+
+### Image versions
+- datalens-control-api: 0.2091.0
+- datalens-data-api: 0.2091.0
+- datalens-ui: 0.1675.0 -> 0.1685.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.1675.0...v0.1685.0))
+- datalens-us: 0.204.0
+
+### New features
+- **Dashboards**. Remove flag ShowDashWidgetBg (enable feature without flag). [datalens-tech/datalens-ui#1044](https://github.com/datalens-tech/datalens-ui/pull/1044)
+
+### Bug fixes
+- **Dashboards**. Add min height equals to 2 rows for autoheight widgets. [datalens-tech/datalens-ui#1042](https://github.com/datalens-tech/datalens-ui/pull/1042)
+- **Dashboards**. Fix link of dataset in 'Open' dataset button in selector modal. [datalens-tech/datalens-ui#1043](https://github.com/datalens-tech/datalens-ui/pull/1043)
+- **Dashboards**. Fix values of presets in Control dialog. [datalens-tech/datalens-ui#1045](https://github.com/datalens-tech/datalens-ui/pull/1045)
+- **Dashboards**. Fix paste error while paste chart in not saved folder dash. [datalens-tech/datalens-ui#1048](https://github.com/datalens-tech/datalens-ui/pull/1048)
+
+
 ## v1.0.0 (2024-05-31)
 
 ### Changes
