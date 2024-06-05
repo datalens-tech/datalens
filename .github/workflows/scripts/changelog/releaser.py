@@ -75,7 +75,7 @@ class ChangelogFormatter:
             repo_url=repo_url,
         )
         if tags_str:
-            pr_message = f"{tags_str}. {pr_message}"
+            pr_message = f"{tags_str}: {pr_message}"
         return pr_message
 
 
