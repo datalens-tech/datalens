@@ -125,8 +125,8 @@ services:
       POSTGRES_PASSWORD: zit
     volumes:  
       - ./zitadel-db/init:/docker-entrypoint-initdb.d
-    healthcheck:
-      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
+    healthcheck:      
+      test: ["CMD-SHELL", "pg_isready", "-d", "zitadel", "-U", "zit"]
       interval: '10s'
       timeout: '30s'
       retries: 5
@@ -134,7 +134,7 @@ services:
       
   zitadel:
     restart: 'always'
-    image: 'ghcr.io/zitadel/zitadel:v2.51.3'
+    image: 'ghcr.io/zitadel/zitadel:v2.54.1'
     command: 'start-from-init --masterkey "MasterkeyNeedsToHave32Characters" --tlsMode disabled'
     environment:
       - 'ZITADEL_DATABASE_POSTGRES_HOST=zitadel-db'
