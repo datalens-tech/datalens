@@ -102,7 +102,7 @@ services:
       NODE_EXTRA_CA_CERTS: /certs/root.crt
 {% if "DEV_MODE"|env(false) %}
       ZITADEL: "false"
-      ZITADEL_URI: "http://localhost:8085"
+      ZITADEL_URI: "http://zitadel:8080"
       CLIENT_ID: "269829931184226314@datalens"
       CLIENT_SECRET: "GRCfRsteLvSqolF122loogYU2oa7LhufWTdS6WCmiOcmSH48rqTmZOKAtLB0A4YT"
       SERVICE_CLIENT_ID: "us"
@@ -148,7 +148,8 @@ services:
       - 'ZITADEL_DATABASE_POSTGRES_ADMIN_SSL_MODE=disable'
       - 'ZITADEL_SYSTEMDEFAULTS_SECRETGENERATORS_PASSWORDSALTCOST=1'
       - 'ZITADEL_EXTERNALSECURE=false'
-      - 'ZITADEL_EXTERNALPORT=8085'
+      - 'ZITADEL_EXTERNALPORT=8080'
+      - 'ZITADEL_EXTERNALDOMAIN=zitadel'      
     depends_on:
       zitadel-db:
         condition: 'service_healthy'
@@ -182,6 +183,7 @@ services:
       CLIENT_SECRET: "GRCfRsteLvSqolF122loogYU2oa7LhufWTdS6WCmiOcmSH48rqTmZOKAtLB0A4YT"
       ZITADEL_PROJECT_ID: "269829807099871242"
       ZITADEL_URI: "http://localhost:8085"
+      ZITADEL_INTERNAL_URI: "http://zitadel:8080"
       APP_HOST_URI: "http://localhost:8080"
       ZITADEL_COOKIE_SECRET: "!@OUVOF$@E@%F^&@$*ER!F"
       SERVICE_CLIENT_ID: "charts"
