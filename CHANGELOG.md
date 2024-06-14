@@ -14,7 +14,6 @@
 - **Datasets**: Show confirmation dialog in case of changing field visibility. [datalens-tech/datalens-ui#1109](https://github.com/datalens-tech/datalens-ui/pull/1109)
 - **Charts**: Fixed a bug with sorting by rows in pivot tables. [datalens-tech/datalens-ui#1111](https://github.com/datalens-tech/datalens-ui/pull/1111)
 - **Charts**, **Dashboards**: Fix cancellation of request in charts and selectors. [datalens-tech/datalens-ui#1106](https://github.com/datalens-tech/datalens-ui/pull/1106)
-- **Charts**, **Dashboards**: Fix cancellation of request in charts and selectors. [datalens-tech/datalens-ui#1106](https://github.com/datalens-tech/datalens-ui/pull/1106)
 - **Dashboards**: Fix overlaying chart layout on dash. [datalens-tech/datalens-ui#1118](https://github.com/datalens-tech/datalens-ui/pull/1118)
 - **Charts**: Fix pagination error for table without columns or measures. [datalens-tech/datalens-ui#1116](https://github.com/datalens-tech/datalens-ui/pull/1116)
 - **Charts**: Fix date filtration for wizard charts. [datalens-tech/datalens-ui#1115](https://github.com/datalens-tech/datalens-ui/pull/1115)
