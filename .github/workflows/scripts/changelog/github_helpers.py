@@ -136,7 +136,8 @@ def get_pull_requests_by_commit(repo_full_name: str, commit: CommitInfo, auth_he
             labels=[label["name"] for label in pr_raw.get("labels", [])],
         )for pr_raw in prs_info_raw.json()['items']
     ]
-    LOGGER.warning(f"Got >1 ({len(prs_info)}) PRs for search str {search_str}")
+    if len(prs_info) > 1:
+        LOGGER.warning(f"Got >1 ({len(prs_info)}) PRs for search str {search_str}")
     return prs_info
 
 
