@@ -112,8 +112,9 @@ def get_commits_between_tags(tag_from: str, tag_to: str, repo_path: Path) -> lis
 
     return commits
 
+
 def get_pull_requests_by_commit(repo_full_name: str, commit: CommitInfo, auth_headers: dict, include_label: Optional[str] = None) -> list[PullRequestInfo]:
-    search_str = f"repo:{repo_full_name}+type:pr+is:merged+{commit.sha}"
+    search_str = f"repo:{repo_full_name}+type:pr+is:merged+{commit.sha[:7]}"
     if include_label is not None:
         search_str += f"+label:{include_label}"
     params_str = urllib.parse.urlencode(dict(q=search_str), safe=':+')
@@ -135,6 +136,7 @@ def get_pull_requests_by_commit(repo_full_name: str, commit: CommitInfo, auth_he
             labels=[label["name"] for label in pr_raw.get("labels", [])],
         )for pr_raw in prs_info_raw.json()['items']
     ]
+    LOGGER.warning(f"Got >1 ({len(prs_info)}) PRs for search str {search_str}")
     return prs_info
 
 
