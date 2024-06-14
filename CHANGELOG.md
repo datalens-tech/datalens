@@ -1,3 +1,27 @@
+## v1.3.0 (2024-06-14)
+
+### Image versions
+- datalens-control-api: 0.2091.0
+- datalens-data-api: 0.2091.0
+- datalens-ui: 0.1712.0 -> 0.1741.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.1712.0...v0.1741.0))
+- datalens-us: 0.205.0 -> 0.209.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.205.0...v0.209.0))
+
+### Bug fixes
+- **General components**: Fix yfm image background on light theme. [datalens-tech/datalens-ui#1089](https://github.com/datalens-tech/datalens-ui/pull/1089)
+- **Navigation**: Add ability to hide breadcrumbs button when items are selected. [datalens-tech/datalens-ui#1088](https://github.com/datalens-tech/datalens-ui/pull/1088)
+- **Dashboards**: Fix empty charts layout that is outside of widget boundaries. [datalens-tech/datalens-ui#1101](https://github.com/datalens-tech/datalens-ui/pull/1101)
+- **Charts**: Fixed saving the hint in the wizard chart. [datalens-tech/datalens-ui#1102](https://github.com/datalens-tech/datalens-ui/pull/1102)
+- **Datasets**: Show confirmation dialog in case of changing field visibility. [datalens-tech/datalens-ui#1109](https://github.com/datalens-tech/datalens-ui/pull/1109)
+- **Charts**: Fixed a bug with sorting by rows in pivot tables. [datalens-tech/datalens-ui#1111](https://github.com/datalens-tech/datalens-ui/pull/1111)
+- **Charts**, **Dashboards**: Fix cancellation of request in charts and selectors. [datalens-tech/datalens-ui#1106](https://github.com/datalens-tech/datalens-ui/pull/1106)
+- **Dashboards**: Fix overlaying chart layout on dash. [datalens-tech/datalens-ui#1118](https://github.com/datalens-tech/datalens-ui/pull/1118)
+- **Charts**: Fix pagination error for table without columns or measures. [datalens-tech/datalens-ui#1116](https://github.com/datalens-tech/datalens-ui/pull/1116)
+- **Charts**: Fix date filtration for wizard charts. [datalens-tech/datalens-ui#1115](https://github.com/datalens-tech/datalens-ui/pull/1115)
+
+### Chores
+- **Dashboards**: Change empty dash text. [datalens-tech/datalens-ui#1079](https://github.com/datalens-tech/datalens-ui/pull/1079)
+
+
 ## v1.2.0 (2024-06-07)
 
 ### Image versions
