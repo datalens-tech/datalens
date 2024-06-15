@@ -24,7 +24,9 @@ services:
       CONFIG_PATH: "/etc/backend-configs/api.yaml"
 
       SERVICE_CLIENT_ID: "bi"
-      SERVICE_CLIENT_SECRET: "4rKnCliKAmqfQUK0H1JVk6mvWhtGSXZfTdNrcUvAzlILNneA7n4PjddWRLYvTHVK"
+      SERVICE_CLIENT_SECRET: "${BI_SERVICE_CLIENT_SECRET}"
+      DL_CLIENT_ID: "${DL_CLIENT_ID}"
+      DL_CLIENT_SECRET: "${DL_CLIENT_SECRET}"
     ports:
       - 8081:8080
   
@@ -51,7 +53,9 @@ services:
       CONFIG_PATH: "/etc/backend-configs/api.yaml"
 
       SERVICE_CLIENT_ID: "bi"
-      SERVICE_CLIENT_SECRET: "4rKnCliKAmqfQUK0H1JVk6mvWhtGSXZfTdNrcUvAzlILNneA7n4PjddWRLYvTHVK"
+      SERVICE_CLIENT_SECRET: "${BI_SERVICE_CLIENT_SECRET}"
+      DL_CLIENT_ID: "${DL_CLIENT_ID}"
+      DL_CLIENT_SECRET: "${DL_CLIENT_SECRET}"
     ports:
       - 8082:8080
   
@@ -103,10 +107,10 @@ services:
 
       ZITADEL: "false"
       ZITADEL_URI: "http://zitadel:8080"
-      CLIENT_ID: "269829931184226314@datalens"
-      CLIENT_SECRET: "GRCfRsteLvSqolF122loogYU2oa7LhufWTdS6WCmiOcmSH48rqTmZOKAtLB0A4YT"
+      CLIENT_ID: "${DL_CLIENT_ID}"
+      CLIENT_SECRET: "${DL_CLIENT_SECRET}"
       SERVICE_CLIENT_ID: "us"
-      SERVICE_CLIENT_SECRET: "bB6PrbvqgOjnBh5aoTQNZPFE7dysSnSAfZ2Li7vpJwp0AzamSxZNkA0guvkWrtz1"
+      SERVICE_CLIENT_SECRET: "${US_SERVICE_CLIENT_SECRET}"
     ports:
       - "8083:8083"
 
@@ -123,20 +127,21 @@ services:
       POSTGRES_DB: zitadel
       POSTGRES_USER: zit
       POSTGRES_PASSWORD: zit
-    volumes:  
-      - ./zitadel-db/init:/docker-entrypoint-initdb.d
     healthcheck:      
       test: ["CMD-SHELL", "pg_isready", "-d", "zitadel", "-U", "zit"]
       interval: '10s'
       timeout: '30s'
       retries: 5
       start_period: '20s'
+    ports:
+      - "8087:5432"
       
   zitadel:
     restart: 'always'
     image: 'ghcr.io/zitadel/zitadel:v2.54.1'
-    command: 'start-from-init --masterkey "MasterkeyNeedsToHave32Characters" --tlsMode disabled'
+    command: 'start-from-init --masterkeyFromEnv --tlsMode disabled'
     environment:
+      - 'ZITADEL_MASTERKEY=${ZITADEL_MASTERKEY:?missed ZITADEL_MASTERKEY env}'
       - 'ZITADEL_DATABASE_POSTGRES_HOST=zitadel-db'
       - 'ZITADEL_DATABASE_POSTGRES_PORT=5432'
       - 'ZITADEL_DATABASE_POSTGRES_DATABASE=zitadel'
@@ -148,13 +153,22 @@ services:
       - 'ZITADEL_DATABASE_POSTGRES_ADMIN_SSL_MODE=disable'
       - 'ZITADEL_SYSTEMDEFAULTS_SECRETGENERATORS_PASSWORDSALTCOST=1'
       - 'ZITADEL_EXTERNALSECURE=false'
-      - 'ZITADEL_EXTERNALPORT=8080'
-      - 'ZITADEL_EXTERNALDOMAIN=zitadel'      
+      - 'ZITADEL_EXTERNALPORT=${ZITADEL_EXTERNALPORT:-8080}'
+      - 'ZITADEL_EXTERNALDOMAIN=${ZITADEL_EXTERNALDOMAIN:-zitadel}'
+      - 'ZITADEL_FIRSTINSTANCE_PATPATH=/machinekey/zitadel-admin-sa.token'
+      - 'ZITADEL_FIRSTINSTANCE_ORG_MACHINE_MACHINE_USERNAME=zitadel-admin-sa'
+      - 'ZITADEL_FIRSTINSTANCE_ORG_MACHINE_MACHINE_NAME=Admin'
+      - 'ZITADEL_FIRSTINSTANCE_ORG_MACHINE_MACHINEKEY_TYPE=1'
+      - 'ZITADEL_FIRSTINSTANCE_ORG_MACHINE_PAT_EXPIRATIONDATE=9999-01-01T00:00:00Z'
+      - 'ZITADEL_DEFAULTINSTANCE_OIDCSETTINGS_ACCESSTOKENLIFETIME=0.25h'
+      - 'ZITADEL_DEFAULTINSTANCE_OIDCSETTINGS_REFRESHTOKENEXPIRATION=336h'      
     depends_on:
       zitadel-db:
         condition: 'service_healthy'
     ports:
       - '8085:8080'
+    volumes:
+      - ./zitadel/machinekey:/machinekey:rw
 
 
   datalens:
@@ -179,12 +193,12 @@ services:
       HC: ${HC:-0}
 
       ZITADEL: "false"
-      CLIENT_ID: "269829931184226314@datalens"
-      CLIENT_SECRET: "GRCfRsteLvSqolF122loogYU2oa7LhufWTdS6WCmiOcmSH48rqTmZOKAtLB0A4YT"
-      ZITADEL_PROJECT_ID: "269829807099871242"
+      CLIENT_ID: "${DL_CLIENT_ID}"
+      CLIENT_SECRET: "${DL_CLIENT_SECRET}"
+      ZITADEL_PROJECT_ID: "${ZITADEL_PROJECT_ID}"
       ZITADEL_URI: "http://localhost:8085"
       ZITADEL_INTERNAL_URI: "http://zitadel:8080"
       APP_HOST_URI: "http://localhost:8080"
-      ZITADEL_COOKIE_SECRET: "!@OUVOF$@E@%F^&@$*ER!F"
+      ZITADEL_COOKIE_SECRET: ${ZITADEL_COOKIE_SECRET:?missed ZITADEL_COOKIE_SECRET env}"
       SERVICE_CLIENT_ID: "charts"
-      SERVICE_CLIENT_SECRET: "uvdZDsiZJslDj8bKbTlKR43oMHqEiNGppxhMjCQWqQXkHUmGpW2iuLYNJ5tdmmlL"
+      SERVICE_CLIENT_SECRET: "${CHARTS_SERVICE_CLIENT_SECRET}"
