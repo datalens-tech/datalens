@@ -1,0 +1,142 @@
+name: Create release
+
+on:
+  workflow_dispatch:
+    inputs:
+      dl_back_version:
+        type: string
+        description: "datalens-backend version"
+      dl_ui_version:
+        type: string
+        description: "datalens-ui version"
+      dl_us_version:
+        type: string
+        description: "datalens-us version"
+      release_type:
+        type: choice
+        description: "Release type"
+        options:
+          - "major"
+          - "minor"
+          - "patch"
+        default: "minor"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  run:
+    name: "Create release"
+    runs-on: ubuntu-latest
+    outputs:
+      branch: ${{ steps.create_branch.outputs.branch }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: "${{ github.event.inputs.branch }}"
+          fetch-depth: 0
+
+      - name: Setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install python dependencies
+        working-directory: .github/workflows/scripts/changelog
+        run: pip install -r requirements.txt
+
+      - name: Render versions input
+        id: render_versions_input
+        run: |
+          dl_back_version=${{ github.event.inputs.dl_back_version }}
+          dl_ui_version=${{ github.event.inputs.dl_ui_version }}
+          dl_us_version=${{ github.event.inputs.dl_us_version }}
+
+          result=""
+
+          if [[ -n "${dl_back_version}" ]]; then
+            result="datalens-backend:${dl_back_version}"
+          fi
+
+          if [[ -n "${dl_ui_version}" ]]; then
+            result="$result datalens-ui:${dl_ui_version}"
+          fi
+
+          if [[ -n "${dl_us_version}" ]]; then
+            result="$result datalens-us:${dl_us_version}"
+          fi
+
+          echo "versions_input=${result}" | tee -a $GITHUB_OUTPUT
+
+      - name: Setup user
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+
+      - name: Clone repos
+        working-directory: .github/workflows/scripts/changelog
+        run: |
+          CONFIG_FILE="./changelog_config.json" bash clone_repos.sh
+
+      - name: Run changelog gatherer
+        id: gather_changelog
+        working-directory: .github/workflows/scripts/changelog
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python releaser.py \
+            --config-path="./changelog_config.json" \
+            --repos-dir="./repos" \
+            --release-type="${{ github.event.inputs.release_type }}" \
+            --changelog-path="../../../../CHANGELOG.md" \
+            --version-config-path "../../../../versions-config.json" \
+            --root-repo-name=${{ github.repository_owner }}/${{ github.event.repository.name }} \
+            --new-repo-versions "${{ steps.render_versions_input.outputs.versions_input }}" \
+            --make-outputs \
+            --create-release
+          cat outputs.txt | tee -a "$GITHUB_OUTPUT"
+
+      - name: Create branch
+        id: create_branch
+        run: |
+          branch="release/${{ steps.gather_changelog.outputs.release_version }}"
+          git checkout -B $branch origin/main
+          git push --set-upstream origin $branch
+
+          echo "branch=${branch}" >> $GITHUB_OUTPUT
+
+      - name: Commit and push branch
+        run: |
+          git add CHANGELOG.md versions-config.json
+          git commit --message "DataLens release v${{ steps.gather_changelog.outputs.release_version }}"
+          git push origin ${{ steps.create_branch.outputs.branch }} 
+
+      - name: Create PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          pr_body="
+            This PR is created by a GitHub action.
+            
+            Navigate to the [release page](${{ steps.gather_changelog.outputs.release_url }}) to validate the release description.
+            
+            If the description needs changing, do not edit the description manually, instead edit the \`CHANGELOG.md\` file in this PR and the release will be updated automatically.
+            
+            When you are ready to confirm this release, merge this PR and publish the release (in that order, to keep release tags consistent)."
+          
+          pr_link=$(gh pr create \
+            --title "Release DataLens v${{ steps.gather_changelog.outputs.release_version }}" \
+            --body "$pr_body" \
+            --base main \
+            --head ${{ steps.create_branch.outputs.branch }} \
+            --draft)
+          
+          echo "::notice title=Created PR::$pr_link"
+
+  call_update_compose:
+    needs: [run]
+    uses: datalens-tech/datalens/.github/workflows/update-compose.yml@main
+    with:
+      pr_head: ${{ needs.run.outputs.branch }}

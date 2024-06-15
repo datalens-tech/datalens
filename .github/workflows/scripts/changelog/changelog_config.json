@@ -1,0 +1,133 @@
+{
+  "repositories": [
+    {
+      "name": "datalens-ui",
+      "url": "https://github.com/datalens-tech/datalens-ui",
+      "images": [
+        {
+          "name": "datalens-ui",
+          "version_descriptor": "uiVersion"
+        }
+      ]
+    },
+    {
+      "name": "datalens-backend",
+      "url": "https://github.com/datalens-tech/datalens-backend",
+      "images": [
+        {
+          "name": "datalens-control-api",
+          "version_descriptor": "controlApiVersion"
+        },
+        {
+          "name": "datalens-data-api",
+          "version_descriptor": "dataApiVersion"
+        }
+      ]
+    },
+    {
+      "name": "datalens-us",
+      "url": "https://github.com/datalens-tech/datalens-us",
+      "images": [
+        {
+          "name": "datalens-us",
+          "version_descriptor": "usVersion"
+        }
+      ]
+    }
+  ],
+  "changelog_include_label": "changelog",
+  "images_versions_section": "Image versions",
+  "other_changes_section": "Other",
+  "single_section_title": "Changes",
+  "no_changes_message": "Minor improvements",
+  "section_tags": {
+    "prefix": "type/",
+    "tags": [
+      {
+        "id": "breaking-change",
+        "text": "Breaking changes"
+      },
+      {
+        "id": "new-feature",
+        "text": "New features"
+      },
+      {
+        "id": "bug-fix",
+        "text":"Bug fixes"
+      },
+      {
+        "id": "sec",
+        "text": "Security"
+      },
+      {
+        "id": "deprecation",
+        "text": "Deprecation"
+      },
+      {
+        "id": "dev",
+        "text": "Development"
+      },
+      {
+        "id": "tests",
+        "text": "Tests"
+      },
+      {
+        "id": "CI",
+        "text": "CI"
+      },
+      {
+        "id": "chore",
+        "text": "Chores"
+      }
+    ]
+  },
+  "component_tags": {
+    "prefix": "component/",
+    "tags": [
+      {
+        "id": "charts",
+        "text":"Charts"
+      },
+      {
+        "id": "connectors",
+        "text": "Connectors"
+      },
+      {
+        "id": "navigation",
+        "text": "Navigation"
+      },
+      {
+        "id": "general",
+        "text": "General components"
+      },
+      {
+        "id": "dashboards",
+        "text": "Dashboards"
+      },
+      {
+        "id": "datasets",
+        "text": "Datasets"
+      },
+      {
+        "id": "auth",
+        "text": "Auth"
+      },
+      {
+        "id": "optimization",
+        "text": "Optimization"
+      },
+      {
+        "id": "role-model",
+        "text": "Role model"
+      },
+      {
+        "id": "docs",
+        "text": "Docs"
+      },
+      {
+        "id": "formula",
+        "text": "Formula"
+      }
+    ]
+  }
+}

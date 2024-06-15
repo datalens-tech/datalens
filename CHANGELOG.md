@@ -1,4 +1,131 @@
-# Changelog
+## v1.3.0 (2024-06-14)
+
+### Image versions
+- datalens-control-api: 0.2091.0
+- datalens-data-api: 0.2091.0
+- datalens-ui: 0.1712.0 -> 0.1741.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.1712.0...v0.1741.0))
+- datalens-us: 0.205.0 -> 0.209.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.205.0...v0.209.0))
+
+### Bug fixes
+- **General components**: Fix yfm image background on light theme. [datalens-tech/datalens-ui#1089](https://github.com/datalens-tech/datalens-ui/pull/1089)
+- **Navigation**: Add ability to hide breadcrumbs button when items are selected. [datalens-tech/datalens-ui#1088](https://github.com/datalens-tech/datalens-ui/pull/1088)
+- **Dashboards**: Fix empty charts layout that is outside of widget boundaries. [datalens-tech/datalens-ui#1101](https://github.com/datalens-tech/datalens-ui/pull/1101)
+- **Charts**: Fixed saving the hint in the wizard chart. [datalens-tech/datalens-ui#1102](https://github.com/datalens-tech/datalens-ui/pull/1102)
+- **Datasets**: Show confirmation dialog in case of changing field visibility. [datalens-tech/datalens-ui#1109](https://github.com/datalens-tech/datalens-ui/pull/1109)
+- **Charts**: Fixed a bug with sorting by rows in pivot tables. [datalens-tech/datalens-ui#1111](https://github.com/datalens-tech/datalens-ui/pull/1111)
+- **Charts**, **Dashboards**: Fix cancellation of request in charts and selectors. [datalens-tech/datalens-ui#1106](https://github.com/datalens-tech/datalens-ui/pull/1106)
+- **Dashboards**: Fix overlaying chart layout on dash. [datalens-tech/datalens-ui#1118](https://github.com/datalens-tech/datalens-ui/pull/1118)
+- **Charts**: Fix pagination error for table without columns or measures. [datalens-tech/datalens-ui#1116](https://github.com/datalens-tech/datalens-ui/pull/1116)
+- **Charts**: Fix date filtration for wizard charts. [datalens-tech/datalens-ui#1115](https://github.com/datalens-tech/datalens-ui/pull/1115)
+
+### Chores
+- **Dashboards**: Change empty dash text. [datalens-tech/datalens-ui#1079](https://github.com/datalens-tech/datalens-ui/pull/1079)
+
+
+## v1.2.0 (2024-06-07)
+
+### Image versions
+- datalens-control-api: 0.2091.0
+- datalens-data-api: 0.2091.0
+- datalens-ui: 0.1685.0 -> 0.1712.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.1685.0...v0.1712.0))
+- datalens-us: 0.204.0 -> 0.205.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.204.0...v0.205.0))
+
+### New features
+- **Dashboards**: Enable Dash DND ActionPanel for opensource production. [datalens-tech/datalens-ui#1063](https://github.com/datalens-tech/datalens-ui/pull/1063)
+- **Dashboards**: Hide hint field in selector dialog when hint is not enabled. [datalens-tech/datalens-ui#1061](https://github.com/datalens-tech/datalens-ui/pull/1061)
+
+### Bug fixes
+- **General components**: Fix image bg in yfm. [datalens-tech/datalens-ui#1050](https://github.com/datalens-tech/datalens-ui/pull/1050)
+- **Charts**: Custom palette for linear indicator. [datalens-tech/datalens-ui#1052](https://github.com/datalens-tech/datalens-ui/pull/1052)
+- **Dashboards**: Increase the virtualization limit for dash tabs. [datalens-tech/datalens-ui#1058](https://github.com/datalens-tech/datalens-ui/pull/1058)
+- **Dashboards**: Fix sub dialog width for defaults values. [datalens-tech/datalens-ui#1060](https://github.com/datalens-tech/datalens-ui/pull/1060)
+- **Charts**: Fix ignore nulls behaviour. [datalens-tech/datalens-ui#1065](https://github.com/datalens-tech/datalens-ui/pull/1065)
+- **Charts**: Add secondary layers list to ignore. [datalens-tech/datalens-ui#1066](https://github.com/datalens-tech/datalens-ui/pull/1066)
+- **Charts**: Fix default behaviour for area. [datalens-tech/datalens-ui#1071](https://github.com/datalens-tech/datalens-ui/pull/1071)
+- **Dashboards**: Fix chart-chart filtering when number parameter is passed. [datalens-tech/datalens-ui#1073](https://github.com/datalens-tech/datalens-ui/pull/1073)
+- **Dashboards**: Fix mobile selectors hint. [datalens-tech/datalens-ui#1078](https://github.com/datalens-tech/datalens-ui/pull/1078)
+- **Navigation**: Fix dashboard copy\duplicate action. [datalens-tech/datalens-ui#1080](https://github.com/datalens-tech/datalens-ui/pull/1080)
+
+### Security
+- **General components**: Add express trust proxy number param. [datalens-tech/datalens-ui#1082](https://github.com/datalens-tech/datalens-ui/pull/1082)
+
+
+## v1.1.0 (2024-06-05)
+
+### Image versions
+- datalens-control-api: 0.2091.0
+- datalens-data-api: 0.2091.0
+- datalens-ui: 0.1675.0 -> 0.1685.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.1675.0...v0.1685.0))
+- datalens-us: 0.204.0
+
+### New features
+- **Dashboards**. Remove flag ShowDashWidgetBg (enable feature without flag). [datalens-tech/datalens-ui#1044](https://github.com/datalens-tech/datalens-ui/pull/1044)
+
+### Bug fixes
+- **Dashboards**. Add min height equals to 2 rows for autoheight widgets. [datalens-tech/datalens-ui#1042](https://github.com/datalens-tech/datalens-ui/pull/1042)
+- **Dashboards**. Fix link of dataset in 'Open' dataset button in selector modal. [datalens-tech/datalens-ui#1043](https://github.com/datalens-tech/datalens-ui/pull/1043)
+- **Dashboards**. Fix values of presets in Control dialog. [datalens-tech/datalens-ui#1045](https://github.com/datalens-tech/datalens-ui/pull/1045)
+- **Dashboards**. Fix paste error while paste chart in not saved folder dash. [datalens-tech/datalens-ui#1048](https://github.com/datalens-tech/datalens-ui/pull/1048)
+
+
+## v1.0.0 (2024-05-31)
+
+### Changes
+- Introducing the new versioning system
+
+
+## 2024-05-30
+
+- datalens-control-api: 0.2080.0 -> 0.2091.0
+- datalens-data-api: 0.2080.0 -> 0.2091.0
+
+### Changes
+
+- Add IMAGE markup formula ([backend:#422](https://github.com/datalens-tech/datalens-backend/pull/422))
+- Add load_preview_by_default field to datasets ([backend:#433](https://github.com/datalens-tech/datalens-backend/pull/433))
+- Add rate limiting config ([backend:#441](https://github.com/datalens-tech/datalens-backend/pull/441))
+- Add trace_id to logging contexts ([backend:#442](https://github.com/datalens-tech/datalens-backend/pull/442))
+
+## 2024-05-28
+
+- datalens-us: 0.202.0 -> 0.204.0
+- datalens-ui: 0.1641.0 -> 0.1675.0
+
+### Changes
+
+- Fix widget params with invalid values ([ui:#1008](https://github.com/datalens-tech/datalens-ui/pull/1008))
+- Fix table rows selection on Windows & Linux (for cross chart filtration) ([ui:#1009](https://github.com/datalens-tech/datalens-ui/pull/1009))
+- Support widget selection in dash relations ([ui:#997](https://github.com/datalens-tech/datalens-ui/pull/997))
+- Disable paste for entries linked to another workbook\directory ([ui:#824](https://github.com/datalens-tech/datalens-ui/pull/824))
+- Display dash info by url param (`_opened_info=1`) ([ui:#1012](https://github.com/datalens-tech/datalens-ui/pull/1012))
+- Support adding dataset in control dialog by link ([ui:#1017](https://github.com/datalens-tech/datalens-ui/pull/1017))
+- Remove custom sort from manageTooltipConfig ([ui:#1023](https://github.com/datalens-tech/datalens-ui/pull/1023))
+- Add hint for selectors and table header ([ui:#1030](https://github.com/datalens-tech/datalens-ui/pull/1030))
+- Move RelativeDatesPicker to new DatePicker component ([ui:#1024](https://github.com/datalens-tech/datalens-ui/pull/1024))
+- Normalize yfm styles between chart and dash ([ui:#1036](https://github.com/datalens-tech/datalens-ui/pull/1036))
+
+## 2024-05-20
+
+- datalens-us: 0.192.0 -> 0.202.0
+- datalens-ui: 0.1586.0 -> 0.1641.0
+
+### Changes
+
+- Fix markdown term plugin ([ui:#950](https://github.com/datalens-tech/datalens-ui/pull/950))
+- Change position of action panel on dash ([ui:#949](https://github.com/datalens-tech/datalens-ui/pull/949))
+- Fix `p` template margin styles for markdown ([ui:#954](https://github.com/datalens-tech/datalens-ui/pull/954))
+- Fix png images background styles in yfm ([ui:#958](https://github.com/datalens-tech/datalens-ui/pull/958))
+- Fix datepicker focus behavior on clear ([ui:#961](https://github.com/datalens-tech/datalens-ui/pull/961))
+- Added reload event and render notification for charts in embedded mode ([ui:#964](https://github.com/datalens-tech/datalens-ui/pull/964))
+- Fix dataset source table styles ([ui:#969](https://github.com/datalens-tech/datalens-ui/pull/969))
+- Fix markup item check ([ui:#971](https://github.com/datalens-tech/datalens-ui/pull/971))
+- Fix tree-colors palette coloring ([ui:#986](https://github.com/datalens-tech/datalens-ui/pull/986))
+- Fix duplicating filters on diff apply for wizard Undo ([ui:#983](https://github.com/datalens-tech/datalens-ui/pull/983))
+- Fix tag param with big value in params settings section in widgets ([ui:#993](https://github.com/datalens-tech/datalens-ui/pull/993))
+- Fix retry handler in case of connection data fetching failure ([ui:#996](https://github.com/datalens-tech/datalens-ui/pull/996))
+- Hierarchy chart warning ([ui:#850](https://github.com/datalens-tech/datalens-ui/pull/850))
+- Fix dataset select position (wizard) ([ui:#1000](https://github.com/datalens-tech/datalens-ui/pull/1000))
+- Fix title bg in edit mode on contrast theme ([ui:#1001](https://github.com/datalens-tech/datalens-ui/pull/1001))
 
 ## 2024-05-02
 
