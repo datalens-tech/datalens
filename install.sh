@@ -21,7 +21,7 @@ createZitadelCookieSecret() {
 startZitadel() {
   echo "Docker compose Zitadel start"
 
-  ZITADEL_EXTERNALPORT=8085 ZITADEL_EXTERNALDOMAIN=localhost docker compose -f docker-compose-dev.yml up zitadel -d 
+  ZITADEL_EXTERNALPORT=8085 ZITADEL_EXTERNALDOMAIN=localhost docker compose -f docker-compose.zitadel.yml up zitadel -d 
   
   echo "Docker compose Zitadel finish"
 }
@@ -302,8 +302,6 @@ installZitadel() {
   fi
 
   rm -rf $MACHINEKEY_TOKEN_DIR
-
-  HC=1 docker compose -f docker-compose-dev.yml up -d
 }
 
 installZitadel
