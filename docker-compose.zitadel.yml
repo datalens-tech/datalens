@@ -135,7 +135,9 @@ services:
       start_period: '20s'
     ports:
       - "8087:5432"
-      
+    volumes:
+      - ./zitadel-db:/var/lib/postgresql/data
+
   zitadel:
     restart: 'always'
     image: 'ghcr.io/zitadel/zitadel:v2.54.1'
