@@ -234,13 +234,13 @@ installZitadel() {
   MACHINEKEY_TOKEN_DIR=./zitadel/machinekey
   MACHINEKEY_TOKEN_PATH=$MACHINEKEY_TOKEN_DIR/zitadel-admin-sa.token
 
-  rm -rf $MACHINEKEY_TOKEN_DIR
+  rm -rf "$MACHINEKEY_TOKEN_DIR"
   rm -f .env
 
   echo "Creating machinekey folder"
 
-  mkdir -p $MACHINEKEY_TOKEN_DIR
-  chmod 777 $MACHINEKEY_TOKEN_DIR
+  mkdir -p "$MACHINEKEY_TOKEN_DIR"
+  chmod 777 "$MACHINEKEY_TOKEN_DIR"
 
   createZitadelMasterKey
   
@@ -263,7 +263,7 @@ installZitadel() {
   printf "Waiting for Zitadel to become ready "
   wait_api "$INSTANCE_URL" "$PAT"
 
-  echo "Update settings"
+  echo "Updating settings"
   set_custom_login_text "$INSTANCE_URL" "$PAT"
 
   echo "Creating DataLens project"
@@ -301,7 +301,9 @@ installZitadel() {
       echo "Please remove it manually"
   fi
 
-  rm -rf $MACHINEKEY_TOKEN_DIR
+  rm -rf "$MACHINEKEY_TOKEN_DIR"
+
+  echo "Zitadel has been successfully installed. Please run 'docker compose -f docker-compose.zitadel.yml up -d' to proceed"
 }
 
 installZitadel
