@@ -82,6 +82,13 @@ Use the following commands to install Zitadel and start DataLens containers:
 HC=1 docker compose -f docker-compose.zitadel.yml up
 ```
 
+This is the default user login:
+
+username: zitadel-admin@zitadel.localhost
+password: Password1!
+
+The same user you may use to setup users in Zitadel at http://localhost:8085/
+
 ## FAQ
 
 #### Where does DataLens store it's metadata?
