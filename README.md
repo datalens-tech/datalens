@@ -71,6 +71,17 @@ Below is a list of cloud providers offering DataLens as a service:
 1. [Yandex Cloud](https://datalens.yandex.com) platform
 2. [DoubleCloud](https://double.cloud/services/doublecloud-visualization/) platform
 
+## Authentication
+We added authentication to DataLens by using Zitadel Identity and Access Management solution. It provides a simple and secure way for users to authenticate and access protected resources within Datalens.
+
+Use the following commands to install Zitadel and start DataLens containers:
+
+```bash
+./install.sh
+
+HC=1 docker compose -f docker-compose.zitadel.yml up
+```
+
 ## FAQ
 
 #### Where does DataLens store it's metadata?
