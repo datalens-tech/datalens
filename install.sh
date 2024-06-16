@@ -1,5 +1,16 @@
 #!/bin/bash
 
+set -a
+[ -f .env ] && source .env
+set +a
+
+check_installed() {
+  if [[ -n "$ZITADEL_MASTERKEY" ]]; then
+    echo "Zitadel was installed previously. In order to reinstall it, please remove Zitadel docker container and .env file manually"
+    exit 1;
+  fi
+}
+
 check_jq() {
   if ! command -v jq &> /dev/null
   then
@@ -173,8 +184,7 @@ create_service_user() {
   echo "$PARSED_RESPONSE"
 }
 
-create_service_user_secret() 
-{
+create_service_user_secret() {
   INSTANCE_URL=$1
   PAT=$2
   USER_ID=$3
@@ -224,6 +234,8 @@ delete_admin_service_user() {
 }
 
 installZitadel() {
+  check_installed
+
   check_jq
 
   INSTANCE_URL="http://localhost:8085"
