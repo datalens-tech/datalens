@@ -71,23 +71,30 @@ Below is a list of cloud providers offering DataLens as a service:
 1. [Yandex Cloud](https://datalens.yandex.com) platform
 2. [DoubleCloud](https://double.cloud/services/doublecloud-visualization/) platform
 
-## Authentication
-We added authentication to DataLens by using Zitadel Identity and Access Management solution. It provides a simple and secure way for users to authenticate and access protected resources within Datalens.
+## Authentication (beta)
+DataLens supports authentication via [Zitadel](https://zitadel.com/) identity platform.
 
-Use the following commands to install Zitadel and start DataLens containers:
+Use the following command to initialize Zitadel **(you need to do this only once)**:
 
 ```bash
-./install.sh
+bash init.sh
+```
 
+Notice the updated `.env` file after initialization: it contains Zitadel access keys. Keep that file safe and do not share it's contents.
+
+After initialization you can start DataLens containers using special version of docker compose file:
+
+```bash
 HC=1 docker compose -f docker-compose.zitadel.yml up
 ```
 
-This is the default user login:
+After that you can login to DataLens on htpp://localhost:8080 using the default user credentials:
 
-username: zitadel-admin@zitadel.localhost
-password: Password1!
+| Username | Password |
+|---|---|
+| `zitadel-admin@zitadel.localhost` | `Password1!` |
 
-The same user you may use to setup users in Zitadel at http://localhost:8085/
+You can use the same credentials to configure Zitadel and add new users using Zitadel control panel at http://localhost:8085/. **Don't forget to login there at least once to change the default password.**
 
 ## FAQ
 
