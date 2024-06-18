@@ -29,6 +29,11 @@ createZitadelCookieSecret() {
   echo "ZITADEL_COOKIE_SECRET=$ZITADEL_COOKIE_SECRET" >> .env
 }
 
+createUsMasterToken() {
+  US_MASTER_TOKEN="$(openssl rand -base64 32 | head -c 32)"
+  echo "US_MASTER_TOKEN=$US_MASTER_TOKEN" >> .env
+}
+
 startZitadel() {
   echo "Docker compose Zitadel start"
 
@@ -257,6 +262,8 @@ installZitadel() {
   createZitadelMasterKey
   
   createZitadelCookieSecret
+
+  createUsMasterToken
 
   startZitadel
 
