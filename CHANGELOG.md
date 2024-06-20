@@ -1,3 +1,24 @@
+## v1.4.0 (2024-06-20)
+
+### Image versions
+- datalens-control-api: 0.2091.0
+- datalens-data-api: 0.2091.0
+- datalens-ui: 0.1741.0 -> 0.1765.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.1741.0...v0.1765.0))
+- datalens-us: 0.209.0
+
+### New features
+- **Charts**: Add title options for indicator chart. [datalens-tech/datalens-ui#1105](https://github.com/datalens-tech/datalens-ui/pull/1105)
+- **Charts**: Add bar-y d3 visualization. [datalens-tech/datalens-ui#1122](https://github.com/datalens-tech/datalens-ui/pull/1122)
+- **Datasets**: Toggle dataset preview by default. [datalens-tech/datalens-ui#1046](https://github.com/datalens-tech/datalens-ui/pull/1046)
+
+### Bug fixes
+- **Charts**: Fix relative date interval for colors setting. [datalens-tech/datalens-ui#1123](https://github.com/datalens-tech/datalens-ui/pull/1123)
+- **Datasets**: Fix error view for PLATFORM_PERMISSION_REQUIRED. [datalens-tech/datalens-ui#1138](https://github.com/datalens-tech/datalens-ui/pull/1138)
+- **Navigation**: Add wrapper to workbook action panel left block. [datalens-tech/datalens-ui#1142](https://github.com/datalens-tech/datalens-ui/pull/1142)
+- **Dashboards**: Fixed the display of the hint depending on the enabled checkbox. [datalens-tech/datalens-ui#1139](https://github.com/datalens-tech/datalens-ui/pull/1139)
+- **Charts**: Fix indicator title for old charts. [datalens-tech/datalens-ui#1151](https://github.com/datalens-tech/datalens-ui/pull/1151)
+
+
 ## v1.3.0 (2024-06-14)
 
 ### Image versions
