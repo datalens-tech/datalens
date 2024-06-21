@@ -20,20 +20,27 @@ services:
       DL_CRY_KEY_VAL_ID_key_1: "h1ZpilcYLYRdWp7Nk8X1M1kBPiUi8rdjz9oBfHyUKIk="
       RQE_SECRET_KEY: ""
       US_HOST: "http://us:8083"
-      US_MASTER_TOKEN: "${US_MASTER_TOKEN}"
       CONFIG_PATH: "/etc/backend-configs/api.yaml"
 
-      SERVICE_CLIENT_ID: "bi"
-      SERVICE_CLIENT_SECRET: "${BI_SERVICE_CLIENT_SECRET}"
-      DL_CLIENT_ID: "${DL_CLIENT_ID}"
-      DL_CLIENT_SECRET: "${DL_CLIENT_SECRET}"
+      ZITADEL_URI: "http://zitadel:8080"
+    entrypoint: "/usr/bin/sh -c '
+      US_MASTER_TOKEN=$(cat /secrets/US_MASTER_TOKEN) \
+      ZITADEL_APP_CLIENT_ID=$(cat /secrets/ZITADEL_APP_CLIENT_ID) \
+      ZITADEL_APP_CLIENT_SECRET=$(cat /secrets/ZITADEL_APP_CLIENT_SECRET) \
+      ZITADEL_BI_SERVICE_USER_CLIENT_ID=$(cat /secrets/ZITADEL_BI_SERVICE_USER_CLIENT_ID) \
+      ZITADEL_BI_SERVICE_USER_CLIENT_SECRET=$(cat /secrets/ZITADEL_BI_SERVICE_USER_CLIENT_SECRET) \
+      /etc/service/dl_api/run
+    '"
     ports:
       - 8081:8080
-  
     depends_on:
-      - us
+      us:
+        condition: 'service_started'
+      zitadel-post:
+        condition: 'service_completed_successfully'
     volumes:
       - ./backend-configs:/etc/backend-configs
+      - ./common_data/secrets:/secrets
 
   data-api:
     container_name: datalens-data-api
@@ -49,21 +56,29 @@ services:
       BI_COMPENG_PG_ON: 1
       BI_COMPENG_PG_URL: "postgresql://postgres:postgres@pg-compeng:5432/postgres"
       US_HOST: "http://us:8083"
-      US_MASTER_TOKEN: "${US_MASTER_TOKEN}"
       CONFIG_PATH: "/etc/backend-configs/api.yaml"
 
-      SERVICE_CLIENT_ID: "bi"
-      SERVICE_CLIENT_SECRET: "${BI_SERVICE_CLIENT_SECRET}"
-      DL_CLIENT_ID: "${DL_CLIENT_ID}"
-      DL_CLIENT_SECRET: "${DL_CLIENT_SECRET}"
+      ZITADEL_URI: "http://zitadel:8080"
+    entrypoint: "/usr/bin/sh -c '
+      US_MASTER_TOKEN=$(cat /secrets/US_MASTER_TOKEN) \
+      ZITADEL_APP_CLIENT_ID=$(cat /secrets/ZITADEL_APP_CLIENT_ID) \
+      ZITADEL_APP_CLIENT_SECRET=$(cat /secrets/ZITADEL_APP_CLIENT_SECRET) \
+      ZITADEL_BI_SERVICE_USER_CLIENT_ID=$(cat /secrets/ZITADEL_BI_SERVICE_USER_CLIENT_ID) \
+      ZITADEL_BI_SERVICE_USER_CLIENT_SECRET=$(cat /secrets/ZITADEL_BI_SERVICE_USER_CLIENT_SECRET) \
+      /etc/service/dl_api/run
+    '"
     ports:
       - 8082:8080
-  
     depends_on:
-      - us
-      - pg-compeng
+      us:
+        condition: 'service_started'
+      pg-compeng:
+        condition: 'service_started'
+      zitadel-post:
+        condition: 'service_completed_successfully'
     volumes:
       - ./backend-configs:/etc/backend-configs
+      - ./common_data/secrets:/secrets
 
   pg-demo-connection:
     container_name: datalens-pg-demo-connection
@@ -85,20 +100,20 @@ services:
       POSTGRES_PASSWORD: us
     volumes:
       - ./metadata:/var/lib/postgresql/data
- 
     ports:
       - "8086:5432"
-
 
   us:
     container_name: datalens-us
     image: ghcr.io/datalens-tech/datalens-us:0.209.0
     depends_on:
-      - pg-us
+      pg-us:
+        condition: 'service_started'
+      pre:
+        condition: 'service_completed_successfully'
     environment:
       APP_INSTALLATION: "opensource"
       APP_ENV: "prod"
-      MASTER_TOKEN: "${US_MASTER_TOKEN}"
       POSTGRES_DSN_LIST: ${METADATA_POSTGRES_DSN_LIST:-postgres://us:us@pg-us:5432/us-db-ci_purgeable}
       SKIP_INSTALL_DB_EXTENSIONS: ${METADATA_SKIP_INSTALL_DB_EXTENSIONS:-0}
       USE_DEMO_DATA: ${USE_DEMO_DATA:-1}
@@ -107,18 +122,21 @@ services:
 
       ZITADEL: "true"
       ZITADEL_URI: "http://zitadel:8080"
-      CLIENT_ID: "${DL_CLIENT_ID}"
-      CLIENT_SECRET: "${DL_CLIENT_SECRET}"
-      SERVICE_CLIENT_ID: "us"
-      SERVICE_CLIENT_SECRET: "${US_SERVICE_CLIENT_SECRET}"
     ports:
       - "8083:8083"
-
+    entrypoint: "/usr/bin/sh -c '
+      MASTER_TOKEN=$(cat /secrets/US_MASTER_TOKEN) \
+      CLIENT_ID=$(cat /secrets/ZITADEL_APP_CLIENT_ID) \
+      CLIENT_SECRET=$(cat /secrets/ZITADEL_APP_CLIENT_SECRET) \
+      SERVICE_CLIENT_ID=$(cat /secrets/ZITADEL_US_SERVICE_USER_CLIENT_ID) \
+      SERVICE_CLIENT_SECRET=$(cat /secrets/ZITADEL_US_SERVICE_USER_CLIENT_SECRET) \
+      /usr/bin/supervisord -c/etc/supervisor/supervisord.conf
+    '"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
       - ./certs:/certs
-
+      - ./common_data/secrets:/secrets
 
   zitadel-db:
     restart: 'always'
@@ -127,7 +145,7 @@ services:
       POSTGRES_DB: zitadel
       POSTGRES_USER: zit
       POSTGRES_PASSWORD: zit
-    healthcheck:      
+    healthcheck:
       test: ["CMD-SHELL", "pg_isready", "-d", "zitadel", "-U", "zit"]
       interval: '10s'
       timeout: '30s'
@@ -138,12 +156,18 @@ services:
     volumes:
       - ./zitadel-db:/var/lib/postgresql/data
 
+  pre:
+    build:
+      context: jobs
+      dockerfile: pre/Dockerfile
+    volumes:
+      - ./common_data:/data:rw
+
   zitadel:
     restart: 'always'
     image: 'ghcr.io/zitadel/zitadel:v2.54.1'
-    command: 'start-from-init --masterkeyFromEnv --tlsMode disabled'
+    command: 'start-from-init --masterkeyFile /secrets/ZITADEL_MASTER_KEY --tlsMode disabled'
     environment:
-      - 'ZITADEL_MASTERKEY=${ZITADEL_MASTERKEY:?missed ZITADEL_MASTERKEY env}'
       - 'ZITADEL_DATABASE_POSTGRES_HOST=zitadel-db'
       - 'ZITADEL_DATABASE_POSTGRES_PORT=5432'
       - 'ZITADEL_DATABASE_POSTGRES_DATABASE=zitadel'
@@ -155,23 +179,37 @@ services:
       - 'ZITADEL_DATABASE_POSTGRES_ADMIN_SSL_MODE=disable'
       - 'ZITADEL_SYSTEMDEFAULTS_SECRETGENERATORS_PASSWORDSALTCOST=1'
       - 'ZITADEL_EXTERNALSECURE=false'
-      - 'ZITADEL_EXTERNALPORT=${ZITADEL_EXTERNALPORT:-8080}'
-      - 'ZITADEL_EXTERNALDOMAIN=${ZITADEL_EXTERNALDOMAIN:-zitadel}'
+      - 'ZITADEL_EXTERNALPORT=${ZITADEL_EXTERNALPORT:-8085}'
+      - 'ZITADEL_EXTERNALDOMAIN=${ZITADEL_EXTERNALDOMAIN:-localhost}'
       - 'ZITADEL_FIRSTINSTANCE_PATPATH=/machinekey/zitadel-admin-sa.token'
       - 'ZITADEL_FIRSTINSTANCE_ORG_MACHINE_MACHINE_USERNAME=zitadel-admin-sa'
       - 'ZITADEL_FIRSTINSTANCE_ORG_MACHINE_MACHINE_NAME=Admin'
       - 'ZITADEL_FIRSTINSTANCE_ORG_MACHINE_MACHINEKEY_TYPE=1'
       - 'ZITADEL_FIRSTINSTANCE_ORG_MACHINE_PAT_EXPIRATIONDATE=9999-01-01T00:00:00Z'
       - 'ZITADEL_DEFAULTINSTANCE_OIDCSETTINGS_ACCESSTOKENLIFETIME=0.25h'
-      - 'ZITADEL_DEFAULTINSTANCE_OIDCSETTINGS_REFRESHTOKENEXPIRATION=336h'      
+      - 'ZITADEL_DEFAULTINSTANCE_OIDCSETTINGS_REFRESHTOKENEXPIRATION=336h'
     depends_on:
+      pre:
+        condition: 'service_completed_successfully'
       zitadel-db:
         condition: 'service_healthy'
     ports:
       - '8085:8080'
     volumes:
-      - ./zitadel/machinekey:/machinekey:rw
+      - ./common_data/zitadel_machinekey:/machinekey:rw
+      - ./common_data/secrets:/secrets
 
+  zitadel-post:
+    build:
+      context: jobs
+      dockerfile: zitadel-post/Dockerfile
+    network_mode: "host"
+    depends_on:
+      - zitadel
+    environment:
+      ZITADEL_DEV_MODE: "true"
+    volumes:
+      - ./common_data:/data:rw
 
   datalens:
     container_name: datalens-ui
@@ -179,10 +217,16 @@ services:
     ports:
       - ${UI_PORT:-8080}:8080
     depends_on:
-      - us
-      - control-api
-      - data-api
-      - pg-demo-connection
+      zitadel-post:
+        condition: 'service_completed_successfully'
+      us:
+        condition: 'service_started'
+      control-api:
+        condition: 'service_started'
+      data-api:
+        condition: 'service_started'
+      pg-demo-connection:
+        condition: 'service_started'
     environment:
       APP_MODE: "full"
       APP_ENV: "production"
@@ -195,12 +239,17 @@ services:
       HC: ${HC:-0}
 
       ZITADEL: "true"
-      CLIENT_ID: "${DL_CLIENT_ID}"
-      CLIENT_SECRET: "${DL_CLIENT_SECRET}"
-      ZITADEL_PROJECT_ID: "${ZITADEL_PROJECT_ID}"
       ZITADEL_URI: "http://localhost:8085"
       ZITADEL_INTERNAL_URI: "http://zitadel:8080"
       APP_HOST_URI: "http://localhost:8080"
-      ZITADEL_COOKIE_SECRET: ${ZITADEL_COOKIE_SECRET:?missed ZITADEL_COOKIE_SECRET env}"
-      SERVICE_CLIENT_ID: "charts"
-      SERVICE_CLIENT_SECRET: "${CHARTS_SERVICE_CLIENT_SECRET}"
+    entrypoint: "/usr/bin/sh -c '
+      CLIENT_ID=$(cat /secrets/ZITADEL_APP_CLIENT_ID) \
+      CLIENT_SECRET=$(cat /secrets/ZITADEL_APP_CLIENT_SECRET) \
+      ZITADEL_PROJECT_ID=$(cat /secrets/ZITADEL_PROJECT_ID) \
+      ZITADEL_COOKIE_SECRET=$(cat /secrets/ZITADEL_COOKIE_SECRET) \
+      SERVICE_CLIENT_ID=$(cat /secrets/ZITADEL_CHARTS_SERVICE_USER_CLIENT_ID) \
+      SERVICE_CLIENT_SECRET=$(cat /secrets/ZITADEL_CHARTS_SERVICE_USER_CLIENT_SECRET) \
+      /usr/bin/supervisord -c/etc/supervisor/supervisord.conf
+    '"
+    volumes:
+      - ./common_data/secrets:/secrets
