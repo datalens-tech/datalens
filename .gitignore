@@ -5,6 +5,8 @@ venv/
 metadata
 pg-demo-connection/data
 certs
+zitadel
+zitadel-db
 .DS_Store
 .idea
 .env

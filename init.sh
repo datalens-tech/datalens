@@ -166,6 +166,31 @@ create_new_application() {
   handle_zitadel_request_response "$APP_CLIENT_SECRET" "create_new_application_client_secret" "$RESPONSE"
 }
 
+create_user_roles() {
+  INSTANCE_URL=$1
+  PAT=$2
+  PROJECT_ID=$3
+
+  RESPONSE=$(
+    curl -sS -X POST "$INSTANCE_URL/management/v1/projects/$PROJECT_ID/roles/_bulk" \
+      -H "Authorization: Bearer $PAT" \
+      -H 'Content-Type: application/json' \
+      -H 'Accept: application/json' \
+      --data-raw '{
+        "roles": [
+            {
+              "key": "creator",
+              "display_name": "creator"
+            },
+            {
+              "key": "admin",
+              "display_name": "admin"
+            }
+          ]
+      }'
+  )
+} 
+
 create_service_user() {
   INSTANCE_URL=$1
   PAT=$2
@@ -295,6 +320,9 @@ installZitadel() {
 
   echo "DL_CLIENT_SECRET=$APP_CLIENT_SECRET" >> .env
   echo "DL_CLIENT_ID=$APP_CLIENT_ID" >> .env
+
+  echo "Creating user roles"
+  create_user_roles "$INSTANCE_URL" "$PAT" "$PROJECT_ID"
 
   echo "Creating charts service user"
   MACHINE_USER_ID=$(create_service_user "$INSTANCE_URL" "$PAT" "charts")
