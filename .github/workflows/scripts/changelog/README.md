@@ -28,6 +28,8 @@ Use the following labels to assign a pull request to a section:
 - `type/tests` -> Tests
 - `type/CI` -> CI
 - `type/chore` -> Chores
+- `type/build` -> Build
+- `type/docs` -> Docs
 
 Use the following labels to assign a pull request to a component,
 which will put its name in front of the pull request title:

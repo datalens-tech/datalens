@@ -78,6 +78,14 @@
       {
         "id": "chore",
         "text": "Chores"
+      },
+      {
+        "id": "build",
+        "text": "Build"
+      },
+      {
+        "id": "docs",
+        "text": "Docs"
       }
     ]
   },
