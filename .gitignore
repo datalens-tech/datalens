@@ -10,3 +10,6 @@ zitadel-db
 .DS_Store
 .idea
 .env
+
+common_data/
+zitadel-db/
