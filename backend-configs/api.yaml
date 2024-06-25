@@ -5,7 +5,7 @@ CONNECTORS:
     CONN_CHYT_FORBIDDEN_CLIQUES: []
     CONN_CHYT_PUBLIC_CLIQUES: []
   YDB:
-    ENABLE_AUTH_TYPE_PICKER: true
+    HAS_AUTH: false
 CONNECTOR_AVAILABILITY:
   icon_src:
     icon_type: data
