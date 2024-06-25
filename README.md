@@ -88,7 +88,7 @@ After initialization you can start DataLens containers using special version of 
 HC=1 docker compose -f docker-compose.zitadel.yml up
 ```
 
-After that you can login to DataLens on htpp://localhost:8080 using the default user credentials:
+After that you can login to DataLens on http://localhost:8080 using the default user credentials:
 
 | Username | Password |
 |---|---|
