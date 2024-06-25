@@ -72,6 +72,7 @@ services:
     volumes:
       - ./metadata:/var/lib/postgresql/data
 
+
   us:
     container_name: datalens-us
     image: ghcr.io/datalens-tech/datalens-us:0.209.0
@@ -91,6 +92,8 @@ services:
       - "host.docker.internal:host-gateway"
     volumes:
       - ./certs:/certs
+
+
 
   datalens:
     container_name: datalens-ui
