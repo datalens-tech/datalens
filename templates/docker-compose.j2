@@ -21,15 +21,12 @@ services:
       RQE_SECRET_KEY: ""
       US_HOST: "http://us:8083"
       US_MASTER_TOKEN: "fake-us-master-token"
-      CONFIG_PATH: "/etc/backend-configs/api.yaml"
 {% if "DEV_MODE"|env(false) %}
     ports:
       - 8081:8080
 {% endif %}  
     depends_on:
       - us
-    volumes:
-      - ./backend-configs:/etc/backend-configs
 
   data-api:
     container_name: datalens-data-api
@@ -46,7 +43,6 @@ services:
       BI_COMPENG_PG_URL: "postgresql://postgres:postgres@pg-compeng:5432/postgres"
       US_HOST: "http://us:8083"
       US_MASTER_TOKEN: "fake-us-master-token"
-      CONFIG_PATH: "/etc/backend-configs/api.yaml"
 {% if "DEV_MODE"|env(false) %}
     ports:
       - 8082:8080
@@ -54,8 +50,6 @@ services:
     depends_on:
       - us
       - pg-compeng
-    volumes:
-      - ./backend-configs:/etc/backend-configs
 
   pg-demo-connection:
     container_name: datalens-pg-demo-connection
