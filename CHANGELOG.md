@@ -1,3 +1,22 @@
+## v1.5.0 (2024-06-25)
+
+### Image versions
+- datalens-control-api: 0.2091.0 -> 0.2102.2 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2091.0...v0.2102.2))
+- datalens-data-api: 0.2091.0 -> 0.2102.2 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2091.0...v0.2102.2))
+- datalens-ui: 0.1765.0
+- datalens-us: 0.209.0
+
+### New features
+- **Connectors**: OS ydb static/anonymous/oauth creds auth. [datalens-tech/datalens-backend#390](https://github.com/datalens-tech/datalens-backend/pull/390)
+- **Auth**: feat: add lib/dl_zitadel. [datalens-tech/datalens-backend#495](https://github.com/datalens-tech/datalens-backend/pull/495)
+
+### Bug fixes
+- **Formula**: DLHELP-10200 Use upper median in case of even number of values. [datalens-tech/datalens-backend#466](https://github.com/datalens-tech/datalens-backend/pull/466)
+- **Formula**: clickhouse rounding to -0 problem. [datalens-tech/datalens-backend#474](https://github.com/datalens-tech/datalens-backend/pull/474)
+- **Formula**: mysql -0 problem. [datalens-tech/datalens-backend#481](https://github.com/datalens-tech/datalens-backend/pull/481)
+- **Datasets**: return deleted result_schema fields after refresh_source action. [datalens-tech/datalens-backend#493](https://github.com/datalens-tech/datalens-backend/pull/493)
+
+
 ## v1.4.0 (2024-06-20)
 
 ### Image versions
