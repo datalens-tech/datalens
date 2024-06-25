@@ -1,3 +1,22 @@
+## v1.5.0 (2024-06-25)
+
+### Image versions
+- datalens-control-api: 0.2091.0 -> 0.2102.2 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2091.0...v0.2102.2))
+- datalens-data-api: 0.2091.0 -> 0.2102.2 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2091.0...v0.2102.2))
+- datalens-ui: 0.1765.0
+- datalens-us: 0.209.0
+
+### New features
+- **Connectors**: Add user-password & oauth auth modes to YDB connector. [datalens-tech/datalens-backend#390](https://github.com/datalens-tech/datalens-backend/pull/390)
+- **Auth**: Add Zitadel integration to backend. [datalens-tech/datalens-backend#495](https://github.com/datalens-tech/datalens-backend/pull/495)
+
+### Bug fixes
+- **Formula**: Use upper median in case of even number of values. [datalens-tech/datalens-backend#466](https://github.com/datalens-tech/datalens-backend/pull/466)
+- **Formula**: Round -0 to 0 in ClickHouse connector. [datalens-tech/datalens-backend#474](https://github.com/datalens-tech/datalens-backend/pull/474)
+- **Formula**: Round -0 to 0 in MySQL connector. [datalens-tech/datalens-backend#481](https://github.com/datalens-tech/datalens-backend/pull/481)
+- **Datasets**: Return deleted fields on dataset refresh. [datalens-tech/datalens-backend#493](https://github.com/datalens-tech/datalens-backend/pull/493)
+
+
 ## v1.4.0 (2024-06-20)
 
 ### Image versions

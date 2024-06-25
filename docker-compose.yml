@@ -11,7 +11,7 @@ services:
 
   control-api:
     container_name: datalens-control-api
-    image: ghcr.io/datalens-tech/datalens-control-api:0.2091.0
+    image: ghcr.io/datalens-tech/datalens-control-api:0.2102.2
     environment:
       BI_API_UWSGI_WORKERS_COUNT: 4
       CONNECTOR_AVAILABILITY_VISIBLE: "clickhouse,postgres,chyt,ydb,mysql,greenplum"
@@ -21,16 +21,12 @@ services:
       RQE_SECRET_KEY: ""
       US_HOST: "http://us:8083"
       US_MASTER_TOKEN: "fake-us-master-token"
-      CONFIG_PATH: "/etc/backend-configs/api.yaml"
-  
     depends_on:
       - us
-    volumes:
-      - ./backend-configs:/etc/backend-configs
 
   data-api:
     container_name: datalens-data-api
-    image: ghcr.io/datalens-tech/datalens-data-api:0.2091.0
+    image: ghcr.io/datalens-tech/datalens-data-api:0.2102.2
     environment:
       GUNICORN_WORKERS_COUNT: 5
       RQE_FORCE_OFF: 1
@@ -43,13 +39,9 @@ services:
       BI_COMPENG_PG_URL: "postgresql://postgres:postgres@pg-compeng:5432/postgres"
       US_HOST: "http://us:8083"
       US_MASTER_TOKEN: "fake-us-master-token"
-      CONFIG_PATH: "/etc/backend-configs/api.yaml"
-  
     depends_on:
       - us
       - pg-compeng
-    volumes:
-      - ./backend-configs:/etc/backend-configs
 
   pg-demo-connection:
     container_name: datalens-pg-demo-connection
@@ -72,7 +64,6 @@ services:
     volumes:
       - ./metadata:/var/lib/postgresql/data
 
-
   us:
     container_name: datalens-us
     image: ghcr.io/datalens-tech/datalens-us:0.209.0
@@ -87,13 +78,10 @@ services:
       USE_DEMO_DATA: ${USE_DEMO_DATA:-1}
       HC: ${HC:-0}
       NODE_EXTRA_CA_CERTS: /certs/root.crt
-
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
       - ./certs:/certs
-
-
 
   datalens:
     container_name: datalens-ui

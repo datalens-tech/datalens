@@ -21,15 +21,12 @@ services:
       RQE_SECRET_KEY: ""
       US_HOST: "http://us:8083"
       US_MASTER_TOKEN: "fake-us-master-token"
-      CONFIG_PATH: "/etc/backend-configs/api.yaml"
-{% if "DEV_MODE"|env(false) %}
+{%- if "DEV_MODE"|env(false) %}
     ports:
       - 8081:8080
-{% endif %}  
+{%- endif %}
     depends_on:
       - us
-    volumes:
-      - ./backend-configs:/etc/backend-configs
 
   data-api:
     container_name: datalens-data-api
@@ -46,16 +43,13 @@ services:
       BI_COMPENG_PG_URL: "postgresql://postgres:postgres@pg-compeng:5432/postgres"
       US_HOST: "http://us:8083"
       US_MASTER_TOKEN: "fake-us-master-token"
-      CONFIG_PATH: "/etc/backend-configs/api.yaml"
-{% if "DEV_MODE"|env(false) %}
+{%- if "DEV_MODE"|env(false) %}
     ports:
       - 8082:8080
-{% endif %}  
+{%- endif %}
     depends_on:
       - us
       - pg-compeng
-    volumes:
-      - ./backend-configs:/etc/backend-configs
 
   pg-demo-connection:
     container_name: datalens-pg-demo-connection
@@ -77,10 +71,10 @@ services:
       POSTGRES_PASSWORD: us
     volumes:
       - ./metadata:/var/lib/postgresql/data
-{% if "DEV_MODE"|env(false) %} 
+{%- if "DEV_MODE"|env(false) %}
     ports:
       - "8086:5432"
-{% endif %}
+{%- endif %}
 
   us:
     container_name: datalens-us
@@ -96,7 +90,7 @@ services:
       USE_DEMO_DATA: ${USE_DEMO_DATA:-1}
       HC: ${HC:-0}
       NODE_EXTRA_CA_CERTS: /certs/root.crt
-{% if "DEV_MODE"|env(false) %}
+{%- if "DEV_MODE"|env(false) %}
       ZITADEL: "false"
       ZITADEL_URI: "http://zitadel:8080"
       CLIENT_ID: "${DL_CLIENT_ID}"
@@ -105,13 +99,13 @@ services:
       SERVICE_CLIENT_SECRET: "${US_SERVICE_CLIENT_SECRET}"
     ports:
       - "8083:8083"
-{% endif %}
+{%- endif %}
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
       - ./certs:/certs
 
-{% if "DEV_MODE"|env(false) %}
+{%- if "DEV_MODE"|env(false) %}
   zitadel-db:
     restart: 'always'
     image: postgres:16-alpine
@@ -163,7 +157,7 @@ services:
       - '8085:8080'
     volumes:
       - ./zitadel/machinekey:/machinekey:rw
-{% endif %}
+{%- endif %}
 
   datalens:
     container_name: datalens-ui
@@ -185,7 +179,7 @@ services:
       BI_DATA_ENDPOINT: "http://data-api:8080"
       NODE_EXTRA_CA_CERTS: "/usr/local/share/ca-certificates/cert.pem"
       HC: ${HC:-0}
-{% if "DEV_MODE"|env(false) %}
+{%- if "DEV_MODE"|env(false) %}
       ZITADEL: "false"
       CLIENT_ID: "${DL_CLIENT_ID}"
       CLIENT_SECRET: "${DL_CLIENT_SECRET}"
@@ -196,4 +190,4 @@ services:
       ZITADEL_COOKIE_SECRET: ${ZITADEL_COOKIE_SECRET:?missed ZITADEL_COOKIE_SECRET env}"
       SERVICE_CLIENT_ID: "charts"
       SERVICE_CLIENT_SECRET: "${CHARTS_SERVICE_CLIENT_SECRET}"
-{% endif %}
+{%- endif %}
