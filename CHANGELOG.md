@@ -1,3 +1,24 @@
+## v1.6.0 (2024-06-28)
+
+### Image versions
+- datalens-control-api: 0.2102.2
+- datalens-data-api: 0.2102.2
+- datalens-ui: 0.1765.0 -> 0.1794.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.1765.0...v0.1794.0))
+- datalens-us: 0.209.0 -> 0.214.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.209.0...v0.214.0))
+
+### New features
+- **General components**: Improve layout on mobile. [datalens-tech/datalens-ui#1168](https://github.com/datalens-tech/datalens-ui/pull/1168)
+- **Dashboards**: Add widget background like chart. [datalens-tech/datalens-ui#1099](https://github.com/datalens-tech/datalens-ui/pull/1099)
+- **General components**: Enable menu option showing related objects of current object. [datalens-tech/datalens-ui#1172](https://github.com/datalens-tech/datalens-ui/pull/1172)
+- **Connectors**: Support `visibility_mode` in connector items. [datalens-tech/datalens-ui#1180](https://github.com/datalens-tech/datalens-ui/pull/1180)
+
+### Tests
+- **General components**: Tests improvements. [datalens-tech/datalens-us#130](https://github.com/datalens-tech/datalens-us/pull/130)
+
+### Other
+- **Charts**: Add hotkey tooltips. [datalens-tech/datalens-ui#1156](https://github.com/datalens-tech/datalens-ui/pull/1156)
+
+
 ## v1.5.0 (2024-06-25)
 
 ### Image versions
