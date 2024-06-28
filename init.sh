@@ -166,6 +166,24 @@ create_new_application() {
   handle_zitadel_request_response "$APP_CLIENT_SECRET" "create_new_application_client_secret" "$RESPONSE"
 }
 
+update_settings() {
+  INSTANCE_URL=$1
+  PAT=$2
+
+  RESPONSE=$(
+    curl -sS -X PUT "$INSTANCE_URL/admin/v1/settings/oidc" \
+      -H "Authorization: Bearer $PAT" \
+      -H 'Content-Type: application/json' \
+      -H 'Accept: application/json' \
+      --data-raw '{
+         "accessTokenLifetime": "172800s",
+         "idTokenLifetime": "43200s",
+         "refreshTokenIdleExpiration": "1209600s",
+         "refreshTokenExpiration": "1209600s"
+      }'
+  )
+} 
+
 create_user_roles() {
   INSTANCE_URL=$1
   PAT=$2
@@ -307,8 +325,11 @@ installZitadel() {
   printf "Waiting for Zitadel to become ready "
   wait_api "$INSTANCE_URL" "$PAT"
 
-  echo "Updating settings"
+  echo "Updating customizations"
   set_custom_login_text "$INSTANCE_URL" "$PAT"
+
+  echo "Updating settings"
+  update_settings  "$INSTANCE_URL" "$PAT"
 
   echo "Creating DataLens project"
   PROJECT_ID=$(create_new_project "$INSTANCE_URL" "$PAT" "DataLens")
