@@ -7,6 +7,7 @@
 - datalens-us: 0.209.0 -> 0.214.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.209.0...v0.214.0))
 
 ### New features
+- **Auth**: Zitadel integration. [datalens-tech/datalens#137](https://github.com/datalens-tech/datalens/pull/137)
 - **General components**: Improve layout on mobile. [datalens-tech/datalens-ui#1168](https://github.com/datalens-tech/datalens-ui/pull/1168)
 - **Dashboards**: Add widget background like chart. [datalens-tech/datalens-ui#1099](https://github.com/datalens-tech/datalens-ui/pull/1099)
 - **General components**: Enable menu option showing related objects of current object. [datalens-tech/datalens-ui#1172](https://github.com/datalens-tech/datalens-ui/pull/1172)
