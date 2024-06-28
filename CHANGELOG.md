@@ -15,9 +15,6 @@
 ### Tests
 - **General components**: Tests improvements. [datalens-tech/datalens-us#130](https://github.com/datalens-tech/datalens-us/pull/130)
 
-### Other
-- **Charts**: Add hotkey tooltips. [datalens-tech/datalens-ui#1156](https://github.com/datalens-tech/datalens-ui/pull/1156)
-
 
 ## v1.5.0 (2024-06-25)
 
