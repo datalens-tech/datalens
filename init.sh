@@ -176,7 +176,7 @@ update_settings() {
       -H 'Content-Type: application/json' \
       -H 'Accept: application/json' \
       --data-raw '{
-         "accessTokenLifetime": "172800s",
+         "accessTokenLifetime": "86400s",
          "idTokenLifetime": "43200s",
          "refreshTokenIdleExpiration": "1209600s",
          "refreshTokenExpiration": "1209600s"
