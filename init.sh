@@ -197,12 +197,12 @@ create_user_roles() {
       --data-raw '{
         "roles": [
             {
-              "key": "creator",
-              "display_name": "creator"
+              "key": "datalens.editor",
+              "display_name": "datalens.editor"
             },
             {
-              "key": "admin",
-              "display_name": "admin"
+              "key": "datalens.admin",
+              "display_name": "datalens.admin"
             }
           ]
       }'
