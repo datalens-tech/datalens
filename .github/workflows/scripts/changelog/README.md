@@ -26,7 +26,7 @@ Use the following labels to assign a pull request to a section:
 - `type/deprecation` -> Deprecation
 - `type/dev` -> Development
 - `type/tests` -> Tests
-- `type/CI` -> CI
+- `type/ci` -> CI
 - `type/chore` -> Chores
 - `type/build` -> Build
 - `type/docs` -> Docs
