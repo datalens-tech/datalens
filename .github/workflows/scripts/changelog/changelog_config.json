@@ -86,6 +86,10 @@
       {
         "id": "docs",
         "text": "Docs"
+      },
+      {
+        "id": "deploy",
+        "text": "Deploy"
       }
     ]
   },
