@@ -31,6 +31,7 @@ Use the following labels to assign a pull request to a section:
 - `type/build` -> Build
 - `type/docs` -> Docs
 - `type/deploy` -> Deploy
+- `type/refactor` -> Refactor
 
 Use the following labels to assign a pull request to a component,
 which will put its name in front of the pull request title:

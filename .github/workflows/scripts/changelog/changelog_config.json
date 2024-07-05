@@ -90,6 +90,10 @@
       {
         "id": "deploy",
         "text": "Deploy"
+      },
+      {
+        "id": "refactor",
+        "text": "Refactor"
       }
     ]
   },
