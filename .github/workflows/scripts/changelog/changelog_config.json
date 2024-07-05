@@ -52,7 +52,15 @@
         "text": "New features"
       },
       {
+        "id": "feat",
+        "text": "New features"
+      },
+      {
         "id": "bug-fix",
+        "text":"Bug fixes"
+      },
+      {
+        "id": "fix",
         "text":"Bug fixes"
       },
       {
@@ -69,6 +77,10 @@
       },
       {
         "id": "tests",
+        "text": "Tests"
+      },
+      {
+        "id": "test",
         "text": "Tests"
       },
       {
@@ -94,6 +106,18 @@
       {
         "id": "refactor",
         "text": "Refactor"
+      },
+      {
+        "id": "perf",
+        "text": "Performance"
+      },
+      {
+        "id": "revert",
+        "text": "Revert"
+      },
+      {
+        "id": "infra",
+        "text": "Infrastructure"
       }
     ]
   },
