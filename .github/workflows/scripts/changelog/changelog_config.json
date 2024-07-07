@@ -52,7 +52,15 @@
         "text": "New features"
       },
       {
+        "id": "feat",
+        "text": "New features"
+      },
+      {
         "id": "bug-fix",
+        "text":"Bug fixes"
+      },
+      {
+        "id": "fix",
         "text":"Bug fixes"
       },
       {
@@ -72,7 +80,11 @@
         "text": "Tests"
       },
       {
-        "id": "CI",
+        "id": "test",
+        "text": "Tests"
+      },
+      {
+        "id": "ci",
         "text": "CI"
       },
       {
@@ -86,6 +98,26 @@
       {
         "id": "docs",
         "text": "Docs"
+      },
+      {
+        "id": "deploy",
+        "text": "Deploy"
+      },
+      {
+        "id": "refactor",
+        "text": "Refactor"
+      },
+      {
+        "id": "perf",
+        "text": "Performance"
+      },
+      {
+        "id": "revert",
+        "text": "Revert"
+      },
+      {
+        "id": "infra",
+        "text": "Infrastructure"
       }
     ]
   },

@@ -21,15 +21,23 @@ in the changelog-config.
 Use the following labels to assign a pull request to a section:
 - `type/breaking-change` -> Breaking changes
 - `type/new-feature` -> New features
+- `type/feat` -> New features
 - `type/bug-fix` -> Bug fixes
+- `type/fix` -> Bug fixes
 - `type/sec` -> Security
 - `type/deprecation` -> Deprecation
 - `type/dev` -> Development
 - `type/tests` -> Tests
-- `type/CI` -> CI
+- `type/test` -> Tests
+- `type/ci` -> CI
 - `type/chore` -> Chores
 - `type/build` -> Build
 - `type/docs` -> Docs
+- `type/deploy` -> Deploy
+- `type/refactor` -> Refactor
+- `type/perf` -> Performance
+- `type/revert` -> Revert
+- `type/infra` -> Infrastructure
 
 Use the following labels to assign a pull request to a component,
 which will put its name in front of the pull request title:
