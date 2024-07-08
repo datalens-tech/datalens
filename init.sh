@@ -209,6 +209,58 @@ create_user_roles() {
   )
 } 
 
+find_admin_user() {
+  INSTANCE_URL=$1
+  PAT=$2
+
+  RESPONSE=$(
+    curl -sS -X POST "$INSTANCE_URL/v2beta/users" \
+      -H "Authorization: Bearer $PAT" \
+      -H 'Content-Type: application/json' \
+      -H 'Accept: application/json' \
+      --data-raw '{
+        "query": {
+          "offset": "0",
+          "limit": 100,
+          "asc": true
+        },
+          "queries": [
+            {
+              "emailQuery": {
+                "emailAddress": "zitadel-admin@zitadel.localhost",
+                "method": "TEXT_QUERY_METHOD_EQUALS"
+              }
+            }
+          ]
+      }'
+  )
+
+  PARSED_RESPONSE=$(echo "$RESPONSE" | jq -r '.result.[0].userId')
+  handle_zitadel_request_response "$PARSED_RESPONSE" "find_admin_user" "$RESPONSE"
+  echo "$PARSED_RESPONSE"
+}
+
+grant_user_role() {
+  INSTANCE_URL=$1
+  PAT=$2
+  PROJECT_ID=$3
+  USER_ID=$4
+  ROLE=$5
+
+  RESPONSE=$(
+    curl -sS -X POST "$INSTANCE_URL/management/v1/users/$USER_ID/grants" \
+      -H "Authorization: Bearer $PAT" \
+      -H 'Content-Type: application/json' \
+      -H 'Accept: application/json' \
+      --data-raw '{
+        "projectId": "'$PROJECT_ID'",
+        "roleKeys": [
+          "'$ROLE'"
+        ]
+      }'
+  )
+}
+
 create_service_user() {
   INSTANCE_URL=$1
   PAT=$2
@@ -344,6 +396,10 @@ installZitadel() {
 
   echo "Creating user roles"
   create_user_roles "$INSTANCE_URL" "$PAT" "$PROJECT_ID"
+
+  echo "Granting user datalens.admin role"
+  ADMIN_USER=$(find_admin_user "$INSTANCE_URL" "$PAT")  
+  grant_user_role "$INSTANCE_URL" "$PAT" "$PROJECT_ID" "$ADMIN_USER" "datalens.admin"
 
   echo "Creating charts service user"
   MACHINE_USER_ID=$(create_service_user "$INSTANCE_URL" "$PAT" "charts")
