@@ -100,6 +100,10 @@ By default in DataLens with authentication enabled, all users have a datalens.vi
 
 DataLens supports the following roles:
 
+- `datalens.viewer`: allows viewing all collections and workbooks, but does not allow creating or editing any object.
+- `datalens.editor`: includes the `datalens.viewer` role and allows creating, editing and deleting any object. 
+- `datalens.admin`: currently equal to `datalens.editor`. In the future releases, users with this role will be able to manage system-wide settings and perform administrative functions.
+
 datalens.viewer - allows view collections and workbooks of any user and doesn't allow to edit or create new ones.
 datalens.editor – includes datalens.viewer role and allows to edit, delete and create new collection or workbook for any user. 
 datalens.admin - includes datalens.editor role and will give possibility to change installation settings in future. 
