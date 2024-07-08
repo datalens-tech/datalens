@@ -96,7 +96,7 @@ After that you can login to DataLens on http://localhost:8080 using the default 
 
 You can use the same credentials to configure Zitadel and add new users using Zitadel control panel at http://localhost:8085/. **Don't forget to login there at least once to change the default password.**
 
-By default in DataLens with authentication every new user has datalens.viewer role which allows viewing collections and workbooks in read only mode. You are not allowed to modify or create any new entity with this role. In order to be able to edit or create new collection or workbook you need to have datalens.editor or datalens.admin role. To grant roles please open Zitadel at http://localhost:8085/ui/console/grants, then find user to whome you want to grant a new role, click on user and select new role.
+By default in DataLens with authentication enabled, all users have a datalens.viewer role. This allows them to use all collections and workbooks in read-only mode. They are not allowed to create or modify any objects with this role. To be able to create or edit objects, they need to have a datalens.editor or datalens.admin role. To grant these roles, open Zitadel at http://localhost:8085/ui/console/grants, then find the user to whom you want to grant a new role and click on the user and select the new role.
 
 DataLens supports the following roles:
 
