@@ -96,6 +96,23 @@ After that you can login to DataLens on http://localhost:8080 using the default 
 
 You can use the same credentials to configure Zitadel and add new users using Zitadel control panel at http://localhost:8085/. **Don't forget to login there at least once to change the default password.**
 
+### Configuring Zitadel on external domain
+
+If your Zitadel is going to be used on external domain like http://your-domain.com:8085 instead of http://localhost:8085 (by default) you need to do the following steps:
+
+1. After running `init.sh` script change this setting in `docker-compose.zitadel.yml` file to your domain:
+
+```bash 
+ZITADEL_URI: "http://your-domain.com:8085"
+```
+
+2. Run the following command to setup Zitadel at your domain (you need to run this command at least once):
+
+```bash 
+ZITADEL_EXTERNALPORT=8085 ZITADEL_EXTERNALDOMAIN=your-domain.com docker compose -f docker-compose.zitadel.yml up zitadel -d
+```
+
+### User roles 
 By default in DataLens with authentication enabled, all users have a datalens.viewer role. This allows them to use all collections and workbooks in read-only mode. They are not allowed to create or modify any objects with this role. To be able to create or edit objects, they need to have a datalens.editor or datalens.admin role. To grant these roles, open Zitadel at http://localhost:8085/ui/console/grants, then find the user to whom you want to grant a new role and click on the user and select the new role.
 
 DataLens supports the following roles:
