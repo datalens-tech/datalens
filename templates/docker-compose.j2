@@ -91,12 +91,6 @@ services:
       HC: ${HC:-0}
       NODE_EXTRA_CA_CERTS: /certs/root.crt
 {%- if "DEV_MODE"|env(false) %}
-      ZITADEL: "false"
-      ZITADEL_URI: "http://zitadel:8080"
-      CLIENT_ID: "${DL_CLIENT_ID}"
-      CLIENT_SECRET: "${DL_CLIENT_SECRET}"
-      SERVICE_CLIENT_ID: "us"
-      SERVICE_CLIENT_SECRET: "${US_SERVICE_CLIENT_SECRET}"
     ports:
       - "8083:8083"
 {%- endif %}
@@ -104,60 +98,6 @@ services:
       - "host.docker.internal:host-gateway"
     volumes:
       - ./certs:/certs
-
-{%- if "DEV_MODE"|env(false) %}
-  zitadel-db:
-    restart: 'always'
-    image: postgres:16-alpine
-    environment:
-      POSTGRES_DB: zitadel
-      POSTGRES_USER: zit
-      POSTGRES_PASSWORD: zit
-    healthcheck:      
-      test: ["CMD-SHELL", "pg_isready", "-d", "zitadel", "-U", "zit"]
-      interval: '10s'
-      timeout: '30s'
-      retries: 5
-      start_period: '20s'
-    ports:
-      - "8087:5432"
-    volumes:
-      - ./zitadel-db:/var/lib/postgresql/data
-      
-  zitadel:
-    restart: 'always'
-    image: 'ghcr.io/zitadel/zitadel:v2.54.1'
-    command: 'start-from-init --masterkeyFromEnv --tlsMode disabled'
-    environment:
-      - 'ZITADEL_MASTERKEY=${ZITADEL_MASTERKEY:?missed ZITADEL_MASTERKEY env}'
-      - 'ZITADEL_DATABASE_POSTGRES_HOST=zitadel-db'
-      - 'ZITADEL_DATABASE_POSTGRES_PORT=5432'
-      - 'ZITADEL_DATABASE_POSTGRES_DATABASE=zitadel'
-      - 'ZITADEL_DATABASE_POSTGRES_USER_USERNAME=zit'
-      - 'ZITADEL_DATABASE_POSTGRES_USER_PASSWORD=zit'
-      - 'ZITADEL_DATABASE_POSTGRES_USER_SSL_MODE=disable'
-      - 'ZITADEL_DATABASE_POSTGRES_ADMIN_USERNAME=zit'
-      - 'ZITADEL_DATABASE_POSTGRES_ADMIN_PASSWORD=zit'
-      - 'ZITADEL_DATABASE_POSTGRES_ADMIN_SSL_MODE=disable'
-      - 'ZITADEL_SYSTEMDEFAULTS_SECRETGENERATORS_PASSWORDSALTCOST=1'
-      - 'ZITADEL_EXTERNALSECURE=false'
-      - 'ZITADEL_EXTERNALPORT=${ZITADEL_EXTERNALPORT:-8080}'
-      - 'ZITADEL_EXTERNALDOMAIN=${ZITADEL_EXTERNALDOMAIN:-zitadel}'
-      - 'ZITADEL_FIRSTINSTANCE_PATPATH=/machinekey/zitadel-admin-sa.token'
-      - 'ZITADEL_FIRSTINSTANCE_ORG_MACHINE_MACHINE_USERNAME=zitadel-admin-sa'
-      - 'ZITADEL_FIRSTINSTANCE_ORG_MACHINE_MACHINE_NAME=Admin'
-      - 'ZITADEL_FIRSTINSTANCE_ORG_MACHINE_MACHINEKEY_TYPE=1'
-      - 'ZITADEL_FIRSTINSTANCE_ORG_MACHINE_PAT_EXPIRATIONDATE=9999-01-01T00:00:00Z'
-      - 'ZITADEL_DEFAULTINSTANCE_OIDCSETTINGS_ACCESSTOKENLIFETIME=0.25h'
-      - 'ZITADEL_DEFAULTINSTANCE_OIDCSETTINGS_REFRESHTOKENEXPIRATION=336h'      
-    depends_on:
-      zitadel-db:
-        condition: 'service_healthy'
-    ports:
-      - '8085:8080'
-    volumes:
-      - ./zitadel/machinekey:/machinekey:rw
-{%- endif %}
 
   datalens:
     container_name: datalens-ui
@@ -179,15 +119,3 @@ services:
       BI_DATA_ENDPOINT: "http://data-api:8080"
       NODE_EXTRA_CA_CERTS: "/usr/local/share/ca-certificates/cert.pem"
       HC: ${HC:-0}
-{%- if "DEV_MODE"|env(false) %}
-      ZITADEL: "false"
-      CLIENT_ID: "${DL_CLIENT_ID}"
-      CLIENT_SECRET: "${DL_CLIENT_SECRET}"
-      ZITADEL_PROJECT_ID: "${ZITADEL_PROJECT_ID}"
-      ZITADEL_URI: "http://localhost:8085"
-      ZITADEL_INTERNAL_URI: "http://zitadel:8080"
-      APP_HOST_URI: "http://localhost:8080"
-      ZITADEL_COOKIE_SECRET: ${ZITADEL_COOKIE_SECRET:?missed ZITADEL_COOKIE_SECRET env}"
-      SERVICE_CLIENT_ID: "charts"
-      SERVICE_CLIENT_SECRET: "${CHARTS_SERVICE_CLIENT_SECRET}"
-{%- endif %}
