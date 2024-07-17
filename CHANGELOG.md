@@ -7,7 +7,8 @@
 - datalens-us: 0.214.0 -> 0.224.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.214.0...v0.224.0))
 
 ### New features
-- **Datasets**: Dataset mass operations. [datalens-tech/datalens-ui#1147](https://github.com/datalens-tech/datalens-ui/pull/1147)
+- **Auth**: Added integration with Zitadel which brings user authentication and vertical roles, see more in [readme](https://github.com/datalens-tech/datalens?tab=readme-ov-file#authentication-beta)
+- **Datasets**: Add mass operations for dataset. [datalens-tech/datalens-ui#1147](https://github.com/datalens-tech/datalens-ui/pull/1147)
 - **Dashboards**: Support adding values by enter in Possible values dialog of list control. [datalens-tech/datalens-ui#1203](https://github.com/datalens-tech/datalens-ui/pull/1203)
 - **General components**: Unify deletion confirm dialogs layout on collections page. [datalens-tech/datalens-ui#1228](https://github.com/datalens-tech/datalens-ui/pull/1228)
 
@@ -32,7 +33,7 @@
 - datalens-us: 0.209.0 -> 0.214.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.209.0...v0.214.0))
 
 ### New features
-- **Auth**: Zitadel integration. [datalens-tech/datalens#137](https://github.com/datalens-tech/datalens/pull/137)
+- **Auth**: Basic Zitadel integration. [datalens-tech/datalens#137](https://github.com/datalens-tech/datalens/pull/137)
 - **General components**: Improve layout on mobile. [datalens-tech/datalens-ui#1168](https://github.com/datalens-tech/datalens-ui/pull/1168)
 - **Dashboards**: Add widget background like chart. [datalens-tech/datalens-ui#1099](https://github.com/datalens-tech/datalens-ui/pull/1099)
 - **General components**: Enable menu option showing related objects of current object. [datalens-tech/datalens-ui#1172](https://github.com/datalens-tech/datalens-ui/pull/1172)
@@ -52,7 +53,6 @@
 
 ### New features
 - **Connectors**: Add user-password & oauth auth modes to YDB connector. [datalens-tech/datalens-backend#390](https://github.com/datalens-tech/datalens-backend/pull/390)
-- **Auth**: Add Zitadel integration to backend. [datalens-tech/datalens-backend#495](https://github.com/datalens-tech/datalens-backend/pull/495)
 
 ### Bug fixes
 - **Formula**: Use upper median in case of even number of values. [datalens-tech/datalens-backend#466](https://github.com/datalens-tech/datalens-backend/pull/466)
