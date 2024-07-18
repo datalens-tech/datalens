@@ -4,17 +4,35 @@ set -a
 [ -f .env ] && source .env
 set +a
 
+get_docker_compose_command() {
+  if command -v docker-compose &>/dev/null; then
+    echo "docker-compose"
+    return 0
+  elif command -v docker compose &>/dev/null; then
+    echo "docker compose"
+    return 0
+  else
+    echo "Compose plugin for docker is not installed. e.g. sudo apt install docker-compose-plugin" >/dev/stderr
+    exit 1
+  fi
+}
 check_installed() {
-  if [[ -n "$ZITADEL_MASTERKEY" ]]; then
+  if [ -n "$ZITADEL_MASTERKEY" ]; then
     echo "Zitadel was installed previously. In order to reinstall it, please remove Zitadel docker container and .env file manually"
     exit 1;
   fi
 }
 
 check_jq() {
-  if ! command -v jq &> /dev/null
-  then
-    echo "jq is not installed or not in PATH, please install with your package manager. e.g. sudo apt install jq" > /dev/stderr
+  if ! command -v jq &>/dev/null; then
+    echo "jq is not installed or not in PATH, please install with your package manager. e.g. sudo apt install jq" >/dev/stderr
+    exit 1
+  fi
+}
+
+check_curl() {
+  if ! command -v curl &>/dev/null; then
+    echo "curl is not installed or not in PATH, please install with your package manager. e.g. sudo apt install curl" >/dev/stderr
     exit 1
   fi
 }
@@ -37,7 +55,7 @@ createUsMasterToken() {
 startZitadel() {
   echo "Docker compose Zitadel start"
 
-  ZITADEL_EXTERNALPORT=8085 ZITADEL_EXTERNALDOMAIN=localhost docker compose -f docker-compose.zitadel.yml up zitadel -d 
+  ZITADEL_EXTERNALPORT=8085 ZITADEL_EXTERNALDOMAIN=localhost $(get_docker_compose_command) -f docker-compose.zitadel.yml up -d zitadel
   
   echo "Docker compose Zitadel finish"
 }
@@ -46,7 +64,7 @@ wait_pat() {
   PAT_PATH=$1
   set +e
   while true; do
-    if [[ -f "$PAT_PATH" ]]; then
+    if [ -f "$PAT_PATH" ]; then
       break
     fi
     printf ". "
@@ -57,19 +75,16 @@ wait_pat() {
 }
 
 wait_api() {
-    INSTANCE_URL=$1
-    PAT=$2
-    set +e
-    while true; do
-      curl -s --fail -o /dev/null "$INSTANCE_URL/auth/v1/users/me" -H "Authorization: Bearer $PAT"
-      if [[ $? -eq 0 ]]; then
-        break
-      fi
-      printf ". "
-      sleep 1
-    done
-    echo " done"
-    set -e
+  INSTANCE_URL=$1
+  PAT=$2
+  set +e
+  while true; do
+    curl -s --fail -o /dev/null "$INSTANCE_URL/auth/v1/users/me" -H "Authorization: Bearer $PAT" && break
+    printf ". "
+    sleep 1
+  done
+  echo " done"
+  set -e
 }
 
 
@@ -77,8 +92,8 @@ handle_zitadel_request_response() {
   PARSED_RESPONSE=$1
   FUNCTION_NAME=$2
   RESPONSE=$3
-  if [[ $PARSED_RESPONSE == "null" ]]; then
-    echo "ERROR calling $FUNCTION_NAME:" $(echo "$RESPONSE" | jq -r '.message') > /dev/stderr
+  if [ "$PARSED_RESPONSE" == "null" ]; then
+    echo "ERROR calling $FUNCTION_NAME:" $(echo "$RESPONSE" | jq -r '.message') >/dev/stderr
     exit 1
   fi
   sleep 1
@@ -93,12 +108,13 @@ set_custom_login_text() {
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
       -H "Authorization: Bearer $PAT" \
-    -d '{ 
+      -d '{ 
       "initMfaPromptText": {
         "skipButtonText": "пропустить",
         "nextButtonText": "далее"
       }
-    }')
+    }'
+  )
 }
 
 create_new_project() {
@@ -235,7 +251,7 @@ find_admin_user() {
       }'
   )
 
-  PARSED_RESPONSE=$(echo "$RESPONSE" | jq -r '.result.[0].userId')
+  PARSED_RESPONSE=$(echo "$RESPONSE" | jq -r '.result[0].userId')
   handle_zitadel_request_response "$PARSED_RESPONSE" "find_admin_user" "$RESPONSE"
   echo "$PARSED_RESPONSE"
 }
@@ -309,23 +325,23 @@ delete_admin_service_user() {
   RESPONSE=$(
     curl -sS -X GET "$INSTANCE_URL/auth/v1/users/me" \
       -H "Authorization: Bearer $PAT" \
-      -H "Content-Type: application/json" \
+      -H "Content-Type: application/json"
   )
   USER_ID=$(echo "$RESPONSE" | jq -r '.user.id')
   handle_zitadel_request_response "$USER_ID" "delete_auto_service_user_get_user" "$RESPONSE"
 
   RESPONSE=$(
-      curl -sS -X DELETE "$INSTANCE_URL/admin/v1/members/$USER_ID" \
-        -H "Authorization: Bearer $PAT" \
-        -H "Content-Type: application/json" \
+    curl -sS -X DELETE "$INSTANCE_URL/admin/v1/members/$USER_ID" \
+      -H "Authorization: Bearer $PAT" \
+      -H "Content-Type: application/json"
   )
   PARSED_RESPONSE=$(echo "$RESPONSE" | jq -r '.details.changeDate')
   handle_zitadel_request_response "$PARSED_RESPONSE" "delete_auto_service_user_remove_instance_permissions" "$RESPONSE"
 
   RESPONSE=$(
-      curl -sS -X DELETE "$INSTANCE_URL/management/v1/orgs/me/members/$USER_ID" \
-        -H "Authorization: Bearer $PAT" \
-        -H "Content-Type: application/json" \
+    curl -sS -X DELETE "$INSTANCE_URL/management/v1/orgs/me/members/$USER_ID" \
+      -H "Authorization: Bearer $PAT" \
+      -H "Content-Type: application/json"
   )
 
   PARSED_RESPONSE=$(echo "$RESPONSE" | jq -r '.details.changeDate')
@@ -337,6 +353,7 @@ installZitadel() {
   check_installed
 
   check_jq
+  check_curl
 
   INSTANCE_URL="http://localhost:8085"
   BASE_REDIRECT_URL="http://localhost:8080"
