@@ -11,7 +11,7 @@ services:
 
   control-api:
     container_name: datalens-control-api
-    image: ghcr.io/datalens-tech/datalens-control-api:0.2102.2
+    image: ghcr.io/datalens-tech/datalens-control-api:{{ controlApiVersion }}
     environment:
       BI_API_UWSGI_WORKERS_COUNT: 4
       CONNECTOR_AVAILABILITY_VISIBLE: "clickhouse,postgres,chyt,ydb,mysql,greenplum"
@@ -29,12 +29,17 @@ services:
       AUTH_CLIENT_SECRET: "${BI_SERVICE_CLIENT_SECRET}"
       AUTH_APP_CLIENT_ID: "${DL_CLIENT_ID}"
       AUTH_APP_CLIENT_SECRET: "${DL_CLIENT_SECRET}"
+
+{%- if "DEV_MODE"|env(false) %}
+    ports:
+      - 8081:8080
+{%- endif %}
     depends_on:
       - us
 
   data-api:
     container_name: datalens-data-api
-    image: ghcr.io/datalens-tech/datalens-data-api:0.2102.2
+    image: ghcr.io/datalens-tech/datalens-data-api:{{ dataApiVersion }}
     environment:
       GUNICORN_WORKERS_COUNT: 5
       RQE_FORCE_OFF: 1
@@ -55,6 +60,12 @@ services:
       AUTH_CLIENT_SECRET: "${BI_SERVICE_CLIENT_SECRET}"
       AUTH_APP_CLIENT_ID: "${DL_CLIENT_ID}"
       AUTH_APP_CLIENT_SECRET: "${DL_CLIENT_SECRET}"
+
+
+{%- if "DEV_MODE"|env(false) %}
+    ports:
+      - 8082:8080
+{%- endif %}
     depends_on:
       - us
       - pg-compeng
@@ -79,10 +90,14 @@ services:
       POSTGRES_PASSWORD: us
     volumes:
       - ./metadata:/var/lib/postgresql/data
+{%- if "DEV_MODE"|env(false) %}
+    ports:
+      - "8086:5432"
+{%- endif %}
 
   us:
     container_name: datalens-us
-    image: ghcr.io/datalens-tech/datalens-us:0.224.0
+    image: ghcr.io/datalens-tech/datalens-us:{{ usVersion }}
     depends_on:
       - pg-us
     environment:
@@ -101,6 +116,11 @@ services:
       CLIENT_SECRET: "${DL_CLIENT_SECRET}"
       SERVICE_CLIENT_ID: "us"
       SERVICE_CLIENT_SECRET: "${US_SERVICE_CLIENT_SECRET}"
+
+{%- if "DEV_MODE"|env(false) %}
+    ports:
+      - "8083:8083"
+{%- endif %}
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
@@ -160,7 +180,7 @@ services:
 
   datalens:
     container_name: datalens-ui
-    image: ghcr.io/datalens-tech/datalens-ui:0.1863.0
+    image: ghcr.io/datalens-tech/datalens-ui:{{ uiVersion }}
     ports:
       - ${UI_PORT:-8080}:8080
     depends_on:

@@ -26,10 +26,11 @@ jobs:
         run: |
           pip3 install --user --upgrade j2cli
           j2 --version  
-      - name: build docker-compose.yml & docker-compose-dev.yml
+      - name: build docker-compose.yml & docker-compose-dev.yml & docker-compose.zitadel.yml
         run: |
           j2 ./templates/docker-compose.j2 versions-config.json --format=json > ./docker-compose.yml
           DEV_MODE=true j2 ./templates/docker-compose.j2 versions-config.json --format=json > ./docker-compose-dev.yml
+          j2 ./templates/docker-compose.zitadel.j2 versions-config.json --format=json > ./docker-compose.zitadel.yml
       - name: run docker-compose.yml
         run: docker compose -f ./docker-compose.yml up -d
       - name: stop docker-compose.yml
@@ -41,7 +42,7 @@ jobs:
       - name: Commit compose files
         id: make-commit
         run: |
-            git add docker-compose.yml docker-compose-dev.yml
+            git add docker-compose.yml docker-compose-dev.yml docker-compose.zitadel.yml
             if ! git diff-index --quiet HEAD; then
                 git commit --message "update docker-compose.yml docker-compose-dev.yml"
                 git push
