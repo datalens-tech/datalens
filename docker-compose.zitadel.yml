@@ -29,7 +29,6 @@ services:
       AUTH_CLIENT_SECRET: "${BI_SERVICE_CLIENT_SECRET}"
       AUTH_APP_CLIENT_ID: "${DL_CLIENT_ID}"
       AUTH_APP_CLIENT_SECRET: "${DL_CLIENT_SECRET}"
-
     depends_on:
       - us
 
@@ -56,7 +55,6 @@ services:
       AUTH_CLIENT_SECRET: "${BI_SERVICE_CLIENT_SECRET}"
       AUTH_APP_CLIENT_ID: "${DL_CLIENT_ID}"
       AUTH_APP_CLIENT_SECRET: "${DL_CLIENT_SECRET}"
-
     depends_on:
       - us
       - pg-compeng
@@ -82,8 +80,6 @@ services:
     volumes:
       - ./metadata:/var/lib/postgresql/data
 
-
-
   us:
     container_name: datalens-us
     image: ghcr.io/datalens-tech/datalens-us:0.224.0
@@ -105,12 +101,10 @@ services:
       CLIENT_SECRET: "${DL_CLIENT_SECRET}"
       SERVICE_CLIENT_ID: "us"
       SERVICE_CLIENT_SECRET: "${US_SERVICE_CLIENT_SECRET}"
-
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
       - ./certs:/certs
-
 
   zitadel-db:
     restart: 'always'
