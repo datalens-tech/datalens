@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # chmod +x ./scripts/save-images.sh
+# ./scripts/save-images.sh
 
 get_docker_compose_command() {
   if command -v docker-compose &>/dev/null; then
