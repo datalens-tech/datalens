@@ -2,6 +2,6 @@
 
 # chmod +x ./scripts/load-images.sh
 
-file=${1:-"docker-images.gz"}
+file=${1:-"datalens-images.gz"}
 
 gzip -cd ${file} | docker load

@@ -18,10 +18,11 @@ get_docker_compose_command() {
 file=${1:-"docker-compose.yml"}
 
 if [ ! -z ${file} ] && [ -f ${file} ]; then
-    echo "Saving images..."
+    echo -e "\nPulling images...\n"
     images=`grep image: ${file} | awk '{print $2}'`
-
     $(get_docker_compose_command) -f ${file} pull
+
+    echo -e "\nSaving images...\n"
     docker save ${images} | gzip > datalens-images.gz
 
     echo "Images saved to datalens-images.gz"
