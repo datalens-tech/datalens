@@ -10,3 +10,4 @@ zitadel-db
 .DS_Store
 .idea
 .env
+datalens-images.gz
