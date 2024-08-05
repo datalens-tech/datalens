@@ -1,3 +1,21 @@
+## v1.8.0 (2024-08-05)
+
+### Image versions
+- datalens-control-api: 0.2102.2
+- datalens-data-api: 0.2102.2
+- datalens-ui: 0.1863.0 -> 0.1906.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.1863.0...v0.1906.0))
+- datalens-us: 0.224.0
+
+### New features
+- **Dashboards**: Add the ability to create group controls on dash. [datalens-tech/datalens-ui#1262](https://github.com/datalens-tech/datalens-ui/pull/1262)
+
+### Bug fixes
+- **Dashboards**: Support group controls in old links. [datalens-tech/datalens-ui#1294](https://github.com/datalens-tech/datalens-ui/pull/1294)
+
+### Chores
+- **Dashboards**: Refactoring dash components. [datalens-tech/datalens-ui#1263](https://github.com/datalens-tech/datalens-ui/pull/1263)
+
+
 ## v1.7.0 (2024-07-17)
 
 ### Image versions
