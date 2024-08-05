@@ -93,7 +93,7 @@ services:
 
   datalens:
     container_name: datalens-ui
-    image: ghcr.io/datalens-tech/datalens-ui:0.1863.0
+    image: ghcr.io/datalens-tech/datalens-ui:0.1906.0
     ports:
       - ${UI_PORT:-8080}:8080
     depends_on:
