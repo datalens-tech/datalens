@@ -14,7 +14,7 @@
 - **Connectors**: Enable MSSQL connector. [datalens-tech/datalens-backend#573](https://github.com/datalens-tech/datalens-backend/pull/573)
 
 ### Bug fixes
-- **Connectors**: Add Content-Type header to all requests to CH. [datalens-tech/datalens-backend#512](https://github.com/datalens-tech/datalens-backend/pull/512)
+- **Connectors**: Add Content-Type header to all requests to ClickHouse. [datalens-tech/datalens-backend#512](https://github.com/datalens-tech/datalens-backend/pull/512)
 - **Connectors**: Fallback to new connection type when replacing connection with no access. [datalens-tech/datalens-backend#566](https://github.com/datalens-tech/datalens-backend/pull/566)
 
 ### Docs
