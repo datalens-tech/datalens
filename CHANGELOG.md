@@ -10,11 +10,11 @@
 - **Connectors**: Add DB name validation to prevent custom parameters passing to the driver. [datalens-tech/datalens-backend#490](https://github.com/datalens-tech/datalens-backend/pull/490)
 - **Formula**: Add REGEXP_EXTRACT_ALL function. [datalens-tech/datalens-backend#485](https://github.com/datalens-tech/datalens-backend/pull/485)
 - **Datasets**: Add groups support in RLS. [datalens-tech/datalens-backend#534](https://github.com/datalens-tech/datalens-backend/pull/534)
-- Support extra ca_data. [datalens-tech/datalens-backend#558](https://github.com/datalens-tech/datalens-backend/pull/558)
+- Support extra ca_data in backend apps. [datalens-tech/datalens-backend#558](https://github.com/datalens-tech/datalens-backend/pull/558)
 - **Connectors**: Enable MSSQL connector. [datalens-tech/datalens-backend#573](https://github.com/datalens-tech/datalens-backend/pull/573)
 
 ### Bug fixes
-- **Connectors**: Add Content-Type header to all CH sqlalchemy requests. [datalens-tech/datalens-backend#512](https://github.com/datalens-tech/datalens-backend/pull/512)
+- **Connectors**: Add Content-Type header to all requests to CH. [datalens-tech/datalens-backend#512](https://github.com/datalens-tech/datalens-backend/pull/512)
 - **Connectors**: Fallback to new connection type when replacing connection with no access. [datalens-tech/datalens-backend#566](https://github.com/datalens-tech/datalens-backend/pull/566)
 
 ### Docs
