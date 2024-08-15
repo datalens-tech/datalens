@@ -7,18 +7,18 @@
 - datalens-us: 0.224.0
 
 ### New features
-- **Connectors**: Add db_name validation. [datalens-tech/datalens-backend#490](https://github.com/datalens-tech/datalens-backend/pull/490)
-- **Formula**: Add regexp_extract_all function. [datalens-tech/datalens-backend#485](https://github.com/datalens-tech/datalens-backend/pull/485)
-- **Datasets**: feat(datasets): BI-5664 add groups support in RLS. [datalens-tech/datalens-backend#534](https://github.com/datalens-tech/datalens-backend/pull/534)
-- feat: BI-5697 support extra ca_data. [datalens-tech/datalens-backend#558](https://github.com/datalens-tech/datalens-backend/pull/558)
-- **Connectors**: feat(connectors): BI-5232 enable MSSQL connector. [datalens-tech/datalens-backend#573](https://github.com/datalens-tech/datalens-backend/pull/573)
+- **Connectors**: Add DB name validation to prevent custom parameters passing to the driver. [datalens-tech/datalens-backend#490](https://github.com/datalens-tech/datalens-backend/pull/490)
+- **Formula**: Add REGEXP_EXTRACT_ALL function. [datalens-tech/datalens-backend#485](https://github.com/datalens-tech/datalens-backend/pull/485)
+- **Datasets**: Add groups support in RLS. [datalens-tech/datalens-backend#534](https://github.com/datalens-tech/datalens-backend/pull/534)
+- Support extra ca_data. [datalens-tech/datalens-backend#558](https://github.com/datalens-tech/datalens-backend/pull/558)
+- **Connectors**: Enable MSSQL connector. [datalens-tech/datalens-backend#573](https://github.com/datalens-tech/datalens-backend/pull/573)
 
 ### Bug fixes
-- **Connectors**: Add Content-Type header to all CH sqlalchemy requests; add conn sources test. [datalens-tech/datalens-backend#512](https://github.com/datalens-tech/datalens-backend/pull/512)
-- **Connectors**: fix(connectors): BI-5674 fallback to new conn type when replacing conn with no access. [datalens-tech/datalens-backend#566](https://github.com/datalens-tech/datalens-backend/pull/566)
+- **Connectors**: Add Content-Type header to all CH sqlalchemy requests. [datalens-tech/datalens-backend#512](https://github.com/datalens-tech/datalens-backend/pull/512)
+- **Connectors**: Fallback to new connection type when replacing connection with no access. [datalens-tech/datalens-backend#566](https://github.com/datalens-tech/datalens-backend/pull/566)
 
 ### Docs
-- **Connectors**: Add development guides to kb. [datalens-tech/datalens-backend#494](https://github.com/datalens-tech/datalens-backend/pull/494)
+- **Connectors**: Add development guides to the [knowledge base](https://github.com/datalens-tech/datalens-backend/blob/main/kb/index.md). [datalens-tech/datalens-backend#494](https://github.com/datalens-tech/datalens-backend/pull/494)
 
 
 ## v1.8.0 (2024-08-05)
