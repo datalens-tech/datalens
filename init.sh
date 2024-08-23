@@ -1,8 +1,12 @@
 #!/bin/bash
 
-set -a
-[ -f .env ] && source .env
-set +a
+ENV_FILE_PATH=".env"
+
+load_env() {
+  set -a
+  [ -f "${ENV_FILE_PATH}" ] && source "${ENV_FILE_PATH}"
+  set +a
+}
 
 get_docker_compose_command() {
   if command -v docker-compose &>/dev/null; then
@@ -16,10 +20,11 @@ get_docker_compose_command() {
     exit 1
   fi
 }
-check_installed() {
-  if [ -n "$ZITADEL_MASTERKEY" ]; then
-    echo "Zitadel was installed previously. In order to reinstall it, please remove Zitadel docker container and .env file manually"
-    exit 1;
+
+check_docker() {
+  if ! command -v docker &>/dev/null; then
+    echo "docker is not installed or not in PATH, please install with your package manager. e.g. sudo apt install docker.io" >/dev/stderr
+    exit 1
   fi
 }
 
@@ -37,26 +42,68 @@ check_curl() {
   fi
 }
 
-createZitadelMasterKey() {
-  ZITADEL_MASTERKEY="$(openssl rand -base64 32 | head -c 32)"
-  echo "ZITADEL_MASTERKEY=$ZITADEL_MASTERKEY" >> .env
+curl() {
+  CURL=$(which curl)
+
+  if [ "${SELF_SIGNED_CERT}" == "true" ]; then
+    ${CURL} --cacert "./certs/zitadel.${DOMAIN}.crt" "$@"
+  else
+    ${CURL} "$@"
+  fi
 }
 
-createZitadelCookieSecret() {
-  ZITADEL_COOKIE_SECRET="$(openssl rand -base64 32 | head -c 32)"
-  echo "ZITADEL_COOKIE_SECRET=$ZITADEL_COOKIE_SECRET" >> .env
+write_env() {
+  if grep -q -s "${1}=" "${ENV_FILE_PATH}"; then
+    if [ "$3" == "force" ]; then
+      ENV_CONTENT=$(cat "${ENV_FILE_PATH}")
+      echo "$ENV_CONTENT" | grep -v "${1}=" >"${ENV_FILE_PATH}"
+      echo "${1}=${2}" >>"${ENV_FILE_PATH}"
+    fi
+    return 0
+  else
+    echo "${1}=${2}" >>"${ENV_FILE_PATH}"
+  fi
+  return 0
 }
 
-createUsMasterToken() {
-  US_MASTER_TOKEN="$(openssl rand -base64 32 | head -c 32)"
-  echo "US_MASTER_TOKEN=$US_MASTER_TOKEN" >> .env
+remove_env() {
+  if grep -q -s "${1}=" "${ENV_FILE_PATH}"; then
+    ENV_CONTENT=$(cat "${ENV_FILE_PATH}")
+    echo "$ENV_CONTENT" | grep -v "${1}=" >"${ENV_FILE_PATH}"
+  fi
+  return 0
 }
 
-startZitadel() {
+check_installed() {
+  if [ ! -z "${INIT_COMPLETED}" ]; then
+    echo "DataLens init was completed previously. In order to reinstall it, please remove all docker container and .env file manually" >/dev/stderr
+    return 0
+  else
+    return 1
+  fi
+}
+
+generate_secret() {
+  ENV_KEY=$1
+  ENV_LENGTH=$2
+  FORMAT=$3
+  if [ "${FORMAT}" == "base64" ]; then
+    PASS="\"$(openssl rand -base64 ${ENV_LENGTH} | tr -dc a-zA-Z0-9 | head -c ${ENV_LENGTH} | openssl base64)\""
+  elif [ "${FORMAT}" == "special" ]; then
+    PASS="$(openssl rand -base64 ${ENV_LENGTH} | tr -dc a-zA-Z0-9 | head -c ${ENV_LENGTH})_"
+  else
+    PASS="$(openssl rand -base64 ${ENV_LENGTH} | tr -dc a-zA-Z0-9 | head -c ${ENV_LENGTH})"
+  fi
+  write_env "${ENV_KEY}" "$PASS"
+}
+
+start_zitadel() {
   echo "Docker compose Zitadel start"
 
-  ZITADEL_EXTERNALPORT=8085 ZITADEL_EXTERNALDOMAIN=localhost $(get_docker_compose_command) -f docker-compose.zitadel.yml up -d zitadel
-  
+  COMPOSE_UP_SERVICES="zitadel"
+
+  ZITADEL_EXTERNALPORT=8085 ZITADEL_EXTERNALDOMAIN=localhost $(get_docker_compose_command) -f docker-compose.zitadel.yml up -d ${COMPOSE_UP_SERVICES}
+
   echo "Docker compose Zitadel finish"
 }
 
@@ -87,7 +134,6 @@ wait_api() {
   set -e
 }
 
-
 handle_zitadel_request_response() {
   PARSED_RESPONSE=$1
   FUNCTION_NAME=$2
@@ -108,10 +154,10 @@ set_custom_login_text() {
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
       -H "Authorization: Bearer $PAT" \
-      -d '{ 
+      -d '{
       "initMfaPromptText": {
-        "skipButtonText": "пропустить",
-        "nextButtonText": "далее"
+        "skipButtonText": "Пропустить",
+        "nextButtonText": "Далее"
       }
     }'
   )
@@ -121,6 +167,20 @@ create_new_project() {
   INSTANCE_URL=$1
   PAT=$2
   PROJECT_NAME=$3
+
+  RESPONSE=$(
+    curl -sS "$INSTANCE_URL/management/v1/projects/_search" \
+      -H "Authorization: Bearer $PAT" \
+      -H "Content-Type: application/json" \
+      -d '{"queries":[{"nameQuery": {"name": "'"$PROJECT_NAME"'","method": "TEXT_QUERY_METHOD_EQUALS"}}]}'
+  )
+
+  PROJECT_ID=$(echo "$RESPONSE" | jq -r '.result[0].id')
+
+  if [ ! "${PROJECT_ID}" == "null" ]; then
+    echo ${PROJECT_ID}
+    return 0
+  fi
 
   RESPONSE=$(
     curl -sS -X POST "$INSTANCE_URL/management/v1/projects" \
@@ -142,13 +202,28 @@ create_new_application() {
   LOGOUT_URL=$5
   ZITADEL_DEV_MODE=$6
 
+  RESPONSE=$(
+    curl -sS "$INSTANCE_URL/management/v1/projects/$PROJECT_ID/apps/_search" \
+      -H "Authorization: Bearer $PAT" \
+      -H "Content-Type: application/json" \
+      -d '{"queries":[{"nameQuery": {"name": "'"$APPLICATION_NAME"'","method": "TEXT_QUERY_METHOD_EQUALS"}}]}'
+  )
+
+  APP_ID=$(echo "$RESPONSE" | jq -r '.result[0].id')
+
+  if [ ! "${APP_ID}" == "null" ]; then
+    curl -sS -L -X DELETE "$INSTANCE_URL/management/v1/projects/${PROJECT_ID}/apps/${APP_ID}" \
+      -H "Accept: application/json" \
+      -H "Authorization: Bearer $PAT" &>/dev/null
+  fi
+
   GRANT_TYPES='["OIDC_GRANT_TYPE_AUTHORIZATION_CODE","OIDC_GRANT_TYPE_REFRESH_TOKEN"]'
 
   RESPONSE=$(
     curl -sS -X POST "$INSTANCE_URL/management/v1/projects/$PROJECT_ID/apps/oidc" \
       -H "Authorization: Bearer $PAT" \
       -H "Content-Type: application/json" \
-      -d '{                                                                                                                                                             
+      -d '{
     "name": "'"$APPLICATION_NAME"'",
     "redirectUris": [
       "'"$BASE_REDIRECT_URL1"'"
@@ -198,7 +273,7 @@ update_settings() {
          "refreshTokenExpiration": "1209600s"
       }'
   )
-} 
+}
 
 create_user_roles() {
   INSTANCE_URL=$1
@@ -223,7 +298,7 @@ create_user_roles() {
           ]
       }'
   )
-} 
+}
 
 find_admin_user() {
   INSTANCE_URL=$1
@@ -243,8 +318,8 @@ find_admin_user() {
           "queries": [
             {
               "emailQuery": {
-                "emailAddress": "zitadel-admin@zitadel.localhost",
-                "method": "TEXT_QUERY_METHOD_EQUALS"
+                "emailAddress": "admin@",
+                "method": "TEXT_QUERY_METHOD_CONTAINS"
               }
             }
           ]
@@ -283,6 +358,20 @@ create_service_user() {
   USERNAME=$3
 
   RESPONSE=$(
+    curl -sS "$INSTANCE_URL/management/v1/users/_search" \
+      -H "Authorization: Bearer $PAT" \
+      -H "Content-Type: application/json" \
+      -d '{"queries":[{"userNameQuery": {"userName": "'"$USERNAME"'","method": "TEXT_QUERY_METHOD_EQUALS"}}]}'
+  )
+
+  USER_ID=$(echo "$RESPONSE" | jq -r '.result[0].id')
+
+  if [ ! "${USER_ID}" == "null" ]; then
+    echo "${USER_ID}"
+    return 0
+  fi
+
+  RESPONSE=$(
     curl -sS -X POST "$INSTANCE_URL/management/v1/users/machine" \
       -H "Authorization: Bearer $PAT" \
       -H 'Content-Type: application/json' \
@@ -294,7 +383,7 @@ create_service_user() {
          "accessTokenType": "ACCESS_TOKEN_TYPE_BEARER"
       }'
   )
-  
+
   PARSED_RESPONSE=$(echo "$RESPONSE" | jq -r '.userId')
   handle_zitadel_request_response "$PARSED_RESPONSE" "create_service_user" "$RESPONSE"
   echo "$PARSED_RESPONSE"
@@ -316,7 +405,6 @@ create_service_user_secret() {
   SERVICE_USER_CLIENT_SECRET=$(echo "$RESPONSE" | jq -r '.clientSecret')
   handle_zitadel_request_response "$SERVICE_USER_CLIENT_SECRET" "create_service_user_secret" "$RESPONSE"
 }
-
 
 delete_admin_service_user() {
   INSTANCE_URL=$1
@@ -349,9 +437,14 @@ delete_admin_service_user() {
   echo "$PARSED_RESPONSE"
 }
 
-installZitadel() {
-  check_installed
+start_compose() {
+  DOCKER_COMPOSE_CONFIG=docker-compose.zitadel.yml
 
+  $(get_docker_compose_command) -f ${DOCKER_COMPOSE_CONFIG} up -d
+}
+
+install_zitadel() {
+  check_docker
   check_jq
   check_curl
 
@@ -360,7 +453,11 @@ installZitadel() {
 
   ZITADEL_DEV_MODE=true
 
-  MACHINEKEY_TOKEN_DIR=./zitadel/machinekey
+  if [ -z "${ZITADEL_CONFIG_DIR}" ]; then
+    ZITADEL_CONFIG_DIR=./zitadel
+  fi
+
+  MACHINEKEY_TOKEN_DIR="${ZITADEL_CONFIG_DIR}/machinekey"
   MACHINEKEY_TOKEN_PATH=$MACHINEKEY_TOKEN_DIR/zitadel-admin-sa.token
 
   rm -rf "$MACHINEKEY_TOKEN_DIR"
@@ -369,27 +466,32 @@ installZitadel() {
   echo "Creating machinekey folder"
 
   mkdir -p "$MACHINEKEY_TOKEN_DIR"
-  chmod 777 "$MACHINEKEY_TOKEN_DIR"
+  chmod -R 777 "$ZITADEL_CONFIG_DIR"
 
-  createZitadelMasterKey
-  
-  createZitadelCookieSecret
+  echo "Generate secrets"
+  generate_secret ZITADEL_MASTERKEY 32
+  generate_secret ZITADEL_COOKIE_SECRET 32
+  generate_secret US_MASTER_TOKEN 32
 
-  createUsMasterToken
+  start_zitadel
 
-  startZitadel
+  if [ ! -z "${ZITADEL_ADMIN_ACCESS_TOKEN}" ]; then
+    PAT="${ZITADEL_ADMIN_ACCESS_TOKEN}"
+  else
+    printf "Waiting Admin's PAT to be created "
+    wait_pat "$MACHINEKEY_TOKEN_PATH"
 
-  printf "Waiting Admin's PAT to be created "
-  wait_pat "$MACHINEKEY_TOKEN_PATH"
- 
-  echo "Reading Admin's PAT"
-  
-  PAT=$(cat $MACHINEKEY_TOKEN_PATH)
-  
-  if [ "$PAT" = "null" ]; then
-    echo "Failed getting PAT"
-    exit 1
+    echo "Reading Admin's PAT"
+
+    PAT=$(cat $MACHINEKEY_TOKEN_PATH)
+
+    if [ "$PAT" = "null" ]; then
+      echo "Failed getting PAT"
+      exit 1
+    fi
   fi
+
+  write_env ZITADEL_ADMIN_ACCESS_TOKEN "${PAT}"
 
   printf "Waiting for Zitadel to become ready "
   wait_api "$INSTANCE_URL" "$PAT"
@@ -398,53 +500,67 @@ installZitadel() {
   set_custom_login_text "$INSTANCE_URL" "$PAT"
 
   echo "Updating settings"
-  update_settings  "$INSTANCE_URL" "$PAT"
+  update_settings "$INSTANCE_URL" "$PAT"
 
   echo "Creating DataLens project"
   PROJECT_ID=$(create_new_project "$INSTANCE_URL" "$PAT" "DataLens")
 
-  echo "ZITADEL_PROJECT_ID=$PROJECT_ID" >> .env
+  write_env ZITADEL_PROJECT_ID "${PROJECT_ID}" force
 
   echo "Creating Charts application"
   create_new_application "$INSTANCE_URL" "$PAT" "Charts" "$BASE_REDIRECT_URL/api/auth/callback" "$BASE_REDIRECT_URL/auth" "$ZITADEL_DEV_MODE"
 
-  echo "DL_CLIENT_SECRET=$APP_CLIENT_SECRET" >> .env
-  echo "DL_CLIENT_ID=$APP_CLIENT_ID" >> .env
+  DL_CLIENT_ID="${APP_CLIENT_ID}"
+  DL_CLIENT_SECRET="${APP_CLIENT_SECRET}"
+
+  write_env DL_CLIENT_ID "${DL_CLIENT_ID}" force
+  write_env DL_CLIENT_SECRET "${DL_CLIENT_SECRET}" force
 
   echo "Creating user roles"
   create_user_roles "$INSTANCE_URL" "$PAT" "$PROJECT_ID"
 
   echo "Granting user datalens.admin role"
-  ADMIN_USER=$(find_admin_user "$INSTANCE_URL" "$PAT")  
+  ADMIN_USER=$(find_admin_user "$INSTANCE_URL" "$PAT")
   grant_user_role "$INSTANCE_URL" "$PAT" "$PROJECT_ID" "$ADMIN_USER" "datalens.admin"
 
   echo "Creating charts service user"
   MACHINE_USER_ID=$(create_service_user "$INSTANCE_URL" "$PAT" "charts")
   create_service_user_secret "$INSTANCE_URL" "$PAT" "$MACHINE_USER_ID"
-  echo "CHARTS_SERVICE_CLIENT_SECRET=$SERVICE_USER_CLIENT_SECRET" >> .env
+  CHARTS_SERVICE_CLIENT_SECRET="${SERVICE_USER_CLIENT_SECRET}"
+  write_env CHARTS_SERVICE_CLIENT_SECRET "${CHARTS_SERVICE_CLIENT_SECRET}" force
 
   echo "Creating us service user"
   MACHINE_USER_ID=$(create_service_user "$INSTANCE_URL" "$PAT" "us")
   create_service_user_secret "$INSTANCE_URL" "$PAT" "$MACHINE_USER_ID"
-  echo "US_SERVICE_CLIENT_SECRET=$SERVICE_USER_CLIENT_SECRET" >> .env
+  US_SERVICE_CLIENT_SECRET="${SERVICE_USER_CLIENT_SECRET}"
+  write_env US_SERVICE_CLIENT_SECRET "${US_SERVICE_CLIENT_SECRET}" force
 
   echo "Creating bi service user"
   MACHINE_USER_ID=$(create_service_user "$INSTANCE_URL" "$PAT" "bi")
   create_service_user_secret "$INSTANCE_URL" "$PAT" "$MACHINE_USER_ID"
-  echo "BI_SERVICE_CLIENT_SECRET=$SERVICE_USER_CLIENT_SECRET" >> .env
+  BI_SERVICE_CLIENT_SECRET="${SERVICE_USER_CLIENT_SECRET}"
+  write_env BI_SERVICE_CLIENT_SECRET "${BI_SERVICE_CLIENT_SECRET}" force
 
   echo "Deleting admin service user"
-
   DATE="null"
   DATE=$(delete_admin_service_user "$INSTANCE_URL" "$PAT")
   if [ "$DATE" = "null" ]; then
-      echo "Failed deleting admin service user"
-      echo "Please remove it manually"
+    echo "Failed deleting admin service user"
+    echo "Please remove it manually"
   fi
 
-  rm -rf "$MACHINEKEY_TOKEN_DIR"
+  rm -rf "$ZITADEL_CONFIG_DIR"
 
-  echo "Zitadel has been successfully installed. Please run 'docker compose -f docker-compose.zitadel.yml up -d' to proceed"
+  write_env INIT_COMPLETED "true"
+
+  echo "DataLens has been successfully installed"
 }
 
-installZitadel
+load_env
+
+if check_installed; then
+  start_compose
+else
+  install_zitadel
+  start_compose
+fi
