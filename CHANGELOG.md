@@ -7,13 +7,13 @@
 - datalens-us: 0.224.0
 
 ### New features
-- feat: BI-5673 add native types serialization. [datalens-tech/datalens-backend#574](https://github.com/datalens-tech/datalens-backend/pull/574)
-- feat(connectors): BI-5233 Add secure to file settings. [datalens-tech/datalens-backend#581](https://github.com/datalens-tech/datalens-backend/pull/581)
-- feat: BI-5696 csrf multiple secrets support added. [datalens-tech/datalens-backend#579](https://github.com/datalens-tech/datalens-backend/pull/579)
-- feat: BI-5673 add an option to use the json serializer for non-stream requests in RQE. [datalens-tech/datalens-backend#569](https://github.com/datalens-tech/datalens-backend/pull/569)
+- **General components**: Add native types serialization. [datalens-tech/datalens-backend#574](https://github.com/datalens-tech/datalens-backend/pull/574)
+- **Connectors**: Add secure to file settings. [datalens-tech/datalens-backend#581](https://github.com/datalens-tech/datalens-backend/pull/581)
+- CSRF multiple secrets support added. [datalens-tech/datalens-backend#579](https://github.com/datalens-tech/datalens-backend/pull/579)
+- **General components**: Add an option to use the json serializer for non-stream requests in RQE. [datalens-tech/datalens-backend#569](https://github.com/datalens-tech/datalens-backend/pull/569)
 
 ### Bug fixes
-- fix: BI-5542 bitrix user field filtering fix. [datalens-tech/datalens-backend#575](https://github.com/datalens-tech/datalens-backend/pull/575)
+- **Connectors**: Bitrix user field filtering fix. [datalens-tech/datalens-backend#575](https://github.com/datalens-tech/datalens-backend/pull/575)
 
 
 ## v1.9.0 (2024-08-15)
