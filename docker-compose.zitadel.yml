@@ -126,7 +126,7 @@ services:
 
   zitadel:
     restart: 'always'
-    image: 'ghcr.io/zitadel/zitadel:v2.54.1'
+    image: 'ghcr.io/zitadel/zitadel:v2.54.8'
     command: 'start-from-init --masterkeyFromEnv --tlsMode disabled'
     environment:
       - 'ZITADEL_MASTERKEY=${ZITADEL_MASTERKEY:?missed ZITADEL_MASTERKEY env}'
