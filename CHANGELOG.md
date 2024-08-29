@@ -15,6 +15,9 @@
 ### Bug fixes
 - **Connectors**: Bitrix user field filtering fix. [datalens-tech/datalens-backend#575](https://github.com/datalens-tech/datalens-backend/pull/575)
 
+### Dependencies
+- Update Zitadel version. [datalens-tech/datalens#191](https://github.com/datalens-tech/datalens/pull/191)
+
 
 ## v1.9.0 (2024-08-15)
 
