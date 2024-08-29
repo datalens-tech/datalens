@@ -1,3 +1,24 @@
+## v1.10.0 (2024-08-29)
+
+### Image versions
+- datalens-control-api: 0.2132.0 -> 0.2139.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2132.0...v0.2139.0))
+- datalens-data-api: 0.2132.0 -> 0.2139.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2132.0...v0.2139.0))
+- datalens-ui: 0.1906.0
+- datalens-us: 0.224.0
+
+### New features
+- **General components**: Add native types serialization. [datalens-tech/datalens-backend#574](https://github.com/datalens-tech/datalens-backend/pull/574)
+- **Connectors**: Add secure to file settings. [datalens-tech/datalens-backend#581](https://github.com/datalens-tech/datalens-backend/pull/581)
+- CSRF multiple secrets support added. [datalens-tech/datalens-backend#579](https://github.com/datalens-tech/datalens-backend/pull/579)
+- **General components**: Add an option to use the json serializer for non-stream requests in RQE. [datalens-tech/datalens-backend#569](https://github.com/datalens-tech/datalens-backend/pull/569)
+
+### Bug fixes
+- **Connectors**: Bitrix user field filtering fix. [datalens-tech/datalens-backend#575](https://github.com/datalens-tech/datalens-backend/pull/575)
+
+### Dependencies
+- Update Zitadel version. [datalens-tech/datalens#191](https://github.com/datalens-tech/datalens/pull/191)
+
+
 ## v1.9.0 (2024-08-15)
 
 ### Image versions
