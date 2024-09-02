@@ -1,3 +1,34 @@
+## v1.11.0 (2024-09-02)
+
+### Image versions
+- datalens-control-api: 0.2139.0
+- datalens-data-api: 0.2139.0
+- datalens-ui: 0.1906.0 -> 0.2000.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.1906.0...v0.2000.0))
+- datalens-us: 0.224.0 -> 0.239.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.224.0...v0.239.0))
+
+### New features
+- **Dashboards**: Support top placement for selectors titles. [datalens-tech/datalens-ui#1316](https://github.com/datalens-tech/datalens-ui/pull/1316)
+- **Navigation**: Add menu for zitadel user. [datalens-tech/datalens-ui#1344](https://github.com/datalens-tech/datalens-ui/pull/1344)
+- **Navigation**: Show tooltip with absolute modification date for collections table. [datalens-tech/datalens-ui#1370](https://github.com/datalens-tech/datalens-ui/pull/1370)
+- **Charts**: Add ENV to enable Yandex Map and set HC endpoint from ENV. [datalens-tech/datalens-ui#1413](https://github.com/datalens-tech/datalens-ui/pull/1413)
+
+### Bug fixes
+- **Dashboards**: Fix filling hint of selector with dataset description. [datalens-tech/datalens-ui#1323](https://github.com/datalens-tech/datalens-ui/pull/1323)
+- **Dashboards**: Fix margins of buttons and checkboxes in selectors. [datalens-tech/datalens-ui#1324](https://github.com/datalens-tech/datalens-ui/pull/1324)
+- **Dashboards**: Fix layout of old selector when resaving with the addition of selectors. [datalens-tech/datalens-ui#1330](https://github.com/datalens-tech/datalens-ui/pull/1330)
+- **Dashboards**: Fix dash crash when canceling deleting of selector in autoupdating group. [datalens-tech/datalens-ui#1326](https://github.com/datalens-tech/datalens-ui/pull/1326)
+- **Dashboards**: Fix too large size of widget when canceling changes to old selector on dash. [datalens-tech/datalens-ui#1325](https://github.com/datalens-tech/datalens-ui/pull/1325)
+- **Datasets**: Fix for resetting source name in sql subrequest in dataset. [datalens-tech/datalens-ui#1361](https://github.com/datalens-tech/datalens-ui/pull/1361)
+- **Charts**: Fix wizard geo-chart with old config. [datalens-tech/datalens-ui#1369](https://github.com/datalens-tech/datalens-ui/pull/1369)
+- **Navigation**: Block clicks around checkboxes in collections. [datalens-tech/datalens-ui#1368](https://github.com/datalens-tech/datalens-ui/pull/1368)
+
+### Chores
+- **General components**: Up @gravity-ui/navigation. [datalens-tech/datalens-ui#1332](https://github.com/datalens-tech/datalens-ui/pull/1332)
+- **General components**: Bump fast-xml-parser and @aws-sdk/client-s3. [datalens-tech/datalens-ui#1308](https://github.com/datalens-tech/datalens-ui/pull/1308)
+- **General components**: Update @gravity-ui/dashkit 8.10.0 -> 8.10.1. [datalens-tech/datalens-ui#1390](https://github.com/datalens-tech/datalens-ui/pull/1390)
+- **General components**: Up @gravity-ui/chartkit(5.10.2 -> 5.11.2). [datalens-tech/datalens-ui#1409](https://github.com/datalens-tech/datalens-ui/pull/1409)
+
+
 ## v1.10.0 (2024-08-29)
 
 ### Image versions
