@@ -8,10 +8,9 @@
 
 ### New features
 - **Dashboards**: Support top placement for selectors titles. [datalens-tech/datalens-ui#1316](https://github.com/datalens-tech/datalens-ui/pull/1316)
-- **Navigation**: Add user menu. [datalens-tech/datalens-ui#1344](https://github.com/datalens-tech/datalens-ui/pull/1344)
+- **Navigation**: Add menu for zitadel user. [datalens-tech/datalens-ui#1344](https://github.com/datalens-tech/datalens-ui/pull/1344)
 - **Navigation**: Show tooltip with absolute modification date for collections table. [datalens-tech/datalens-ui#1370](https://github.com/datalens-tech/datalens-ui/pull/1370)
 - **Charts**: Add ENV to enable Yandex Map and set HC endpoint from ENV. [datalens-tech/datalens-ui#1413](https://github.com/datalens-tech/datalens-ui/pull/1413)
-- **Charts**: Support theme option in generateHtml. [datalens-tech/datalens-ui#1407](https://github.com/datalens-tech/datalens-ui/pull/1407)
 
 ### Bug fixes
 - **Dashboards**: Fix filling hint of selector with dataset description. [datalens-tech/datalens-ui#1323](https://github.com/datalens-tech/datalens-ui/pull/1323)
