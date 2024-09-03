@@ -1,3 +1,14 @@
+## v1.11.1 (2024-09-03)
+
+### Image versions
+- datalens-control-api: 0.2139.0
+- datalens-data-api: 0.2139.0
+- datalens-ui: 0.2000.0
+- datalens-us: 0.239.0
+
+### Bug fixes
+- **Navigation**: Fix navigate route in Zitadel mode. [datalens-tech/datalens#195](https://github.com/datalens-tech/datalens/pull/195)
+
 ## v1.11.0 (2024-09-02)
 
 ### Image versions
