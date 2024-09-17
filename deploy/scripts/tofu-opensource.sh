@@ -248,6 +248,7 @@ if [ "${IS_APPLY}" == "true" ]; then
     tofu apply -input=false ${TARGET}
   fi
 else
+  echo ""
   echo "📝 plan..."
   echo ""
 
