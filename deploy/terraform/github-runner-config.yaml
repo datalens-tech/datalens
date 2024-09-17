@@ -1,0 +1,13 @@
+#cloud-config
+runcmd:
+  - mkdir -p actions-runner && cd actions-runner
+  - case $(uname -m) in aarch64) ARCH="arm64" ;; amd64|x86_64) ARCH="x64" ;; esac && export RUNNER_ARCH=$${ARCH}
+  - curl -O -L https://github.com/actions/runner/releases/download/v${VERSION}/actions-runner-linux-$${RUNNER_ARCH}-${VERSION}.tar.gz
+  - tar xzf ./actions-runner-linux-$${RUNNER_ARCH}-${VERSION}.tar.gz
+  - export RUNNER_ALLOW_RUNASROOT=1
+  - ./config.sh --unattended --url https://github.com/${OWNER}/${REPO} --token ${TOKEN} --name github-runner-${REPO}-ind-${IND} --runnergroup default --work _work --labels cloud
+  - ./run.sh
+bootcmd:
+  - mkdir -p actions-runner && cd actions-runner
+  - export RUNNER_ALLOW_RUNASROOT=1
+  - ./run.sh
