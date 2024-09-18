@@ -79,13 +79,11 @@ if [ -f ./.env ]; then
 fi
 
 if [ -z "${API_ENDPOINT}" ]; then
-  echo "❌ env 'API_ENDPOINT' is empty, please fill it..."
-  exit 1
+  API_ENDPOINT="api.cloud.yandex.net"
 fi
 
 if [ -z "${STORAGE_ENDPOINT}" ]; then
-  echo "❌ env 'STORAGE_ENDPOINT' is empty, please fill it..."
-  exit 1
+  STORAGE_ENDPOINT="storage.yandexcloud.net"
 fi
 
 if [ -z "${CLOUD_ID}" ]; then
@@ -109,6 +107,11 @@ LOCKBOX_NAME="${SERVICE}-${SUFFIX}-terraform"
 CR_ENDPOINT=$(echo "${API_ENDPOINT}" | sed -E 's|^api.|cr.|')
 
 PROFILE_NAME="${SERVICE}-${SUFFIX}"
+
+if [ "$CI" == "true" ]; then
+  PROFILE_NAME="${SERVICE}-${SUFFIX}-$(date +%s)"
+fi
+
 if [ -z "${SA_FILE}" ]; then
   SA_FILE="$(pwd)/sa_key.json"
 fi
@@ -120,17 +123,14 @@ if [ ! -z "${YC_CLI_PATH}" ]; then
 fi
 
 YC_PROFILE_EXISTS=$(yc config profile list 2>/dev/null | grep -q "${PROFILE_NAME}" && echo "true")
-YC_PROFILE_BEFORE=$(yc config profile list | grep ACTIVE | sed 's/ ACTIVE//')
 
 yc-cleanup() {
-  if [ ! "${IS_CLEANUP}" == "true" ]; then
+  if [ ! "${IS_CLEANUP}" == "true" ] || [ "${CI}" == "true" ]; then
     return 0
   fi
-  if [ ! -z "${YC_PROFILE_BEFORE}" ]; then
-    yc config profile activate "${YC_PROFILE_BEFORE}" &>/dev/null
-  else
-    yc config profile create temp
-  fi
+
+  yc config profile create temp || yc config profile activate temp
+
   yc config profile delete "${PROFILE_NAME}" &>/dev/null
 }
 trap 'yc-cleanup' EXIT

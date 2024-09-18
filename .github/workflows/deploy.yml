@@ -1,0 +1,44 @@
+name: Deploy
+
+on:
+  # push:
+  #   branches:
+  #     - deploy-opensource-infra
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}
+
+jobs:
+  run:
+    name: Deploy
+    runs-on: 
+      - self-hosted
+      - linux
+      - cloud
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: 1.8.2
+      - uses: arduino/setup-task@v2
+      - uses: nightstory/setup-yc@v1
+      - run: |
+          jq -r '.' > ./deploy/terraform/sa_key.json << EOF
+          ${{ secrets.SA_KEY }}
+          EOF
+      - run: ./deploy/scripts/tofu-opensource.sh --tofurc --cleanup --init
+        env:
+          CI: "true"
+          CLOUD_ID: ${{ vars.CLOUD_ID }}
+          FOLDER_ID: ${{ vars.FOLDER_ID }}
+          DOMAIN: ${{ vars.DOMAIN }}
+          TOFU_MIRROR: "terraform-mirror.yandexcloud.net"
