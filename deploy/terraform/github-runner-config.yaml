@@ -1,13 +1,15 @@
 #cloud-config
 runcmd:
-  - mkdir -p actions-runner && cd actions-runner
+  - apt update && apt install -y jq unzip curl git docker.io docker-compose-v2
+  - useradd -m github --shell /bin/bash && usermod -aG sudo github && usermod -aG docker github
+  - cd /home/github
+  - su - github -c "mkdir -p /home/github/actions-runner"
+  - cd actions-runner
   - case $(uname -m) in aarch64) ARCH="arm64" ;; amd64|x86_64) ARCH="x64" ;; esac && export RUNNER_ARCH=$${ARCH}
-  - curl -O -L https://github.com/actions/runner/releases/download/v${VERSION}/actions-runner-linux-$${RUNNER_ARCH}-${VERSION}.tar.gz
-  - tar xzf ./actions-runner-linux-$${RUNNER_ARCH}-${VERSION}.tar.gz
-  - export RUNNER_ALLOW_RUNASROOT=1
-  - ./config.sh --unattended --url https://github.com/${OWNER}/${REPO} --token ${TOKEN} --name github-runner-${REPO}-ind-${IND} --runnergroup default --work _work --labels cloud
-  - ./run.sh
+  - su - github -c "curl -O -L https://github.com/actions/runner/releases/download/v${VERSION}/actions-runner-linux-$${RUNNER_ARCH}-${VERSION}.tar.gz"
+  - su - github -c "tar xzf ./actions-runner-linux-$${RUNNER_ARCH}-${VERSION}.tar.gz"
+  - su - github -c "./config.sh --unattended --url https://github.com/${OWNER}/${REPO} --token ${TOKEN} --name github-runner-${REPO}-ind-${IND} --runnergroup default --work _work --labels cloud"
+  - su - github -c "export PATH=\$${PATH}:\$${HOME}/.local/bin && ./run.sh"
 bootcmd:
-  - mkdir -p actions-runner && cd actions-runner
-  - export RUNNER_ALLOW_RUNASROOT=1
-  - ./run.sh
+  - cd /home/github/actions-runner
+  - su - github -c "export PATH=\$${PATH}:\$${HOME}/.local/bin && ./run.sh"
