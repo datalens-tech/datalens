@@ -39,6 +39,8 @@ locals {
   # auto create github runner
   is_create_github_runner = true
 
-  k8s_use_external_ipv4 = true
+  # use local k8s ipv4 by security reason
+  k8s_use_external_ipv4        = true
+  k8s_connect_by_internal_ipv4 = true
 }
 

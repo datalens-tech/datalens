@@ -34,6 +34,14 @@ jobs:
           jq -r '.' > ./deploy/terraform/sa_key.json << EOF
           ${{ secrets.SA_KEY }}
           EOF
+      - run: ../scripts/tofu-opensource.sh --tofurc --cleanup --init --target data.shell_script.kubeconfig
+        working-directory: ./deploy/terraform
+        env:
+          CI: "true"
+          CLOUD_ID: ${{ vars.CLOUD_ID }}
+          FOLDER_ID: ${{ vars.FOLDER_ID }}
+          DOMAIN: ${{ vars.DOMAIN }}
+          TOFU_MIRROR: "terraform-mirror.yandexcloud.net"
       - run: ../scripts/tofu-opensource.sh --tofurc --cleanup --init
         working-directory: ./deploy/terraform
         env:
