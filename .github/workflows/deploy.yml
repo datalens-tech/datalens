@@ -34,7 +34,7 @@ jobs:
           jq -r '.' > ./deploy/terraform/sa_key.json << EOF
           ${{ secrets.SA_KEY }}
           EOF
-      - run: ../scripts/tofu-opensource.sh --tofurc --cleanup --init --target data.shell_script.kubeconfig
+      - run: ../scripts/tofu-opensource.sh --tofurc --cleanup --init --target data.shell_script.kubeconfig --apply --approve
         working-directory: ./deploy/terraform
         env:
           CI: "true"
