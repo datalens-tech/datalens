@@ -36,7 +36,7 @@ jobs:
           EOF
       - run: |
           ../scripts/tofu-opensource.sh --tofurc --cleanup --init --target data.shell_script.kubeconfig --apply --approve
-          ls -la ./kubeconfig.conf
+          ls -la ./kubeconfig.conf && sleep 10
           ../scripts/tofu-opensource.sh --tofurc --cleanup --init --apply --approve
         working-directory: ./deploy/terraform
         env:

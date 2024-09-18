@@ -62,7 +62,7 @@ data "dns_a_record_set" "domain" {
 }
 
 data "http" "this" {
-  for_each = local.k8s_use_external_ipv4 ? { ip = "https://api.ipify.org", github = "https://api.github.com/meta" } : { github = "https://api.github.com/meta" }
+  for_each = local.k8s_use_external_ipv4 && !local.k8s_connect_by_internal_ipv4 ? { ip = "https://api.ipify.org", github = "https://api.github.com/meta" } : { github = "https://api.github.com/meta" }
 
   url = each.value
 }
@@ -83,7 +83,7 @@ locals {
     { proto = "ANY", cidr_v4 = local.v4_k8s_cidr_blocks, from_port = 0, to_port = 65535, desc = "k8s" },
     { proto = "ICMP", cidr_v4 = local.v4_icmp_cidr_blocks, from_port = 0, to_port = 65535, desc = "icmp" },
     { proto = "TCP", target = "loadbalancer_healthchecks", from_port = 0, to_port = 65535, desc = "alb" },
-  ], local.k8s_use_external_ipv4 ? [{ proto = "TCP", cidr_v4 = ["${local.v4_public_ip}/32"], port = 443, desc = "deploy" }] : [])
+  ], local.k8s_use_external_ipv4 && !local.k8s_connect_by_internal_ipv4 ? [{ proto = "TCP", cidr_v4 = ["${local.v4_public_ip}/32"], port = 443, desc = "deploy" }] : [])
   egress = concat(
     [
       { proto = "ANY", target = "self_security_group", from_port = 0, to_port = 65535, desc = "self" },
