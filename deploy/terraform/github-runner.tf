@@ -112,7 +112,6 @@ locals {
     { proto = "ANY", target = "self_security_group", from_port = 0, to_port = 65535, desc = "self" },
     { proto = "ANY", cidr_v4 = local.v4_subnets_cidr_blocks, from_port = 0, to_port = 65535, desc = "subnets" },
     { proto = "ICMP", cidr_v4 = local.v4_icmp_cidr_blocks, from_port = 0, to_port = 65535, desc = "icmp" },
-    { proto = "TCP", cidr_v4 = ["${local.v4_public_ip}/32"], port = 22, desc = "deploy" }
   ]
   egress_github_runner = concat(
     [
