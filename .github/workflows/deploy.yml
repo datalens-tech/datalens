@@ -1,10 +1,9 @@
 name: Deploy
 
 on:
-  # push:
-  #   branches:
-  #     - deploy-opensource-infra
-  workflow_dispatch:
+  push:
+    branches:
+      - deploy-opensource-infra
 
 permissions:
   contents: read
