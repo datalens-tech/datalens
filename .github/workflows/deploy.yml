@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   run:
-    name: Deploy
+    name: terraform
     runs-on: 
       - self-hosted
       - linux
@@ -34,7 +34,8 @@ jobs:
           jq -r '.' > ./deploy/terraform/sa_key.json << EOF
           ${{ secrets.SA_KEY }}
           EOF
-      - run: ./deploy/scripts/tofu-opensource.sh --tofurc --cleanup --init
+      - run: ../scripts/tofu-opensource.sh --tofurc --cleanup --init
+        working-directory: ./deploy/terraform
         env:
           CI: "true"
           CLOUD_ID: ${{ vars.CLOUD_ID }}
