@@ -1,6 +1,7 @@
 resource "yandex_logging_group" "logging" {
-  name      = "${local.service}-k8s-app-logging-group"
-  folder_id = local.folder_id
+  name             = "${local.service}-k8s-app-logging-group"
+  folder_id        = local.folder_id
+  retention_period = "720h"
 }
 
 resource "helm_release" "logging" {
