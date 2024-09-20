@@ -45,6 +45,7 @@ UI_PORT=8081 docker compose up
 <details>
             <summary>How to enable Yandex Map</summary>
 
+Available since [release v1.11.0](https://github.com/datalens-tech/datalens/releases/tag/v1.11.0)
 
 Use the following container parameters for launch:
 
