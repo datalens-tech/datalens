@@ -42,7 +42,9 @@ UI_PORT=8081 docker compose up
 
 </details>
 
-#### How to enable Yandex Map
+<details>
+            <summary>How to enable Yandex Map</summary>
+
 
 Use the following container parameters for launch:
 
@@ -54,7 +56,7 @@ Use the following container parameters for launch:
 ```bash
 YANDEX_MAP_ENABLED=1 YANDEX_MAP_TOKEN=XXXXXXXXX docker compose up
 ```
-
+</details>
 
 ## How to update
 
