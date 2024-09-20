@@ -31,10 +31,6 @@ jobs:
       - uses: arduino/setup-task@v2
       - uses: nightstory/setup-yc@v1
       - run: |
-          jq -r '.' > ./deploy/terraform/sa_key.json << EOF
-          ${{ secrets.SA_KEY }}
-          EOF
-      - run: |
           ../scripts/tofu-opensource.sh --tofurc --cleanup --init --target data.shell_script.kubeconfig --apply --approve
           ls -la ./kubeconfig.conf && sleep 10
           ../scripts/tofu-opensource.sh --tofurc --cleanup --init --apply --approve

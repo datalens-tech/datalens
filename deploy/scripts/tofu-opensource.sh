@@ -112,7 +112,7 @@ if [ "$CI" == "true" ]; then
   PROFILE_NAME="${SERVICE}-${SUFFIX}-$(date +%s)"
 fi
 
-if [ -z "${SA_FILE}" ]; then
+if [ -z "${SA_FILE}" ] && [ "$CI" != "true" ]; then
   SA_FILE="$(pwd)/sa_key.json"
 fi
 
@@ -137,13 +137,15 @@ trap 'yc-cleanup' EXIT
 
 if [ ! "${YC_PROFILE_EXISTS}" == "true" ]; then
   echo "💡 yc profile [${PROFILE_NAME}] does not exists, creating..."
-  if [ -f "${SA_FILE}" ]; then
+  if [ -f "${SA_FILE}" ] || [ "$CI" == "true" ]; then
     yc config profile create "${PROFILE_NAME}" &>/dev/null || exit 1
 
     yc config set cloud-id ${CLOUD_ID} &>/dev/null || exit 1
     yc config set folder-id ${FOLDER_ID} &>/dev/null || exit 1
     yc config set endpoint "${API_ENDPOINT}:443" &>/dev/null || exit 1
-    yc config set service-account-key "${SA_FILE}" &>/dev/null || exit 1
+    if [ ! -z "${SA_FILE}" ]; then
+      yc config set service-account-key "${SA_FILE}" &>/dev/null || exit 1
+    fi
   else
     echo "❌ service account file '${SA_FILE}' does not exists, configure profile '${PROFILE_NAME}' manually at 'yc' cli or provider sa account file, exit..."
   fi

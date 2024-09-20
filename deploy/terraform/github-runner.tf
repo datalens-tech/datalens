@@ -20,6 +20,20 @@ data "yandex_lockbox_secret_version" "github-runner" {
   secret_id = yandex_lockbox_secret.github-runner["main"].id
 }
 
+resource "yandex_iam_service_account" "github-runner" {
+  for_each = toset(local.is_create_github_runner ? ["main"] : [])
+
+  name = "${local.service}-gh-runner-sa"
+}
+
+resource "yandex_resourcemanager_folder_iam_member" "github-runner" {
+  for_each = toset(local.is_create_github_runner ? ["main"] : [])
+
+  folder_id = local.folder_id
+  role      = "admin"
+  member    = "serviceAccount:${yandex_iam_service_account.github-runner["main"].id}"
+}
+
 data "yandex_compute_image" "this" {
   family = "ubuntu-24-04-lts"
 }
@@ -40,6 +54,8 @@ resource "yandex_compute_instance" "github-runner" {
   name        = "github-runner-${local.gh_repo}-${each.key}"
   platform_id = "standard-v3"
   zone        = local.zones[each.value % length(local.zones)]
+
+  service_account_id = yandex_iam_service_account.github-runner["main"].id
 
   resources {
     cores  = 2
