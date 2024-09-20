@@ -42,6 +42,23 @@ UI_PORT=8081 docker compose up
 
 </details>
 
+<details>
+            <summary>How to enable Yandex Map</summary>
+
+Available since [release v1.11.0](https://github.com/datalens-tech/datalens/releases/tag/v1.11.0)
+
+Use the following container parameters for launch:
+
+| Parameter | Description | Values |
+|---|---|---|
+| `YANDEX_MAP_ENABLED` | Enable usage of Yandex Map visualization | `1` or `true` |
+| `YANDEX_MAP_TOKEN` | Yandex Map API key  | `<string>` |
+
+```bash
+YANDEX_MAP_ENABLED=1 YANDEX_MAP_TOKEN=XXXXXXXXX docker compose up
+```
+</details>
+
 ## How to update
 
 Just pull the new `docker-compose.yml` and restart.
