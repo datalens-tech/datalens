@@ -125,7 +125,7 @@ fi
 YC_PROFILE_EXISTS=$(yc config profile list 2>/dev/null | grep -q "${PROFILE_NAME}" && echo "true")
 
 yc-cleanup() {
-  if [ ! "${IS_CLEANUP}" == "true" ] || [ "${CI}" == "true" ]; then
+  if [ "${IS_CLEANUP}" != "true" ] && [ "${CI}" != "true" ]; then
     return 0
   fi
 
