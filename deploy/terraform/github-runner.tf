@@ -46,6 +46,12 @@ resource "yandex_compute_disk" "github-runner" {
   size     = 20
   zone     = local.zones[each.value % length(local.zones)]
   image_id = data.yandex_compute_image.this.id
+
+  lifecycle {
+    ignore_changes = [
+      image_id
+    ]
+  }
 }
 
 resource "yandex_compute_instance" "github-runner" {
