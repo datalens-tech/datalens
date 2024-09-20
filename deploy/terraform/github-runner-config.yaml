@@ -1,7 +1,7 @@
 #cloud-config
 runcmd:
   - apt update && apt install -y jq unzip curl git docker.io docker-compose-v2
-  - useradd -m github --shell /bin/bash && usermod -aG sudo github && usermod -aG docker github
+  - useradd -m github --shell /bin/bash && usermod -aG docker github
   - cd /home/github
   - su - github -c "mkdir -p /home/github/actions-runner"
   - cd actions-runner
