@@ -1,3 +1,46 @@
+## v1.12.0 (2024-09-23)
+
+### Image versions
+- datalens-control-api: 0.2139.0
+- datalens-data-api: 0.2139.0
+- datalens-ui: 0.2000.0 -> 0.2140.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.2000.0...v0.2140.0))
+- datalens-us: 0.239.0 -> 0.246.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.239.0...v0.246.0))
+
+### Breaking changes
+- **Charts**: Replace convertConnectionType with another function in registry(QL). [datalens-tech/datalens-ui#1493](https://github.com/datalens-tech/datalens-ui/pull/1493)
+
+### New features
+- **Dashboards**: Enable dash auto refresh. [datalens-tech/datalens-ui#1510](https://github.com/datalens-tech/datalens-ui/pull/1510)
+- **Datasets**: Mass actions for datasets (Aggregations and change type). [datalens-tech/datalens-ui#1492](https://github.com/datalens-tech/datalens-ui/pull/1492)
+- **Charts**: Add edit history in Wizard. [datalens-tech/datalens-ui#1585](https://github.com/datalens-tech/datalens-ui/pull/1585)
+- **Charts**: Pivot inline sort. [datalens-tech/datalens-ui#1557](https://github.com/datalens-tech/datalens-ui/pull/1557)
+- **Charts**: Add pinned columns feature for tables. [datalens-tech/datalens-ui#1588](https://github.com/datalens-tech/datalens-ui/pull/1588)
+- **Dashboards**: Add fixed header for dashboards. [datalens-tech/datalens-ui#1589](https://github.com/datalens-tech/datalens-ui/pull/1589)
+
+### Bug fixes
+- **Charts**: Fixed setting line id when using split. [datalens-tech/datalens-ui#1431](https://github.com/datalens-tech/datalens-ui/pull/1431)
+- **Charts**: Fixed the missing hint in the table when replacing the dataset. [datalens-tech/datalens-ui#1437](https://github.com/datalens-tech/datalens-ui/pull/1437)
+- **Charts**: Fixed initialization of categories for a scatter chart. [datalens-tech/datalens-ui#1443](https://github.com/datalens-tech/datalens-ui/pull/1443)
+- **Charts**: Fixed the display of old dates with an offset. [datalens-tech/datalens-ui#1440](https://github.com/datalens-tech/datalens-ui/pull/1440)
+- **Charts**: Add form checks for logarithmic axis type and fallbacks. [datalens-tech/datalens-ui#1433](https://github.com/datalens-tech/datalens-ui/pull/1433)
+- **General components**: Fix dash body overflow for mobile. [datalens-tech/datalens-ui#1452](https://github.com/datalens-tech/datalens-ui/pull/1452)
+- **Charts**: Fixed an incorrect error when there are no access rights. [datalens-tech/datalens-ui#1454](https://github.com/datalens-tech/datalens-ui/pull/1454)
+- **Charts**: Fixed pagination control is not displayed in tables with hierarchies. [datalens-tech/datalens-ui#1468](https://github.com/datalens-tech/datalens-ui/pull/1468)
+- **Dashboards**: Add useMemoCallback hook for partial deps update. [datalens-tech/datalens-ui#1502](https://github.com/datalens-tech/datalens-ui/pull/1502)
+- **Charts**: Fixed empty ql dialog. [datalens-tech/datalens-ui#1530](https://github.com/datalens-tech/datalens-ui/pull/1530)
+- **Dashboards**: Fixed note p margin in yfm. [datalens-tech/datalens-ui#1551](https://github.com/datalens-tech/datalens-ui/pull/1551)
+
+### Chores
+- **General components**: Update @gravity-ui/app-layout. [datalens-tech/datalens-ui#1425](https://github.com/datalens-tech/datalens-ui/pull/1425)
+- **General components**: Update @gravity-ui/dashkit 8.10.2 -> 8.15.3. [datalens-tech/datalens-ui#1441](https://github.com/datalens-tech/datalens-ui/pull/1441), [datalens-tech/datalens-ui#1469](https://github.com/datalens-tech/datalens-ui/pull/1469), [datalens-tech/datalens-ui#1528](https://github.com/datalens-tech/datalens-ui/pull/1528), [datalens-tech/datalens-ui#1542](https://github.com/datalens-tech/datalens-ui/pull/1542), [datalens-tech/datalens-ui#1543](https://github.com/datalens-tech/datalens-ui/pull/1543), [datalens-tech/datalens-ui#1563](https://github.com/datalens-tech/datalens-ui/pull/1563)
+- **Dashboards**: Remove beta from charts filtering on dash. [datalens-tech/datalens-ui#1463](https://github.com/datalens-tech/datalens-ui/pull/1463)
+- **Dashboards**: Widgets update optimizations. [datalens-tech/datalens-ui#1504](https://github.com/datalens-tech/datalens-ui/pull/1504)
+- **Navigation**, **General components**: Update `@gravity-ui/navigation`. [datalens-tech/datalens-ui#1521](https://github.com/datalens-tech/datalens-ui/pull/1521)
+- **General components**: Bump body-parser and express. [datalens-tech/datalens-ui#1526](https://github.com/datalens-tech/datalens-ui/pull/1526)
+- **General components**: Up @gravity-ui/app-layout 2.0.1 -> 2.1.0. [datalens-tech/datalens-ui#1536](https://github.com/datalens-tech/datalens-ui/pull/1536)
+- **Charts**: Clickable links in labels (markup) + up @gravity-ui/chartkit 5.11.2 -> 5.12.0. [datalens-tech/datalens-ui#1552](https://github.com/datalens-tech/datalens-ui/pull/1552)
+
+
 ## v1.11.1 (2024-09-03)
 
 ### Image versions

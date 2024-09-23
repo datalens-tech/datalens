@@ -83,8 +83,11 @@ def release_bump_version(version: str, release_type: str) -> str:
     major, minor, patch = map(int, normalize_version(version).split("."))
     if release_type == "major":
         major += 1
+        minor = 0
+        patch = 0
     elif release_type == "minor":
         minor += 1
+        patch = 0
     elif release_type == "patch":
         patch += 1
     else:
