@@ -113,4 +113,4 @@ services:
       NODE_EXTRA_CA_CERTS: "/usr/local/share/ca-certificates/cert.pem"
       HC: ${HC:-0}
       YANDEX_MAP_ENABLED: ${YANDEX_MAP_ENABLED:-0}
-      YANDEX_MAP_TOKEN: ${YANDEX_MAP_TOKEN:-0}
+      YANDEX_MAP_TOKEN: ${YANDEX_MAP_TOKEN}
