@@ -52,6 +52,7 @@ which will put its name in front of the pull request title:
 - `component/role-model` -> Role model
 - `component/docs` -> Docs
 - `component/formula` -> Formula
+- `component/embeds` -> Embeds
 
 This manual is generated from a config file, `changelog_config.json`, which includes all possible labels and their role,
 known repositories and texts.
