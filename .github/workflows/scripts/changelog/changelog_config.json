@@ -167,6 +167,10 @@
       {
         "id": "formula",
         "text": "Formula"
+      },
+      {
+        "id": "embeds",
+        "text": "Embeds"
       }
     ]
   }
