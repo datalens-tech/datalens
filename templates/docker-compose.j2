@@ -59,8 +59,13 @@ services:
       POSTGRES_USER: demo
       POSTGRES_PASSWORD: demo
     volumes:
+{%- if "DEV_MODE"|env(false) %}
+      - db-demo:/var/lib/postgresql/data
       - ./pg-demo-connection/init:/docker-entrypoint-initdb.d
+{%- else %}
       - ./pg-demo-connection/data:/var/lib/postgresql/data
+      - ./pg-demo-connection/init:/docker-entrypoint-initdb.d
+{%- endif %}
 
   pg-us:
     container_name: datalens-pg-us
@@ -70,7 +75,11 @@ services:
       POSTGRES_USER: us
       POSTGRES_PASSWORD: us
     volumes:
+{%- if "DEV_MODE"|env(false) %}
+      - db-us:/var/lib/postgresql/data
+{%- else %}
       - ./metadata:/var/lib/postgresql/data
+{%- endif %}
 {%- if "DEV_MODE"|env(false) %}
     ports:
       - "8086:5432"
@@ -122,3 +131,9 @@ services:
       HC: ${HC:-0}
       YANDEX_MAP_ENABLED: ${YANDEX_MAP_ENABLED:-0}
       YANDEX_MAP_TOKEN: ${YANDEX_MAP_TOKEN}
+
+{%- if "DEV_MODE"|env(false) %}
+volumes:
+  db-us:
+  db-demo:
+{%- endif %}
