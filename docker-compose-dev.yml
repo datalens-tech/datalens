@@ -1,5 +1,3 @@
-version: "3.7"
-
 services:
   pg-compeng:
     container_name: datalens-pg-compeng
