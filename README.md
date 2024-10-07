@@ -12,6 +12,12 @@ DataLens requires Docker to be installed. Follow these instructions depending on
 - [Linux](https://docs.docker.com/engine/install/)
 - [Windows](https://docs.docker.com/desktop/install/windows-install/)
 
+\* Note about docker compose
+
+- New docker compose plugin available as `docker-compose-v2` package on Ubuntu 20.04/22.04/24.04 from base APT repository
+
+- Minimal supported version of legacy docker-compose utility as separate package is `1.29.0`. It includes in base APT repository as `docker-compose` package only on Ubuntu 22.04
+
 ### Running containers
 
 Use the following command to start DataLens containers:
@@ -49,10 +55,10 @@ Available since [release v1.11.0](https://github.com/datalens-tech/datalens/rele
 
 Use the following container parameters for launch:
 
-| Parameter | Description | Values |
-|---|---|---|
-| `YANDEX_MAP_ENABLED` | Enable usage of Yandex Map visualization | `1` or `true` |
-| `YANDEX_MAP_TOKEN` | Yandex Map [API key](https://yandex.ru/dev/jsapi-v2-1/doc/en/)  | `<string>` |
+| Parameter            | Description                                                    | Values        |
+| -------------------- | -------------------------------------------------------------- | ------------- |
+| `YANDEX_MAP_ENABLED` | Enable usage of Yandex Map visualization                       | `1` or `true` |
+| `YANDEX_MAP_TOKEN`   | Yandex Map [API key](https://yandex.ru/dev/jsapi-v2-1/doc/en/) | `<string>`    |
 
 ```bash
 YANDEX_MAP_ENABLED=1 YANDEX_MAP_TOKEN=XXXXXXXXX docker compose up
@@ -107,8 +113,8 @@ HC=1 docker compose -f docker-compose.zitadel.yml up
 
 After that you can login to DataLens on http://localhost:8080 using the default user credentials:
 
-| Username | Password |
-|---|---|
+| Username                          | Password     |
+| --------------------------------- | ------------ |
 | `zitadel-admin@zitadel.localhost` | `Password1!` |
 
 You can use the same credentials to configure Zitadel and add new users using Zitadel control panel at http://localhost:8085/. **Don't forget to login there at least once to change the default password.**
