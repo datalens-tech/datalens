@@ -41,3 +41,8 @@ variable "CR_ENDPOINT" {
 variable "DOMAIN" {
   type = string
 }
+
+variable "K8S_BASTION_PROXY" {
+  type    = string
+  default = null
+}

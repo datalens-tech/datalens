@@ -24,7 +24,7 @@ locals {
 
   # auto create demo data in demo db with demo crypto key for connection
   is_create_demo_db = true
-  # may be disabled after resave demo connection with real db connection
+  # may be disabled after save demo connection with real db connection
   is_add_demo_crypto_key = false
 
   # auto create dns zone in cloud
@@ -42,5 +42,9 @@ locals {
   # use local k8s ipv4 by security reason
   k8s_use_external_ipv4        = true
   k8s_connect_by_internal_ipv4 = true
+
+  # auto create k8s bastion host
+  is_create_k8s_bastion = false
+  k8s_bastion_proxy     = var.K8S_BASTION_PROXY != "" ? var.K8S_BASTION_PROXY : null
 }
 

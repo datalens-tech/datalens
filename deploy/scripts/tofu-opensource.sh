@@ -6,6 +6,7 @@ IS_APPROVE="false"
 IS_INIT="false"
 IS_TOFURC="false"
 IS_DOCKER_LOGIN="false"
+IS_K8S_BASTION="false"
 
 # parse args
 for i in "$@"; do
@@ -66,6 +67,10 @@ for i in "$@"; do
     IS_TOFURC="true"
     shift # past argument with no value
     ;;
+  --k8s-bastion)
+    IS_K8S_BASTION="true"
+    shift # past argument with no value
+    ;;
   -* | --*)
     echo "unknown arg: $i"
     exit 1
@@ -106,7 +111,7 @@ LOCKBOX_NAME="${SERVICE}-${SUFFIX}-terraform"
 # api endpoints
 CR_ENDPOINT=$(echo "${API_ENDPOINT}" | sed -E 's|^api.|cr.|')
 
-PROFILE_NAME="${SERVICE}-${SUFFIX}"
+export PROFILE_NAME="${SERVICE}-${SUFFIX}"
 
 if [ "$CI" == "true" ]; then
   PROFILE_NAME="${SERVICE}-${SUFFIX}-$(date +%s)"
@@ -220,6 +225,21 @@ echo "🔍 validate config..."
 echo ""
 
 tofu validate || exit 1
+
+if [ "${IS_K8S_BASTION}" == "true" ]; then
+  echo ""
+  echo "🏰 init k8s bastion..."
+  "${SCRIPT_DIR}"/k8s-bastion.sh --open --port "1080"
+
+  export TF_VAR_K8S_BASTION_PROXY="127.0.0.1:1080"
+
+  ks-bastion-close() {
+    echo ""
+    echo "🏰 clean k8s bastion..."
+    "${SCRIPT_DIR}"/k8s-bastion.sh --close
+  }
+  trap 'ks-bastion-close' EXIT
+fi
 
 if [ ! -z "${RM_FROM_STATE}" ]; then
   tofu state rm "${RM_FROM_STATE}" || exit 1

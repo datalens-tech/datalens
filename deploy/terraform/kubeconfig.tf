@@ -19,7 +19,11 @@ locals {
     clusters = [
       {
         name = "yc-managed-k8s-${yandex_kubernetes_cluster.this.id}",
-        cluster = {
+        cluster = local.k8s_bastion_proxy != null ? {
+          certificate-authority-data = local.cluster_trusted_ca
+          server                     = local.cluster_endpoint
+          proxy-url                  = "socks5://${local.k8s_bastion_proxy}"
+          } : {
           certificate-authority-data = local.cluster_trusted_ca
           server                     = local.cluster_endpoint
         }
