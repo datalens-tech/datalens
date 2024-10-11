@@ -11,3 +11,4 @@ zitadel-db
 .idea
 .env
 datalens-images.gz
+backup/
