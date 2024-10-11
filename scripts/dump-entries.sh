@@ -20,7 +20,7 @@ mkdir -p ./backup
 
 echo "Start dump tables: workbooks, collections, entries, revisions, links..."
 
-$(get_docker_compose_command) -f docker-compose.yml exec -T pg-us pg_dump -Fc -a \
+$(get_docker_compose_command) -f docker-compose.yml exec -T pg-us pg_dump --inserts --on-conflict-do-nothing -Fc -a \
   --table entries \
   --table revisions \
   --table workbooks \
