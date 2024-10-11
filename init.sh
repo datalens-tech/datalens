@@ -440,6 +440,12 @@ delete_admin_service_user() {
 start_compose() {
   DOCKER_COMPOSE_CONFIG=docker-compose.zitadel.yml
 
+  if [ "${USE_DOCKER_VOLUMES}" == "true" ]; then
+    export VOLUME_ZITADEL="db-zitadel"
+    export VOLUME_US="db-us"
+    export VOLUME_DEMO="db-demo"
+  fi
+
   $(get_docker_compose_command) -f ${DOCKER_COMPOSE_CONFIG} up -d
 }
 
@@ -472,6 +478,13 @@ install_zitadel() {
   generate_secret ZITADEL_MASTERKEY 32
   generate_secret ZITADEL_COOKIE_SECRET 32
   generate_secret US_MASTER_TOKEN 32
+
+  if [ "${USE_DOCKER_VOLUMES}" == "true" ]; then
+    write_env USE_DOCKER_VOLUMES "${USE_DOCKER_VOLUMES}"
+    export VOLUME_ZITADEL="db-zitadel"
+    export VOLUME_US="db-us"
+    export VOLUME_DEMO="db-demo"
+  fi
 
   start_zitadel
 

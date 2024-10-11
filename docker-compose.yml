@@ -1,7 +1,7 @@
 services:
   pg-compeng:
     container_name: datalens-pg-compeng
-    image: postgres:13-alpine
+    image: postgres:16-alpine
     environment:
       POSTGRES_PASSWORD: "postgres"
       POSTGRES_DB: postgres
@@ -43,7 +43,7 @@ services:
 
   pg-demo-connection:
     container_name: datalens-pg-demo-connection
-    image: postgres:13-alpine
+    image: postgres:16-alpine
     environment:
       POSTGRES_DB: demo
       POSTGRES_USER: demo
@@ -54,7 +54,7 @@ services:
 
   pg-us:
     container_name: datalens-pg-us
-    image: postgres:13-alpine
+    image: postgres:16-alpine
     environment:
       POSTGRES_DB: us-db-ci_purgeable
       POSTGRES_USER: us
