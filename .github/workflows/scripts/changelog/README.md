@@ -20,14 +20,11 @@ in the changelog-config.
 
 Use the following labels to assign a pull request to a section:
 - `type/breaking-change` -> Breaking changes
-- `type/new-feature` -> New features
 - `type/feat` -> New features
-- `type/bug-fix` -> Bug fixes
 - `type/fix` -> Bug fixes
 - `type/sec` -> Security
 - `type/deprecation` -> Deprecation
 - `type/dev` -> Development
-- `type/tests` -> Tests
 - `type/test` -> Tests
 - `type/ci` -> CI
 - `type/chore` -> Chores
