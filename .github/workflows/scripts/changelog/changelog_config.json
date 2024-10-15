@@ -48,16 +48,8 @@
         "text": "Breaking changes"
       },
       {
-        "id": "new-feature",
-        "text": "New features"
-      },
-      {
         "id": "feat",
         "text": "New features"
-      },
-      {
-        "id": "bug-fix",
-        "text":"Bug fixes"
       },
       {
         "id": "fix",
@@ -74,10 +66,6 @@
       {
         "id": "dev",
         "text": "Development"
-      },
-      {
-        "id": "tests",
-        "text": "Tests"
       },
       {
         "id": "test",
