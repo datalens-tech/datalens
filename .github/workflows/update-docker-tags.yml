@@ -3,10 +3,10 @@ name: Update docker images
 on:
   push:
     branches:
-      - add-docker-tags-release
-  # push:
-  #   branches:
-  #     - main
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}
 
 env:
   REGISTRY: ghcr.io
