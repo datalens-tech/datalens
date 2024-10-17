@@ -47,7 +47,7 @@ jobs:
           docker tag ${{ env.REGISTRY }}/${{ env.UI_IMAGE_NAME }}:${{ env.UI_VERSION }} ${{ env.REGISTRY }}/${{ env.UI_IMAGE_NAME }}:release
           docker push ${{ env.REGISTRY }}/${{ env.UI_IMAGE_NAME }}:release
 
-          docker pull ${{ env.REGISTRY }}/${{ env.US_IMAGE_NAME }}:${{ env.UI_VERSION }}
-          docker tag ${{ env.REGISTRY }}/${{ env.US_IMAGE_NAME }}:${{ env.UI_VERSION }} ${{ env.REGISTRY }}/${{ env.US_IMAGE_NAME }}:release
+          docker pull ${{ env.REGISTRY }}/${{ env.US_IMAGE_NAME }}:${{ env.US_VERSION }}
+          docker tag ${{ env.REGISTRY }}/${{ env.US_IMAGE_NAME }}:${{ env.US_VERSION }} ${{ env.REGISTRY }}/${{ env.US_IMAGE_NAME }}:release
           docker push ${{ env.REGISTRY }}/${{ env.US_IMAGE_NAME }}:release
 
