@@ -4,7 +4,7 @@
 - datalens-control-api: 0.2139.0
 - datalens-data-api: 0.2139.0
 - datalens-ui: 0.2140.0 -> 0.2248.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.2140.0...v0.2248.0))
-- datalens-us: 0.246.0
+- datalens-us: 0.246.0 -> 0.256.0  ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.246.0...v0.256.0))
 
 ### Security
 - **General components**: Dependencies with vulnerabilities have been updated. [datalens-tech/datalens-ui#1654](https://github.com/datalens-tech/datalens-ui/pull/1654)
