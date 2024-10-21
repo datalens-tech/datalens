@@ -41,7 +41,7 @@
 - **Dashboards**: Fix margin for last p-block with term. [datalens-tech/datalens-ui#1591](https://github.com/datalens-tech/datalens-ui/pull/1591)
 - **Charts**: Fixed the display of markup in maps with the clustering points. [datalens-tech/datalens-ui#1599](https://github.com/datalens-tech/datalens-ui/pull/1599)
 - **Auth**: Fix logout route with Zitadel integration. [datalens-tech/datalens-ui#1615](https://github.com/datalens-tech/datalens-ui/pull/1615)
-- - **Charts**: Fix chart dnd on Wizard. [datalens-tech/datalens-ui#1597](https://github.com/datalens-tech/datalens-ui/pull/1597)
+- **Charts**: Fix chart dnd on Wizard. [datalens-tech/datalens-ui#1597](https://github.com/datalens-tech/datalens-ui/pull/1597)
 - **Charts**: Fix pseudo field from table when change visualization. [datalens-tech/datalens-ui#1616](https://github.com/datalens-tech/datalens-ui/pull/1616)
 - **Datasets**: Fix dataset filter dialog layout. [datalens-tech/datalens-ui#1620](https://github.com/datalens-tech/datalens-ui/pull/1620)
 - **Dashboards**: Fix z-index for table of content in mobile. [datalens-tech/datalens-ui#1612](https://github.com/datalens-tech/datalens-ui/pull/1612)
