@@ -1,3 +1,66 @@
+## v1.13.0 (2024-10-21)
+
+### Image versions
+- datalens-control-api: 0.2139.0
+- datalens-data-api: 0.2139.0
+- datalens-ui: 0.2140.0 -> 0.2248.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.2140.0...v0.2248.0))
+- datalens-us: 0.246.0
+
+### Security
+- **General components**: Dependencies with vulnerabilities have been updated. [datalens-tech/datalens-ui#1654](https://github.com/datalens-tech/datalens-ui/pull/1654)
+
+### Development
+- **Dashboards**: Moved DashControlsConfigContext as default wrapper for Dashkit container. [datalens-tech/datalens-ui#1436](https://github.com/datalens-tech/datalens-ui/pull/1436)
+- **General components**: Removed page reloading while renaming or moving entities. 
+
+### Chores
+- **General components**: Up @gravity-ui/dashkit@8.17.1. [datalens-tech/datalens-ui#1592](https://github.com/datalens-tech/datalens-ui/pull/1592)
+- Update `@gravity-ui/chartkit` from v5.12.0 to v5.14.0. [datalens-tech/datalens-ui#1614](https://github.com/datalens-tech/datalens-ui/pull/1614), [datalens-tech/datalens-ui#1665](https://github.com/datalens-tech/datalens-ui/pull/1665)
+- **General components**: Up `@gravity-ui/dashkit` from v8.16.0 to v8.17.4. [datalens-tech/datalens-ui#1622](https://github.com/datalens-tech/datalens-ui/pull/1622), [datalens-tech/datalens-ui#1658](https://github.com/datalens-tech/datalens-ui/pull/1658), [datalens-tech/datalens-ui#1685](https://github.com/datalens-tech/datalens-ui/pull/1685)
+- **General components**: Bump micromatch from 4.0.5 to 4.0.8. [datalens-tech/datalens-ui#1410](https://github.com/datalens-tech/datalens-ui/pull/1410)
+- **General components**: Bump webpack from 5.91.0 to 5.94.0. [datalens-tech/datalens-ui#1428](https://github.com/datalens-tech/datalens-ui/pull/1428)
+- **General components**: Update `@gravity-ui/uikit` from v6.20.0 to v6.31.0. [datalens-tech/datalens-ui#1662](https://github.com/datalens-tech/datalens-ui/pull/1662), [datalens-tech/datalens-ui#1678](https://github.com/datalens-tech/datalens-ui/pull/1678)
+- **General components**: Bump uplot and `@gravity-ui/yagr`. [datalens-tech/datalens-ui#1663](https://github.com/datalens-tech/datalens-ui/pull/1663)
+- **General components**: Update `@gravity-ui/date-components` to v2.10.2. [datalens-tech/datalens-ui#1668](https://github.com/datalens-tech/datalens-ui/pull/1668)
+- **General components**: Update `@gravity-ui/navigation` 2.23.1 -> 2.27.0. [datalens-tech/datalens-ui#1684](https://github.com/datalens-tech/datalens-ui/pull/1684)
+- **General components**: Update `@gravity-ui/expresskit` to 2.0.1 and `@gravity-ui/nodekit` to 1.6.0. [datalens-tech/datalens-ui#1686](https://github.com/datalens-tech/datalens-ui/pull/1686), [datalens-tech/datalens-ui#1699](https://github.com/datalens-tech/datalens-ui/pull/1699)
+- **General components**: Bump cookie and @sentry/node. [datalens-tech/datalens-ui#1701](https://github.com/datalens-tech/datalens-ui/pull/1701)
+
+### New features
+- **Charts**: Supported compact tooltip in maps. [datalens-tech/datalens-ui#1546](https://github.com/datalens-tech/datalens-ui/pull/1546)
+- **Charts**: Ass save dialog before screenshot on QL. [datalens-tech/datalens-ui#1569](https://github.com/datalens-tech/datalens-ui/pull/1569)
+- **Dashboards**: Support copying connections together with copying widget on the dash. [datalens-tech/datalens-ui#1595](https://github.com/datalens-tech/datalens-ui/pull/1595)
+- **Charts**: Improve error text from api/run. [datalens-tech/datalens-ui#1611](https://github.com/datalens-tech/datalens-ui/pull/1611)
+- **Charts**: Sorting with continuous axis in a line chart. [datalens-tech/datalens-ui#1598](https://github.com/datalens-tech/datalens-ui/pull/1598)  
+- **Dashboards**: Add comprasion operations for text field in selectors. [datalens-tech/datalens-ui#1667](https://github.com/datalens-tech/datalens-ui/pull/1667)
+- **General components**: Move and rename entities without reload. [datalens-tech/datalens-ui#1676](https://github.com/datalens-tech/datalens-ui/pull/1676), [datalens-tech/datalens-ui#1651](https://github.com/datalens-tech/datalens-ui/pull/1651)
+- **Charts**: Setting to hide the axis. [datalens-tech/datalens-ui#1645](https://github.com/datalens-tech/datalens-ui/pull/1645)
+- **Charts**: Add a setting to disable the tooltip. [datalens-tech/datalens-ui#1648](https://github.com/datalens-tech/datalens-ui/pull/1648)
+
+### Bug fixes
+- **Dashboards**: Fix margin for last p-block with term. [datalens-tech/datalens-ui#1591](https://github.com/datalens-tech/datalens-ui/pull/1591)
+- **Charts**: Fixed the display of markup in maps with the clustering points. [datalens-tech/datalens-ui#1599](https://github.com/datalens-tech/datalens-ui/pull/1599)
+- **Auth**: Fix logout route with Zitadel integration. [datalens-tech/datalens-ui#1615](https://github.com/datalens-tech/datalens-ui/pull/1615)
+- **Charts**: Fix chart dnd on Wizard. [datalens-tech/datalens-ui#1597](https://github.com/datalens-tech/datalens-ui/pull/1597)
+- **Charts**: Fix pseudo field from table when change visualization. [datalens-tech/datalens-ui#1616](https://github.com/datalens-tech/datalens-ui/pull/1616)
+- **Datasets**: Fix dataset filter dialog layout. [datalens-tech/datalens-ui#1620](https://github.com/datalens-tech/datalens-ui/pull/1620)
+- **Dashboards**: Fix z-index for table of content in mobile. [datalens-tech/datalens-ui#1612](https://github.com/datalens-tech/datalens-ui/pull/1612)
+- **Charts**: Fix gradient coloring of the table for zero values. [datalens-tech/datalens-ui#1623](https://github.com/datalens-tech/datalens-ui/pull/1623)
+- **Navigation**: Fix theme override by query. [datalens-tech/datalens-ui#1624](https://github.com/datalens-tech/datalens-ui/pull/1624)
+- **Navigation**: Fixed navigation dialog width. [datalens-tech/datalens-ui#1625](https://github.com/datalens-tech/datalens-ui/pull/1625)
+- **Charts**: Fix gradient coloring for null values (flat table). [datalens-tech/datalens-ui#1633](https://github.com/datalens-tech/datalens-ui/pull/1633)
+- **Charts**: Fixed sorting of dates with null values. [datalens-tech/datalens-ui#1634](https://github.com/datalens-tech/datalens-ui/pull/1634)
+- **Charts**: Fix axis mode for combined charts. [datalens-tech/datalens-ui#1641](https://github.com/datalens-tech/datalens-ui/pull/1641)
+- **Charts**: Fix column width of the table with virtualization. [datalens-tech/datalens-ui#1629](https://github.com/datalens-tech/datalens-ui/pull/1629)
+- **Charts**: Fix: a table in QL crashes with an error when there is no data. [datalens-tech/datalens-ui#1649](https://github.com/datalens-tech/datalens-ui/pull/1649)
+- **Charts**: Fix: column width is incorrectly calculated for cells with a possible…. [datalens-tech/datalens-ui#1660](https://github.com/datalens-tech/datalens-ui/pull/1660)
+- **Dashboards**: Fix loss of connections on other tabs if disconnect all is made. [datalens-tech/datalens-ui#1661](https://github.com/datalens-tech/datalens-ui/pull/1661)
+- **Dashboards**: Reset tab when leaving the dashboard. [datalens-tech/datalens-ui#1671](https://github.com/datalens-tech/datalens-ui/pull/1671)
+- **Charts**: Fix endless table rendering cycle. [datalens-tech/datalens-ui#1674](https://github.com/datalens-tech/datalens-ui/pull/1674)
+- **Charts**: Fix duplicate content when highlighting the entire page. [datalens-tech/datalens-ui#1697](https://github.com/datalens-tech/datalens-ui/pull/1697)
+- **Charts**: Fix linear indicator with manual scale. [datalens-tech/datalens-ui#1700](https://github.com/datalens-tech/datalens-ui/pull/1700)
+
+
 ## v1.12.0 (2024-09-23)
 
 ### Image versions
