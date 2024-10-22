@@ -57,7 +57,8 @@ class ChangelogFormatter:
         task_re = r"[a-zA-Z]+-\d+"  # task tracker issue key
         prefix_patterns_to_remove = [
             rf"^\[?({task_re})\]?[ .:]*",  # e.g. "TASK-123: minor improvements"
-            rf"^[a-z]+(\([a-z, ]+\))?: {task_re} ",  # e.g. "fix(datasets, connectors): TASK-123 major improvements"
+            rf"^[a-z]+(\([a-z, ]+\))?: {task_re} ",  # e.g. "fix(datasets, connectors): TASK-123 moderate improvements"
+            rf"^[a-z]+(\([a-z, ]+\))?: ",  # e.g. "fix(datasets, connectors): major improvements"
         ]
 
         for pattern in prefix_patterns_to_remove:
