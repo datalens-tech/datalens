@@ -54,13 +54,17 @@ class ChangelogFormatter:
 
     @staticmethod
     def clean_pr_title(title: str) -> str:
+        task_re = r"[a-zA-Z]+-\d+"  # task tracker issue key
         prefix_patterns_to_remove = [
-            r"^\[?(DLPROJECTS|CHARTS|BI|YCDOCS|DOCSUP)-\d+\]?[ .:]*",
+            rf"^\[?({task_re})\]?[ .:]*",  # e.g. "TASK-123: minor improvements"
+            rf"^[a-z]+(\([a-z, ]+\))?: {task_re} ",  # e.g. "fix(datasets, connectors): TASK-123 moderate improvements"
+            rf"^[a-z]+(\([a-z, ]+\))?: ",  # e.g. "fix(datasets, connectors): major improvements"
         ]
 
         for pattern in prefix_patterns_to_remove:
             title = re.sub(pattern, "", title)
         title = title.strip(" .")
+        title = title[0].upper() + title[1:]
 
         return title
 
@@ -100,7 +104,7 @@ def release_bump_version(version: str, release_type: str) -> str:
 def normalize_tag(tag: str) -> str:
     """ Ensures there is a "v" at the beginning """
 
-    return "v" + tag.lstrip("v")
+    return "v" + tag.lstrip("v") if tag else ""
 
 
 def normalize_version(version: str) -> str:
@@ -123,18 +127,19 @@ def write_output(content: str) -> None:
 
 def populate_helper_maps(
     changelog_config: dict[str, Any],
-    current_image_versions: dict[str, str],
+    current_repo_versions: dict[str, str],
     new_repo_versions: dict[str, str],
 ) -> None:
     for repo in changelog_config["repositories"]:
-        for img in repo["images"]:
+        for img in repo.get("images", []):
             REPO_CFG_BY_IMG[img["name"]] = repo
-            IMG_VERSIONS_BY_NAME[img["name"]]["from"] = current_image_versions[img["version_descriptor"]]
+            IMG_VERSIONS_BY_NAME[img["name"]]["from"] = current_repo_versions[img["version_descriptor"]]
 
     for repo in changelog_config["repositories"]:
-        for img in repo["images"]:
+        repo_images = repo.get("images", [])
+        for img in repo_images:
             existing_tag = REPO_VERSIONS.get(repo["name"], {}).get("from")
-            new_tag = current_image_versions[img["version_descriptor"]]
+            new_tag = current_repo_versions[img["version_descriptor"]]
             if existing_tag:
                 new_tag = min(new_tag, existing_tag)
                 LOGGER.info(
@@ -142,6 +147,9 @@ def populate_helper_maps(
                     f"picking the older one for the starting version ({new_tag})"
                 )
             REPO_VERSIONS[repo["name"]]["from"] = new_tag
+        if not repo_images:
+            # if the repo provides no images, its version should be described by its name
+            REPO_VERSIONS[repo["name"]]["from"] = current_repo_versions.get(repo["name"], "")
 
     for repo_name, new_version in new_repo_versions.items():
         REPO_VERSIONS[repo_name]["to"] = new_version
@@ -156,7 +164,7 @@ def populate_helper_maps(
         }
 
         # save result image to map
-        repo_images = next(repo["images"] for repo in changelog_config["repositories"] if repo["name"] == repo_name)
+        repo_images = next(repo.get("images", []) for repo in changelog_config["repositories"] if repo["name"] == repo_name)
         for img in repo_images:
             IMG_VERSIONS_BY_NAME[img["name"]]["to"] = normalize_version(REPO_VERSIONS[repo_name]["to"])
 
@@ -170,15 +178,19 @@ def gather_changelog(cfg: dict[str, Any], repos_dir: Path, gh_headers: dict[str,
     for repository in cfg["repositories"]:
         repo_full_name = "/".join(repository["url"].split("/")[-2:])
 
+        tag_from = REPO_VERSIONS[repository["name"]]["from"]
+        tag_to = REPO_VERSIONS[repository["name"]]["to"]
         commits = gh.get_commits_between_tags(
-            tag_from=REPO_VERSIONS[repository["name"]]["from"],
-            tag_to=REPO_VERSIONS[repository["name"]]["to"],
+            tag_from=tag_from,
+            tag_to=tag_to,
             repo_path=repos_dir / repository["name"],
         )
+        LOGGER.info(f"Got {len(commits)} commits from range {tag_from}..{tag_to} for {repo_full_name}")
 
-        for commit in commits:
+        for idx, commit in enumerate(commits):
+            LOGGER.info(f"[{idx + 1}/{len(commits)}] Fetching PRs for commit {commit.sha}")
             prs_info = gh.get_pull_requests_by_commit(
-                repo_full_name, commit, gh_headers, changelog_config['changelog_include_label']
+                repo_full_name, commit, gh_headers, changelog_config["changelog_include_label"]
             )
 
             for pr in prs_info:
@@ -223,7 +235,7 @@ if __name__ == "__main__":
     parser.add_argument("--root-repo-name", default="datalens-tech/datalens")
     parser.add_argument("--repos-dir", type=Path, default=Path("./repos"))
     parser.add_argument("--changelog-path", type=Path, default=Path("../../../../CHANGELOG.md"))
-    parser.add_argument("--version-config-path", required=True, type=Path, help="path to versionn_config.json")
+    parser.add_argument("--version-config-path", required=True, type=Path, help="path to versions-config.json")
     parser.add_argument("--release-type", choices=("major", "minor", "patch"), default="minor")
     parser.add_argument("--new-repo-versions", required=True, help=(
         'a new version for each repo, space separated in the format "name:tag",'
@@ -247,20 +259,29 @@ if __name__ == "__main__":
         changelog_config: dict[str, Any] = json.load(f)
 
     with open(args.version_config_path, "r") as f:
-        current_image_versions: dict[str, str] = json.load(f)
+        current_repo_versions: dict[str, str] = json.load(f)
 
+    new_repo_versions_input = args.new_repo_versions.strip()
     new_repo_versions: dict[str, str] = {}
-    for item in args.new_repo_versions.strip().split(" "):
-        repo_name, new_version = item.split(":")
-        new_repo_versions[repo_name] = normalize_version(new_version)
+    if new_repo_versions_input:
+        for item in new_repo_versions_input.split(" "):
+            repo_name, new_version = item.split(":")
+            new_repo_versions[repo_name] = normalize_version(new_version)
+
+    # Figure out release tags
+    gh_auth_headers = gh.make_gh_auth_headers_from_env()
+    root_repo_name_full = args.root_repo_name
+    root_repo_name_short = root_repo_name_full.split("/")[-1]
+    latest_release = gh.get_latest_repo_release(root_repo_name_full, gh_auth_headers)
+    new_release = release_bump_version(latest_release, args.release_type)
 
     # Prepare helper mappings
-    populate_helper_maps(changelog_config, current_image_versions, new_repo_versions)
+    if changelog_config.get("include_root_repo_changes", True):
+        current_repo_versions[root_repo_name_short] = latest_release
+        new_repo_versions[root_repo_name_short] = ""
+    populate_helper_maps(changelog_config, current_repo_versions, new_repo_versions)
 
     # Gather changes
-    gh_auth_headers = gh.make_gh_auth_headers_from_env()
-    latest_release = gh.get_latest_repo_release(args.root_repo_name, gh_auth_headers)
-    new_release = release_bump_version(latest_release, args.release_type)
     CF = ChangelogFormatter
     changelog = gather_changelog(changelog_config, args.repos_dir, gh_auth_headers)
 
@@ -270,18 +291,18 @@ if __name__ == "__main__":
 
     changelog_lines.append(CF.release(new_release) + f" ({datetime.date.today()})")
 
-    changelog_lines.append(CF.section(changelog_config['images_versions_section']))
+    changelog_lines.append(CF.section(changelog_config["images_versions_section"]))
     img_versions_list: list[str] = []
     for img_name, img_versions in IMG_VERSIONS_BY_NAME.items():
         if img_versions["from"] != img_versions["to"]:
             full_changelog_url = "{repo_url}/compare/v{v_from}...v{v_to}".format(
-                repo_url=REPO_CFG_BY_IMG[img_name]['url'],
-                v_from=img_versions['from'],
-                v_to=img_versions['to'],
+                repo_url=REPO_CFG_BY_IMG[img_name]["url"],
+                v_from=img_versions["from"],
+                v_to=img_versions["to"],
             )
-            img_versions_list.append(CF.img_version_changed(img_name, img_versions['from'], img_versions['to'], full_changelog_url))
+            img_versions_list.append(CF.img_version_changed(img_name, img_versions["from"], img_versions["to"], full_changelog_url))
         else:
-            img_versions_list.append(CF.img_version_unchanged(img_name, img_versions['to']))
+            img_versions_list.append(CF.img_version_unchanged(img_name, img_versions["to"]))
     changelog_lines.extend(sorted(img_versions_list))  # let's have them in a predictable order
 
     for changelog_section, section_lines in sorted(changelog.items()):  # type: str, list[tuple[str, str]]
@@ -306,7 +327,7 @@ if __name__ == "__main__":
     # Update image versions
     new_image_versions: dict[str, str] = {}
     for repo in changelog_config["repositories"]:
-        for img in repo["images"]:
+        for img in repo.get("images", []):
             new_image_versions[img["version_descriptor"]] = IMG_VERSIONS_BY_NAME[img["name"]]["to"]
     if not dry_run:
         with open(args.version_config_path, "w") as f:
@@ -317,7 +338,7 @@ if __name__ == "__main__":
     # Create GitHub release
     if args.create_release and not dry_run:
         release_resp = requests.post(
-            f"https://api.github.com/repos/{args.root_repo_name}/releases",
+            f"https://api.github.com/repos/{root_repo_name_full}/releases",
             headers=gh_auth_headers,
             json=dict(
                 tag_name=new_release,
@@ -331,7 +352,7 @@ if __name__ == "__main__":
         )
         release_resp.raise_for_status()
         resp_body = release_resp.json()
-        release_url = resp_body.get('html_url')
+        release_url = resp_body.get("html_url")
         print(f"Release response body: {resp_body}")
         print(f"Successfully created a release: {release_url}")
         if args.make_outputs:

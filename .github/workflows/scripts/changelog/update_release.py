@@ -8,8 +8,10 @@ import requests
 import github_helpers as gh
 
 
-def update_release_body(repo_full_name: str, headers: dict[str, str], release_id: str, new_body: str) -> str:
+def update_release_body(repo_full_name: str, headers: dict[str, str], release_tag: str, new_body: str) -> str:
     """ Updates the release description with the passed content, returns release url """
+
+    release_id = gh.find_release_by_tag(args.root_repo_name, gh_auth_headers, release_tag)
 
     release_resp = gh.request_with_retries(
         functools.partial(
@@ -18,6 +20,8 @@ def update_release_body(repo_full_name: str, headers: dict[str, str], release_id
             headers=headers,
             json=dict(
                 body=new_body,
+                tag_name=release_tag,
+                draft=True,
             ),
         )
     )
@@ -42,6 +46,5 @@ if __name__ == "__main__":
             new_line = f.readline()
 
     gh_auth_headers = gh.make_gh_auth_headers_from_env()
-    release_to_update = gh.find_release_by_tag(args.root_repo_name, gh_auth_headers, release_tag)
-    release_url = update_release_body(args.root_repo_name, gh_auth_headers, release_to_update, changelog_body)
+    release_url = update_release_body(args.root_repo_name, gh_auth_headers, release_tag, changelog_body)
     print("Successfully updated release:",  release_url)
