@@ -13,11 +13,14 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: datalens-tech/datalens-ui
+          ref: main
+          path: ./datalens-ui
       - uses: actions/setup-node@v3
         with:
           node-version: 20
-          cache: 'npm'
-          cache-dependency-path: ./package-lock.json
 
       - name: Get last version config
         run: |
@@ -32,11 +35,7 @@ jobs:
           echo "US_VERSION=$US_VERSION" >> "$GITHUB_ENV"
           echo "CONTROL_API_VERSION=$CONTROL_API_VERSION" >> "$GITHUB_ENV"
           echo "DATA_API_VERSION=$DATA_API_VERSION" >> "$GITHUB_ENV"
-      - uses: actions/checkout@v4
-        with:
-          repository: datalens-tech/datalens-ui
-          ref: main
-          path: ./datalens-ui
+
       - name: Check docker compose Config
         working-directory: ./datalens-ui/tests
         run: npm run test:docker:check
