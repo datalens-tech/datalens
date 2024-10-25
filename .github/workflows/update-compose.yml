@@ -41,7 +41,7 @@ jobs:
         run:  docker compose -f ./docker-compose.yml down
       - name: Initialize mandatory git config
         run: |
-            git config user.email "" && git config user.name "GitHub Action"
+          git config user.email "" && git config user.name "GitHub Action"
       - name: Commit compose files
         id: make-commit
         run: |
