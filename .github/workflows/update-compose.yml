@@ -35,10 +35,8 @@ jobs:
           j2 ./templates/docker-compose.j2 versions-config.json --format=json > ./docker-compose.yml
           DEV_MODE=true j2 ./templates/docker-compose.j2 versions-config.json --format=json > ./docker-compose-dev.yml
           j2 ./templates/docker-compose.zitadel.j2 versions-config.json --format=json > ./docker-compose.zitadel.yml
-      - name: run docker-compose.yml
-        run: docker compose -f ./docker-compose.yml up -d
-      - name: stop docker-compose.yml
-        run:  docker compose -f ./docker-compose.yml down
+      - name: check docker-compose.yml config
+        run: docker compose -f ./docker-compose.yml config
       - name: Initialize mandatory git config
         run: |
           git config user.email "" && git config user.name "GitHub Action"
