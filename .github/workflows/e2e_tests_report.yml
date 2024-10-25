@@ -25,8 +25,7 @@ jobs:
       - name: Set Git User
         # see: https://github.com/actions/checkout/issues/13#issuecomment-724415212
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.email "" && git config user.name "GitHub Report"
       - name: Download Artifacts
         uses: dawidd6/action-download-artifact@v2
         with:
