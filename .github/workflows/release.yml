@@ -72,8 +72,7 @@ jobs:
 
       - name: Setup user
         run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
+          git config user.email "" && git config user.name "GitHub Release"
 
       - name: Clone repos
         working-directory: .github/workflows/scripts/changelog
