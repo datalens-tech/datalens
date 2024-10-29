@@ -28,7 +28,7 @@
 
 ### New features
 - **Charts**: Supported compact tooltip in maps. [datalens-tech/datalens-ui#1546](https://github.com/datalens-tech/datalens-ui/pull/1546)
-- **Charts**: Ass save dialog before screenshot on QL. [datalens-tech/datalens-ui#1569](https://github.com/datalens-tech/datalens-ui/pull/1569)
+- **Charts**: Add save dialog before screenshot on QL. [datalens-tech/datalens-ui#1569](https://github.com/datalens-tech/datalens-ui/pull/1569)
 - **Dashboards**: Support copying connections together with copying widget on the dash. [datalens-tech/datalens-ui#1595](https://github.com/datalens-tech/datalens-ui/pull/1595)
 - **Charts**: Improve error text from api/run. [datalens-tech/datalens-ui#1611](https://github.com/datalens-tech/datalens-ui/pull/1611)
 - **Charts**: Sorting with continuous axis in a line chart. [datalens-tech/datalens-ui#1598](https://github.com/datalens-tech/datalens-ui/pull/1598)  
