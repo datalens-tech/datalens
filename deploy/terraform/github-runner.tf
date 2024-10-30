@@ -2,9 +2,12 @@ locals {
   gh_owner = "datalens-tech"
   gh_repo  = "datalens"
 
-  runner_version = "2.319.1"
+  runner_ssh_access = false
 
-  runners_count = 1
+  runner_os_image = "ubuntu-2404-lts-oslogin"
+  runner_version  = "2.319.1"
+
+  runners_count = 2
   runners_ids   = local.is_create_github_runner ? [for i in range(0, local.runners_count) : { key = "ind-${i}", ind = i }] : []
 }
 
@@ -12,12 +15,6 @@ resource "yandex_lockbox_secret" "github-runner" {
   for_each = toset(local.is_create_github_runner ? ["main"] : [])
 
   name = "${local.service}-github-runner-secrets"
-}
-
-data "yandex_lockbox_secret_version" "github-runner" {
-  for_each = toset(local.is_create_github_runner ? ["main"] : [])
-
-  secret_id = yandex_lockbox_secret.github-runner["main"].id
 }
 
 resource "yandex_iam_service_account" "github-runner" {
@@ -34,8 +31,29 @@ resource "yandex_resourcemanager_folder_iam_member" "github-runner" {
   member    = "serviceAccount:${yandex_iam_service_account.github-runner["main"].id}"
 }
 
+resource "yandex_lockbox_secret_iam_binding" "github-runner" {
+  for_each = toset(local.is_create_github_runner ? ["main"] : [])
+
+  secret_id = yandex_lockbox_secret.github-runner["main"].id
+  role      = "lockbox.payloadViewer"
+
+  members = [
+    "serviceAccount:${yandex_iam_service_account.github-runner["main"].id}",
+  ]
+}
+
 data "yandex_compute_image" "this" {
-  family = "ubuntu-24-04-lts"
+  family = local.runner_os_image
+}
+
+resource "yandex_vpc_address" "github-runner" {
+  for_each = local.runner_ssh_access ? { for id in local.runners_ids : id.key => id.ind } : {}
+
+  name = "github-runner-${each.key}-ip"
+
+  external_ipv4_address {
+    zone_id = "ru-central1-a"
+  }
 }
 
 resource "yandex_compute_disk" "github-runner" {
@@ -77,10 +95,14 @@ resource "yandex_compute_instance" "github-runner" {
     subnet_id          = yandex_vpc_subnet.this[local.zones[each.value % length(local.zones)]].id
     security_group_ids = [yandex_vpc_security_group.github-runner["main"].id]
     ipv4               = true
+
+    nat            = local.runner_ssh_access
+    nat_ip_address = local.runner_ssh_access ? yandex_vpc_address.github-runner[each.key].external_ipv4_address[0].address : null
   }
 
   metadata = {
     skip_update_ssh_keys = true
+    enable-oslogin       = true
 
     user-data = templatefile("github-runner-config.yaml", {
       VERSION = local.runner_version
@@ -89,7 +111,8 @@ resource "yandex_compute_instance" "github-runner" {
       REPO  = local.gh_repo
       IND   = "${each.value}"
 
-      TOKEN = [for secret in data.yandex_lockbox_secret_version.github-runner["main"].entries : secret.text_value if secret.key == "RUNNER_${upper(replace(local.gh_repo, "-", "_"))}_${each.value}_TOKEN"][0]
+      LOCKBOX_ID  = yandex_lockbox_secret.github-runner["main"].id
+      LOCKBOX_KEY = "RUNNER_${upper(replace(local.gh_repo, "-", "_"))}_${each.value}_TOKEN"
     })
   }
 }
@@ -130,11 +153,11 @@ data "dns_a_record_set" "github-runner-gh" {
 locals {
   v4_gh_any_cidr_blocks = ["0.0.0.0/0"]
 
-  ingress_github_runner = [
+  ingress_github_runner = concat([
     { proto = "ANY", target = "self_security_group", from_port = 0, to_port = 65535, desc = "self" },
     { proto = "ANY", cidr_v4 = local.v4_subnets_cidr_blocks, from_port = 0, to_port = 65535, desc = "subnets" },
     { proto = "ICMP", cidr_v4 = local.v4_icmp_cidr_blocks, from_port = 0, to_port = 65535, desc = "icmp" },
-  ]
+  ], local.runner_ssh_access ? [{ proto = "TCP", cidr_v4 = ["${local.v4_public_ip}/32"], port = 22, desc = "ssh" }] : [])
   egress_github_runner = concat(
     [
       { proto = "ANY", target = "self_security_group", from_port = 0, to_port = 65535, desc = "self" },
@@ -147,7 +170,7 @@ locals {
       { proto = "TCP", cidr_v4 = local.v4_gh_any_cidr_blocks, port = 443, desc = "any" },
     ],
     [for e in local.endpoints : { proto = "TCP", cidr_v4 = ["${data.dns_a_record_set.this[e].addrs[0]}/32"], port = 443, desc = e }],
-    [for e in local.gh_endpoints : { proto = "TCP", cidr_v4 = ["${data.dns_a_record_set.github-runner-gh[e].addrs[0]}/32"], port = 43, desc = e }],
+    [for e in local.gh_endpoints : { proto = "TCP", cidr_v4 = ["${data.dns_a_record_set.github-runner-gh[e].addrs[0]}/32"], port = 443, desc = e }],
     [for e in local.common_endpoints : { proto = "TCP", cidr_v4 = ["${data.dns_a_record_set.github-runner-common[e].addrs[0]}/32"], port = 80, desc = e }],
     [for e in local.common_endpoints : { proto = "TCP", cidr_v4 = ["${data.dns_a_record_set.github-runner-common[e].addrs[0]}/32"], port = 443, desc = e }],
   )
