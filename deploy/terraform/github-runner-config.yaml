@@ -21,7 +21,5 @@ runcmd:
   - su - github -c "curl -O -L https://github.com/actions/runner/releases/download/v${VERSION}/actions-runner-linux-$${RUNNER_ARCH}-${VERSION}.tar.gz"
   - su - github -c "tar xzf ./actions-runner-linux-$${RUNNER_ARCH}-${VERSION}.tar.gz"
   - su - github -c "./config.sh --unattended --url https://github.com/${OWNER}/${REPO} --token $${RUNNER_TOKEN} --name github-runner-${REPO}-ind-${IND} --runnergroup default --work _work --labels cloud"
-  - su - github -c "export PATH=\$${PATH}:\$${HOME}/.local/bin && ./run.sh"
-bootcmd:
-  - cd /home/github/actions-runner
-  - su - github -c "export PATH=\$${PATH}:\$${HOME}/.local/bin && ./run.sh"
+  - su - root -c "./svc.sh install github"
+  - su - root -c "./svc.sh start"
