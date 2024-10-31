@@ -52,7 +52,7 @@ resource "yandex_vpc_address" "github-runner" {
   name = "github-runner-${each.key}-ip"
 
   external_ipv4_address {
-    zone_id = "ru-central1-a"
+    zone_id = local.zones[each.value % length(local.zones)]
   }
 }
 
