@@ -34,7 +34,7 @@ jobs:
       - name: Update release from changelog
         working-directory: .github/workflows/scripts/changelog
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           python update_release.py \
             --changelog-path="../../../../CHANGELOG.md" \
