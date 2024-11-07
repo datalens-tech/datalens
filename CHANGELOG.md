@@ -1,3 +1,32 @@
+## v1.14.0 (2024-11-06)
+
+### Image versions
+- datalens-control-api: 0.2139.0 -> 0.2170.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2139.0...v0.2170.0))
+- datalens-data-api: 0.2139.0 -> 0.2170.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2139.0...v0.2170.0))
+- datalens-ui: 0.2248.0
+- datalens-us: 0.256.0
+
+### New features
+- **Connectors**: Enable metrica and appmetrica. [datalens-tech/datalens-backend#616](https://github.com/datalens-tech/datalens-backend/pull/616)
+- **Optimization**: Optimize binary operators comparisons in filters. [datalens-tech/datalens-backend#626](https://github.com/datalens-tech/datalens-backend/pull/626)
+- **Optimization**: Support IN/NOT IN in the binary operators comparisons optimization. [datalens-tech/datalens-backend#635](https://github.com/datalens-tech/datalens-backend/pull/635)
+- **Formula**: Optimize constant math operations. [datalens-tech/datalens-backend#647](https://github.com/datalens-tech/datalens-backend/pull/647)
+
+### Bug fixes
+- **Connectors**, **Datasets**: Fix file connection datasource replacement. [datalens-tech/datalens-backend#591](https://github.com/datalens-tech/datalens-backend/pull/591)
+- **Connectors**: Handle google api errors & bad creds error in BQ connector. [datalens-tech/datalens-backend#601](https://github.com/datalens-tech/datalens-backend/pull/601)
+- **Datasets**: Fix source refresh with deleted fields, do not force refresh always. [datalens-tech/datalens-backend#604](https://github.com/datalens-tech/datalens-backend/pull/604)
+- **Embeds**: Handle the INCORRECT_ENTRY_ID_FOR_EMBED error from US. [datalens-tech/datalens-backend#631](https://github.com/datalens-tech/datalens-backend/pull/631)
+- **Formula**: Quarter support for PostgreSQL and Oracle. [datalens-tech/datalens-backend#645](https://github.com/datalens-tech/datalens-backend/pull/645)
+
+### Security
+- Update versions. [datalens-tech/datalens-backend#651](https://github.com/datalens-tech/datalens-backend/pull/651)
+- Upgrade cryptography. [datalens-tech/datalens-backend#660](https://github.com/datalens-tech/datalens-backend/pull/660)
+
+### Docs
+- Add a page about the project structure to kb. [datalens-tech/datalens-backend#621](https://github.com/datalens-tech/datalens-backend/pull/621)
+
+
 ## v1.13.0 (2024-10-21)
 
 ### Image versions
