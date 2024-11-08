@@ -186,7 +186,7 @@ resource "kubernetes_manifest" "lockbox" {
 resource "yandex_lockbox_secret" "zitadel" {
   for_each = toset(local.is_zitadel_enabled ? ["main"] : [])
 
-  name = "${local.service}-k8s-ztadel-secrets"
+  name = "${local.service}-k8s-zitadel-secrets"
 }
 
 resource "kubernetes_manifest" "lockbox-zitadel" {
