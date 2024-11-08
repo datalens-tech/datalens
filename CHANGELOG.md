@@ -31,7 +31,7 @@
 ### Chores
 - **General components**: Up @gravity-ui/chartkit 5.15.0 -> 5.17.1. [datalens-tech/datalens-ui#1716](https://github.com/datalens-tech/datalens-ui/pull/1716), [datalens-tech/datalens-ui#1751](https://github.com/datalens-tech/datalens-ui/pull/1751)
 - **General components**: Add expresskit language detection. [datalens-tech/datalens-ui#1718](https://github.com/datalens-tech/datalens-ui/pull/1718)
-- **General components**: Update @gravity-ui/components 3.11.0 -> 3.12.3, fix styles. [datalens-tech/datalens-ui#1732](https://github.com/datalens-tech/datalens-ui/pull/1732) [datalens-tech/datalens-ui#1753](https://github.com/datalens-tech/datalens-ui/pull/1753)
+- **General components**: Update @gravity-ui/components 3.11.0 -> 3.12.3, fix styles. [datalens-tech/datalens-ui#1732](https://github.com/datalens-tech/datalens-ui/pull/1732), [datalens-tech/datalens-ui#1753](https://github.com/datalens-tech/datalens-ui/pull/1753)
 - **Navigation**: Add UseMovePermAction feature, change types. [datalens-tech/datalens-ui#1731](https://github.com/datalens-tech/datalens-ui/pull/1731)
 - **General components**: Update @gravity-ui/app-builder. [datalens-tech/datalens-ui#1711](https://github.com/datalens-tech/datalens-ui/pull/1711)
 - Delete unused DLS actions, types. [datalens-tech/datalens-ui#1739](https://github.com/datalens-tech/datalens-ui/pull/1739)
