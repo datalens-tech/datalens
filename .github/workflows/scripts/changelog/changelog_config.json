@@ -1,6 +1,10 @@
 {
   "repositories": [
     {
+      "name": "datalens",
+      "url": "https://github.com/datalens-tech/datalens"
+    },
+    {
       "name": "datalens-ui",
       "url": "https://github.com/datalens-tech/datalens-ui",
       "images": [
@@ -36,6 +40,7 @@
     }
   ],
   "changelog_include_label": "changelog",
+  "include_root_repo_changes": true,
   "images_versions_section": "Image versions",
   "other_changes_section": "Other",
   "single_section_title": "Changes",
@@ -48,16 +53,8 @@
         "text": "Breaking changes"
       },
       {
-        "id": "new-feature",
-        "text": "New features"
-      },
-      {
         "id": "feat",
         "text": "New features"
-      },
-      {
-        "id": "bug-fix",
-        "text":"Bug fixes"
       },
       {
         "id": "fix",
@@ -74,10 +71,6 @@
       {
         "id": "dev",
         "text": "Development"
-      },
-      {
-        "id": "tests",
-        "text": "Tests"
       },
       {
         "id": "test",

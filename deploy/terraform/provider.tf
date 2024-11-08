@@ -33,12 +33,12 @@ provider "yandex" {
 }
 
 provider "kubernetes" {
-  config_path = data.shell_script.kubeconfig.output["path"]
+  config_path = try(data.shell_script.kubeconfig.output["path"], "./kubeconfig.conf")
 }
 
 provider "helm" {
   kubernetes {
-    config_path = data.shell_script.kubeconfig.output["path"]
+    config_path = try(data.shell_script.kubeconfig.output["path"], "./kubeconfig.conf")
   }
 
   registry {

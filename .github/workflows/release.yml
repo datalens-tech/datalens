@@ -72,8 +72,7 @@ jobs:
 
       - name: Setup user
         run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
+          git config user.email "" && git config user.name "GitHub Release"
 
       - name: Clone repos
         working-directory: .github/workflows/scripts/changelog
@@ -84,7 +83,7 @@ jobs:
         id: gather_changelog
         working-directory: .github/workflows/scripts/changelog
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           python releaser.py \
             --config-path="./changelog_config.json" \
@@ -115,7 +114,7 @@ jobs:
 
       - name: Create PR
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           pr_body="
             This PR is created by a GitHub action.
@@ -134,9 +133,3 @@ jobs:
             --draft)
           
           echo "::notice title=Created PR::$pr_link"
-
-  call_update_compose:
-    needs: [run]
-    uses: datalens-tech/datalens/.github/workflows/update-compose.yml@main
-    with:
-      pr_head: ${{ needs.run.outputs.branch }}

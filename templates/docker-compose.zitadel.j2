@@ -12,7 +12,7 @@ services:
     image: ghcr.io/datalens-tech/datalens-control-api:{{ controlApiVersion }}
     environment:
       BI_API_UWSGI_WORKERS_COUNT: 4
-      CONNECTOR_AVAILABILITY_VISIBLE: "clickhouse,postgres,chyt,ydb,mysql,greenplum,mssql"
+      CONNECTOR_AVAILABILITY_VISIBLE: "clickhouse,postgres,chyt,ydb,mysql,greenplum,mssql,appmetrica_api,metrika_api"
       RQE_FORCE_OFF: 1
       DL_CRY_ACTUAL_KEY_ID: key_1
       DL_CRY_KEY_VAL_ID_key_1: "h1ZpilcYLYRdWp7Nk8X1M1kBPiUi8rdjz9oBfHyUKIk="
@@ -157,6 +157,10 @@ services:
       - 'ZITADEL_DATABASE_POSTGRES_ADMIN_USERNAME=zit'
       - 'ZITADEL_DATABASE_POSTGRES_ADMIN_PASSWORD=zit'
       - 'ZITADEL_DATABASE_POSTGRES_ADMIN_SSL_MODE=disable'
+      - 'ZITADEL_DATABASE_POSTGRES_MAXOPENCONNS=20'
+      - 'ZITADEL_DATABASE_POSTGRES_MAXIDLECONNS=10'
+      - 'ZITADEL_DATABASE_POSTGRES_MAXCONNLIFETIME=30m'
+      - 'ZITADEL_DATABASE_POSTGRES_MAXCONNIDLETIME=10m'
       - 'ZITADEL_SYSTEMDEFAULTS_SECRETGENERATORS_PASSWORDSALTCOST=1'
       - 'ZITADEL_EXTERNALSECURE=false'
       - 'ZITADEL_EXTERNALPORT=${ZITADEL_EXTERNALPORT:-8080}'
