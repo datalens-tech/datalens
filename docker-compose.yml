@@ -64,7 +64,7 @@ services:
 
   us:
     container_name: datalens-us
-    image: ghcr.io/datalens-tech/datalens-us:0.260.0
+    image: ghcr.io/datalens-tech/datalens-us:0.264.0
     depends_on:
       - pg-us
     environment:
