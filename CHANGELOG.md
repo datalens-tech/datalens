@@ -4,7 +4,7 @@
 - datalens-control-api: 0.2170.0
 - datalens-data-api: 0.2170.0
 - datalens-ui: 0.2312.0
-- datalens-us: 0.260.0 -> 0.265.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.260.0...v0.265.0))
+- datalens-us: 0.260.0 -> 0.266.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.260.0...v0.266.0))
 
 ### Changes
 - Minor improvements
