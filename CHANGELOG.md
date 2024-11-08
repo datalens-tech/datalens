@@ -8,11 +8,8 @@
 
 ### New features
 - **Charts**: Enable export for d3 charts. [datalens-tech/datalens-ui#1707](https://github.com/datalens-tech/datalens-ui/pull/1707)
-- **Charts**: Fix dl-tooltip component. [datalens-tech/datalens-ui#1710](https://github.com/datalens-tech/datalens-ui/pull/1710)
 - **Dashboards**: Add resize handler to lower left corner of dash widgets. [datalens-tech/datalens-ui#1720](https://github.com/datalens-tech/datalens-ui/pull/1720)
-- **Charts**, **General components**: Support external libs in ui-sandbox. [datalens-tech/datalens-ui#1723](https://github.com/datalens-tech/datalens-ui/pull/1723)
 - **Charts**: Add treemap visualization. [datalens-tech/datalens-ui#1709](https://github.com/datalens-tech/datalens-ui/pull/1709)
-- **Charts**: Support wrappedHtml in old Table title. [datalens-tech/datalens-ui#1745](https://github.com/datalens-tech/datalens-ui/pull/1745)
 - **Charts**: Add a setting for the Y-axis of the area chart to connect empty values. [datalens-tech/datalens-ui#1680](https://github.com/datalens-tech/datalens-ui/pull/1680)
 
 ### Bug fixes
@@ -32,15 +29,12 @@
 - **Dashboards**: Add screenshot tests for dash. [datalens-tech/datalens-ui#1677](https://github.com/datalens-tech/datalens-ui/pull/1677)
 
 ### Chores
-- **General components**: Up @gravity-ui/chartkit 5.15.0 -> 5.17.0. [datalens-tech/datalens-ui#1716](https://github.com/datalens-tech/datalens-ui/pull/1716)
+- **General components**: Up @gravity-ui/chartkit 5.15.0 -> 5.17.1. [datalens-tech/datalens-ui#1716](https://github.com/datalens-tech/datalens-ui/pull/1716), [datalens-tech/datalens-ui#1751](https://github.com/datalens-tech/datalens-ui/pull/1751)
 - **General components**: Add expresskit language detection. [datalens-tech/datalens-ui#1718](https://github.com/datalens-tech/datalens-ui/pull/1718)
-- **General components**: Update @gravity-ui/components 3.11.0 -> 3.12.1, fix styles. [datalens-tech/datalens-ui#1732](https://github.com/datalens-tech/datalens-ui/pull/1732)
+- **General components**: Update @gravity-ui/components 3.11.0 -> 3.12.3, fix styles. [datalens-tech/datalens-ui#1732](https://github.com/datalens-tech/datalens-ui/pull/1732) [datalens-tech/datalens-ui#1753](https://github.com/datalens-tech/datalens-ui/pull/1753)
 - **Navigation**: Add UseMovePermAction feature, change types. [datalens-tech/datalens-ui#1731](https://github.com/datalens-tech/datalens-ui/pull/1731)
-- **General components**: Remove client oauth code. [datalens-tech/datalens-ui#1736](https://github.com/datalens-tech/datalens-ui/pull/1736)
 - **General components**: Update @gravity-ui/app-builder. [datalens-tech/datalens-ui#1711](https://github.com/datalens-tech/datalens-ui/pull/1711)
 - Delete unused DLS actions, types. [datalens-tech/datalens-ui#1739](https://github.com/datalens-tech/datalens-ui/pull/1739)
-- **General components**: Up @gravity-ui/components@3.12.3. [datalens-tech/datalens-ui#1753](https://github.com/datalens-tech/datalens-ui/pull/1753)
-- **General components**: Update chartkit to v5.17.1. [datalens-tech/datalens-ui#1751](https://github.com/datalens-tech/datalens-ui/pull/1751)
 - **General components**: Update @gravity-ui/nodekit 1.6.0 -> 1.7.0, @gravity-ui/gateway 2.6.1 -> 2.6.2. [datalens-tech/datalens-ui#1756](https://github.com/datalens-tech/datalens-ui/pull/1756)
 - **General components**: Update @gravity-ui/dashkit 8.17.4 -> 8.18.0. [datalens-tech/datalens-ui#1770](https://github.com/datalens-tech/datalens-ui/pull/1770)
 
