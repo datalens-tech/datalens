@@ -49,7 +49,9 @@ jobs:
       - name: Run tests from builded docker image
         if: ${{ env.UI_VERSION != '' }}
         working-directory: ./datalens-ui
-        run: cd ./tests && docker compose -f ./docker-compose.e2e.yml down --volumes && docker compose -f ./docker-compose.e2e.yml up --quiet-pull --no-log-prefix --exit-code-from datalens-from-image-tests datalens-from-image-tests us
+        run: |
+          cp ../docker-compose.e2e.yml ./datalens-ui/tests/docker-compose.e2e.yml
+          cd ./tests && docker compose -f ./docker-compose.e2e.yml down --volumes && docker compose -f ./docker-compose.e2e.yml up --quiet-pull --no-log-prefix --exit-code-from datalens-from-image-tests datalens-from-image-tests us
         env:
           US_VERSION: ${{ env.US_VERSION }}
           CONTROL_API_VERSION: ${{ env.CONTROL_API_VERSION }}
