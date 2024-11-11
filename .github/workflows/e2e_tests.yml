@@ -13,13 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          path: ./datalens
 
       - uses: actions/checkout@v4
         with:
           repository: datalens-tech/datalens-ui
-          ref: main
+          ref: origin/main
           path: ./datalens-ui
 
       - uses: actions/setup-node@v3
@@ -27,7 +25,6 @@ jobs:
           node-version: 20
 
       - name: Get last version config
-        working-directory: ./datalens
         run: |
           VERSION_CONFIG=$(cat ./versions-config.json)
 
