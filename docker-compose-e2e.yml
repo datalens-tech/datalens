@@ -145,13 +145,11 @@ services:
     container_name: e2e-datalens-ui-tests
     image: ghcr.io/datalens-tech/datalens-ui:${UI_VERSION:-0.2261.0}-e2e
     depends_on:
-      pg-us:
-          condition: service_healthy
-      us:
-      control-api:
-      data-api:
-      postgres-e2e:
-      datalens-from-image:
+      - us
+      - control-api
+      - data-api
+      - postgres-e2e
+      - datalens-from-image
     environment:
       E2E_DOMAIN: http://datalens-from-image:8080
       E2E_RETRY_TIMES: ${E2E_RETRY_TIMES:-1}
