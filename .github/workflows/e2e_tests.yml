@@ -50,7 +50,7 @@ jobs:
         if: ${{ env.UI_VERSION != '' }}
         working-directory: ./datalens-ui
         run: |
-          cp ../docker-compose.e2e.yml ./datalens-ui/tests/docker-compose.e2e.yml
+          cp ../docker-compose.e2e.yml ./tests/docker-compose.e2e.yml
           cd ./tests && docker compose -f ./docker-compose.e2e.yml down --volumes && docker compose -f ./docker-compose.e2e.yml up --quiet-pull --no-log-prefix --exit-code-from datalens-from-image-tests datalens-from-image-tests us
         env:
           US_VERSION: ${{ env.US_VERSION }}
