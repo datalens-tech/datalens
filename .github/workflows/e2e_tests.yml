@@ -40,7 +40,7 @@ jobs:
 
       - name: Check docker compose Config
         working-directory: ./datalens-ui/tests
-        run: npm run test:docker:check
+        run: npm run test:e2e:docker:check
         env:
           US_VERSION: ${{ env.US_VERSION }}
           CONTROL_API_VERSION: ${{ env.CONTROL_API_VERSION }}
@@ -49,7 +49,7 @@ jobs:
 
       - name: Run tests from builded docker image
         if: ${{ env.UI_VERSION != '' }}
-        working-directory: ./datalens-ui/tests
+        working-directory: ./datalens-ui
         run: |
           npm run test:e2e:docker
         env:
@@ -60,10 +60,10 @@ jobs:
 
       - name: Copy tests report from docker run
         if: always()
-        working-directory: ./datalens-ui/tests
+        working-directory: ./datalens-ui
         run: |
             echo "export report from docker run"
-            rm -rf ./artifacts
+            rm -rf ./tests/artifacts
             npm run test:e2e:docker:report
         env:
           US_VERSION: ${{ env.US_VERSION }}
@@ -73,9 +73,9 @@ jobs:
 
       - name: Run docker compose down
         if: always()
-        working-directory: ./datalens-ui/tests
+        working-directory: ./datalens-ui
         run: |
-          npm run test:docker:down
+          npm run test:e2e:docker:down
         env:
           US_VERSION: ${{ env.US_VERSION }}
           CONTROL_API_VERSION: ${{ env.CONTROL_API_VERSION }}
