@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          path: ./datalens
 
       - uses: actions/checkout@v4
         with:
@@ -25,6 +27,7 @@ jobs:
           node-version: 20
 
       - name: Get last version config
+        working-directory: ./datalens
         run: |
           VERSION_CONFIG=$(cat ./versions-config.json)
 
@@ -39,7 +42,7 @@ jobs:
           echo "DATA_API_VERSION=$DATA_API_VERSION" >> "$GITHUB_ENV"
 
       - name: Check docker compose Config
-        working-directory: ./datalens-ui/tests
+        working-directory: ./datalens-ui
         run: npm run test:e2e:docker:check
         env:
           US_VERSION: ${{ env.US_VERSION }}
@@ -49,8 +52,8 @@ jobs:
 
       - name: Run tests from builded docker image
         if: ${{ env.UI_VERSION != '' }}
-        run: |
-          docker compose -f ./docker-compose-e2e.yml up --quiet-pull --no-log-prefix --exit-code-from datalens-from-image-tests datalens-from-image-tests us
+        working-directory: ./datalens-ui
+        run: npm run test:e2e:docker
         env:
           US_VERSION: ${{ env.US_VERSION }}
           CONTROL_API_VERSION: ${{ env.CONTROL_API_VERSION }}
