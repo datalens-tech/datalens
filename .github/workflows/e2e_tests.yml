@@ -10,7 +10,7 @@ concurrency:
 jobs:
   run-e2e:
     name: Run E2E Tests
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latests
     steps:
       - uses: actions/checkout@v4
 
