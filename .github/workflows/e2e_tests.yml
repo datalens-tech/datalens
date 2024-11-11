@@ -10,14 +10,14 @@ concurrency:
 jobs:
   run-e2e:
     name: Run E2E Tests
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/checkout@v4
         with:
           repository: datalens-tech/datalens-ui
-          ref: main
+          ref: origin/main
           path: ./datalens-ui
 
       - uses: actions/setup-node@v3
@@ -39,7 +39,7 @@ jobs:
           echo "DATA_API_VERSION=$DATA_API_VERSION" >> "$GITHUB_ENV"
 
       - name: Check docker compose Config
-        working-directory: ./datalens-ui/tests
+        working-directory: ./datalens-ui
         run: npm run test:e2e:docker:check
         env:
           US_VERSION: ${{ env.US_VERSION }}
@@ -50,8 +50,7 @@ jobs:
       - name: Run tests from builded docker image
         if: ${{ env.UI_VERSION != '' }}
         working-directory: ./datalens-ui
-        run: |
-          npm run test:e2e:docker
+        run: npm run test:e2e:docker
         env:
           US_VERSION: ${{ env.US_VERSION }}
           CONTROL_API_VERSION: ${{ env.CONTROL_API_VERSION }}
