@@ -17,7 +17,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: datalens-tech/datalens-ui
-          ref: origin/main
           path: ./datalens-ui
 
       - uses: actions/setup-node@v3
