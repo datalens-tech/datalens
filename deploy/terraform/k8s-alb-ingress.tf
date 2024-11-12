@@ -30,11 +30,6 @@ resource "helm_release" "alb_ingress" {
       private_key        = yandex_iam_service_account_key.this["alb"].private_key
     })
   })]
-
-
-  depends_on = [
-    data.shell_script.kubeconfig,
-  ]
 }
 
 locals {

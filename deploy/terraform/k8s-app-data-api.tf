@@ -195,10 +195,6 @@ resource "kubernetes_deployment" "data-api" {
       }
     }
   }
-
-  depends_on = [
-    data.shell_script.kubeconfig,
-  ]
 }
 
 resource "kubernetes_service" "data-api_service" {
@@ -217,8 +213,4 @@ resource "kubernetes_service" "data-api_service" {
     }
     type = "ClusterIP"
   }
-
-  depends_on = [
-    data.shell_script.kubeconfig,
-  ]
 }

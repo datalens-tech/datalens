@@ -164,10 +164,6 @@ resource "kubernetes_deployment" "ui" {
       }
     }
   }
-
-  depends_on = [
-    data.shell_script.kubeconfig,
-  ]
 }
 
 resource "kubernetes_service" "ui_service" {
@@ -187,8 +183,4 @@ resource "kubernetes_service" "ui_service" {
     }
     type = "NodePort"
   }
-
-  depends_on = [
-    data.shell_script.kubeconfig,
-  ]
 }

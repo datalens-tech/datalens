@@ -1,10 +1,6 @@
 
 terraform {
   required_providers {
-    shell = {
-      source  = "scottwinkler/shell"
-      version = "1.7.10"
-    }
     yandex = {
       source  = "yandex-cloud/yandex"
       version = "0.106.0" # 23.01.2024
@@ -33,12 +29,16 @@ provider "yandex" {
 }
 
 provider "kubernetes" {
-  config_path = try(data.shell_script.kubeconfig.output["path"], "./kubeconfig.conf")
+  host                   = local.k8s_cluster_endpoint
+  cluster_ca_certificate = local.k8s_cluster_ca_certificate
+  token                  = var.YC_TOKEN
 }
 
 provider "helm" {
   kubernetes {
-    config_path = try(data.shell_script.kubeconfig.output["path"], "./kubeconfig.conf")
+    host                   = local.k8s_cluster_endpoint
+    cluster_ca_certificate = local.k8s_cluster_ca_certificate
+    token                  = var.YC_TOKEN
   }
 
   registry {

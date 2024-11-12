@@ -9,10 +9,6 @@ resource "helm_release" "secrets" {
 
   version    = "0.9.20"
   repository = "oci://${local.cr_endpoint}/yc-marketplace/yandex-cloud/external-secrets/chart"
-
-  depends_on = [
-    data.shell_script.kubeconfig,
-  ]
 }
 
 resource "kubernetes_secret" "secrets" {
@@ -36,7 +32,6 @@ resource "kubernetes_secret" "secrets" {
 
   depends_on = [
     helm_release.secrets,
-    data.shell_script.kubeconfig,
   ]
 }
 
@@ -65,7 +60,6 @@ resource "kubernetes_manifest" "secrets" {
   depends_on = [
     helm_release.secrets,
     kubernetes_secret.secrets,
-    data.shell_script.kubeconfig,
   ]
 }
 
@@ -179,7 +173,6 @@ resource "kubernetes_manifest" "lockbox" {
   depends_on = [
     helm_release.secrets,
     kubernetes_secret.secrets,
-    data.shell_script.kubeconfig,
   ]
 }
 
@@ -224,7 +217,6 @@ resource "kubernetes_manifest" "lockbox-zitadel" {
   depends_on = [
     helm_release.secrets,
     kubernetes_secret.secrets,
-    data.shell_script.kubeconfig,
   ]
 }
 

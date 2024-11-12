@@ -38,9 +38,5 @@ resource "helm_release" "logging" {
       # fix helm chart error with missed escaping json
     }), ",", "\\,"), "\\n", "\\\\n"), "{", "\\{"), "}", "\\}")
   }
-
-  depends_on = [
-    data.shell_script.kubeconfig,
-  ]
 }
 

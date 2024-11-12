@@ -83,14 +83,15 @@ locals {
     { proto = "ANY", cidr_v4 = local.v4_k8s_cidr_blocks, from_port = 0, to_port = 65535, desc = "k8s" },
     { proto = "ICMP", cidr_v4 = local.v4_icmp_cidr_blocks, from_port = 0, to_port = 65535, desc = "icmp" },
     { proto = "TCP", target = "loadbalancer_healthchecks", from_port = 0, to_port = 65535, desc = "alb" },
-  ], local.k8s_use_external_ipv4 && !local.k8s_connect_by_internal_ipv4 ? [{ proto = "TCP", cidr_v4 = ["${local.v4_public_ip}/32"], port = 443, desc = "deploy" }] : [])
+    ], local.k8s_use_external_ipv4 && !local.k8s_connect_by_internal_ipv4 ? [{ proto = "TCP", cidr_v4 = ["${local.v4_public_ip}/32"], port = 443, desc = "deploy" }] : [],
+  local.k8s_use_external_ipv4 && local.k8s_allow_from_public_net ? [{ proto = "TCP", cidr_v4 = ["0.0.0.0/0"], port = 443, desc = "public" }] : [])
   egress = concat(
     [
       { proto = "ANY", target = "self_security_group", from_port = 0, to_port = 65535, desc = "self" },
       { proto = "ANY", cidr_v4 = local.v4_subnets_cidr_blocks, from_port = 0, to_port = 65535, desc = "subnets" },
       { proto = "ANY", cidr_v4 = local.v4_k8s_cidr_blocks, from_port = 0, to_port = 65535, desc = "k8s" },
       { proto = "TCP", cidr_v4 = local.v4_gh_api_cidr_blocks, port = 443, desc = "github api" },
-      { proto = "TCP", cidr_v4 = ["${data.dns_a_record_set.domain.addrs[0]}/32"], port = 443, desc = "domain" }
+      { proto = "TCP", cidr_v4 = ["${data.dns_a_record_set.domain.addrs[0]}/32"], port = 443, desc = "domain" },
     ], [for e in local.endpoints : { proto = "TCP", cidr_v4 = ["${data.dns_a_record_set.this[e].addrs[0]}/32"], port = 443, desc = e }]
   )
 }
