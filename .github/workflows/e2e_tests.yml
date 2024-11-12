@@ -57,6 +57,10 @@ jobs:
           CONTROL_API_VERSION: ${{ env.CONTROL_API_VERSION }}
           DATA_API_VERSION: ${{ env.DATA_API_VERSION }}
           UI_VERSION: ${{ env.UI_VERSION }}
+          E2E_RETRY_TIMES: 2
+          E2E_TEST_TIMEOUT: 90000
+          E2E_ACTION_TIMEOUT: 10000
+          E2E_EXPECT_TIMEOUT: 10000
 
       - name: Copy tests report from docker run
         if: always()
