@@ -231,10 +231,6 @@ resource "kubernetes_deployment" "zitadel" {
       }
     }
   }
-
-  depends_on = [
-    data.shell_script.kubeconfig,
-  ]
 }
 
 resource "kubernetes_job" "zitadel_init_job" {
@@ -283,10 +279,6 @@ resource "kubernetes_job" "zitadel_init_job" {
     backoff_limit           = 5
     active_deadline_seconds = 600
   }
-
-  depends_on = [
-    data.shell_script.kubeconfig,
-  ]
 }
 
 resource "kubernetes_job" "zitadel_setup_job" {
@@ -335,10 +327,6 @@ resource "kubernetes_job" "zitadel_setup_job" {
     backoff_limit           = 5
     active_deadline_seconds = 600
   }
-
-  depends_on = [
-    data.shell_script.kubeconfig,
-  ]
 }
 
 resource "kubernetes_service" "zitadel_service" {
@@ -360,8 +348,4 @@ resource "kubernetes_service" "zitadel_service" {
     }
     type = "NodePort"
   }
-
-  depends_on = [
-    data.shell_script.kubeconfig,
-  ]
 }

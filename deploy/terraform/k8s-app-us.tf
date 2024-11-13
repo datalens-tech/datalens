@@ -157,10 +157,6 @@ resource "kubernetes_deployment" "us" {
       }
     }
   }
-
-  depends_on = [
-    data.shell_script.kubeconfig,
-  ]
 }
 
 resource "kubernetes_service" "us_service" {
@@ -179,8 +175,4 @@ resource "kubernetes_service" "us_service" {
     }
     type = "ClusterIP"
   }
-
-  depends_on = [
-    data.shell_script.kubeconfig,
-  ]
 }

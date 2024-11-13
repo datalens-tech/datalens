@@ -151,10 +151,10 @@ if [ ! "${YC_PROFILE_EXISTS}" == "true" ]; then
   fi
 fi
 
-SERVICE_ACCOUNT_ID=$(yc --profile=${PROFILE_NAME} lockbox payload get --name "${LOCKBOX_NAME}" --key service-account-id)
+SERVICE_ACCOUNT_ID=$(yc --profile=${PROFILE_NAME} --folder-id=${FOLDER_ID} lockbox payload get --name "${LOCKBOX_NAME}" --key service-account-id)
 
-export AWS_ACCESS_KEY_ID=$(yc --profile=${PROFILE_NAME} lockbox payload get --name "${LOCKBOX_NAME}" --key access-key)
-export AWS_SECRET_ACCESS_KEY=$(yc --profile=${PROFILE_NAME} lockbox payload get --name "${LOCKBOX_NAME}" --key secret-key)
+export AWS_ACCESS_KEY_ID=$(yc --profile=${PROFILE_NAME} --folder-id=${FOLDER_ID} lockbox payload get --name "${LOCKBOX_NAME}" --key access-key)
+export AWS_SECRET_ACCESS_KEY=$(yc --profile=${PROFILE_NAME} --folder-id=${FOLDER_ID} lockbox payload get --name "${LOCKBOX_NAME}" --key secret-key)
 export AWS_ENDPOINT_URL_S3="${STORAGE_ENDPOINT}"
 export YC_STORAGE_ACCESS_KEY="${AWS_ACCESS_KEY_ID}"
 export YC_STORAGE_SECRET_KEY="${AWS_SECRET_ACCESS_KEY}"
@@ -164,9 +164,9 @@ if [ -z "${AWS_SECRET_ACCESS_KEY}" ]; then
   exit 1
 fi
 
-export BACKEND_STATE_BUCKET=$(yc --profile=${PROFILE_NAME} lockbox payload get --name "${LOCKBOX_NAME}" --key backend-state-bucket)
-export BACKEND_STATE_KEY=$(yc --profile=${PROFILE_NAME} lockbox payload get --name "${LOCKBOX_NAME}" --key backend-state-key)
-export BACKEND_STATE_REGION=$(yc --profile=${PROFILE_NAME} lockbox payload get --name "${LOCKBOX_NAME}" --key backend-state-region)
+export BACKEND_STATE_BUCKET=$(yc --profile=${PROFILE_NAME} --folder-id=${FOLDER_ID} lockbox payload get --name "${LOCKBOX_NAME}" --key backend-state-bucket)
+export BACKEND_STATE_KEY=$(yc --profile=${PROFILE_NAME} --folder-id=${FOLDER_ID} lockbox payload get --name "${LOCKBOX_NAME}" --key backend-state-key)
+export BACKEND_STATE_REGION=$(yc --profile=${PROFILE_NAME} --folder-id=${FOLDER_ID} lockbox payload get --name "${LOCKBOX_NAME}" --key backend-state-region)
 
 export TF_VAR_PROFILE="${PROFILE_NAME}"
 
@@ -183,7 +183,7 @@ export TF_VAR_BACKEND_STATE_REGION="${BACKEND_STATE_REGION}"
 
 export TF_VAR_DOMAIN="${DOMAIN}"
 
-export TF_VAR_YC_TOKEN=$(yc --profile=${PROFILE_NAME} iam create-token --impersonate-service-account-id "${SERVICE_ACCOUNT_ID}")
+export TF_VAR_YC_TOKEN=$(yc --profile=${PROFILE_NAME} --folder-id=${FOLDER_ID} iam create-token --impersonate-service-account-id "${SERVICE_ACCOUNT_ID}")
 
 if [ -z "${TF_VAR_YC_TOKEN}" ]; then
   echo "❌ error obtain iam token for sa '${SERVICE_ACCOUNT_ID}', check profile settings, exit..."
