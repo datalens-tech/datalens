@@ -1,3 +1,15 @@
+## v1.16.0 (2024-11-15)
+
+### Image versions
+- datalens-control-api: 0.2170.0 -> 0.2176.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2170.0...v0.2176.0))
+- datalens-data-api: 0.2170.0 -> 0.2176.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2170.0...v0.2176.0))
+- datalens-ui: 0.2312.0
+- datalens-us: 0.260.0
+
+### Changes
+- Minor improvements
+
+
 ## v1.15.0 (2024-11-08)
 
 ### Image versions
