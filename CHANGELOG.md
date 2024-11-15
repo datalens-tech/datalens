@@ -1,3 +1,27 @@
+## v1.16.0 (2024-11-15)
+
+### Image versions
+- datalens-control-api: 0.2170.0 -> 0.2176.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2170.0...v0.2176.0))
+- datalens-data-api: 0.2170.0 -> 0.2176.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2170.0...v0.2176.0))
+- datalens-ui: 0.2312.0
+- datalens-us: 0.260.0
+
+### New features
+- Enable datasource schema update for Bitrix. [datalens-tech/datalens-backend#685](https://github.com/datalens-tech/datalens-backend/pull/685)
+- Add AUTH.TYPE = 'none'. [datalens-tech/datalens-backend#684](https://github.com/datalens-tech/datalens-backend/pull/684)
+- Orjson for marshmallow. [datalens-tech/datalens-backend#689](https://github.com/datalens-tech/datalens-backend/pull/689)
+- **Optimization**: Optimize AND/OR comparisons in filters. [datalens-tech/datalens-backend#694](https://github.com/datalens-tech/datalens-backend/pull/694)
+- Use msgpack in RQE serialization. [datalens-tech/datalens-backend#692](https://github.com/datalens-tech/datalens-backend/pull/692)
+
+### Bug fixes
+- **Formula**: Fix LODs with constant functions in query. [datalens-tech/datalens-backend#668](https://github.com/datalens-tech/datalens-backend/pull/668)
+- Fixes for connection replacements. [datalens-tech/datalens-backend#700](https://github.com/datalens-tech/datalens-backend/pull/700)
+
+### Security
+- **Connectors**: Forbid redirects in promql connector. [datalens-tech/datalens-backend#690](https://github.com/datalens-tech/datalens-backend/pull/690)
+- **Connectors**: Forbid redirects in bitrix connector. [datalens-tech/datalens-backend#691](https://github.com/datalens-tech/datalens-backend/pull/691)
+
+
 ## v1.15.0 (2024-11-08)
 
 ### Image versions
