@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: us-cip
+spec:
+  selector:
+    app: app-us
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8083
+  type: ClusterIP

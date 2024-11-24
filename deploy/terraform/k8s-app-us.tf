@@ -77,7 +77,7 @@ resource "kubernetes_deployment" "us" {
 
           readiness_probe {
             http_get {
-              path = "/ping"
+              path = "/ping-db"
               port = 8083
             }
 

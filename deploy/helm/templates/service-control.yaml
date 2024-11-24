@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: control-cip
+spec:
+  selector:
+    app: app-control
+  ports:
+  - protocol: TCP
+    port: 8080
+  type: ClusterIP

@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pg
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: app-pg
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-pg
+  template:
+    metadata:
+      labels:
+        app: app-pg
+    spec:
+      containers:
+      - name: app-pg
+        image: postgres:16
+        ports:
+          - containerPort: 5432
+        env:
+          - name: POSTGRES_INITDB_ARGS
+            value: '--encoding=UTF-8 --lc-collate=en_US.utf8 --lc-ctype=en_US.utf8'
+          - name: POSTGRES_USER
+            value: pg-user
+          - name: POSTGRES_DB
+            value: pg-us-db
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: datalens-secret
+                key: POSTGRES_PASSWORD
+        volumeMounts:
+        - name: pg-storage
+          mountPath: /var/lib/pgsql/data
+        - name: pg-config
+          mountPath: /docker-entrypoint-initdb.d
+          readOnly: true
+      volumes:
+      - name: pg-storage
+        persistentVolumeClaim:
+          claimName: pg-volume
+      - name: pg-config
+        configMap:
+          name: pg-config
+          items:
+          - key: init-db
+            path: init-db.sh
