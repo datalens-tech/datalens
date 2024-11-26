@@ -41,7 +41,7 @@ services:
       BI_COMPENG_PG_URL: "postgresql://postgres:postgres@pg-compeng:5432/postgres"
       US_HOST: "http://us:8083"
       US_MASTER_TOKEN: "fake-us-master-token"
-{%- if env.get('SERVER_HOST') %}
+{%- if env.get('DEV_MODE') %}
     ports:
       - 8082:8080
 {%- endif %}
@@ -57,7 +57,7 @@ services:
       POSTGRES_USER: demo
       POSTGRES_PASSWORD: demo
     volumes:
-{%- if env.get('SERVER_HOST') %}
+{%- if env.get('DEV_MODE') %}
       - db-demo:/var/lib/postgresql/data
       - ./pg-demo-connection/init:/docker-entrypoint-initdb.d
 {%- else %}
@@ -73,12 +73,12 @@ services:
       POSTGRES_USER: us
       POSTGRES_PASSWORD: us
     volumes:
-{%- if env.get('SERVER_HOST') %}
+{%- if env.get('DEV_MODE') %}
       - db-us:/var/lib/postgresql/data
 {%- else %}
       - ./metadata:/var/lib/postgresql/data
 {%- endif %}
-{%- if env.get('SERVER_HOST') %}
+{%- if env.get('DEV_MODE') %}
     ports:
       - "8086:5432"
 {%- endif %}
@@ -97,7 +97,7 @@ services:
       USE_DEMO_DATA: ${USE_DEMO_DATA:-1}
       HC: ${HC:-0}
       NODE_EXTRA_CA_CERTS: /certs/root.crt
-{%- if env.get('SERVER_HOST') %}
+{%- if env.get('DEV_MODE') %}
     ports:
       - "8083:8083"
 {%- endif %}
@@ -130,7 +130,7 @@ services:
       YANDEX_MAP_ENABLED: ${YANDEX_MAP_ENABLED:-0}
       YANDEX_MAP_TOKEN: ${YANDEX_MAP_TOKEN}
 
-{%- if env.get('SERVER_HOST') %}
+{%- if env.get('DEV_MODE') %}
 volumes:
   db-us:
   db-demo:
