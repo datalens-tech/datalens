@@ -171,8 +171,6 @@ resource "kubernetes_job" "postgresql_demo_data" {
     name = "demo-data-job"
   }
   spec {
-    ttl_seconds_after_finished = "600"
-
     template {
       metadata {
         name = "demo-data-job-job"
