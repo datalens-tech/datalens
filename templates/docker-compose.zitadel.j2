@@ -28,7 +28,7 @@ services:
       AUTH_APP_CLIENT_ID: "${DL_CLIENT_ID}"
       AUTH_APP_CLIENT_SECRET: "${DL_CLIENT_SECRET}"
 
-{%- if "DEV_MODE"|env(false) %}
+{%- if env.get('DEV_MODE') %}
     ports:
       - 8081:8080
 {%- endif %}
@@ -60,7 +60,7 @@ services:
       AUTH_APP_CLIENT_SECRET: "${DL_CLIENT_SECRET}"
 
 
-{%- if "DEV_MODE"|env(false) %}
+{%- if env.get('SERVER_HOST') %}
     ports:
       - 8082:8080
 {%- endif %}
@@ -88,7 +88,7 @@ services:
       POSTGRES_PASSWORD: us
     volumes:
       - ./metadata:/var/lib/postgresql/data
-{%- if "DEV_MODE"|env(false) %}
+{%- if env.get('SERVER_HOST') %}
     ports:
       - "8086:5432"
 {%- endif %}
@@ -115,7 +115,7 @@ services:
       SERVICE_CLIENT_ID: "us"
       SERVICE_CLIENT_SECRET: "${US_SERVICE_CLIENT_SECRET}"
 
-{%- if "DEV_MODE"|env(false) %}
+{%- if env.get('SERVER_HOST') %}
     ports:
       - "8083:8083"
 {%- endif %}
