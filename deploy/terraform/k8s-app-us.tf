@@ -132,7 +132,7 @@ resource "kubernetes_deployment" "us" {
           }
           env {
             name  = "USE_DEMO_DATA"
-            value = "1"
+            value = local.is_install_demo_data ? "1" : "0"
           }
           dynamic "env" {
             for_each = local.zitadel_us_env

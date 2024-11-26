@@ -1,3 +1,4 @@
+{{ if .Values.database.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -14,13 +15,13 @@ data:
 
       CREATE DATABASE "pg-compeng-db";
       GRANT ALL PRIVILEGES ON DATABASE "pg-compeng-db" TO "pg-user";
-
+    EOSQL
+  init-db-demo: |
+    #!/bin/bash
+    set -e
+    psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
       CREATE USER "demo" WITH PASSWORD 'demo';
       CREATE DATABASE "demo";
       GRANT ALL PRIVILEGES ON DATABASE "demo" TO "demo";
     EOSQL
-    # demo data
-    printf '%s\r\nHost: raw.githubusercontent.com\r\n\r\n' 'GET /datalens-tech/datalens/main/pg-demo-connection/init/demo-data.sql HTTP/1.0' | openssl s_client -quiet -connect raw.githubusercontent.com:443 > /tmp/demo-data.sql
-    cat /tmp/demo-data.sql | tr -d '\r'  | sed '1,/^$/d' > /tmp/demo-init.sql
-    psql -v ON_ERROR_STOP=1 --username "demo" --dbname "demo" < /tmp/demo-init.sql
-    rm -rf /tmp/demo-data.sql && rm -rf /tmp/demo-init.sql
+{{ end }}

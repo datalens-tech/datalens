@@ -138,6 +138,15 @@ resource "yandex_lockbox_secret_version" "this" {
       text_value = random_password.pg_password[entries.value].result
     }
   }
+
+  dynamic "entries" {
+    for_each = local.pg_users
+
+    content {
+      key        = "PG_HOST_${upper(replace(replace(entries.value, "pg-", ""), "-user", ""))}"
+      text_value = "c-${yandex_mdb_postgresql_cluster.this.id}.rw.mdb.yandexcloud.net"
+    }
+  }
 }
 
 resource "kubernetes_manifest" "lockbox" {

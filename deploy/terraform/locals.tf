@@ -23,7 +23,9 @@ locals {
   domain = var.DOMAIN
 
   # auto create demo data in demo db with demo crypto key for connection
-  is_create_demo_db = true
+  is_create_demo_db    = true
+  is_install_demo_data = true
+
   # may be disabled after resave demo connection with real db connection
   is_add_demo_crypto_key = false
 
@@ -39,6 +41,7 @@ locals {
   # auto create github runner
   is_create_github_runner = true
 
+  # auto deploy prometheus stack
   k8s_monitoring = true
 
   # use local k8s ipv4 by security reason
