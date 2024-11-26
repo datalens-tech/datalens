@@ -6,7 +6,7 @@ metadata:
   labels:
     app: app-control
 spec:
-  replicas: {{ .Values.application.replicas.control }}
+  replicas: {{ .Values.application.control.replicas }}
   selector:
     matchLabels:
       app: app-control
@@ -17,7 +17,11 @@ spec:
     spec:
       containers:
         - name: app-control
-          image: {{ print "ghcr.io/datalens-tech/datalens-control-api:" .Values.application.versions.control }}
+          {{- if .Values.application.control.image }}
+          image: {{ .Values.application.control.image }}
+          {{- else }}
+          image: {{ print .Values.registry "/" "datalens-control-api:" .Values.versions.control }}
+          {{- end }}
           ports:
             - containerPort: 8080
           env:
@@ -47,8 +51,8 @@ spec:
                   key: US_MASTER_TOKEN
           resources:
             requests:
-              cpu: {{ .Values.application.resources.control.requests.cpu }}
-              memory: {{ .Values.application.resources.control.requests.memory }}
+              cpu: {{ .Values.application.control.resources.requests.cpu }}
+              memory: {{ .Values.application.control.resources.requests.memory }}
             limits:
-              cpu: {{ .Values.application.resources.control.limits.cpu }}
-              memory: {{ .Values.application.resources.control.limits.memory }}
+              cpu: {{ .Values.application.control.resources.limits.cpu }}
+              memory: {{ .Values.application.control.resources.limits.memory }}

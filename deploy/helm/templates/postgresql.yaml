@@ -18,7 +18,13 @@ spec:
     spec:
       containers:
       - name: app-pg
-        image: postgres:16
+        {{- if .Values.database.image }}
+        image: {{ .Values.database.image }}
+        {{- else if not (eq .Values.registry "ghcr.io/datalens-tech") }}
+        image: {{ print .Values.registry "/" "postgres:" .Values.database.version }}
+        {{- else }}
+        image: {{ print "postgres:" .Values.database.version }}
+        {{- end }}
         ports:
           - containerPort: 5432
         env:
@@ -33,6 +39,13 @@ spec:
               secretKeyRef:
                 name: datalens-secret
                 key: POSTGRES_PASSWORD
+        resources:
+          requests:
+            cpu: {{ .Values.database.resources.requests.cpu }}
+            memory: {{ .Values.database.resources.requests.memory }}
+          limits:
+            cpu: {{ .Values.database.resources.limits.cpu }}
+            memory: {{ .Values.database.resources.limits.memory }}
         volumeMounts:
         - name: pg-storage
           mountPath: /var/lib/pgsql/data
