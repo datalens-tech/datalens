@@ -39,8 +39,6 @@ services:
       BI_COMPENG_PG_URL: "postgresql://postgres:postgres@pg-compeng:5432/postgres"
       US_HOST: "http://us:8083"
       US_MASTER_TOKEN: "fake-us-master-token"
-    ports:
-      - 8082:8080
     depends_on:
       - us
       - pg-compeng
@@ -53,7 +51,7 @@ services:
       POSTGRES_USER: demo
       POSTGRES_PASSWORD: demo
     volumes:
-      - db-demo:/var/lib/postgresql/data
+      - ./pg-demo-connection/data:/var/lib/postgresql/data
       - ./pg-demo-connection/init:/docker-entrypoint-initdb.d
 
   pg-us:
@@ -64,9 +62,7 @@ services:
       POSTGRES_USER: us
       POSTGRES_PASSWORD: us
     volumes:
-      - db-us:/var/lib/postgresql/data
-    ports:
-      - "8086:5432"
+      - ./metadata:/var/lib/postgresql/data
 
   us:
     container_name: datalens-us
@@ -82,8 +78,6 @@ services:
       USE_DEMO_DATA: ${USE_DEMO_DATA:-1}
       HC: ${HC:-0}
       NODE_EXTRA_CA_CERTS: /certs/root.crt
-    ports:
-      - "8083:8083"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
@@ -112,6 +106,3 @@ services:
       HC: ${HC:-0}
       YANDEX_MAP_ENABLED: ${YANDEX_MAP_ENABLED:-0}
       YANDEX_MAP_TOKEN: ${YANDEX_MAP_TOKEN}
-volumes:
-  db-us:
-  db-demo:

@@ -9,10 +9,10 @@ ingress:
 
 application:
   versions:
-    ui: 0.2312.0 # .uiVersion
-    control: 0.2176.0 # .controlApiVersion
-    data: 0.2176.0 # .dataApiVersion
-    us: 0.260.0 # .usVersion
+    ui: 0.2312.0
+    control: 0.2176.0
+    data: 0.2176.0
+    us: 0.260.0
   replicas:
     ui: 1
     us: 1
