@@ -6,7 +6,7 @@ metadata:
   labels:
     app: app-us
 spec:
-  replicas: {{ .Values.application.replicas.us }}
+  replicas: {{ .Values.application.us.replicas }}
   selector:
     matchLabels:
       app: app-us
@@ -17,7 +17,11 @@ spec:
     spec:
       containers:
         - name: app-us
-          image: {{ print "ghcr.io/datalens-tech/datalens-us:" .Values.application.versions.us }}
+          {{- if .Values.application.us.image }}
+          image: {{ .Values.application.us.image }}
+          {{- else }}
+          image: {{ print .Values.registry "/" "datalens-us:" .Values.versions.us }}
+          {{- end }}
           ports:
             - containerPort: 8083
           env:
@@ -41,8 +45,8 @@ spec:
                   key: POSTGRES_DSN_LIST_US
           resources:
             requests:
-              cpu: {{ .Values.application.resources.us.requests.cpu }}
-              memory: {{ .Values.application.resources.us.requests.memory }}
+              cpu: {{ .Values.application.us.resources.requests.cpu }}
+              memory: {{ .Values.application.us.resources.requests.memory }}
             limits:
-              cpu: {{ .Values.application.resources.us.limits.cpu }}
-              memory: {{ .Values.application.resources.us.limits.memory }}
+              cpu: {{ .Values.application.us.resources.limits.cpu }}
+              memory: {{ .Values.application.us.resources.limits.memory }}
