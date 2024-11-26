@@ -163,3 +163,65 @@ resource "yandex_mdb_postgresql_database" "this" {
     }
   }
 }
+
+resource "kubernetes_job" "postgresql_demo_data" {
+  for_each = toset(local.is_create_demo_db && local.is_install_demo_data ? ["main"] : [])
+
+  metadata {
+    name = "demo-data-job"
+  }
+  spec {
+    ttl_seconds_after_finished = "600"
+
+    template {
+      metadata {
+        name = "demo-data-job-job"
+      }
+      spec {
+        container {
+          name  = "demo-data-job-job"
+          image = "ghcr.io/datalens-tech/datalens:1.16.0-demo-data"
+
+          env {
+            name  = "POSTGRES_PORT"
+            value = "6432"
+          }
+
+          env {
+            name  = "POSTGRES_USER"
+            value = local.pg_demo_user
+          }
+
+          env {
+            name  = "POSTGRES_DB"
+            value = replace(local.pg_demo_user, "-user", "-db")
+          }
+
+          env {
+            name = "POSTGRES_HOST"
+            value_from {
+              secret_key_ref {
+                name = "k8s-lockbox-secret"
+                key  = "PG_HOST_DEMO"
+              }
+            }
+          }
+
+          env {
+            name = "POSTGRES_PASSWORD"
+            value_from {
+              secret_key_ref {
+                name = "k8s-lockbox-secret"
+                key  = "PG_PASSWORD_DEMO"
+              }
+            }
+          }
+        }
+        restart_policy = "OnFailure"
+      }
+    }
+
+    backoff_limit           = 5
+    active_deadline_seconds = 600
+  }
+}

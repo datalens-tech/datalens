@@ -1,3 +1,4 @@
+{{ if .Values.database.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -48,3 +49,8 @@ spec:
           items:
           - key: init-db
             path: init-db.sh
+          {{ if .Values.database.demo }}
+          - key: init-db-demo
+            path: init-db-demo.sh
+          {{ end }}
+{{ end }}

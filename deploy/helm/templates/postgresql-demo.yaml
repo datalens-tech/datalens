@@ -1,0 +1,35 @@
+{{ if and .Values.database.enabled .Values.database.demo }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-pg-demo-data
+  namespace: {{ .Release.Namespace }}
+  labels:
+    job-name: job-pg-demo-data
+  annotations:
+    helm.sh/hook: post-install
+spec:
+  template:
+    metadata:
+      labels:
+        job-name: job-pg-demo-data
+    spec:
+      containers:
+        - name: job-pg-demo-data
+          image: ghcr.io/datalens-tech/datalens:1.16.0-demo-data
+          env:
+            - name: POSTGRES_PORT
+              value: '5432'
+            - name: POSTGRES_USER
+              value: demo
+            - name: POSTGRES_DB
+              value: demo
+            - name: POSTGRES_HOST
+              value: pg-cip
+            - name: POSTGRES_PASSWORD
+              value: demo
+      restartPolicy: OnFailure
+  ttlSecondsAfterFinished: 300
+  activeDeadlineSeconds: 600
+  backoffLimit: 10
+{{ end }}
