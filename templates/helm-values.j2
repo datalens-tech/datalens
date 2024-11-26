@@ -1,0 +1,49 @@
+database:
+  enabled: true
+  demo: true
+
+ingress:
+  enabled: true
+  domain: datalens.local
+  yc: false
+
+application:
+  versions:
+    ui: {{ uiVersion }}
+    control: {{ controlApiVersion }}
+    data: {{ dataApiVersion }}
+    us: {{ usVersion }}
+  replicas:
+    ui: 1
+    us: 1
+    data: 1
+    control: 1
+  resources:
+    ui:
+      requests:
+        cpu: 250m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 512Mi
+    control:
+      requests:
+        cpu: 500m
+        memory: 1024Mi
+      limits:
+        cpu: 1000m
+        memory: 2048Mi
+    data:
+      requests:
+        cpu: 1000m
+        memory: 1024Mi
+      limits:
+        cpu: 2000m
+        memory: 2048Mi
+    us:
+      requests:
+        cpu: 500m
+        memory: 512Mi
+      limits:
+        cpu: 1000m
+        memory: 1024Mi
