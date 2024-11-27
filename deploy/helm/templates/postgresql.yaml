@@ -1,0 +1,69 @@
+{{ if .Values.database.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pg
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: app-pg
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-pg
+  template:
+    metadata:
+      labels:
+        app: app-pg
+    spec:
+      containers:
+      - name: app-pg
+        {{- if .Values.database.image }}
+        image: {{ .Values.database.image }}
+        {{- else if not (eq .Values.registry "ghcr.io/datalens-tech") }}
+        image: {{ print .Values.registry "/" "postgres:" .Values.database.version }}
+        {{- else }}
+        image: {{ print "postgres:" .Values.database.version }}
+        {{- end }}
+        ports:
+          - containerPort: 5432
+        env:
+          - name: POSTGRES_INITDB_ARGS
+            value: '--encoding=UTF-8 --lc-collate=en_US.utf8 --lc-ctype=en_US.utf8'
+          - name: POSTGRES_USER
+            value: pg-user
+          - name: POSTGRES_DB
+            value: pg-us-db
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: datalens-secret
+                key: POSTGRES_PASSWORD
+        resources:
+          requests:
+            cpu: {{ .Values.database.resources.requests.cpu }}
+            memory: {{ .Values.database.resources.requests.memory }}
+          limits:
+            cpu: {{ .Values.database.resources.limits.cpu }}
+            memory: {{ .Values.database.resources.limits.memory }}
+        volumeMounts:
+        - name: pg-storage
+          mountPath: /var/lib/pgsql/data
+        - name: pg-config
+          mountPath: /docker-entrypoint-initdb.d
+          readOnly: true
+      volumes:
+      - name: pg-storage
+        persistentVolumeClaim:
+          claimName: pg-volume
+      - name: pg-config
+        configMap:
+          name: pg-config
+          items:
+          - key: init-db
+            path: init-db.sh
+          {{ if .Values.database.demo }}
+          - key: init-db-demo
+            path: init-db-demo.sh
+          {{ end }}
+{{ end }}

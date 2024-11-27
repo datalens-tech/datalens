@@ -77,7 +77,7 @@ resource "kubernetes_deployment" "us" {
 
           readiness_probe {
             http_get {
-              path = "/ping"
+              path = "/ping-db"
               port = 8083
             }
 
@@ -132,7 +132,7 @@ resource "kubernetes_deployment" "us" {
           }
           env {
             name  = "USE_DEMO_DATA"
-            value = "1"
+            value = local.is_install_demo_data ? "1" : "0"
           }
           dynamic "env" {
             for_each = local.zitadel_us_env
@@ -157,10 +157,6 @@ resource "kubernetes_deployment" "us" {
       }
     }
   }
-
-  depends_on = [
-    data.shell_script.kubeconfig,
-  ]
 }
 
 resource "kubernetes_service" "us_service" {
@@ -179,8 +175,4 @@ resource "kubernetes_service" "us_service" {
     }
     type = "ClusterIP"
   }
-
-  depends_on = [
-    data.shell_script.kubeconfig,
-  ]
 }

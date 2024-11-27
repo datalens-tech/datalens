@@ -1,0 +1,11 @@
+apiVersion: v2
+
+# release version
+appVersion: 1.16.0
+
+name: datalens
+description: DataLens Helm chart for Kubernetes
+type: application
+
+# helm chart version
+version: 1.0.0

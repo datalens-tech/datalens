@@ -1,0 +1,13 @@
+{{ if .Values.database.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: pg-cip
+spec:
+  selector:
+    app: app-pg
+  ports:
+  - protocol: TCP
+    port: 5432
+  clusterIP: None
+{{ end }}

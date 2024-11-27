@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: us
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: app-us
+spec:
+  replicas: {{ .Values.application.us.replicas }}
+  selector:
+    matchLabels:
+      app: app-us
+  template:
+    metadata:
+      labels:
+        app: app-us
+    spec:
+      containers:
+        - name: app-us
+          {{- if .Values.application.us.image }}
+          image: {{ .Values.application.us.image }}
+          {{- else }}
+          image: {{ print .Values.registry "/" "datalens-us:" .Values.versions.us }}
+          {{- end }}
+          ports:
+            - containerPort: 8083
+          env:
+            - name: APP_INSTALLATION
+              value: opensource
+            - name: APP_ENV
+              value: prod
+            - name: SKIP_INSTALL_DB_EXTENSIONS
+              value: '1'
+            - name: USE_DEMO_DATA
+              value: '1'
+            - name: MASTER_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: datalens-secret
+                  key: US_MASTER_TOKEN
+            - name: POSTGRES_DSN_LIST
+              valueFrom:
+                secretKeyRef:
+                  name: datalens-secret
+                  key: POSTGRES_DSN_LIST_US
+          resources:
+            requests:
+              cpu: {{ .Values.application.us.resources.requests.cpu }}
+              memory: {{ .Values.application.us.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.application.us.resources.limits.cpu }}
+              memory: {{ .Values.application.us.resources.limits.memory }}

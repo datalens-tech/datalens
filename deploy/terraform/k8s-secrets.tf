@@ -9,10 +9,6 @@ resource "helm_release" "secrets" {
 
   version    = "0.9.20"
   repository = "oci://${local.cr_endpoint}/yc-marketplace/yandex-cloud/external-secrets/chart"
-
-  depends_on = [
-    data.shell_script.kubeconfig,
-  ]
 }
 
 resource "kubernetes_secret" "secrets" {
@@ -36,7 +32,6 @@ resource "kubernetes_secret" "secrets" {
 
   depends_on = [
     helm_release.secrets,
-    data.shell_script.kubeconfig,
   ]
 }
 
@@ -65,7 +60,6 @@ resource "kubernetes_manifest" "secrets" {
   depends_on = [
     helm_release.secrets,
     kubernetes_secret.secrets,
-    data.shell_script.kubeconfig,
   ]
 }
 
@@ -144,6 +138,15 @@ resource "yandex_lockbox_secret_version" "this" {
       text_value = random_password.pg_password[entries.value].result
     }
   }
+
+  dynamic "entries" {
+    for_each = local.pg_users
+
+    content {
+      key        = "PG_HOST_${upper(replace(replace(entries.value, "pg-", ""), "-user", ""))}"
+      text_value = "c-${yandex_mdb_postgresql_cluster.this.id}.rw.mdb.yandexcloud.net"
+    }
+  }
 }
 
 resource "kubernetes_manifest" "lockbox" {
@@ -179,7 +182,6 @@ resource "kubernetes_manifest" "lockbox" {
   depends_on = [
     helm_release.secrets,
     kubernetes_secret.secrets,
-    data.shell_script.kubeconfig,
   ]
 }
 
@@ -224,7 +226,6 @@ resource "kubernetes_manifest" "lockbox-zitadel" {
   depends_on = [
     helm_release.secrets,
     kubernetes_secret.secrets,
-    data.shell_script.kubeconfig,
   ]
 }
 

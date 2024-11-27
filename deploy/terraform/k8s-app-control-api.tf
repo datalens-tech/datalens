@@ -59,7 +59,7 @@ resource "kubernetes_deployment" "control-api" {
       }
       spec {
         container {
-          image = "ghcr.io/datalens-tech/datalens-control-api:${local.data_api_version}"
+          image = "ghcr.io/datalens-tech/datalens-control-api:${local.control_api_version}"
           name  = "app-control-api"
           port {
             container_port = 8080
@@ -163,10 +163,6 @@ resource "kubernetes_deployment" "control-api" {
       }
     }
   }
-
-  depends_on = [
-    data.shell_script.kubeconfig,
-  ]
 }
 
 resource "kubernetes_service" "control-api_service" {
@@ -185,8 +181,4 @@ resource "kubernetes_service" "control-api_service" {
     }
     type = "ClusterIP"
   }
-
-  depends_on = [
-    data.shell_script.kubeconfig,
-  ]
 }

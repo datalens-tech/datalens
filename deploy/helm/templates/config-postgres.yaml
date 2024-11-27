@@ -1,0 +1,27 @@
+{{ if .Values.database.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pg-config
+data:
+  init-db: |
+    #!/bin/bash
+    set -e
+    psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
+      CREATE EXTENSION IF NOT EXISTS pg_trgm;
+      CREATE EXTENSION IF NOT EXISTS btree_gin;
+      CREATE EXTENSION IF NOT EXISTS btree_gist;
+      CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+      CREATE DATABASE "pg-compeng-db";
+      GRANT ALL PRIVILEGES ON DATABASE "pg-compeng-db" TO "pg-user";
+    EOSQL
+  init-db-demo: |
+    #!/bin/bash
+    set -e
+    psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
+      CREATE USER "demo" WITH PASSWORD 'demo';
+      CREATE DATABASE "demo";
+      GRANT ALL PRIVILEGES ON DATABASE "demo" TO "demo";
+    EOSQL
+{{ end }}

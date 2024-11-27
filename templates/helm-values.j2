@@ -1,0 +1,67 @@
+versions:
+  ui: {{ uiVersion }}
+  control: {{ controlApiVersion }}
+  data: {{ dataApiVersion }}
+  us: {{ usVersion }}
+
+database:
+  enabled: true
+  demo: true
+  version: 16
+  image: null
+  resources:
+    requests:
+      cpu: 250m
+      memory: 128Mi
+    limits:
+      cpu: 1000m
+      memory: 512Mi    
+
+ingress:
+  enabled: true
+  domain: datalens.local
+  yc: false
+
+registry: ghcr.io/datalens-tech
+
+application:
+  ui:
+    replicas: 1
+    image: null
+    resources:
+      requests:
+        cpu: 250m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 512Mi
+  us:
+    replicas: 1
+    image: null
+    resources:
+      requests:
+        cpu: 500m
+        memory: 512Mi
+      limits:
+        cpu: 1000m
+        memory: 1024Mi
+  control:
+    replicas: 1
+    image: null
+    resources:
+      requests:
+        cpu: 500m
+        memory: 1024Mi
+      limits:
+        cpu: 1000m
+        memory: 2048Mi
+  data:
+    replicas: 1
+    image: null
+    resources:
+      requests:
+        cpu: 1000m
+        memory: 1024Mi
+      limits:
+        cpu: 2000m
+        memory: 2048Mi

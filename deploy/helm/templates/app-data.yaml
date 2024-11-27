@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: app-data
+spec:
+  replicas: {{ .Values.application.data.replicas }}
+  selector:
+    matchLabels:
+      app: app-data
+  template:
+    metadata:
+      labels:
+        app: app-data
+    spec:
+      containers:
+        - name: app-data
+          {{- if .Values.application.data.image }}
+          image: {{ .Values.application.data.image }}
+          {{- else }}
+          image: {{ print .Values.registry "/" "datalens-data-api:" .Values.versions.data }}
+          {{- end }}
+          ports:
+            - containerPort: 8080
+          env:
+            - name: GUNICORN_WORKERS_COUNT
+              value: '5'
+            - name: RQE_FORCE_OFF
+              value: '1'
+            - name: CACHES_ON
+              value: '0'
+            - name: MUTATIONS_CACHES_ON
+              value: '0'
+            - name: RQE_SECRET_KEY
+              value: ''
+            - name: DL_CRY_ACTUAL_KEY_ID
+              value: key_2
+            - name: DL_CRY_KEY_VAL_ID_key_1
+              value: h1ZpilcYLYRdWp7Nk8X1M1kBPiUi8rdjz9oBfHyUKIk=
+            - name: BI_COMPENG_PG_ON
+              value: '1'
+            - name: US_HOST
+              value: http://us-cip:8080
+            - name: DL_CRY_KEY_VAL_ID_key_2
+              valueFrom:
+                secretKeyRef:
+                  name: datalens-secret
+                  key: CONTROL_API_CRYPTO_KEY
+            - name: BI_COMPENG_PG_URL
+              valueFrom:
+                secretKeyRef:
+                  name: datalens-secret
+                  key: POSTGRES_DSN_LIST_COMPENG
+            - name: US_MASTER_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: datalens-secret
+                  key: US_MASTER_TOKEN
+          resources:
+            requests:
+              cpu: {{ .Values.application.data.resources.requests.cpu }}
+              memory: {{ .Values.application.data.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.application.data.resources.limits.cpu }}
+              memory: {{ .Values.application.data.resources.limits.memory }}

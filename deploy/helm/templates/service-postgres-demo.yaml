@@ -1,0 +1,13 @@
+{{ if and .Values.database.enabled .Values.database.demo }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: pg-demo-connection
+spec:
+  selector:
+    app: app-pg
+  ports:
+  - protocol: TCP
+    port: 5432
+  clusterIP: None
+{{ end }}

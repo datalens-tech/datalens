@@ -1,0 +1,16 @@
+{{ if .Values.database.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pg-volume
+  labels:
+    app: app-pg
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+    limits:
+      storage: 10Gi
+{{ end }}

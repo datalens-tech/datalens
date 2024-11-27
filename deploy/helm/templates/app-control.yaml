@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: control
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: app-control
+spec:
+  replicas: {{ .Values.application.control.replicas }}
+  selector:
+    matchLabels:
+      app: app-control
+  template:
+    metadata:
+      labels:
+        app: app-control
+    spec:
+      containers:
+        - name: app-control
+          {{- if .Values.application.control.image }}
+          image: {{ .Values.application.control.image }}
+          {{- else }}
+          image: {{ print .Values.registry "/" "datalens-control-api:" .Values.versions.control }}
+          {{- end }}
+          ports:
+            - containerPort: 8080
+          env:
+            - name: BI_API_UWSGI_WORKERS_COUNT
+              value: '4'
+            - name: CONNECTOR_AVAILABILITY_VISIBLE
+              value: clickhouse,postgres,chyt,ydb,mysql,greenplum,mssql,appmetrica_api,metrika_api
+            - name: RQE_FORCE_OFF
+              value: '1'
+            - name: DL_CRY_ACTUAL_KEY_ID
+              value: key_2
+            - name: DL_CRY_KEY_VAL_ID_key_1
+              value: h1ZpilcYLYRdWp7Nk8X1M1kBPiUi8rdjz9oBfHyUKIk=
+            - name: RQE_SECRET_KEY
+              value: ''
+            - name: US_HOST
+              value: http://us-cip:8080
+            - name: DL_CRY_KEY_VAL_ID_key_2
+              valueFrom:
+                secretKeyRef:
+                  name: datalens-secret
+                  key: CONTROL_API_CRYPTO_KEY
+            - name: US_MASTER_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: datalens-secret
+                  key: US_MASTER_TOKEN
+          resources:
+            requests:
+              cpu: {{ .Values.application.control.resources.requests.cpu }}
+              memory: {{ .Values.application.control.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.application.control.resources.limits.cpu }}
+              memory: {{ .Values.application.control.resources.limits.memory }}
