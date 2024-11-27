@@ -1,7 +1,7 @@
 services:
   pg-compeng:
     container_name: datalens-pg-compeng
-    image: postgres:13-alpine
+    image: postgres:16-alpine
     environment:
       POSTGRES_PASSWORD: "postgres"
       POSTGRES_DB: postgres
@@ -51,7 +51,7 @@ services:
 
   pg-demo-connection:
     container_name: datalens-pg-demo-connection
-    image: postgres:13-alpine
+    image: postgres:16-alpine
     environment:
       POSTGRES_DB: demo
       POSTGRES_USER: demo
@@ -61,13 +61,13 @@ services:
       - db-demo:/var/lib/postgresql/data
       - ./pg-demo-connection/init:/docker-entrypoint-initdb.d
 {%- else %}
-      - ./pg-demo-connection/data:/var/lib/postgresql/data
+      - ${VOLUME_DEMO:-./pg-demo-connection/data}:/var/lib/postgresql/data
       - ./pg-demo-connection/init:/docker-entrypoint-initdb.d
 {%- endif %}
 
   pg-us:
     container_name: datalens-pg-us
-    image: postgres:13-alpine
+    image: postgres:16-alpine
     environment:
       POSTGRES_DB: us-db-ci_purgeable
       POSTGRES_USER: us
@@ -76,7 +76,7 @@ services:
 {%- if env.get('DEV_MODE') %}
       - db-us:/var/lib/postgresql/data
 {%- else %}
-      - ./metadata:/var/lib/postgresql/data
+      - ${VOLUME_US:-./metadata}:/var/lib/postgresql/data
 {%- endif %}
 {%- if env.get('DEV_MODE') %}
     ports:
