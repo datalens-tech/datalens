@@ -112,8 +112,6 @@ services:
       HC: ${HC:-0}
       YANDEX_MAP_ENABLED: ${YANDEX_MAP_ENABLED:-0}
       YANDEX_MAP_TOKEN: ${YANDEX_MAP_TOKEN}
-
 volumes:
   db-us:
-  db-zitadel:
   db-demo:
