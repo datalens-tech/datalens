@@ -173,6 +173,7 @@ resource "yandex_kubernetes_node_group" "this" {
 }
 
 locals {
+  k8s_cluster_id             = yandex_kubernetes_cluster.this.id
   k8s_cluster_endpoint       = local.k8s_use_external_ipv4 && !local.k8s_connect_by_internal_ipv4 ? yandex_kubernetes_cluster.this.master[0].external_v4_endpoint : yandex_kubernetes_cluster.this.master[0].internal_v4_endpoint
   k8s_cluster_ca_certificate = yandex_kubernetes_cluster.this.master[0].cluster_ca_certificate
 }

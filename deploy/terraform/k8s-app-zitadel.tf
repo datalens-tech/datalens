@@ -118,7 +118,7 @@ locals {
 }
 
 resource "kubernetes_deployment" "zitadel" {
-  for_each = toset(local.is_zitadel_enabled ? ["main"] : [])
+  for_each = toset(local.k8s_cluster_ready && local.is_zitadel_enabled ? ["main"] : [])
 
   metadata {
     name = "zitadel"
@@ -234,7 +234,7 @@ resource "kubernetes_deployment" "zitadel" {
 }
 
 resource "kubernetes_job" "zitadel_init_job" {
-  for_each = toset(local.is_zitadel_enabled && local.is_zitadel_need_init_job_run ? ["main"] : [])
+  for_each = toset(local.k8s_cluster_ready && local.is_zitadel_enabled && local.is_zitadel_need_init_job_run ? ["main"] : [])
 
   metadata {
     name = "zitadel-init-job"
@@ -282,7 +282,7 @@ resource "kubernetes_job" "zitadel_init_job" {
 }
 
 resource "kubernetes_job" "zitadel_setup_job" {
-  for_each = toset(local.is_zitadel_enabled && local.is_zitadel_need_init_job_run ? ["main"] : [])
+  for_each = toset(local.k8s_cluster_ready && local.is_zitadel_enabled && local.is_zitadel_need_init_job_run ? ["main"] : [])
 
   metadata {
     name = "zitadel-setup-job"
@@ -330,7 +330,7 @@ resource "kubernetes_job" "zitadel_setup_job" {
 }
 
 resource "kubernetes_service" "zitadel_service" {
-  for_each = toset(local.is_zitadel_enabled ? ["main"] : [])
+  for_each = toset(local.k8s_cluster_ready && local.is_zitadel_enabled ? ["main"] : [])
 
   metadata {
     name = "zitadel-np"
