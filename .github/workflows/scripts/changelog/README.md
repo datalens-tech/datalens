@@ -23,6 +23,7 @@ Use the following labels to assign a pull request to a section:
 - `type/feat` -> New features
 - `type/fix` -> Bug fixes
 - `type/sec` -> Security
+- `type/deps` -> Dependencies
 - `type/deprecation` -> Deprecation
 - `type/dev` -> Development
 - `type/test` -> Tests

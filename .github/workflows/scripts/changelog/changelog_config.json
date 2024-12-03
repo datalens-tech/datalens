@@ -65,6 +65,10 @@
         "text": "Security"
       },
       {
+        "id": "deps",
+        "text": "Dependencies"
+      },
+      {
         "id": "deprecation",
         "text": "Deprecation"
       },
