@@ -41,6 +41,9 @@ locals {
   # auto create github runner
   is_create_github_runner = true
 
+  # next step k8s deploy applications
+  k8s_cluster_ready = true
+
   # auto deploy prometheus stack
   k8s_monitoring = true
 

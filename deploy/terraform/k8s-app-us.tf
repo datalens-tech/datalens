@@ -32,6 +32,8 @@ locals {
 }
 
 resource "kubernetes_deployment" "us" {
+  for_each = toset(local.k8s_cluster_ready ? ["main"] : [])
+
   metadata {
     name = "us"
     labels = {
@@ -160,6 +162,8 @@ resource "kubernetes_deployment" "us" {
 }
 
 resource "kubernetes_service" "us_service" {
+  for_each = toset(local.k8s_cluster_ready ? ["main"] : [])
+
   metadata {
     name = "us-cip"
   }

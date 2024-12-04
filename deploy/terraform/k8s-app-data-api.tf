@@ -37,6 +37,8 @@ locals {
 }
 
 resource "kubernetes_deployment" "data-api" {
+  for_each = toset(local.k8s_cluster_ready ? ["main"] : [])
+
   metadata {
     name = "data-api"
     labels = {
@@ -198,6 +200,8 @@ resource "kubernetes_deployment" "data-api" {
 }
 
 resource "kubernetes_service" "data-api_service" {
+  for_each = toset(local.k8s_cluster_ready ? ["main"] : [])
+
   metadata {
     name = "data-api-cip"
   }

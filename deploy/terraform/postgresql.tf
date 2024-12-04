@@ -165,7 +165,7 @@ resource "yandex_mdb_postgresql_database" "this" {
 }
 
 resource "kubernetes_job" "postgresql_demo_data" {
-  for_each = toset(local.is_create_demo_db && local.is_install_demo_data ? ["main"] : [])
+  for_each = toset(local.k8s_cluster_ready && local.is_create_demo_db && local.is_install_demo_data ? ["main"] : [])
 
   metadata {
     name = "demo-data-job"

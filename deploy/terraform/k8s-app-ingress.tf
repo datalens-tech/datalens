@@ -1,4 +1,6 @@
 resource "kubernetes_ingress_v1" "k8s_ingress" {
+  for_each = toset(local.k8s_cluster_ready ? ["main"] : [])
+
   metadata {
     name = "k8s-ingress"
     annotations = {

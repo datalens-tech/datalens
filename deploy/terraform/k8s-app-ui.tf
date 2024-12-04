@@ -50,6 +50,8 @@ locals {
 }
 
 resource "kubernetes_deployment" "ui" {
+  for_each = toset(local.k8s_cluster_ready ? ["main"] : [])
+
   metadata {
     name = "ui"
     labels = {
@@ -167,6 +169,8 @@ resource "kubernetes_deployment" "ui" {
 }
 
 resource "kubernetes_service" "ui_service" {
+  for_each = toset(local.k8s_cluster_ready ? ["main"] : [])
+
   metadata {
     name = "ui-np"
   }
