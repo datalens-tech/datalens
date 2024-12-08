@@ -2,22 +2,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pg
+  name: datalens-pg
   namespace: {{ .Release.Namespace }}
   labels:
-    app: app-pg
+    app: datalens-app-pg
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: app-pg
+      app: datalens-app-pg
   template:
     metadata:
       labels:
-        app: app-pg
+        app: datalens-app-pg
     spec:
       containers:
-      - name: app-pg
+      - name: datalens-app-pg
         {{- if .Values.database.image }}
         image: {{ .Values.database.image }}
         {{- else if not (eq .Values.registry "ghcr.io/datalens-tech") }}
@@ -55,10 +55,10 @@ spec:
       volumes:
       - name: pg-storage
         persistentVolumeClaim:
-          claimName: pg-volume
+          claimName: datalens-pg-volume
       - name: pg-config
         configMap:
-          name: pg-config
+          name: datalens-pg-config
           items:
           - key: init-db
             path: init-db.sh

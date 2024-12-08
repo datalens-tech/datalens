@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: pg-config
+  name: datalens-pg-config
 data:
   init-db: |
     #!/bin/bash

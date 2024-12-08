@@ -1,30 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ui
+  name: datalens-ui
   namespace: {{ .Release.Namespace }}
   labels:
-    app: app-ui
+    app: datalens-app-ui
 spec:
   replicas: {{ .Values.application.ui.replicas }}
   selector:
     matchLabels:
-      app: app-ui
+      app: datalens-app-ui
   template:
     metadata:
       labels:
-        app: app-ui
+        app: datalens-app-ui
     spec:
       containers:
-        - name: app-ui
+        - name: datalens-app-ui
           {{- if .Values.application.ui.image }}
           image: {{ .Values.application.ui.image }}
           {{- else }}
           image: {{ print .Values.registry "/" "datalens-ui:" .Values.versions.ui }}
           {{- end }}
           ports:
-            - containerPort: 8080
+            - containerPort: 80
           env:
+            - name: APP_PORT
+              value: 80
             - name: APP_INSTALLATION
               value: opensource
             - name: APP_ENV
@@ -34,11 +36,11 @@ spec:
             - name: AUTH_POLICY
               value: disabled
             - name: US_ENDPOINT
-              value: http://us-cip:8080
+              value: http://datalens-us-cip:8080
             - name: BI_API_ENDPOINT
-              value: http://control-cip:8080
+              value: http://datalens-control-cip:8080
             - name: BI_DATA_ENDPOINT
-              value: http://data-cip:8080
+              value: http://datalens-data-cip:8080
             - name: US_MASTER_TOKEN
               valueFrom:
                 secretKeyRef:

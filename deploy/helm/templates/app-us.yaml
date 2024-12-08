@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: us
+  name: datalens-us
   namespace: {{ .Release.Namespace }}
   labels:
-    app: app-us
+    app: datalens-app-us
 spec:
   replicas: {{ .Values.application.us.replicas }}
   selector:
     matchLabels:
-      app: app-us
+      app: datalens-app-us
   template:
     metadata:
       labels:
-        app: app-us
+        app: datalens-app-us
     spec:
       containers:
-        - name: app-us
+        - name: datalens-app-us
           {{- if .Values.application.us.image }}
           image: {{ .Values.application.us.image }}
           {{- else }}

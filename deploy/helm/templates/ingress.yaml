@@ -12,7 +12,13 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: ui-cip
+            name: datalens-ui-cip
             port:
-              number: 8080
+              name: http
+{{- if .Values.ingress.tls.secret }}
+  tls:
+    - hosts:
+        - {{ .Values.ingress.domain }}
+      secretName: {{ .Values.tls.secret }}
+{{- end }}
 {{ end }}

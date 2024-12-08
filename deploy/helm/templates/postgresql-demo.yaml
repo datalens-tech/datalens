@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: job-pg-demo-data
-          image: ghcr.io/datalens-tech/datalens:1.16.0-demo-data
+          image: ghcr.io/datalens-tech/datalens:1.17.0-demo-data
           env:
             - name: POSTGRES_PORT
               value: '5432'
@@ -25,7 +25,7 @@ spec:
             - name: POSTGRES_DB
               value: demo
             - name: POSTGRES_HOST
-              value: pg-cip
+              value: datalens-pg-cip
             - name: POSTGRES_PASSWORD
               value: demo
       restartPolicy: OnFailure
