@@ -23,10 +23,8 @@ spec:
           image: {{ print .Values.registry "/" "datalens-ui:" .Values.versions.ui }}
           {{- end }}
           ports:
-            - containerPort: 80
+            - containerPort: 8080
           env:
-            - name: APP_PORT
-              value: '80'
             - name: APP_INSTALLATION
               value: opensource
             - name: APP_ENV
