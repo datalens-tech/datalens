@@ -8,7 +8,7 @@ database:
   enabled: true
   demo: true
   version: 16
-  image: null
+  image: ''
   resources:
     requests:
       cpu: 250m
@@ -22,7 +22,7 @@ ingress:
   domain: datalens.local
   yc: false
   tls:
-    secret: null
+    secret: ''
 
 registry: ghcr.io/datalens-tech
 
@@ -30,12 +30,12 @@ config:
   hc: false
   map:
     enabled: false
-    token: null
+    token: ''
 
 application:
   ui:
     replicas: 1
-    image: null
+    image: ''
     resources:
       requests:
         cpu: 250m
@@ -45,7 +45,7 @@ application:
         memory: 512Mi
   us:
     replicas: 1
-    image: null
+    image: ''
     resources:
       requests:
         cpu: 500m
@@ -55,7 +55,7 @@ application:
         memory: 1024Mi
   control:
     replicas: 1
-    image: null
+    image: ''
     resources:
       requests:
         cpu: 500m
@@ -65,7 +65,7 @@ application:
         memory: 2048Mi
   data:
     replicas: 1
-    image: null
+    image: ''
     resources:
       requests:
         cpu: 1000m
