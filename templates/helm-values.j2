@@ -21,8 +21,16 @@ ingress:
   enabled: true
   domain: datalens.local
   yc: false
+  tls:
+    secret: null
 
 registry: ghcr.io/datalens-tech
+
+config:
+  hc: false
+  map:
+    enabled: false
+    token: null
 
 application:
   ui:
