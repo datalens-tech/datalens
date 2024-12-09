@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ui
+  name: datalens-ui
   namespace: {{ .Release.Namespace }}
   labels:
-    app: app-ui
+    app: datalens-app-ui
 spec:
   replicas: {{ .Values.application.ui.replicas }}
   selector:
     matchLabels:
-      app: app-ui
+      app: datalens-app-ui
   template:
     metadata:
       labels:
-        app: app-ui
+        app: datalens-app-ui
     spec:
       containers:
-        - name: app-ui
+        - name: datalens-app-ui
           {{- if .Values.application.ui.image }}
           image: {{ .Values.application.ui.image }}
           {{- else }}
@@ -34,11 +34,23 @@ spec:
             - name: AUTH_POLICY
               value: disabled
             - name: US_ENDPOINT
-              value: http://us-cip:8080
+              value: http://datalens-us-cip:8080
             - name: BI_API_ENDPOINT
-              value: http://control-cip:8080
+              value: http://datalens-control-cip:8080
             - name: BI_DATA_ENDPOINT
-              value: http://data-cip:8080
+              value: http://datalens-data-cip:8080
+            {{- if .Values.config.hc }}
+            - name: HC
+              value: '1'
+            {{- end }}
+            {{- if .Values.config.map.enabled }}
+            - name: YANDEX_MAP_ENABLED
+              value: '1'
+            {{- end }}
+            {{- if .Values.config.map.token }}
+            - name: YANDEX_MAP_TOKEN
+              value: {{ .Values.config.map.token }}
+            {{- end }}
             - name: US_MASTER_TOKEN
               valueFrom:
                 secretKeyRef:

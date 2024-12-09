@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: control
+  name: datalens-control
   namespace: {{ .Release.Namespace }}
   labels:
-    app: app-control
+    app: datalens-app-control
 spec:
   replicas: {{ .Values.application.control.replicas }}
   selector:
     matchLabels:
-      app: app-control
+      app: datalens-app-control
   template:
     metadata:
       labels:
-        app: app-control
+        app: datalens-app-control
     spec:
       containers:
-        - name: app-control
+        - name: datalens-app-control
           {{- if .Values.application.control.image }}
           image: {{ .Values.application.control.image }}
           {{- else }}
@@ -38,7 +38,7 @@ spec:
             - name: RQE_SECRET_KEY
               value: ''
             - name: US_HOST
-              value: http://us-cip:8080
+              value: http://datalens-us-cip:8080
             - name: DL_CRY_KEY_VAL_ID_key_2
               valueFrom:
                 secretKeyRef:

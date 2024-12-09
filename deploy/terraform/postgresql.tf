@@ -178,7 +178,7 @@ resource "kubernetes_job" "postgresql_demo_data" {
       spec {
         container {
           name  = "demo-data-job-job"
-          image = "ghcr.io/datalens-tech/datalens:1.16.0-demo-data"
+          image = "ghcr.io/datalens-tech/datalens:1.17.0-demo-data"
 
           env {
             name  = "POSTGRES_PORT"
@@ -218,8 +218,8 @@ resource "kubernetes_job" "postgresql_demo_data" {
         restart_policy = "OnFailure"
       }
     }
-
-    backoff_limit           = 5
-    active_deadline_seconds = 600
+    ttl_seconds_after_finished = 300
+    backoff_limit              = 5
+    active_deadline_seconds    = 600
   }
 }

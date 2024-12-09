@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: data
+  name: datalens-data
   namespace: {{ .Release.Namespace }}
   labels:
-    app: app-data
+    app: datalens-app-data
 spec:
   replicas: {{ .Values.application.data.replicas }}
   selector:
     matchLabels:
-      app: app-data
+      app: datalens-app-data
   template:
     metadata:
       labels:
-        app: app-data
+        app: datalens-app-data
     spec:
       containers:
-        - name: app-data
+        - name: datalens-app-data
           {{- if .Values.application.data.image }}
           image: {{ .Values.application.data.image }}
           {{- else }}
@@ -42,7 +42,7 @@ spec:
             - name: BI_COMPENG_PG_ON
               value: '1'
             - name: US_HOST
-              value: http://us-cip:8080
+              value: http://datalens-us-cip:8080
             - name: DL_CRY_KEY_VAL_ID_key_2
               valueFrom:
                 secretKeyRef:
