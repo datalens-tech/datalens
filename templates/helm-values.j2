@@ -15,7 +15,7 @@ database:
       memory: 128Mi
     limits:
       cpu: 1000m
-      memory: 512Mi    
+      memory: 512Mi
 
 ingress:
   enabled: true
@@ -31,6 +31,11 @@ config:
   map:
     enabled: false
     token: null
+
+secrets:
+  US_MASTER_TOKEN: null
+  CONTROL_API_CRYPTO_KEY: null
+  POSTGRES_PASSWORD: null
 
 application:
   ui:
