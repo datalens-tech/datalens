@@ -1,3 +1,60 @@
+## v1.18.0 (2024-12-11)
+
+### Image versions
+- datalens-control-api: 0.2181.0
+- datalens-data-api: 0.2181.0
+- datalens-ui: 0.2312.0 -> 0.2412.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.2312.0...v0.2412.0))
+- datalens-us: 0.260.0 -> 0.278.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.260.0...v0.278.0))
+
+### New features
+- **Charts**: Change point max size on scatter-chart. [datalens-tech/datalens-ui#1821](https://github.com/datalens-tech/datalens-ui/pull/1821)
+- **Charts**: Add stacking switcher in area charts. [datalens-tech/datalens-ui#1818](https://github.com/datalens-tech/datalens-ui/pull/1818)
+- **Charts**: Enable TableSize feature by default. [datalens-tech/datalens-ui#1828](https://github.com/datalens-tech/datalens-ui/pull/1828)
+- **General components**: Redesign dash fixed header. [datalens-tech/datalens-ui#1848](https://github.com/datalens-tech/datalens-ui/pull/1848)
+- **Dashboards**: Add anchor to titles on dash. [datalens-tech/datalens-ui#1784](https://github.com/datalens-tech/datalens-ui/pull/1784)
+- **Charts**: Some pie chart improvements. [datalens-tech/datalens-ui#1832](https://github.com/datalens-tech/datalens-ui/pull/1832)
+
+### Bug fixes
+- **Charts**: Fix the scrolling display in the table when there is enough space. [datalens-tech/datalens-ui#1775](https://github.com/datalens-tech/datalens-ui/pull/1775)
+- **Charts**: Fix duplicate chart fields when replacing a dataset. [datalens-tech/datalens-ui#1776](https://github.com/datalens-tech/datalens-ui/pull/1776)
+- **Dashboards**: Fix relations for widget tabs with the same chartId. [datalens-tech/datalens-ui#1787](https://github.com/datalens-tech/datalens-ui/pull/1787)
+- **Charts**: Fix pinned subtotal cells. [datalens-tech/datalens-ui#1786](https://github.com/datalens-tech/datalens-ui/pull/1786)
+- **Charts**: Fix the display of negative Y values in the bar-x chart (d3). [datalens-tech/datalens-ui#1790](https://github.com/datalens-tech/datalens-ui/pull/1790)
+- **Charts**: Do not use duplicates for field updates. [datalens-tech/datalens-ui#1798](https://github.com/datalens-tech/datalens-ui/pull/1798)
+- **Charts**: The _chart_type should not override the visualization type in wizard. [datalens-tech/datalens-ui#1788](https://github.com/datalens-tech/datalens-ui/pull/1788)
+- **Charts**: Fix dataset and visualization type selectors' text cutting. [datalens-tech/datalens-ui#1803](https://github.com/datalens-tech/datalens-ui/pull/1803)
+- **Dashboards**: Fix paddings for checkbox and buttons in group controls. [datalens-tech/datalens-ui#1802](https://github.com/datalens-tech/datalens-ui/pull/1802)
+- **Dashboards**: Fix add chart to dashboard options overflow. [datalens-tech/datalens-ui#1817](https://github.com/datalens-tech/datalens-ui/pull/1817)
+- **Dashboards**: Fix items click after spa navigation dash. [datalens-tech/datalens-ui#1831](https://github.com/datalens-tech/datalens-ui/pull/1831)
+- **Charts**: Table size settings for QL charts. [datalens-tech/datalens-ui#1857](https://github.com/datalens-tech/datalens-ui/pull/1857)
+- **Charts**: Incorrect field name in the header of the pivot table. [datalens-tech/datalens-ui#1858](https://github.com/datalens-tech/datalens-ui/pull/1858)
+- **Charts**: Display all rows in the table footer , not just the first one. [datalens-tech/datalens-ui#1860](https://github.com/datalens-tech/datalens-ui/pull/1860)
+
+### Dependencies
+- **General components**: Up chartkit 5.18.1 -> 5.19.0. [datalens-tech/datalens-ui#1882](https://github.com/datalens-tech/datalens-ui/pull/1882)
+- **General components**: Update gravity deps. [datalens-tech/datalens-ui#1886](https://github.com/datalens-tech/datalens-ui/pull/1886)
+
+### Development
+- **Dashboards**: Switch control dialog store. [datalens-tech/datalens-ui#1822](https://github.com/datalens-tech/datalens-ui/pull/1822)
+- **Dashboards**: Move DialogRelations into share components. [datalens-tech/datalens-ui#1866](https://github.com/datalens-tech/datalens-ui/pull/1866)
+- **Dashboards**, **Optimization**: Move setWidgetCurrentTab into ExtendedDashContext. [datalens-tech/datalens-ui#1874](https://github.com/datalens-tech/datalens-ui/pull/1874)
+
+### Chores
+- **General components**: Up @playwright/test 1.40.0 -> 1.48.2. [datalens-tech/datalens-ui#1794](https://github.com/datalens-tech/datalens-ui/pull/1794)
+- **General components**: Add density setting for table widget. [datalens-tech/datalens-ui#1755](https://github.com/datalens-tech/datalens-ui/pull/1755)
+- **General components**: Update @gravity-ui/dashkit 8.18.0 -> 8.19.0. [datalens-tech/datalens-ui#1807](https://github.com/datalens-tech/datalens-ui/pull/1807)
+- Delete tenant folder. [datalens-tech/datalens-ui#1808](https://github.com/datalens-tech/datalens-ui/pull/1808)
+- **General components**: Up @gravity-ui/dashkit 8.19.0 -> 8.19.1. [datalens-tech/datalens-ui#1809](https://github.com/datalens-tech/datalens-ui/pull/1809)
+- **General components**: Add @litejs/dom + update generateHtml method. [datalens-tech/datalens-ui#1825](https://github.com/datalens-tech/datalens-ui/pull/1825)
+- **General components**: Add Dialog Controls autoheoght default. [datalens-tech/datalens-ui#1830](https://github.com/datalens-tech/datalens-ui/pull/1830)
+- **General components**: Update @gravity-ui/dashkit@8.20.1. [datalens-tech/datalens-ui#1834](https://github.com/datalens-tech/datalens-ui/pull/1834)
+- **General components**: Revert "Add @litejs/dom + update generateHtml method (#1825)". [datalens-tech/datalens-ui#1839](https://github.com/datalens-tech/datalens-ui/pull/1839)
+- **General components**: Bump cross-spawn from 7.0.3 to 7.0.6. [datalens-tech/datalens-ui#1826](https://github.com/datalens-tech/datalens-ui/pull/1826)
+- **General components**: Add the ability to work with a html string in uiSandbox. [datalens-tech/datalens-ui#1843](https://github.com/datalens-tech/datalens-ui/pull/1843)
+- **General components**: Up @gravity-ui/icons 2.9.1 -> 2.11.0. [datalens-tech/datalens-ui#1850](https://github.com/datalens-tech/datalens-ui/pull/1850)
+- **General components**: Update `@gravity-ui/chartkit` to v5.18.0. [datalens-tech/datalens-ui#1845](https://github.com/datalens-tech/datalens-ui/pull/1845)
+
+
 ## v1.17.0 (2024-11-29)
 
 ### Image versions
