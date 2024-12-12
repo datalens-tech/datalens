@@ -1,3 +1,15 @@
+## v1.18.1 (2024-12-12)
+
+### Image versions
+- datalens-control-api: 0.2181.0
+- datalens-data-api: 0.2181.0
+- datalens-ui: 0.2412.0
+- datalens-us: 0.278.0 -> 0.281.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.278.0...v0.281.0))
+
+### Bug fixes
+- **Navigation**: Fix deleteWorkbooks for non-Zitadel mode. [datalens-tech/datalens-us#220](https://github.com/datalens-tech/datalens-us/pull/220)
+
+
 ## v1.18.0 (2024-12-11)
 
 ### Image versions
