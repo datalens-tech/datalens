@@ -14,11 +14,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/checkout@v4
-        with:
-          repository: datalens-tech/datalens-ui
-          path: ./datalens-ui
-
       - uses: actions/setup-node@v3
         with:
           node-version: 20
@@ -36,6 +31,12 @@ jobs:
           echo "US_VERSION=$US_VERSION" >> "$GITHUB_ENV"
           echo "CONTROL_API_VERSION=$CONTROL_API_VERSION" >> "$GITHUB_ENV"
           echo "DATA_API_VERSION=$DATA_API_VERSION" >> "$GITHUB_ENV"
+
+      - uses: actions/checkout@v4
+        with:
+          repository: datalens-tech/datalens-ui
+          path: ./datalens-ui
+          ref: release-${{ env.UI_VERSION }}
 
       - name: Check docker compose Config
         working-directory: ./datalens-ui
