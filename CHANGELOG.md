@@ -1,3 +1,21 @@
+## v1.19.0 (2024-12-16)
+
+### Image versions
+- datalens-control-api: 0.2181.0 -> 0.2188.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2181.0...v0.2188.0))
+- datalens-data-api: 0.2181.0 -> 0.2188.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2181.0...v0.2188.0))
+- datalens-ui: 0.2412.0
+- datalens-us: 0.281.0
+
+### New features
+- **Formula**: Add ARR_INTERSECT function for CH and PG. [datalens-tech/datalens-backend#696](https://github.com/datalens-tech/datalens-backend/pull/696)
+
+### Bug fixes
+- **Formula**: Apply mutations before adding formula to global dimensions during validation. [datalens-tech/datalens-backend#733](https://github.com/datalens-tech/datalens-backend/pull/733)
+
+### Security
+- Bump dependencies: certifi, urllib3, tornado. [datalens-tech/datalens-backend#741](https://github.com/datalens-tech/datalens-backend/pull/741)
+
+
 ## v1.18.1 (2024-12-13)
 
 ### Image versions
