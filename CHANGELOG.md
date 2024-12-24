@@ -1,3 +1,42 @@
+## v1.20.0 (2024-12-24)
+
+### Image versions
+- datalens-control-api: 0.2188.0
+- datalens-data-api: 0.2188.0
+- datalens-ui: 0.2412.0 -> 0.2462.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.2412.0...v0.2462.0))
+- datalens-us: 0.281.0
+
+### New features
+- **Dashboards**: Change transparent font settings. [datalens-tech/datalens-ui#1823](https://github.com/datalens-tech/datalens-ui/pull/1823)
+- **Charts**: Remove EnableEditHistoryQL usage. [datalens-tech/datalens-ui#1926](https://github.com/datalens-tech/datalens-ui/pull/1926)
+- **Dashboards**: Support display of full title on mobile widgets. [datalens-tech/datalens-ui#1871](https://github.com/datalens-tech/datalens-ui/pull/1871)
+- **Dashboards**: Support accent setting for selectors. [datalens-tech/datalens-ui#1925](https://github.com/datalens-tech/datalens-ui/pull/1925)
+- **General components**: Add xl title size, up @gravity-ui/dashkit 8.20.2 -> 8.22.1. [datalens-tech/datalens-ui#1949](https://github.com/datalens-tech/datalens-ui/pull/1949)
+
+### Bug fixes
+- **Dashboards**: Fix escaping of terms for markdown. [datalens-tech/datalens-ui#1876](https://github.com/datalens-tech/datalens-ui/pull/1876)
+- **Charts**: Fix the display of null values in the rows of the pivot table. [datalens-tech/datalens-ui#1902](https://github.com/datalens-tech/datalens-ui/pull/1902)
+- **Dashboards**: Fix table bg-color changing. [datalens-tech/datalens-ui#1911](https://github.com/datalens-tech/datalens-ui/pull/1911)
+- **Dashboards**: Add validation for external control chartId. [datalens-tech/datalens-ui#1906](https://github.com/datalens-tech/datalens-ui/pull/1906)
+- **Dashboards**: Add widget params in alias validations check. [datalens-tech/datalens-ui#1927](https://github.com/datalens-tech/datalens-ui/pull/1927)
+- **Dashboards**: Fix mobile widget header font-size. [datalens-tech/datalens-ui#1928](https://github.com/datalens-tech/datalens-ui/pull/1928)
+- **Dashboards**: Fix height of mobile widget title. [datalens-tech/datalens-ui#1931](https://github.com/datalens-tech/datalens-ui/pull/1931)
+- **Dashboards**: Add scope for fake dash entry. [datalens-tech/datalens-ui#1947](https://github.com/datalens-tech/datalens-ui/pull/1947)
+- **Charts**: Fix axis visibility. [datalens-tech/datalens-ui#1950](https://github.com/datalens-tech/datalens-ui/pull/1950)
+
+### Dependencies
+- **General components**: Up @gravity-ui/sdk. [datalens-tech/datalens-ui#1890](https://github.com/datalens-tech/datalens-ui/pull/1890)
+- **General components**: Bump path-to-regexp and express. [datalens-tech/datalens-ui#1892](https://github.com/datalens-tech/datalens-ui/pull/1892)
+- **General components**: Bump nanoid from 3.3.7 to 3.3.8. [datalens-tech/datalens-ui#1913](https://github.com/datalens-tech/datalens-ui/pull/1913)
+- **General components**: Bump @grpc/grpc-js from 1.9.11 to 1.12.4. [datalens-tech/datalens-ui#1916](https://github.com/datalens-tech/datalens-ui/pull/1916)
+- **General components**: Update appbuilder 0.13.0 -> 0.13.1. [datalens-tech/datalens-ui#1744](https://github.com/datalens-tech/datalens-ui/pull/1744)
+- **General components**: Fix the serialization of the array in the ui-sandbox + up @datalens-tech/ui-sandbox-modules 0.32.0 -> 0.33.0. [datalens-tech/datalens-ui#1923](https://github.com/datalens-tech/datalens-ui/pull/1923)
+- **General components**: Fix CRC32 for all platform. [datalens-tech/datalens-ui#1936](https://github.com/datalens-tech/datalens-ui/pull/1936)
+
+### Chores
+- **Charts**: Change the order of values in the size control (indicator and table). [datalens-tech/datalens-ui#1899](https://github.com/datalens-tech/datalens-ui/pull/1899)
+
+
 ## v1.19.0 (2024-12-16)
 
 ### Image versions
