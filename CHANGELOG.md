@@ -8,10 +8,10 @@
 
 ### New features
 - **Dashboards**: Change transparent font settings. [datalens-tech/datalens-ui#1823](https://github.com/datalens-tech/datalens-ui/pull/1823)
-- **Charts**: Remove EnableEditHistoryQL usage. [datalens-tech/datalens-ui#1926](https://github.com/datalens-tech/datalens-ui/pull/1926)
+- **Charts**: Enable edit history on QL. [datalens-tech/datalens-ui#1926](https://github.com/datalens-tech/datalens-ui/pull/1926)
 - **Dashboards**: Support display of full title on mobile widgets. [datalens-tech/datalens-ui#1871](https://github.com/datalens-tech/datalens-ui/pull/1871)
 - **Dashboards**: Support accent setting for selectors. [datalens-tech/datalens-ui#1925](https://github.com/datalens-tech/datalens-ui/pull/1925)
-- **General components**: Add xl title size, up @gravity-ui/dashkit 8.20.2 -> 8.22.1. [datalens-tech/datalens-ui#1949](https://github.com/datalens-tech/datalens-ui/pull/1949)
+- **General components**: Add xl title size. [datalens-tech/datalens-ui#1949](https://github.com/datalens-tech/datalens-ui/pull/1949)
 
 ### Bug fixes
 - **Dashboards**: Fix escaping of terms for markdown. [datalens-tech/datalens-ui#1876](https://github.com/datalens-tech/datalens-ui/pull/1876)
@@ -25,6 +25,7 @@
 - **Charts**: Fix axis visibility. [datalens-tech/datalens-ui#1950](https://github.com/datalens-tech/datalens-ui/pull/1950)
 
 ### Dependencies
+- **General components**: Up @gravity-ui/dashkit 8.20.2 -> 8.22.1. [datalens-tech/datalens-ui#1949](https://github.com/datalens-tech/datalens-ui/pull/1949)
 - **General components**: Up @gravity-ui/sdk. [datalens-tech/datalens-ui#1890](https://github.com/datalens-tech/datalens-ui/pull/1890)
 - **General components**: Bump path-to-regexp and express. [datalens-tech/datalens-ui#1892](https://github.com/datalens-tech/datalens-ui/pull/1892)
 - **General components**: Bump nanoid from 3.3.7 to 3.3.8. [datalens-tech/datalens-ui#1913](https://github.com/datalens-tech/datalens-ui/pull/1913)
