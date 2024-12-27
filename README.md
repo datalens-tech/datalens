@@ -28,6 +28,7 @@ git clone https://github.com/datalens-tech/datalens && cd datalens
 HC=1 docker compose up
 
 # or with an external metadata database
+# the use of an external database is recommended if you want to save and reuse own metadata across different installations
 METADATA_POSTGRES_DSN_LIST="postgres://{user}:{password}@{host}:{port}/{database}" HC=1 docker compose up
 ```
 
