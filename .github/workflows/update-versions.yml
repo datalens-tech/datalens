@@ -26,14 +26,14 @@ jobs:
         with:
           version: v3.16.2
       - name: build docker-compose.yml
-        uses: cuchi/jinja2-action@v1.2.2
+        uses: Slicer/jinja2-action@v1.2.4
         with:
           template: ./templates/docker-compose.j2
           output_file: ./docker-compose.yml
           data_file: versions-config.json
           data_format: json
       - name: build docker-compose-dev.yml
-        uses: cuchi/jinja2-action@v1.2.2
+        uses: Slicer/jinja2-action@v1.2.4
         with:
           template: ./templates/docker-compose.j2
           output_file: ./docker-compose-dev.yml
@@ -42,7 +42,7 @@ jobs:
         env:
           DEV_MODE: 'true'
       - name: build docker-compose.zitadel.yml
-        uses: cuchi/jinja2-action@v1.2.2
+        uses: Slicer/jinja2-action@v1.2.4
         with:
           template: ./templates/docker-compose.zitadel.j2
           output_file: ./docker-compose.zitadel.yml
@@ -51,7 +51,7 @@ jobs:
       - name: check docker-compose.yml config
         run: docker compose -f ./docker-compose.yml config
       - name: build deploy/helm/values.yaml
-        uses: cuchi/jinja2-action@v1.2.2
+        uses: Slicer/jinja2-action@v1.2.4
         with:
           template: ./templates/helm-values.j2
           output_file: ./deploy/helm/values.yaml
