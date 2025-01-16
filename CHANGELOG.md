@@ -1,3 +1,40 @@
+## v1.21.0 (2025-01-16)
+
+### Image versions
+- datalens-control-api: 0.2188.0
+- datalens-data-api: 0.2188.0
+- datalens-ui: 0.2462.0 -> 0.2520.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.2462.0...v0.2520.0))
+- datalens-us: 0.281.0 -> 0.289.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.281.0...v0.289.0))
+
+### New features
+- **Dashboards**: Add chart widget title hint (on dash). [datalens-tech/datalens-ui#1951](https://github.com/datalens-tech/datalens-ui/pull/1951)
+- **Navigation**: Improve no create permissions dialog. [datalens-tech/datalens-ui#1934](https://github.com/datalens-tech/datalens-ui/pull/1934)
+- **Charts**: Add nullMode to GradientColorConfig. [datalens-tech/datalens-ui#1937](https://github.com/datalens-tech/datalens-ui/pull/1937)
+- **Dashboards**: Refactor & redesign selectors edit dialog. [datalens-tech/datalens-ui#1964](https://github.com/datalens-tech/datalens-ui/pull/1964)
+- **Dashboards**: Add controls groups title. [datalens-tech/datalens-ui#1975](https://github.com/datalens-tech/datalens-ui/pull/1975)
+- **General components**: Add beforeRequest decorator for ui sdk. [datalens-tech/datalens-ui#1983](https://github.com/datalens-tech/datalens-ui/pull/1983)
+- **General components**: Add release version dialog. [datalens-tech/datalens-ui#1982](https://github.com/datalens-tech/datalens-ui/pull/1982)
+- -**Dashboards**: Add support for groups in mobile. [datalens-tech/datalens-ui#1954](https://github.com/datalens-tech/datalens-ui/pull/1954)
+- **General components**: Add before request interceptor. [datalens-tech/datalens-ui#1984](https://github.com/datalens-tech/datalens-ui/pull/1984)
+
+### Bug fixes
+- **Charts**: Fix markup columns sorting. [datalens-tech/datalens-ui#1961](https://github.com/datalens-tech/datalens-ui/pull/1961)
+- **Charts**: Added a tooltip hiding setting for some visualizations. [datalens-tech/datalens-ui#1966](https://github.com/datalens-tech/datalens-ui/pull/1966)
+- **Charts**: Fix table null sorting. [datalens-tech/datalens-ui#1981](https://github.com/datalens-tech/datalens-ui/pull/1981)
+- **General components**: Fix updateDataset call. [datalens-tech/datalens-ui#1994](https://github.com/datalens-tech/datalens-ui/pull/1994)
+- **Charts**: Displaying a marker on single-value line charts. [datalens-tech/datalens-ui#2002](https://github.com/datalens-tech/datalens-ui/pull/2002)
+- **Charts**: Second-order sorting for tables by ctrl-key. [datalens-tech/datalens-ui#2001](https://github.com/datalens-tech/datalens-ui/pull/2001)
+- **Charts**: Fix the display of an empty string as Null in a linear graph. [datalens-tech/datalens-ui#2003](https://github.com/datalens-tech/datalens-ui/pull/2003)
+- **Charts**: Fix incorrect color list in wizard when switching the palette. [datalens-tech/datalens-ui#2006](https://github.com/datalens-tech/datalens-ui/pull/2006)
+
+### Dependencies
+- **General components**: Up @gravity-ui/chartkit 5.19.0 -> 5.19.1. [datalens-tech/datalens-ui#1972](https://github.com/datalens-tech/datalens-ui/pull/1972)
+- **General components**: Up axios-retry to 3.9.1. [datalens-tech/datalens-ui#1984](https://github.com/datalens-tech/datalens-ui/pull/1984)
+- **General components**: Up @gravity-ui/dashkit to 8.23.0. [datalens-tech/datalens-ui#1954](https://github.com/datalens-tech/datalens-ui/pull/1954)
+- **General components**: Up @diplodoc/transform@4.42.3 and related deps. [datalens-tech/datalens-ui#1977](https://github.com/datalens-tech/datalens-ui/pull/1977)
+- **General components**: Up @gravity-ui/uikit 6.37.0 -> 6.39.0. [datalens-tech/datalens-ui#1937](https://github.com/datalens-tech/datalens-ui/pull/1937)
+
+
 ## v1.20.0 (2024-12-24)
 
 ### Image versions
