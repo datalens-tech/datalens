@@ -7,7 +7,10 @@
 - datalens-us: 0.289.0
 
 ### Dependencies
-- Bump requests, jinja2, idna, zipp, werkzeug, docker-py. [datalens-tech/datalens-backend#742](https://github.com/datalens-tech/datalens-backend/pull/742)
+- Bump backend dependencies with known vulnerabilities. [datalens-tech/datalens-backend#742](https://github.com/datalens-tech/datalens-backend/pull/742)
+
+### New features
+- Add native auth support to backend. [datalens-tech/datalens-backend#745](https://github.com/datalens-tech/datalens-backend/pull/745)
 
 
 ## v1.21.0 (2025-01-16)
