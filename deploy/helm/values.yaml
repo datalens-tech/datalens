@@ -1,7 +1,7 @@
 versions:
   ui: 0.2520.0
-  control: 0.2188.0
-  data: 0.2188.0
+  control: 0.2192.0
+  data: 0.2192.0
   us: 0.289.0
 
 database:
