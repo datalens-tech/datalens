@@ -1,3 +1,18 @@
+## v1.22.0 (2025-01-24)
+
+### Image versions
+- datalens-control-api: 0.2188.0 -> 0.2192.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2188.0...v0.2192.0))
+- datalens-data-api: 0.2188.0 -> 0.2192.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2188.0...v0.2192.0))
+- datalens-ui: 0.2520.0
+- datalens-us: 0.289.0
+
+### Dependencies
+- Bump backend dependencies with known vulnerabilities. [datalens-tech/datalens-backend#742](https://github.com/datalens-tech/datalens-backend/pull/742)
+
+### New features
+- Add native auth support to backend. [datalens-tech/datalens-backend#745](https://github.com/datalens-tech/datalens-backend/pull/745)
+
+
 ## v1.21.0 (2025-01-16)
 
 ### Image versions
