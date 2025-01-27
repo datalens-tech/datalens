@@ -21,7 +21,7 @@ services:
       US_MASTER_TOKEN: "fake-us-master-token"
       AUTH__TYPE: "NATIVE"
       AUTH__JWT_ALGORITHM: "PS256"
-      AUTH__JWT_KEY: ${AUTH_TOKEN_PUBLIC_KEY:?missed AUTH_TOKEN_PUBLIC_KEY env}"
+      AUTH__JWT_KEY: ${AUTH_TOKEN_PUBLIC_KEY:?missed AUTH_TOKEN_PUBLIC_KEY env}
       # del it
       # AUTH_BASE_URL: "http://auth:8088"
       # AUTH_PROJECT_ID: "NONE"
@@ -50,7 +50,7 @@ services:
       US_MASTER_TOKEN: "fake-us-master-token"
       AUTH__TYPE: "NATIVE"
       AUTH__JWT_ALGORITHM: "PS256"
-      AUTH__JWT_KEY: ${AUTH_TOKEN_PUBLIC_KEY:?missed AUTH_TOKEN_PUBLIC_KEY env}"
+      AUTH__JWT_KEY: ${AUTH_TOKEN_PUBLIC_KEY:?missed AUTH_TOKEN_PUBLIC_KEY env}
       # del it
       # AUTH_BASE_URL: "http://auth:8088"
       # AUTH_PROJECT_ID: "NONE"
@@ -121,7 +121,7 @@ services:
       HC: ${HC:-0}
       NODE_EXTRA_CA_CERTS: /certs/root.crt
       AUTH_ENABLED: "true"
-      AUTH_TOKEN_PUBLIC_KEY: ${AUTH_TOKEN_PUBLIC_KEY:?missed AUTH_TOKEN_PUBLIC_KEY env}"
+      AUTH_TOKEN_PUBLIC_KEY: ${AUTH_TOKEN_PUBLIC_KEY:?missed AUTH_TOKEN_PUBLIC_KEY env}
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
@@ -151,8 +151,8 @@ services:
       POSTGRES_DSN_LIST: ${AUTH_METADATA_AUTH_POSTGRES_DSN_LIST:-postgres://auth:auth@pg-auth:5432/auth-db-ci_purgeable}
       NODE_EXTRA_CA_CERTS: /certs/root.crt
       UI_APP_ENDPOINT: "http://localhost:8080"
-      TOKEN_PRIVATE_KEY: ${AUTH_TOKEN_PRIVATE_KEY:?missed AUTH_TOKEN_PRIVATE_KEY env}"
-      TOKEN_PUBLIC_KEY: ${AUTH_TOKEN_PUBLIC_KEY:?missed AUTH_TOKEN_PUBLIC_KEY env}"
+      TOKEN_PRIVATE_KEY: ${AUTH_TOKEN_PRIVATE_KEY:?missed AUTH_TOKEN_PRIVATE_KEY env}
+      TOKEN_PUBLIC_KEY: ${AUTH_TOKEN_PUBLIC_KEY:?missed AUTH_TOKEN_PUBLIC_KEY env}
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
@@ -185,7 +185,7 @@ services:
       YANDEX_MAP_TOKEN: ${YANDEX_MAP_TOKEN}
       AUTH_ENABLED: "true"
       AUTH_ENDPOINT: "http://auth:8088"
-      AUTH_TOKEN_PUBLIC_KEY: ${AUTH_TOKEN_PUBLIC_KEY:?missed AUTH_TOKEN_PUBLIC_KEY env}"
+      AUTH_TOKEN_PUBLIC_KEY: ${AUTH_TOKEN_PUBLIC_KEY:?missed AUTH_TOKEN_PUBLIC_KEY env}
 volumes:
   db-auth:
   db-us:
