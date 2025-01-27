@@ -17,18 +17,12 @@ services:
       DL_CRY_ACTUAL_KEY_ID: key_1
       DL_CRY_KEY_VAL_ID_key_1: "h1ZpilcYLYRdWp7Nk8X1M1kBPiUi8rdjz9oBfHyUKIk="
       RQE_SECRET_KEY: ""
-      US_HOST: "http://us-auth:8083"
+      # US_HOST: "http://us-auth:8083"
+      US_HOST: "http://us:8083"
       US_MASTER_TOKEN: "fake-us-master-token"
-      AUTH__TYPE: "NATIVE"
-      AUTH__JWT_ALGORITHM: "PS256"
-      AUTH__JWT_KEY: ${AUTH_TOKEN_PUBLIC_KEY:?missed AUTH_TOKEN_PUBLIC_KEY env}
-      # del it
-      # AUTH_BASE_URL: "http://auth:8088"
-      # AUTH_PROJECT_ID: "NONE"
-      # AUTH_CLIENT_ID: "bi"
-      # AUTH_CLIENT_SECRET: "NONE"
-      # AUTH_APP_CLIENT_ID: "NONE"
-      # AUTH_APP_CLIENT_SECRET: "NONE"
+      # AUTH__TYPE: "NATIVE"
+      # AUTH__JWT_ALGORITHM: "PS256"
+      # AUTH__JWT_KEY: ${AUTH_TOKEN_PUBLIC_KEY:?missed AUTH_TOKEN_PUBLIC_KEY env}
     depends_on:
       - us
       - us-auth
@@ -46,18 +40,12 @@ services:
       DL_CRY_KEY_VAL_ID_key_1: "h1ZpilcYLYRdWp7Nk8X1M1kBPiUi8rdjz9oBfHyUKIk="
       BI_COMPENG_PG_ON: 1
       BI_COMPENG_PG_URL: "postgresql://postgres:postgres@pg-compeng:5432/postgres"
-      US_HOST: "http://us-auth:8083"
+      # US_HOST: "http://us-auth:8083"
+      US_HOST: "http://us:8083"
       US_MASTER_TOKEN: "fake-us-master-token"
-      AUTH__TYPE: "NATIVE"
-      AUTH__JWT_ALGORITHM: "PS256"
-      AUTH__JWT_KEY: ${AUTH_TOKEN_PUBLIC_KEY:?missed AUTH_TOKEN_PUBLIC_KEY env}
-      # del it
-      # AUTH_BASE_URL: "http://auth:8088"
-      # AUTH_PROJECT_ID: "NONE"
-      # AUTH_CLIENT_ID: "bi"
-      # AUTH_CLIENT_SECRET: "NONE"
-      # AUTH_APP_CLIENT_ID: "NONE"
-      # AUTH_APP_CLIENT_SECRET: "NONE"
+      # AUTH__TYPE: "NATIVE"
+      # AUTH__JWT_ALGORITHM: "PS256"
+      # AUTH__JWT_KEY: ${AUTH_TOKEN_PUBLIC_KEY:?missed AUTH_TOKEN_PUBLIC_KEY env}
     depends_on:
       - us
       - us-auth
@@ -83,6 +71,8 @@ services:
       POSTGRES_PASSWORD: us
     volumes:
       - db-us:/var/lib/postgresql/data
+    ports:
+      - "8086:5432"
 
   us:
     container_name: datalens-us
@@ -122,6 +112,8 @@ services:
       NODE_EXTRA_CA_CERTS: /certs/root.crt
       AUTH_ENABLED: "true"
       AUTH_TOKEN_PUBLIC_KEY: ${AUTH_TOKEN_PUBLIC_KEY:?missed AUTH_TOKEN_PUBLIC_KEY env}
+    ports:
+      - "8083:8083"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
@@ -137,6 +129,8 @@ services:
       POSTGRES_PASSWORD: auth
     volumes:
       - db-auth:/var/lib/postgresql/data
+    ports:
+      - "8089:5432"
 
   auth:
     container_name: datalens-auth
@@ -153,6 +147,7 @@ services:
       UI_APP_ENDPOINT: "http://localhost:8080"
       TOKEN_PRIVATE_KEY: ${AUTH_TOKEN_PRIVATE_KEY:?missed AUTH_TOKEN_PRIVATE_KEY env}
       TOKEN_PUBLIC_KEY: ${AUTH_TOKEN_PUBLIC_KEY:?missed AUTH_TOKEN_PUBLIC_KEY env}
+      AUTH_ADMIN_PASSWORD: ${AUTH_ADMIN_PASSWORD:-Password1!}
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
