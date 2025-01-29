@@ -9,7 +9,7 @@ services:
 
   control-api:
     container_name: datalens-control-api
-    image: ghcr.io/datalens-tech/datalens-control-api:0.2212.0-rc.1
+    image: ghcr.io/datalens-tech/datalens-control-api:0.2202.2
     environment:
       BI_API_UWSGI_WORKERS_COUNT: 4
       CONNECTOR_AVAILABILITY_VISIBLE: "clickhouse,postgres,chyt,ydb,mysql,greenplum,mssql,appmetrica_api,metrika_api"
@@ -27,7 +27,7 @@ services:
 
   data-api:
     container_name: datalens-data-api
-    image: ghcr.io/datalens-tech/datalens-data-api:0.2212.0-rc.1
+    image: ghcr.io/datalens-tech/datalens-data-api:0.2202.2
     environment:
       GUNICORN_WORKERS_COUNT: 5
       RQE_FORCE_OFF: 1
@@ -97,11 +97,12 @@ services:
 
   pg-auth:
     container_name: datalens-pg-auth
-    image: postgres:16-alpine
+    image: postgres:16
     environment:
       POSTGRES_DB: auth-db-ci_purgeable
       POSTGRES_USER: auth
       POSTGRES_PASSWORD: auth
+      POSTGRES_INITDB_ARGS: '--encoding=UTF-8 --lc-collate=en_US.utf8 --lc-ctype=en_US.utf8'
     volumes:
       - db-auth:/var/lib/postgresql/data
     ports:
@@ -117,7 +118,8 @@ services:
       APP_INSTALLATION: "opensource"
       APP_ENV: "prod"
       MASTER_TOKEN: "fake-auth-master-token"
-      POSTGRES_DSN_LIST: ${AUTH_METADATA_AUTH_POSTGRES_DSN_LIST:-postgres://auth:auth@pg-auth:5432/auth-db-ci_purgeable}
+      POSTGRES_DSN_LIST: ${AUTH_METADATA_POSTGRES_DSN_LIST:-postgres://auth:auth@pg-auth:5432/auth-db-ci_purgeable}
+      SKIP_INSTALL_DB_EXTENSIONS: ${AUTH_METADATA_SKIP_INSTALL_DB_EXTENSIONS:-0}
       NODE_EXTRA_CA_CERTS: /certs/root.crt
       UI_APP_ENDPOINT: "http://localhost:8080"
       TOKEN_PRIVATE_KEY: ${AUTH_TOKEN_PRIVATE_KEY:?missed AUTH_TOKEN_PRIVATE_KEY env}
