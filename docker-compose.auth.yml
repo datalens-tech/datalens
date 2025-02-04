@@ -125,6 +125,8 @@ services:
       TOKEN_PRIVATE_KEY: ${AUTH_TOKEN_PRIVATE_KEY:?missed AUTH_TOKEN_PRIVATE_KEY env}
       TOKEN_PUBLIC_KEY: ${AUTH_TOKEN_PUBLIC_KEY:?missed AUTH_TOKEN_PUBLIC_KEY env}
       AUTH_ADMIN_PASSWORD: ${AUTH_ADMIN_PASSWORD:-Password1!}
+    ports:
+      - "8088:8088"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
