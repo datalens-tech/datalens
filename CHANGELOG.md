@@ -8,8 +8,7 @@
 
 ### New features
 - **General components**, **Auth**: Add auth base concept. [datalens-tech/datalens-ui#2020](https://github.com/datalens-tech/datalens-ui/pull/2020)
-- **General components**: Add some markdown features in text widget and hints. [datalens-tech/datalens-ui#2030](https://github.com/datalens-tech/datalens-ui/pull/2030)
-- **General components**: Support superscript in markdown. [datalens-tech/datalens-ui#2061](https://github.com/datalens-tech/datalens-ui/pull/2061)
+- **General components**: Add some markdown features in text widget and hints. [datalens-tech/datalens-ui#2030](https://github.com/datalens-tech/datalens-ui/pull/2030), [datalens-tech/datalens-ui#2061](https://github.com/datalens-tech/datalens-ui/pull/2061)
 
 ### Bug fixes
 - **Dashboards**: Fix list of operations for manual selectors. [datalens-tech/datalens-ui#2039](https://github.com/datalens-tech/datalens-ui/pull/2039)
@@ -24,13 +23,11 @@
 - **Dashboards**: Fix relations dialog list while filtering. [datalens-tech/datalens-ui#2095](https://github.com/datalens-tech/datalens-ui/pull/2095)
 
 ### Dependencies
-- **General components**: Add title custom font settings. [datalens-tech/datalens-ui#2005](https://github.com/datalens-tech/datalens-ui/pull/2005)
+- **General components**: Update @gravity-ui/dashkit 8.23.0 -> 8.26.0. [datalens-tech/datalens-ui#2005](https://github.com/datalens-tech/datalens-ui/pull/2005), [datalens-tech/datalens-ui#2070](https://github.com/datalens-tech/datalens-ui/pull/2070), [datalens-tech/datalens-ui#2075](https://github.com/datalens-tech/datalens-ui/pull/2075)
 - **General components**: Add @diplodoc/tabs-extension & markdown-it- emoji, ins, mark, sub. [datalens-tech/datalens-ui#2031](https://github.com/datalens-tech/datalens-ui/pull/2031)
 - **General components**: Bump undici from 6.21.0 to 6.21.1. [datalens-tech/datalens-ui#2035](https://github.com/datalens-tech/datalens-ui/pull/2035)
-- **General components**: Add ColorPickerInput component. [datalens-tech/datalens-ui#2057](https://github.com/datalens-tech/datalens-ui/pull/2057)
-- **General components**: Support custom widgets bg-color. [datalens-tech/datalens-ui#2025](https://github.com/datalens-tech/datalens-ui/pull/2025)
-- **General components**: Update @gravity-ui/dashkit 8.24.3 -> 8.25.0 and add multiple keys option for useBindHotkey hoook. [datalens-tech/datalens-ui#2070](https://github.com/datalens-tech/datalens-ui/pull/2070)
-- **General components**: Update @gravity-ui/dashkit 8.25.0 -> 8.26.0. [datalens-tech/datalens-ui#2075](https://github.com/datalens-tech/datalens-ui/pull/2075)
+- **General components**: Add chroma-js 3.1.2. [datalens-tech/datalens-ui#2057](https://github.com/datalens-tech/datalens-ui/pull/2057)
+- **General components**: Add d3-color. [datalens-tech/datalens-ui#2025](https://github.com/datalens-tech/datalens-ui/pull/2025)
 - **General components**: Bump katex from 0.16.10 to 0.16.21. [datalens-tech/datalens-ui#2023](https://github.com/datalens-tech/datalens-ui/pull/2023)
 
 
