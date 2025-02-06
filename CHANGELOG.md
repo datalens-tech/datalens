@@ -1,3 +1,39 @@
+## v1.23.0 (2025-02-06)
+
+### Image versions
+- datalens-control-api: 0.2192.0
+- datalens-data-api: 0.2192.0
+- datalens-ui: 0.2520.0 -> 0.2587.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.2520.0...v0.2587.0))
+- datalens-us: 0.289.0 -> 0.305.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.289.0...v0.305.0))
+
+### New features
+- **General components**, **Auth**: Add auth base concept. [datalens-tech/datalens-ui#2020](https://github.com/datalens-tech/datalens-ui/pull/2020)
+- **General components**: Add some markdown features in text widget and hints. [datalens-tech/datalens-ui#2030](https://github.com/datalens-tech/datalens-ui/pull/2030)
+- **General components**: Support superscript in markdown. [datalens-tech/datalens-ui#2061](https://github.com/datalens-tech/datalens-ui/pull/2061)
+
+### Bug fixes
+- **Dashboards**: Fix list of operations for manual selectors. [datalens-tech/datalens-ui#2039](https://github.com/datalens-tech/datalens-ui/pull/2039)
+- **Charts**: Fix gradient coloring by MeasureValues. [datalens-tech/datalens-ui#2050](https://github.com/datalens-tech/datalens-ui/pull/2050)
+- **Dashboards**: Fix dash sorting on mobile. [datalens-tech/datalens-ui#2062](https://github.com/datalens-tech/datalens-ui/pull/2062)
+- **Charts**: Fix: bar does not respond to parameter changes. [datalens-tech/datalens-ui#2067](https://github.com/datalens-tech/datalens-ui/pull/2067)
+- **Charts**: Fix data type change after field duplication. [datalens-tech/datalens-ui#2071](https://github.com/datalens-tech/datalens-ui/pull/2071)
+- **Dashboards**: Fix widget copying. [datalens-tech/datalens-ui#2078](https://github.com/datalens-tech/datalens-ui/pull/2078)
+- **Datasets**: Fix batch aggregation change with filtration. [datalens-tech/datalens-ui#2081](https://github.com/datalens-tech/datalens-ui/pull/2081)
+- **Charts**: Fix yagr ql-chart axis names changing. [datalens-tech/datalens-ui#2083](https://github.com/datalens-tech/datalens-ui/pull/2083)
+- **Charts**: Fix gradient legend for charts with negative numbers. [datalens-tech/datalens-ui#2072](https://github.com/datalens-tech/datalens-ui/pull/2072)
+- **Dashboards**: Fix relations dialog list while filtering. [datalens-tech/datalens-ui#2095](https://github.com/datalens-tech/datalens-ui/pull/2095)
+
+### Dependencies
+- **General components**: Add title custom font settings. [datalens-tech/datalens-ui#2005](https://github.com/datalens-tech/datalens-ui/pull/2005)
+- **General components**: Add @diplodoc/tabs-extension & markdown-it- emoji, ins, mark, sub. [datalens-tech/datalens-ui#2031](https://github.com/datalens-tech/datalens-ui/pull/2031)
+- **General components**: Bump undici from 6.21.0 to 6.21.1. [datalens-tech/datalens-ui#2035](https://github.com/datalens-tech/datalens-ui/pull/2035)
+- **General components**: Add ColorPickerInput component. [datalens-tech/datalens-ui#2057](https://github.com/datalens-tech/datalens-ui/pull/2057)
+- **General components**: Support custom widgets bg-color. [datalens-tech/datalens-ui#2025](https://github.com/datalens-tech/datalens-ui/pull/2025)
+- **General components**: Update @gravity-ui/dashkit 8.24.3 -> 8.25.0 and add multiple keys option for useBindHotkey hoook. [datalens-tech/datalens-ui#2070](https://github.com/datalens-tech/datalens-ui/pull/2070)
+- **General components**: Update @gravity-ui/dashkit 8.25.0 -> 8.26.0. [datalens-tech/datalens-ui#2075](https://github.com/datalens-tech/datalens-ui/pull/2075)
+- **General components**: Bump katex from 0.16.10 to 0.16.21. [datalens-tech/datalens-ui#2023](https://github.com/datalens-tech/datalens-ui/pull/2023)
+
+
 ## v1.22.0 (2025-01-24)
 
 ### Image versions
