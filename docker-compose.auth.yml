@@ -76,7 +76,7 @@ services:
 
   us:
     container_name: datalens-us
-    image: ghcr.io/datalens-tech/datalens-us:shangin-dev
+    image: ghcr.io/datalens-tech/datalens-us:0.311.0
     restart: always
     depends_on:
       - pg-us
@@ -138,7 +138,7 @@ services:
 
   datalens:
     container_name: datalens-ui
-    image: ghcr.io/datalens-tech/datalens-ui:shangin-dev
+    image: ghcr.io/datalens-tech/datalens-ui:0.2598.0
     ports:
       - ${UI_PORT:-8080}:8080
     depends_on:
