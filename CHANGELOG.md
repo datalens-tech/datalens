@@ -1,4 +1,4 @@
-## v1.23.0 (2025-02-06)
+## v1.23.0 (2025-02-11)
 
 ### Image versions
 - datalens-control-api: 0.2192.0
