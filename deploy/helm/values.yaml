@@ -1,8 +1,8 @@
 versions:
-  ui: 0.2520.0
+  ui: 0.2601.0
   control: 0.2192.0
   data: 0.2192.0
-  us: 0.289.0
+  us: 0.310.0
 
 database:
   enabled: true
