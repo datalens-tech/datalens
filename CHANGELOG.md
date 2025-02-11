@@ -3,8 +3,8 @@
 ### Image versions
 - datalens-control-api: 0.2192.0
 - datalens-data-api: 0.2192.0
-- datalens-ui: 0.2520.0 -> 0.2587.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.2520.0...v0.2587.0))
-- datalens-us: 0.289.0 -> 0.305.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.289.0...v0.305.0))
+- datalens-ui: 0.2520.0 -> 0.2601.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.2520.0...v0.2587.0))
+- datalens-us: 0.289.0 -> 0.310.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.289.0...v0.305.0))
 
 ### New features
 - **General components**, **Auth**: Add auth base concept. [datalens-tech/datalens-ui#2020](https://github.com/datalens-tech/datalens-ui/pull/2020)
@@ -18,9 +18,11 @@
 - **Charts**: Fix data type change after field duplication. [datalens-tech/datalens-ui#2071](https://github.com/datalens-tech/datalens-ui/pull/2071)
 - **Dashboards**: Fix widget copying. [datalens-tech/datalens-ui#2078](https://github.com/datalens-tech/datalens-ui/pull/2078)
 - **Datasets**: Fix batch aggregation change with filtration. [datalens-tech/datalens-ui#2081](https://github.com/datalens-tech/datalens-ui/pull/2081)
-- **Charts**: Fix yagr ql-chart axis names changing. [datalens-tech/datalens-ui#2083](https://github.com/datalens-tech/datalens-ui/pull/2083)
+- **Charts**: Fix yagr ql-chart axis names changing. [datalens-tech/datalens-ui#2083](https://github.com/datalens-tech/datalens-ui/pull/2083), [datalens-tech/datalens-ui#2113](https://github.com/datalens-tech/datalens-ui/pull/2113)
 - **Charts**: Fix gradient legend for charts with negative numbers. [datalens-tech/datalens-ui#2072](https://github.com/datalens-tech/datalens-ui/pull/2072)
 - **Dashboards**: Fix relations dialog list while filtering. [datalens-tech/datalens-ui#2095](https://github.com/datalens-tech/datalens-ui/pull/2095)
+- **Charts**: Fix linear indicator for multidataset table [datalens-tech/datalens-ui#2100](https://github.com/datalens-tech/datalens-ui/pull/2100)
+
 
 ### Dependencies
 - **General components**: Update @gravity-ui/dashkit 8.23.0 -> 8.26.0. [datalens-tech/datalens-ui#2005](https://github.com/datalens-tech/datalens-ui/pull/2005), [datalens-tech/datalens-ui#2070](https://github.com/datalens-tech/datalens-ui/pull/2070), [datalens-tech/datalens-ui#2075](https://github.com/datalens-tech/datalens-ui/pull/2075)
