@@ -3,8 +3,8 @@
 ### Image versions
 - datalens-control-api: 0.2192.0
 - datalens-data-api: 0.2192.0
-- datalens-ui: 0.2520.0 -> 0.2601.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.2520.0...v0.2587.0))
-- datalens-us: 0.289.0 -> 0.310.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.289.0...v0.305.0))
+- datalens-ui: 0.2520.0 -> 0.2601.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.2520.0...v0.2601.0))
+- datalens-us: 0.289.0 -> 0.310.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.289.0...v0.310.0))
 
 ### New features
 - **General components**, **Auth**: Add auth base concept. [datalens-tech/datalens-ui#2020](https://github.com/datalens-tech/datalens-ui/pull/2020)
