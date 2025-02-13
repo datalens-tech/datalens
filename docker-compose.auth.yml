@@ -114,7 +114,7 @@ services:
 
   auth:
     container_name: datalens-auth
-    image: ghcr.io/datalens-tech/datalens-auth:0.3.0
+    image: ghcr.io/datalens-tech/datalens-auth:0.4.0
     restart: always
     depends_on:
       - pg-auth
