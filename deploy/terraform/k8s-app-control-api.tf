@@ -83,7 +83,6 @@ resource "kubernetes_deployment" "control-api" {
 
           resources {
             limits = {
-              cpu    = "2"
               memory = "2048Mi"
             }
             requests = {
