@@ -97,7 +97,6 @@ resource "kubernetes_deployment" "ui" {
 
           resources {
             limits = {
-              cpu    = "2"
               memory = "1024Mi"
             }
             requests = {

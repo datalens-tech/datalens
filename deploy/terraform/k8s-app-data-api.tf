@@ -98,7 +98,6 @@ resource "kubernetes_deployment" "data-api" {
 
           resources {
             limits = {
-              cpu    = "2"
               memory = "2048Mi"
             }
             requests = {

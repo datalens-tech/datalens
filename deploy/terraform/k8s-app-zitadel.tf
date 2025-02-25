@@ -189,7 +189,6 @@ resource "kubernetes_deployment" "zitadel" {
 
           resources {
             limits = {
-              cpu    = "2"
               memory = "1048Mi"
             }
             requests = {
