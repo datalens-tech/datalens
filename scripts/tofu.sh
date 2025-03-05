@@ -16,7 +16,7 @@ IS_DOCKER_LOGIN="false"
 IS_HELM_LOGIN="false"
 
 # parse args
-for i in "$@"; do
+for _ in "$@"; do
   case ${1} in
   --sa-file)
     SA_FILE="${2}"
@@ -84,7 +84,7 @@ for i in "$@"; do
     shift # past argument with no value
     ;;
   -*)
-    echo "unknown arg: $i"
+    echo "unknown arg: ${1}"
     exit 1
     ;;
   *) ;;

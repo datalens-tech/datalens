@@ -23,18 +23,38 @@ spec:
           - containerPort: 5432
         env:
           - name: POSTGRES_USER
-            value: pg-user
+            value: {{ .Values.postgres.POSTGRES_USER  }}
+          - name: POSTGRES_DB_COMPENG
+            value: {{ .Values.postgres.POSTGRES_DB_COMPENG  }}
+          - name: POSTGRES_DB_US
+            value: {{ .Values.postgres.POSTGRES_DB_US  }}
+          {{- if .Values.features.demo.enabled }}
+          - name: POSTGRES_DB_DEMO
+            value: {{ .Values.postgres.POSTGRES_DB_DEMO  }}
+          - name: INIT_DEMO_DATA
+            value: '1'
+          {{- end }}
+          {{- if .Values.config.hc }}
+          - name: HC
+            value: '1'
+          {{- end }}
+          - name: US_ENDPOINT
+            value: http://datalens-us-cip:8080
+          - name: CONTROL_API_CRYPTO_KEY
+            valueFrom:
+              secretKeyRef:
+                name: datalens-secrets
+                key: CONTROL_API_CRYPTO_KEY
           - name: POSTGRES_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: datalens-secret
+                name: datalens-secrets
                 key: POSTGRES_PASSWORD
         resources:
           requests:
             cpu: {{ .Values.database.resources.requests.cpu }}
             memory: {{ .Values.database.resources.requests.memory }}
           limits:
-            cpu: {{ .Values.database.resources.limits.cpu }}
             memory: {{ .Values.database.resources.limits.memory }}
         volumeMounts:
         - name: postgres-volume

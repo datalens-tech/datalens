@@ -10,11 +10,12 @@ permissions:
 
 concurrency:
   group: ${{ github.workflow }}
+  cancel-in-progress: false
 
 jobs:
   run:
-    name: terraform
-    runs-on: 
+    name: tofu
+    runs-on:
       - self-hosted
       - linux
       - cloud
@@ -31,11 +32,11 @@ jobs:
       - uses: arduino/setup-task@v2
       - uses: nightstory/setup-yc@v1
       - run: |
-          ../scripts/tofu-opensource.sh --tofurc --cleanup --init --apply --approve
-        working-directory: ./deploy/terraform
+          ../scripts/tofu.sh --tofurc --cleanup --init --apply --approve
+        working-directory: ./terraform
         env:
-          CI: "true"
+          CI: 'true'
           CLOUD_ID: ${{ vars.CLOUD_ID }}
           FOLDER_ID: ${{ vars.FOLDER_ID }}
           DOMAIN: ${{ vars.DOMAIN }}
-          TOFU_MIRROR: "terraform-mirror.yandexcloud.net"
+          TOFU_MIRROR: 'terraform-mirror.yandexcloud.net'

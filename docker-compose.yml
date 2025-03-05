@@ -13,6 +13,7 @@ services:
       US_ENDPOINT: http://us:8080
       POSTGRES_USER: pg-user
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-postgres}"
+      INIT_DEMO_DATA: 1
     volumes:
       - db-postgres:/var/lib/postgresql/data
     networks:
@@ -100,7 +101,7 @@ services:
       #
       US_MASTER_TOKEN: ${US_MASTER_TOKEN:-us-master-token}
       #
-      RELEASE_VERSION: '1.0.0'
+      RELEASE_VERSION: '1.17.0'
       #
       HC: ${HC:-0}
       YANDEX_MAP_ENABLED: ${YANDEX_MAP_ENABLED:-0}

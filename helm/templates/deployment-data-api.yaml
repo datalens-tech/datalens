@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: datalens-data
+  name: datalens-data-api
   namespace: {{ .Release.Namespace }}
   labels:
-    app: datalens-app-data
+    app: datalens-app-data-api
 spec:
-  replicas: {{ .Values.application.data.replicas }}
+  replicas: {{ .Values.application.data_api.replicas }}
   selector:
     matchLabels:
-      app: datalens-app-data
+      app: datalens-app-data-api
   template:
     metadata:
       labels:
-        app: datalens-app-data
+        app: datalens-app-data-api
     spec:
       containers:
-        - name: datalens-app-data
-          image: "{{ .Values.registry.url }}/datalens-data-api:{{ .Values.application.data.version }}"
+        - name: datalens-app-data-api
+          image: "{{ .Values.registry.url }}/datalens-data-api:{{ .Values.application.data_api.version }}"
           ports:
             - containerPort: 8080
           env:
@@ -42,22 +42,21 @@ spec:
             - name: DL_CRY_KEY_VAL_ID_key_2
               valueFrom:
                 secretKeyRef:
-                  name: datalens-secret
+                  name: datalens-secrets
                   key: CONTROL_API_CRYPTO_KEY
             - name: BI_COMPENG_PG_URL
               valueFrom:
                 secretKeyRef:
-                  name: datalens-secret
+                  name: datalens-secrets
                   key: POSTGRES_DSN_LIST_COMPENG
             - name: US_MASTER_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: datalens-secret
+                  name: datalens-secrets
                   key: US_MASTER_TOKEN
           resources:
             requests:
-              cpu: {{ .Values.application.data.resources.requests.cpu }}
-              memory: {{ .Values.application.data.resources.requests.memory }}
+              cpu: {{ .Values.application.data_api.resources.requests.cpu }}
+              memory: {{ .Values.application.data_api.resources.requests.memory }}
             limits:
-              cpu: {{ .Values.application.data.resources.limits.cpu }}
-              memory: {{ .Values.application.data.resources.limits.memory }}
+              memory: {{ .Values.application.data_api.resources.limits.memory }}

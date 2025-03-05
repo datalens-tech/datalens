@@ -15,10 +15,10 @@ spec:
             name: datalens-ui-cip
             port:
               name: http
-{{- if .Values.ingress.tls.secret }}
+{{- if .Values.ingress.tls.enabled }}
   tls:
     - hosts:
         - {{ .Values.ingress.domain }}
-      secretName: {{ .Values.ingress.tls.secret }}
+      secretName: ingress-tls-secret
 {{- end }}
 {{ end }}

@@ -1,8 +1,8 @@
 {
-    "authVersion": "0.15.0",
+    "authVersion": "0.0.0",
     "controlApiVersion": "0.2192.0",
     "dataApiVersion": "0.2192.0",
     "uiVersion": "0.2601.0",
     "usVersion": "0.310.0",
-    "releaseVersion": "2025.3.0"
+    "releaseVersion": "1.17.0"
 }

@@ -1,4 +1,4 @@
-ARG POSTGRES_VERSION=15
+ARG POSTGRES_VERSION=16
 
 FROM postgres:${POSTGRES_VERSION}
 
@@ -16,7 +16,3 @@ COPY ./init-db.sh /docker-entrypoint-initdb.d/init-db.sh
 COPY ./crypto.py /init/crypto.py
 
 RUN chmod +x /docker-entrypoint-initdb.d/init-db.sh
-
-WORKDIR /init
-
-ENTRYPOINT [ "./init.sh" ]

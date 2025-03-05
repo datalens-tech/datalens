@@ -21,7 +21,7 @@ docker compose -f docker-compose.yml exec -T postgres pg_dump --inserts --on-con
   --table workbooks \
   --table collections \
   --table links \
-  -U pg-us-user pg-us-db 2>/dev/null >./dl_db.dump || echo "Dump error, exit..."
+  -U pg-us-user pg-us-db 2>/dev/null >./datalens_db.dump || echo "Dump error, exit..."
 
 echo ""
-echo "Dump done, saved at [./dl_db.dump]"
+echo "Dump done, saved at [./datalens_db.dump]"

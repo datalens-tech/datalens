@@ -32,9 +32,9 @@ spec:
             - name: US_ENDPOINT
               value: http://datalens-us-cip:8080
             - name: BI_API_ENDPOINT
-              value: http://datalens-control-cip:8080
+              value: http://datalens-control-api-cip:8080
             - name: BI_DATA_ENDPOINT
-              value: http://datalens-data-cip:8080
+              value: http://datalens-data-api-cip:8080
             {{- if .Values.config.hc }}
             - name: HC
               value: '1'
@@ -50,12 +50,11 @@ spec:
             - name: US_MASTER_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: datalens-secret
+                  name: datalens-secrets
                   key: US_MASTER_TOKEN
           resources:
             requests:
               cpu: {{ .Values.application.ui.resources.requests.cpu }}
               memory: {{ .Values.application.ui.resources.requests.memory }}
             limits:
-              cpu: {{ .Values.application.ui.resources.limits.cpu }}
               memory: {{ .Values.application.ui.resources.limits.memory }}

@@ -1,7 +1,7 @@
 registry:
   url: 'ghcr.io/datalens-tech'
 #
-release_version: '1.0.0'
+release_version: '1.17.0'
 #
 ingress:
   enabled: true
@@ -23,18 +23,18 @@ database:
       memory: 512Mi
 #
 application:
-  control:
+  control_api:
     replicas: 1
-    version: '0.0.0'
+    version: '0.2192.0'
     resources:
       requests:
         cpu: 0.5
         memory: 512Mi
       limits:
         memory: 1024Mi
-  data:
+  data_api:
     replicas: 1
-    version: '0.0.0'
+    version: '0.2192.0'
     resources:
       requests:
         cpu: 1
@@ -43,7 +43,7 @@ application:
         memory: 1024Mi
   ui:
     replicas: 1
-    version: '0.0.0'
+    version: '0.2601.0'
     resources:
       requests:
         cpu: 0.25
@@ -52,7 +52,7 @@ application:
         memory: 512Mi
   us:
     replicas: 1
-    version: '0.0.0'
+    version: '0.310.0'
     resources:
       requests:
         cpu: 0.5
@@ -65,7 +65,15 @@ secrets:
   CONTROL_API_CRYPTO_KEY: null
   POSTGRES_PASSWORD: null
 #
-config:
+postgres:
+  POSTGRES_HOST: datalens-postgres-cip
+  POSTGRES_PORT: '5432'
+  POSTGRES_USER: pg-user
+  POSTGRES_DB_COMPENG: pg-compeng-db
+  POSTGRES_DB_US: pg-us-db
+  POSTGRES_DB_DEMO: pg-demo-db
+#
+features:
   auth:
     enabled: true
   demo:
