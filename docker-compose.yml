@@ -13,7 +13,7 @@ services:
       US_ENDPOINT: http://us:8080
       POSTGRES_USER: pg-user
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-postgres}"
-      INIT_DEMO_DATA: 1
+      INIT_DEMO_DATA: ${INIT_DEMO_DATA:-1}
     volumes:
       - db-postgres:/var/lib/postgresql/data
     networks:
@@ -28,7 +28,7 @@ services:
       RQE_SECRET_KEY: ""
       #
       DL_CRY_ACTUAL_KEY_ID: KEY
-      DL_CRY_KEY_VAL_ID_KEY: "h1ZpilcYLYRdWp7Nk8X1M1kBPiUi8rdjz9oBfHyUKIk="
+      DL_CRY_KEY_VAL_ID_KEY: "${CONTROL_API_CRYPTO_KEY}"
       #
       US_HOST: http://us:8080
       #
@@ -51,7 +51,7 @@ services:
       RQE_SECRET_KEY: ""
       #
       DL_CRY_ACTUAL_KEY_ID: KEY
-      DL_CRY_KEY_VAL_ID_KEY: "h1ZpilcYLYRdWp7Nk8X1M1kBPiUi8rdjz9oBfHyUKIk="
+      DL_CRY_KEY_VAL_ID_KEY: "${CONTROL_API_CRYPTO_KEY}"
       #
       BI_COMPENG_PG_ON: 1
       BI_COMPENG_PG_URL: "postgresql://pg-user:${POSTGRES_PASSWORD:-postgres}@postgres:5432/pg-compeng-db"
@@ -111,7 +111,7 @@ services:
       - control-api
       - data-api
     ports:
-      - 8080:8080
+      - ${UI_PORT:-8080}:8080
     networks:
       - default
 #

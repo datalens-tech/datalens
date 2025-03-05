@@ -7,6 +7,10 @@ venv/
 .idea
 .env
 
-datalens-images.gz
+datalens-images.tar
+datalens-images.txt
+datalens-images.tar.zst
 
-*.dump
+datalens_db.dump
+
+docker-compose.production.yml

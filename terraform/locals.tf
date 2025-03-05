@@ -9,7 +9,7 @@ locals {
 locals {
   service = "datalens-opensource"
 
-  versions            = jsondecode(file("${path.module}/../../versions-config.json"))
+  versions            = jsondecode(file("${path.module}/../versions-config.json"))
   ui_version          = local.versions["uiVersion"]
   us_version          = local.versions["usVersion"]
   data_api_version    = local.versions["dataApiVersion"]
@@ -40,6 +40,9 @@ locals {
 
   # auto create github runner
   is_create_github_runner = true
+
+  # auto generate local kubeconfig file
+  k8s_kubeconfig = false
 
   # next step k8s deploy applications
   k8s_cluster_ready = true

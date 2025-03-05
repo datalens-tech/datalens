@@ -26,10 +26,6 @@ Use the following command to start DataLens containers:
 git clone https://github.com/datalens-tech/datalens && cd datalens
 
 HC=1 docker compose up
-
-# or with an external metadata database
-# the use of an external database is recommended if you want to save and reuse own metadata across different installations
-METADATA_POSTGRES_DSN_LIST="postgres://{user}:{password}@{host}:{port}/{database}" HC=1 docker compose up
 ```
 
 This command will launch all containers required to run DataLens and UI will be available on http://localhost:8080
@@ -38,6 +34,16 @@ If you want to use a different port (e.g. `8081`), you can set it using the `UI_
 
 ```bash
 UI_PORT=8081 docker compose up
+```
+
+For production usage we recommended generate compose file with random secrets:
+
+```bash
+# generate random secrets with openssl, store it to .env file and prepare production compose template
+./init.sh --hc
+
+# up production compose
+docker compose -f ./docker-compose.production.yml up -d
 ```
 
 <details>
@@ -63,6 +69,9 @@ Use the following container parameters for launch:
 
 ```bash
 YANDEX_MAP_ENABLED=1 YANDEX_MAP_TOKEN=XXXXXXXXX docker compose up
+
+# or for production ready deploy
+./init.sh --yandex-map --yandex-map-token XXXXXXXXX --up
 ```
 </details>
 
@@ -71,12 +80,16 @@ YANDEX_MAP_ENABLED=1 YANDEX_MAP_TOKEN=XXXXXXXXX docker compose up
 Just pull the new `docker-compose.yml` and restart.
 
 ```bash
-docker compose down
 git pull
+
+# if you use base compose file
 docker compose up
+
+# if you use init.sh script
+./init.sh --up
 ```
 
-All your user settings will be stored in the `metadata` folder.
+All your user settings will be stored in the `db-postgres` docker volume.
 
 ## Parts of the project
 
@@ -93,34 +106,27 @@ We are releasing DataLens with first minimal set of available connectors (clickh
 ## Cloud Providers
 Below is a list of cloud providers offering DataLens as a service:
 1. [Yandex Cloud](https://datalens.yandex.com) platform
-2. [DoubleCloud](https://double.cloud/services/doublecloud-visualization/) platform
 
-## Authentication (beta)
-DataLens supports authentication via [Zitadel](https://zitadel.com/) identity platform.
+## Authentication
+DataLens supports new native authentication.
 
-Use the following command to initialize Zitadel **(you need to do this only once)**:
-
-```bash
-bash init.sh
-```
-
-Notice the updated `.env` file after initialization: it contains Zitadel access keys. Keep that file safe and do not share it's contents.
-
-After initialization you can start DataLens containers using special version of docker compose file:
+Use the following command to up DataLens with authentication:
 
 ```bash
-HC=1 docker compose -f docker-compose.zitadel.yml up
+./init.sh --auth --up
 ```
 
-After that you can login to DataLens on http://localhost:8080 using the default user credentials:
+Notice the updated `.env` file after initialization: it contains auth access keys and admin password. Keep that file safe and do not share it's contents.
 
-| Username                          | Password     |
-| --------------------------------- | ------------ |
-| `zitadel-admin@zitadel.localhost` | `Password1!` |
+After that you can login to DataLens on http://localhost:8080 using the user credentials:
 
-You can use the same credentials to configure Zitadel and add new users using Zitadel control panel at http://localhost:8085/. **Don't forget to login there at least once to change the default password.**
+| Username | Password                               |
+| -------- | -------------------------------------- |
+| `admin`  | `<AUTH_ADMIN_PASSWORD from .env file>` |
 
-By default in DataLens with authentication enabled, all users have a datalens.viewer role. This allows them to use all collections and workbooks in read-only mode. They are not allowed to create or modify any objects with this role. To be able to create or edit objects, they need to have a datalens.editor or datalens.admin role. To grant these roles, open Zitadel at http://localhost:8085/ui/console/grants, then find the user to whom you want to grant a new role and click on the user and select the new role.
+You can use the same credentials to add new users using admin control panel at http://localhost:8080/.
+
+By default in DataLens with authentication enabled, all users have a datalens.viewer role. This allows them to use all collections and workbooks in read-only mode. They are not allowed to create or modify any objects with this role. To be able to create or edit objects, they need to have a datalens.editor or datalens.admin role. To grant these roles, open DataLens at http://localhost:8080, then find the user to whom you want to grant a new role and click on the user and select the new role.
 
 DataLens supports the following roles:
 
@@ -132,7 +138,7 @@ DataLens supports the following roles:
 
 #### Where does DataLens store it's metadata?
 
-We use the `metadata` folder to store PostgreSQL data. If you want to start over, you can delete this folder: it will be recreated with demo objects on the next start of the `datalens-us` container.
+We use the `db-postgres` docker volume to store PostgreSQL data. If you want to start over, you can delete this volume: it will be recreated with demo objects on the next start of the `datalens` compose.
 
 #### I use the `METADATA_POSTGRES_DSN_LIST` param for external metadata database and the app doesn't start. What could be the reason?
 
@@ -163,10 +169,9 @@ If `datalens-us` container does not start even though you provided correct certi
 `METADATA_POSTGRES_DSN_LIST="postgres://{user}:{password}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert=/certs/root.crt"`
 
 
-#### Why do i see two compose files: docker-compose.yml & docker-compose-dev.yml?
+#### Why do i see two compose files: docker-compose.yml & docker-compose.dev.yml?
 
-`docker-compose-dev.yml` is a special compose file that is needed only for development purposes. When you run DataLens in production mode, you always need to use `docker-compose.yml`. The `docker-compose up` command uses it by default. 
-
+`docker-compose.dev.yml` is a special compose file that is needed only for development purposes. When you run DataLens in production mode, you always need to use `docker-compose.yml` file or `./init.sh` script.
 
 #### What are the minimum system requirements?
 
@@ -178,11 +183,9 @@ If `datalens-us` container does not start even though you provided correct certi
 
 * datalens-us - 512 MB RAM
 
-* datalens-pg-compeng - 1 GB RAM
+* datalens-postgres - 512 GB RAM
 
-* datalens-pg-us - 512 MB RAM
-
-Summary:
+Minimal configuration:
 
 * RAM - 4 GB
 
