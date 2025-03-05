@@ -1,0 +1,22 @@
+ARG POSTGRES_VERSION=15
+
+FROM postgres:${POSTGRES_VERSION}
+
+ENV PYTHONUNBUFFERED=1
+ENV POSTGRES_INITDB_ARGS='--encoding=UTF-8 --lc-collate=en_US.utf8 --lc-ctype=en_US.utf8'
+
+RUN apt update && apt upgrade -y && apt install -y bash curl python3 py3-cryptography
+
+RUN apt -y autoremove && \
+  apt clean && \
+  rm -rf /var/lib/apt/lists/*
+
+COPY ./init/ /init/
+COPY ./init-db.sh /docker-entrypoint-initdb.d/init-db.sh
+COPY ./crypto.py /init/crypto.py
+
+RUN chmod +x /docker-entrypoint-initdb.d/init-db.sh
+
+WORKDIR /init
+
+ENTRYPOINT [ "./init.sh" ]

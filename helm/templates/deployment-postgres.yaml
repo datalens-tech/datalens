@@ -1,0 +1,46 @@
+{{ if .Values.database.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: datalens-postgres
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: datalens-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: datalens-postgres
+  template:
+    metadata:
+      labels:
+        app: datalens-postgres
+    spec:
+      containers:
+      - name: datalens-postgres
+        image: "{{ .Values.registry.url }}/datalens-postgres:16"
+        ports:
+          - containerPort: 5432
+        env:
+          - name: POSTGRES_USER
+            value: pg-user
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: datalens-secret
+                key: POSTGRES_PASSWORD
+        resources:
+          requests:
+            cpu: {{ .Values.database.resources.requests.cpu }}
+            memory: {{ .Values.database.resources.requests.memory }}
+          limits:
+            cpu: {{ .Values.database.resources.limits.cpu }}
+            memory: {{ .Values.database.resources.limits.memory }}
+        volumeMounts:
+        - name: postgres-volume
+          mountPath: /var/lib/pgsql/data
+      volumes:
+      - name: postgres-volume
+        persistentVolumeClaim:
+          claimName: datalens-postgres-volume
+{{ end }}

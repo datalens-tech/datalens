@@ -17,11 +17,7 @@ spec:
     spec:
       containers:
         - name: datalens-app-data
-          {{- if .Values.application.data.image }}
-          image: {{ .Values.application.data.image }}
-          {{- else }}
-          image: {{ print .Values.registry "/" "datalens-data-api:" .Values.versions.data }}
-          {{- end }}
+          image: "{{ .Values.registry.url }}/datalens-data-api:{{ .Values.application.data.version }}"
           ports:
             - containerPort: 8080
           env:

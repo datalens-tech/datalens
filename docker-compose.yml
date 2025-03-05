@@ -8,32 +8,13 @@ services:
       retries: 10
       start_period: 3s
     environment:
-      POSTGRES_USER: pg-user
-      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-postgres}"
-      POSTGRES_INITDB_ARGS: '--encoding=UTF-8 --lc-collate=en_US.utf8 --lc-ctype=en_US.utf8'
-    networks:
-      - default
-  #
-  demo:
-    container_name: datalens-demo-data
-    image: ghcr.io/datalens-tech/datalens-demo-data:2.0.0
-    restart: on-failure
-    depends_on:
-      - postgres
-    environment:
       HC: ${HC:-0}
-      #
       CONTROL_API_CRYPTO_KEY: "${CONTROL_API_CRYPTO_KEY}"
-      #
       US_ENDPOINT: http://us:8080
-      INIT_SLEEP: 5
-      #
-      POSTGRES_HOST: postgres
-      POSTGRES_PORT: 5432
       POSTGRES_USER: pg-user
-      POSTGRES_DB_US: pg-us-db
-      POSTGRES_DB_DEMO: pg-demo-db
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-postgres}"
+    volumes:
+      - db-postgres:/var/lib/postgresql/data
     networks:
       - default
   #

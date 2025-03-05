@@ -2,12 +2,10 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: datalens-pg-volume
-  labels:
-    app: datalens-app-pg
+  name: datalens-postgres-volume
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteOncePod
   resources:
     requests:
       storage: 1Gi

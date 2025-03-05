@@ -1,0 +1,80 @@
+registry:
+  url: 'ghcr.io/datalens-tech'
+#
+release_version: '1.0.0'
+#
+ingress:
+  enabled: true
+  domain: datalens.local
+  np: false
+  tls:
+    enabled: false
+    secret:
+      crt: null
+      key: null
+#
+database:
+  enabled: true
+  resources:
+    requests:
+      cpu: 250m
+      memory: 128Mi
+    limits:
+      memory: 512Mi
+#
+application:
+  control:
+    replicas: 1
+    version: '0.0.0'
+    resources:
+      requests:
+        cpu: 0.5
+        memory: 512Mi
+      limits:
+        memory: 1024Mi
+  data:
+    replicas: 1
+    version: '0.0.0'
+    resources:
+      requests:
+        cpu: 1
+        memory: 512Mi
+      limits:
+        memory: 1024Mi
+  ui:
+    replicas: 1
+    version: '0.0.0'
+    resources:
+      requests:
+        cpu: 0.25
+        memory: 256Mi
+      limits:
+        memory: 512Mi
+  us:
+    replicas: 1
+    version: '0.0.0'
+    resources:
+      requests:
+        cpu: 0.5
+        memory: 256Mi
+      limits:
+        memory: 512Mi
+#
+secrets:
+  US_MASTER_TOKEN: null
+  CONTROL_API_CRYPTO_KEY: null
+  POSTGRES_PASSWORD: null
+#
+config:
+  auth:
+    enabled: true
+  demo:
+    enabled: true
+  hc:
+    enabled: false
+    endpoint: ''
+    protocol: ''
+  yandex_map:
+    enabled: false
+    token: ''
+#

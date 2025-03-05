@@ -7,7 +7,7 @@ locals {
 
 # basic local
 locals {
-  service = "datalens-opensource-sandbox"
+  service = "datalens-opensource"
 
   versions            = jsondecode(file("${path.module}/../../versions-config.json"))
   ui_version          = local.versions["uiVersion"]
