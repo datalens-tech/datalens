@@ -1,0 +1,10 @@
+# terraform
+.terraform
+.terraform.lock.hcl
+
+# service account
+sa_key.json
+sa_key.*.json
+
+# k8s
+kubeconfig.conf

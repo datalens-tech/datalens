@@ -1,27 +1,63 @@
 services:
-  pg-compeng:
-    container_name: datalens-pg-compeng
-    image: postgres:16-alpine
+  postgres:
+    container_name: datalens-postgres
+    image: ghcr.io/datalens-tech/datalens-postgres:16
+    healthcheck:
+      test: ["CMD", "pg_isready", "-d", "pg-us-db"]
+      interval: 5s
+      retries: 10
+      start_period: 3s
     environment:
-      POSTGRES_PASSWORD: "postgres"
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-
+      POSTGRES_USER: pg-user
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-postgres}"
+      POSTGRES_INITDB_ARGS: '--encoding=UTF-8 --lc-collate=en_US.utf8 --lc-ctype=en_US.utf8'
+    networks:
+      - default
+  #
+  demo:
+    container_name: datalens-demo-data
+    image: ghcr.io/datalens-tech/datalens-demo-data:2.0.0
+    restart: on-failure
+    depends_on:
+      - postgres
+    environment:
+      HC: ${HC:-0}
+      #
+      CONTROL_API_CRYPTO_KEY: "${CONTROL_API_CRYPTO_KEY}"
+      #
+      US_ENDPOINT: http://us:8080
+      INIT_SLEEP: 5
+      #
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: pg-user
+      POSTGRES_DB_US: pg-us-db
+      POSTGRES_DB_DEMO: pg-demo-db
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-postgres}"
+    networks:
+      - default
+  #
   control-api:
     container_name: datalens-control-api
     image: ghcr.io/datalens-tech/datalens-control-api:0.2192.0
     environment:
       BI_API_UWSGI_WORKERS_COUNT: 4
-      CONNECTOR_AVAILABILITY_VISIBLE: "clickhouse,postgres,chyt,ydb,mysql,greenplum,mssql,appmetrica_api,metrika_api"
       RQE_FORCE_OFF: 1
-      DL_CRY_ACTUAL_KEY_ID: key_1
-      DL_CRY_KEY_VAL_ID_key_1: "h1ZpilcYLYRdWp7Nk8X1M1kBPiUi8rdjz9oBfHyUKIk="
       RQE_SECRET_KEY: ""
-      US_HOST: "http://us:8083"
-      US_MASTER_TOKEN: "fake-us-master-token"
+      #
+      DL_CRY_ACTUAL_KEY_ID: KEY
+      DL_CRY_KEY_VAL_ID_KEY: "h1ZpilcYLYRdWp7Nk8X1M1kBPiUi8rdjz9oBfHyUKIk="
+      #
+      US_HOST: http://us:8080
+      #
+      US_MASTER_TOKEN: ${US_MASTER_TOKEN:-us-master-token}
+      #
+      CONNECTOR_AVAILABILITY_VISIBLE: clickhouse,postgres,chyt,ydb,mysql,greenplum,mssql,appmetrica_api,metrika_api
     depends_on:
       - us
-
+    networks:
+      - default
+  #
   data-api:
     container_name: datalens-data-api
     image: ghcr.io/datalens-tech/datalens-data-api:0.2192.0
@@ -31,76 +67,74 @@ services:
       CACHES_ON: 0
       MUTATIONS_CACHES_ON: 0
       RQE_SECRET_KEY: ""
-      DL_CRY_ACTUAL_KEY_ID: key_1
-      DL_CRY_KEY_VAL_ID_key_1: "h1ZpilcYLYRdWp7Nk8X1M1kBPiUi8rdjz9oBfHyUKIk="
+      #
+      DL_CRY_ACTUAL_KEY_ID: KEY
+      DL_CRY_KEY_VAL_ID_KEY: "h1ZpilcYLYRdWp7Nk8X1M1kBPiUi8rdjz9oBfHyUKIk="
+      #
       BI_COMPENG_PG_ON: 1
-      BI_COMPENG_PG_URL: "postgresql://postgres:postgres@pg-compeng:5432/postgres"
-      US_HOST: "http://us:8083"
-      US_MASTER_TOKEN: "fake-us-master-token"
+      BI_COMPENG_PG_URL: "postgresql://pg-user:${POSTGRES_PASSWORD:-postgres}@postgres:5432/pg-compeng-db"
+      #
+      US_HOST: http://us:8080
+      #
+      US_MASTER_TOKEN: ${US_MASTER_TOKEN:-us-master-token}
     depends_on:
       - us
-      - pg-compeng
-
-  pg-demo-connection:
-    container_name: datalens-pg-demo-connection
-    image: postgres:16-alpine
-    environment:
-      POSTGRES_DB: demo
-      POSTGRES_USER: demo
-      POSTGRES_PASSWORD: demo
-    volumes:
-      - ${VOLUME_DEMO:-./pg-demo-connection/data}:/var/lib/postgresql/data
-      - ./pg-demo-connection/init:/docker-entrypoint-initdb.d
-
-  pg-us:
-    container_name: datalens-pg-us
-    image: postgres:16-alpine
-    environment:
-      POSTGRES_DB: us-db-ci_purgeable
-      POSTGRES_USER: us
-      POSTGRES_PASSWORD: us
-    volumes:
-      - ${VOLUME_US:-./metadata}:/var/lib/postgresql/data
-
+      - postgres
+    networks:
+      - default
+  #
   us:
     container_name: datalens-us
     image: ghcr.io/datalens-tech/datalens-us:0.310.0
-    depends_on:
-      - pg-us
     environment:
-      APP_INSTALLATION: "opensource"
-      APP_ENV: "prod"
-      MASTER_TOKEN: "fake-us-master-token"
-      POSTGRES_DSN_LIST: ${METADATA_POSTGRES_DSN_LIST:-postgres://us:us@pg-us:5432/us-db-ci_purgeable}
-      SKIP_INSTALL_DB_EXTENSIONS: ${METADATA_SKIP_INSTALL_DB_EXTENSIONS:-0}
-      USE_DEMO_DATA: ${USE_DEMO_DATA:-1}
+      APP_INSTALLATION: opensource
+      APP_ENV: prod
+      #
+      MASTER_TOKEN: ${US_MASTER_TOKEN:-us-master-token}
+      #
+      POSTGRES_DSN_LIST: "postgres://pg-user:${POSTGRES_PASSWORD:-postgres}@postgres:5432/pg-us-db"
+      #
+      SKIP_INSTALL_DB_EXTENSIONS: 1
+      USE_DEMO_DATA: 0
+      #
       HC: ${HC:-0}
-      NODE_EXTRA_CA_CERTS: /certs/root.crt
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    volumes:
-      - ./certs:/certs
-
-  datalens:
+    depends_on:
+      - postgres
+    networks:
+      - default
+  #
+  ui:
     container_name: datalens-ui
     image: ghcr.io/datalens-tech/datalens-ui:0.2601.0
-    ports:
-      - ${UI_PORT:-8080}:8080
+    environment:
+      APP_MODE: full
+      APP_ENV: production
+      APP_INSTALLATION: opensource
+      #
+      AUTH_POLICY: disabled
+      #
+      US_ENDPOINT: http://us:8080
+      BI_API_ENDPOINT: http://control-api:8080
+      BI_DATA_ENDPOINT: http://data-api:8080
+      #
+      US_MASTER_TOKEN: ${US_MASTER_TOKEN:-us-master-token}
+      #
+      RELEASE_VERSION: '1.0.0'
+      #
+      HC: ${HC:-0}
+      YANDEX_MAP_ENABLED: ${YANDEX_MAP_ENABLED:-0}
+      YANDEX_MAP_TOKEN: ${YANDEX_MAP_TOKEN}
     depends_on:
       - us
       - control-api
       - data-api
-      - pg-demo-connection
-    environment:
-      APP_MODE: "full"
-      APP_ENV: "production"
-      APP_INSTALLATION: "opensource"
-      AUTH_POLICY: "disabled"
-      US_ENDPOINT: "http://us:8083"
-      BI_API_ENDPOINT: "http://control-api:8080"
-      BI_DATA_ENDPOINT: "http://data-api:8080"
-      US_MASTER_TOKEN: "fake-us-master-token"
-      NODE_EXTRA_CA_CERTS: "/usr/local/share/ca-certificates/cert.pem"
-      HC: ${HC:-0}
-      YANDEX_MAP_ENABLED: ${YANDEX_MAP_ENABLED:-0}
-      YANDEX_MAP_TOKEN: ${YANDEX_MAP_TOKEN}
+    ports:
+      - 8080:8080
+    networks:
+      - default
+#
+volumes:
+  db-postgres:
+#
+networks:
+  default:
