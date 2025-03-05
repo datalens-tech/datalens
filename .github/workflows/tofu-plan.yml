@@ -1,0 +1,94 @@
+name: Tofu plan
+
+on:
+  pull_request:
+    paths:
+      - 'terraform/**'
+      - 'versions-config.json'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  run:
+    name: tofu
+    runs-on:
+      - self-hosted
+      - linux
+      - cloud
+      - datalens-opensource
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: 1.8.2
+      - run: |
+          ../scripts/tofu.sh --tofurc --cleanup --init --silent --plan --plan-out "../plan.tfplan" --plan-md
+        working-directory: ./terraform
+        env:
+          CI: 'true'
+          CLOUD_ID: ${{ vars.CLOUD_ID }}
+          FOLDER_ID: ${{ vars.FOLDER_ID }}
+          DOMAIN: ${{ vars.DOMAIN }}
+          TOFU_MIRROR: 'terraform-mirror.yandexcloud.net'
+      - name: get terraform plan md
+        run: |
+          echo 'TF_PLAN_MD<<EOF' >> $GITHUB_ENV
+          cat ./plan.tfplan.md >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+      - name: create or update pr comment
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issueNumber = context.issue.number;
+            const repo = context.repo;
+
+            const commentIdentifier = "<!-- tfplan -->";
+            const { data: comments } = await github.rest.issues.listComments({
+              ...repo,
+              issue_number: issueNumber,
+            });
+
+            const botComment = comments.find(comment => 
+              comment.body.includes(commentIdentifier) && 
+              comment.user.login === 'github-actions[bot]'
+            );
+
+            const timestamp = new Date(Date.now() + 3 * 60 * 60 * 1000).toISOString().replace('T', ' ').slice(0, 19) + ' MSK';
+
+            const commentBody = `
+            ### 🌱 Terraform changes detected
+
+            ${process.env.TF_PLAN_MD}
+
+            Last updated: ${timestamp}
+
+            ${commentIdentifier}
+            `;
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                ...repo,
+                comment_id: botComment.id,
+                body: commentBody
+              });
+              
+              console.log('updated existing comment on PR #' + issueNumber);
+            } else {
+              await github.rest.issues.createComment({
+                ...repo,
+                issue_number: issueNumber,
+                body: commentBody
+              });
+              
+              console.log('added new comment to PR #' + issueNumber);
+            }

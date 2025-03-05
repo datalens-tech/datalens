@@ -20,11 +20,11 @@
       "images": [
         {
           "name": "datalens-control-api",
-          "version_descriptor": "controlApiVersion"
+          "version_descriptor": "backendVersion"
         },
         {
           "name": "datalens-data-api",
-          "version_descriptor": "dataApiVersion"
+          "version_descriptor": "backendVersion"
         }
       ]
     },
@@ -35,6 +35,16 @@
         {
           "name": "datalens-us",
           "version_descriptor": "usVersion"
+        }
+      ]
+    },
+    {
+      "name": "datalens-auth",
+      "url": "https://github.com/datalens-tech/datalens-auth",
+      "images": [
+        {
+          "name": "datalens-auth",
+          "version_descriptor": "authVersion"
         }
       ]
     }
@@ -58,7 +68,7 @@
       },
       {
         "id": "fix",
-        "text":"Bug fixes"
+        "text": "Bug fixes"
       },
       {
         "id": "sec",
@@ -123,7 +133,7 @@
     "tags": [
       {
         "id": "charts",
-        "text":"Charts"
+        "text": "Charts"
       },
       {
         "id": "connectors",

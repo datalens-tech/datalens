@@ -1,72 +1,44 @@
+name: Update version in yaml
+
 on:
   pull_request:
-    paths:
-      - 'templates/**.j2'
-      - 'versions-config.json'
   workflow_call:
     inputs:
       pr_head:
         type: string
+  workflow_dispatch:
+    inputs:
+      pr_head:
+        type: string
+        description: 'ref hash commit'
 
-name: Update docker-compose and helm versions
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
 jobs:
-  update_versions:
-    name: build files
+  run:
+    name: yq
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
-          ref: "${{ github.event.pull_request.head.ref }}${{ inputs.pr_head }}"
-          token: ${{ secrets.GH_TOKEN }}
-      - uses: azure/setup-helm@v4.2.0
-        with:
-          version: v3.16.2
-      - name: build docker-compose.yml
-        uses: Slicer/jinja2-action@v1.2.4
-        with:
-          template: ./templates/docker-compose.j2
-          output_file: ./docker-compose.yml
-          data_file: versions-config.json
-          data_format: json
-      - name: build docker-compose-dev.yml
-        uses: Slicer/jinja2-action@v1.2.4
-        with:
-          template: ./templates/docker-compose.j2
-          output_file: ./docker-compose-dev.yml
-          data_file: versions-config.json
-          data_format: json
-        env:
-          DEV_MODE: 'true'
-      - name: build docker-compose.zitadel.yml
-        uses: Slicer/jinja2-action@v1.2.4
-        with:
-          template: ./templates/docker-compose.zitadel.j2
-          output_file: ./docker-compose.zitadel.yml
-          data_file: versions-config.json
-          data_format: json
-      - name: check docker-compose.yml config
-        run: docker compose -f ./docker-compose.yml config
-      - name: build deploy/helm/values.yaml
-        uses: Slicer/jinja2-action@v1.2.4
-        with:
-          template: ./templates/helm-values.j2
-          output_file: ./deploy/helm/values.yaml
-          data_file: versions-config.json
-          data_format: json
-      - name: check helm config
-        run: helm lint ./deploy/helm
-      - name: Initialize mandatory git config
+          ref: '${{ github.event.pull_request.head.ref }}${{ inputs.pr_head }}'
+      - uses: frenck/action-setup-yq@v1
+      - name: script update-versions
+        run: ./scripts/update-versions.sh
+      - name: initialize mandatory git config
         run: |
-          git config user.email "" && git config user.name "GitHub Action"
-      - name: Commit compose files
-        id: make-commit
+          git config user.name "GitHub Actions"
+          git config user.email noreply@github.com
+      - name: commit changed files
         run: |
-            git add docker-compose.yml docker-compose-dev.yml docker-compose.zitadel.yml deploy/helm/values.yaml
-            if ! git diff-index --quiet HEAD; then
-                git commit --message "update docker-compose and helm versions"
-                git push
-            fi
+          git add docker-compose.yaml
+          git add helm/values.yaml
+          if ! git diff-index --quiet HEAD; then
+              git commit --message "update docker-compose.base.yaml and helm/values.yaml" || exit 0
+              git push
+          fi

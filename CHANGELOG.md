@@ -1,3 +1,105 @@
+## v2.0.0 (2025-04-04)
+
+### Image versions
+- datalens-auth: 0.0.0 -> 0.17.0 ([full changelog](https://github.com/datalens-tech/datalens-auth/compare/v0.0.0...v0.17.0))
+- datalens-control-api: 0.2192.0 -> 0.2233.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2192.0...v0.2233.0))
+- datalens-data-api: 0.2192.0 -> 0.2233.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2192.0...v0.2233.0))
+- datalens-ui: 0.2601.0 -> 0.2760.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.2601.0...v0.2760.0))
+- datalens-us: 0.310.0 -> 0.332.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.310.0...v0.332.0))
+
+### Breaking changes
+- Single PostgreSQL container now hosts all databases (`pg-us-db`, `pg-auth-db`, `pg-compeng-db`, `pg-demo-db`) for a simplified architecture and easier management
+- Demo data is now provided with the `datalens-postgres` container that can be enabled/disabled via the init script
+- PostgreSQL data is now stored in a persistent volume (`db-postgres`) instead of local filesystem storage for better data durability
+- Zitadel has been removed and replaced with a new native auth service (`datalens-auth`) for improved authentication and authorization
+- User accounts from Zitadel will be deleted during migration. Users need to be recreated in the new auth system
+- New security scheme with randomly generated `CONTROL_API_CRYPTO_KEY` variable for enhanced data protection
+- New production-ready docker-compose setup with `init.sh` script for automated deployment and configuration
+
+### Migration guide from 1.x.x to 2.x.x
+```bash
+# if you use a version prior to 1.23.0, before migration delete old table columns
+docker compose exec -T pg-us psql -U us -d us-db-ci_purgeable -c 'ALTER TABLE workbooks DROP COLUMN project_id;'
+docker compose exec -T pg-us psql -U us -d us-db-ci_purgeable -c 'ALTER TABLE collections DROP COLUMN project_id;'
+
+# backup all united-storage entries with command
+docker compose exec -T pg-us pg_dump --inserts --on-conflict-do-nothing -Fc -a \
+  --table entries \
+  --table revisions \
+  --table workbooks \
+  --table collections \
+  --table links \
+  -U us us-db-ci_purgeable >./datalens_db.dump
+
+# down docker compose
+docker compose down
+
+# checkout to actual main with git
+git checkout origin/main
+
+# up new datalens production ready version with auto generated secrets
+./init.sh --disable-demo --up
+
+# restore backup with builtin script
+
+# ? if you want restore without demo data database
+./scripts/restore-entries.sh ./datalens_db.dump
+
+# ? if you want restore with demo data database
+./scripts/restore-entries.sh --demo ./datalens_db.dump
+
+# ? if you do not want override old passwords at connections use
+./scripts/restore-entries.sh --disable-fix-connections ./datalens_db.dump
+
+# after success migration you can delete old database persistence directories
+rm -rf metadata && rm -rf pg-demo-connection
+```
+
+**Notes:**
+
+- If you used a new `CONTROL_API_CRYPTO_KEY`, after migration is completed, you need to update your source passwords in `Connections` resources in the DataLens interface
+
+- If you used the old demo data with the old database schema `opensource-demo.`, after migration is completed, you need to manually run this command:
+
+```bash
+docker compose exec -T postgres psql --username pg-user --dbname pg-us-db -c "UPDATE revisions SET data = REPLACE(data::text, 'opensource-demo', 'public')::jsonb;"
+```
+
+### Deploy
+- **Backend**: Add linux/arm64 images for all services [datalens-tech/datalens-backend#893](https://github.com/datalens-tech/datalens-backend/pull/893)
+- Helm chart support for Kubernetes deployment with customizable configuration options (see `helm/` directory)
+- Terraform example for infrastructure deployment on cloud providers with complete application setup (see `terraform/` directory)
+- Added help argument for `init.sh` script with all available options (run `./init.sh --help` for details)
+
+### New features
+- **Charts**: Unify revisions list. [datalens-tech/datalens-ui#2099](https://github.com/datalens-tech/datalens-ui/pull/2099)
+- **Auth**: Users by ids to schema. [datalens-tech/datalens-ui#2122](https://github.com/datalens-tech/datalens-ui/pull/2122)
+- **Dashboards**: Add DialogRelations dash button with empty widget. [datalens-tech/datalens-ui#2198](https://github.com/datalens-tech/datalens-ui/pull/2198)
+- **Dashboards**: Make dash data optional if possible. [datalens-tech/datalens-ui#2257](https://github.com/datalens-tech/datalens-ui/pull/2257)
+
+### Bug fixes
+- **Charts**: Fixes for displaying charts on mobile devices. [datalens-tech/datalens-ui#2114](https://github.com/datalens-tech/datalens-ui/pull/2114)
+- **Dashboards**: Fix group controls auto height. [datalens-tech/datalens-ui#2131](https://github.com/datalens-tech/datalens-ui/pull/2131)
+- **Connectors**: Fix get connectors icons. [datalens-tech/datalens-ui#2130](https://github.com/datalens-tech/datalens-ui/pull/2130)
+- **Auth**: Fix auth reload. [datalens-tech/datalens-ui#2136](https://github.com/datalens-tech/datalens-ui/pull/2136)
+- **Auth**: Fix get users list types response. [datalens-tech/datalens-ui#2175](https://github.com/datalens-tech/datalens-ui/pull/2175)
+- **Dashboards**: Fix table of content layout when switching compact view of aside header. [datalens-tech/datalens-ui#2231](https://github.com/datalens-tech/datalens-ui/pull/2231)
+- **Charts**: Fix negative zero sign. [datalens-tech/datalens-ui#2242](https://github.com/datalens-tech/datalens-ui/pull/2242)
+- **Charts**: Fix hierarchies don't work like colors. [datalens-tech/datalens-ui#2282](https://github.com/datalens-tech/datalens-ui/pull/2282)
+
+### Dependencies
+- **General components**: Add d3-sankey lib to ui-sandbox. [datalens-tech/datalens-ui#2115](https://github.com/datalens-tech/datalens-ui/pull/2115)
+- **General components**: Add dompurify@2.5.5. [datalens-tech/datalens-ui#2163](https://github.com/datalens-tech/datalens-ui/pull/2163)
+- **General components**: Bump dompurify from 2.5.5 to 3.2.4. [datalens-tech/datalens-ui#2166](https://github.com/datalens-tech/datalens-ui/pull/2166)
+- **General components**: Update @types/dompurify. [datalens-tech/datalens-ui#2177](https://github.com/datalens-tech/datalens-ui/pull/2177)
+- **General components**: Update gravity-ui/icons pack. [datalens-tech/datalens-ui#2202](https://github.com/datalens-tech/datalens-ui/pull/2202)
+- **General components**: Move @datalens-tech/ui-sandbox-modules to the production deps. [datalens-tech/datalens-ui#2219](https://github.com/datalens-tech/datalens-ui/pull/2219)
+- **General components**: Update @gravity-ui/dashkit 8.26.0 -> 8.26.1. [datalens-tech/datalens-ui#2212](https://github.com/datalens-tech/datalens-ui/pull/2212)
+- **General components**: Switch to rspack. [datalens-tech/datalens-ui#2288](https://github.com/datalens-tech/datalens-ui/pull/2288)
+- **General components**: Update @datalens-tech/ui-sandbox-modules. [datalens-tech/datalens-ui#2294](https://github.com/datalens-tech/datalens-ui/pull/2294)
+- **General components**: Update @gravity-ui/chartkit. [datalens-tech/datalens-ui#2295](https://github.com/datalens-tech/datalens-ui/pull/2295)
+
+
 ## v1.23.0 (2025-02-11)
 
 ### Image versions
@@ -64,7 +166,7 @@
 - **Dashboards**: Add controls groups title. [datalens-tech/datalens-ui#1975](https://github.com/datalens-tech/datalens-ui/pull/1975)
 - **General components**: Add beforeRequest decorator for ui sdk. [datalens-tech/datalens-ui#1983](https://github.com/datalens-tech/datalens-ui/pull/1983)
 - **General components**: Add release version dialog. [datalens-tech/datalens-ui#1982](https://github.com/datalens-tech/datalens-ui/pull/1982)
-- -**Dashboards**: Add support for groups in mobile. [datalens-tech/datalens-ui#1954](https://github.com/datalens-tech/datalens-ui/pull/1954)
+- **Dashboards**: Add support for groups in mobile. [datalens-tech/datalens-ui#1954](https://github.com/datalens-tech/datalens-ui/pull/1954)
 - **General components**: Add before request interceptor. [datalens-tech/datalens-ui#1984](https://github.com/datalens-tech/datalens-ui/pull/1984)
 
 ### Bug fixes
@@ -327,7 +429,7 @@
 
 ### Development
 - **Dashboards**: Moved DashControlsConfigContext as default wrapper for Dashkit container. [datalens-tech/datalens-ui#1436](https://github.com/datalens-tech/datalens-ui/pull/1436)
-- **General components**: Removed page reloading while renaming or moving entities. 
+- **General components**: Removed page reloading while renaming or moving entities.
 
 ### Chores
 - **General components**: Up @gravity-ui/dashkit@8.17.1. [datalens-tech/datalens-ui#1592](https://github.com/datalens-tech/datalens-ui/pull/1592)

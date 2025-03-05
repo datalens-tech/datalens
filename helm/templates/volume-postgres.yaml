@@ -1,0 +1,14 @@
+{{ if .Values.infra.postgres.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: datalens-postgres-volume
+spec:
+  accessModes:
+    - ReadWriteOncePod
+  resources:
+    requests:
+      storage: 1Gi
+    limits:
+      storage: 10Gi
+{{ end }}

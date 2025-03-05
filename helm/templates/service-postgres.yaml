@@ -1,0 +1,13 @@
+{{ if .Values.infra.postgres.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-cip
+spec:
+  selector:
+    app: postgres
+  ports:
+  - protocol: TCP
+    port: 5432
+  clusterIP: None
+{{ end }}

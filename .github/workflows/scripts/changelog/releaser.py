@@ -326,6 +326,8 @@ if __name__ == "__main__":
 
     # Update image versions
     new_image_versions: dict[str, str] = {}
+    with open(args.version_config_path, "r") as f:
+        new_image_versions: dict[str, str] = json.load(f)
     for repo in changelog_config["repositories"]:
         for img in repo.get("images", []):
             new_image_versions[img["version_descriptor"]] = IMG_VERSIONS_BY_NAME[img["name"]]["to"]
