@@ -46,6 +46,13 @@ psql -v ON_ERROR_STOP=1 --username "${POSTGRES_USER}" <<-EOSQL
 EOSQL
 
 if [ "${INIT_DEMO_DATA}" == "1" ] || [ "${INIT_DEMO_DATA}" == "true" ]; then
+  if [ "${POSTGRES_USER_DEMO}" != "${POSTGRES_USER}" ]; then
+    echo "  create [${POSTGRES_USER_DEMO}] user..."
+    psql -v ON_ERROR_STOP=1 --username "${POSTGRES_USER}" <<-EOSQL
+  CREATE USER "${POSTGRES_USER_DEMO}" WITH PASSWORD '${POSTGRES_PASSWORD_DEMO}'
+EOSQL
+  fi
+
   echo "  create [${POSTGRES_DB_DEMO}] database..."
   psql -v ON_ERROR_STOP=1 --username "${POSTGRES_USER}" <<-EOSQL
   CREATE DATABASE "${POSTGRES_DB_DEMO}" WITH OWNER "${POSTGRES_USER_DEMO}" ENCODING 'UTF8' LC_COLLATE = 'en_US.utf8' LC_CTYPE = 'en_US.utf8';
@@ -58,13 +65,6 @@ EOSQL
   CREATE EXTENSION IF NOT EXISTS btree_gist;
   CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 EOSQL
-
-  if [ "${POSTGRES_USER_DEMO}" != "${POSTGRES_USER}" ]; then
-    echo "  create [${POSTGRES_USER_DEMO}] user..."
-    psql -v ON_ERROR_STOP=1 --username "${POSTGRES_USER}" <<-EOSQL
-  CREATE USER "${POSTGRES_USER_DEMO}" WITH PASSWORD '${POSTGRES_PASSWORD_DEMO}'
-EOSQL
-  fi
 fi
 
 echo "  add [pg_trgm,btree_gin,btree_gist,uuid-ossp] extensions to [${POSTGRES_DB_COMPENG}] database..."
