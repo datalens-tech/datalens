@@ -1,4 +1,4 @@
-{{ if .Values.database.enabled }}
+{{ if .Values.infra.postgres.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -34,7 +34,7 @@ spec:
           - name: INIT_DEMO_DATA
             value: '1'
           {{- end }}
-          {{- if .Values.config.hc }}
+          {{- if .Values.features.hc }}
           - name: HC
             value: '1'
           {{- end }}
@@ -52,10 +52,10 @@ spec:
                 key: POSTGRES_PASSWORD
         resources:
           requests:
-            cpu: {{ .Values.database.resources.requests.cpu }}
-            memory: {{ .Values.database.resources.requests.memory }}
+            cpu: {{ .Values.infra.postgres.resources.requests.cpu }}
+            memory: {{ .Values.infra.postgres.resources.requests.memory }}
           limits:
-            memory: {{ .Values.database.resources.limits.memory }}
+            memory: {{ .Values.infra.postgres.resources.limits.memory }}
         volumeMounts:
         - name: postgres-volume
           mountPath: /var/lib/pgsql/data

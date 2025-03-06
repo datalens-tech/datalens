@@ -29,7 +29,7 @@ spec:
               value: '1'
             - name: USE_DEMO_DATA
               value: '1'
-            {{- if .Values.config.hc }}
+            {{- if .Values.features.hc }}
             - name: HC
               value: '1'
             {{- end }}

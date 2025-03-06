@@ -13,14 +13,15 @@ ingress:
       crt: null
       key: null
 #
-database:
-  enabled: true
-  resources:
-    requests:
-      cpu: 250m
-      memory: 128Mi
-    limits:
-      memory: 512Mi
+infra:
+  postgres:
+    enabled: true
+    resources:
+      requests:
+        cpu: 250m
+        memory: 128Mi
+      limits:
+        memory: 512Mi
 #
 application:
   control_api:

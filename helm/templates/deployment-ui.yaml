@@ -35,17 +35,17 @@ spec:
               value: http://datalens-control-api-cip:8080
             - name: BI_DATA_ENDPOINT
               value: http://datalens-data-api-cip:8080
-            {{- if .Values.config.hc }}
+            {{- if .Values.features.hc }}
             - name: HC
               value: '1'
             {{- end }}
-            {{- if .Values.config.map.enabled }}
+            {{- if .Values.features.yandex_map.enabled }}
             - name: YANDEX_MAP_ENABLED
               value: '1'
             {{- end }}
-            {{- if .Values.config.map.token }}
+            {{- if .Values.features.yandex_map.token }}
             - name: YANDEX_MAP_TOKEN
-              value: {{ .Values.config.map.token }}
+              value: {{ .Values.features.yandex_map.token }}
             {{- end }}
             - name: US_MASTER_TOKEN
               valueFrom:
