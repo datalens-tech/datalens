@@ -6,7 +6,7 @@ set -eo pipefail
 # [-x] - all executed commands are printed to the terminal [not secure]
 # [-o pipefail] - if any command in a pipeline fails, that return code will be used as the return code of the whole pipeline
 
-LOAD_FILE="./datalens-images.tar.zst"
+LOAD_FILE="./datalens-images.tar.gz"
 
 if [ -f "${LOAD_FILE}" ]; then
   echo ""

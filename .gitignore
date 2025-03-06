@@ -9,7 +9,8 @@ venv/
 
 datalens-images.tar
 datalens-images.txt
-datalens-images.tar.zst
+datalens-images.tar.gz
+datalens-images.tar.gz.tmp
 
 datalens_db.dump
 

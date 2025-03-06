@@ -65,11 +65,11 @@ echo "${IMAGES_SAVE_PRETTY}"
 echo ""
 
 OUT_FILE="./datalens-images.tar"
-OUT_ZST_FILE="${OUT_FILE}.zst"
+OUT_GZ_FILE="${OUT_FILE}.gz"
 
 echo "  file: ${OUT_FILE}"
 
-if [ ! -f "${OUT_FILE}" ] && [ ! -f "${OUT_ZST_FILE}" ]; then
+if [ ! -f "${OUT_FILE}" ] && [ ! -f "${OUT_GZ_FILE}" ]; then
   # TODO: support save with platform from docker API 1.48
   # docker save --platform "${IMAGE_PLATFORM}" ${IMAGES} -o "${OUT_FILE}"
 
@@ -83,12 +83,12 @@ echo ""
 echo "Compress images..."
 
 echo "  file source: ${OUT_FILE}"
-echo "  file target: ${OUT_ZST_FILE}"
+echo "  file target: ${OUT_GZ_FILE}"
 
-rm -rf "${OUT_ZST_FILE}.tmp"
+rm -rf "${OUT_GZ_FILE}.tmp"
 
-if [ ! -f "${OUT_ZST_FILE}" ]; then
-  zstd --no-progress -T0 -16 -f --long=25 "${OUT_FILE}" -o "${OUT_ZST_FILE}.tmp" && mv "${OUT_ZST_FILE}.tmp" "${OUT_ZST_FILE}"
+if [ ! -f "${OUT_GZ_FILE}" ]; then
+  gzip --fast <"${OUT_FILE}" >"${OUT_GZ_FILE}.tmp" && mv "${OUT_GZ_FILE}.tmp" "${OUT_GZ_FILE}"
 else
-  echo "Images tar.zst file [${OUT_ZST_FILE}] already exists, skip..."
+  echo "Images tar.gz file [${OUT_GZ_FILE}] already exists, skip..."
 fi
