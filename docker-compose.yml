@@ -8,14 +8,27 @@ services:
       retries: 10
       start_period: 3s
     environment:
-      HC: ${HC:-0}
-      CONTROL_API_CRYPTO_KEY: "${CONTROL_API_CRYPTO_KEY}"
-      US_ENDPOINT: http://us:8080
-      POSTGRES_USER: pg-user
+      CONTROL_API_CRYPTO_KEY: "${CONTROL_API_CRYPTO_KEY:-ZGF0YWxlbnN1bnNlY3VyZWZlcm5ldGNyeXB0b2tleQo=}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-postgres}"
       INIT_DEMO_DATA: ${INIT_DEMO_DATA:-1}
     volumes:
       - db-postgres:/var/lib/postgresql/data
+    networks:
+      - default
+  #
+  demo:
+    container_name: datalens-demo-data
+    image: ghcr.io/datalens-tech/datalens-demo-data:1.17.0
+    restart: on-failure
+    depends_on:
+      - postgres
+    environment:
+      HC: ${HC:-0}
+      CONTROL_API_CRYPTO_KEY: "${CONTROL_API_CRYPTO_KEY:-ZGF0YWxlbnN1bnNlY3VyZWZlcm5ldGNyeXB0b2tleQo=}"
+      US_ENDPOINT: ${US_ENDPOINT:-http://us:8080}
+      #
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-postgres}"
+      INIT_DEMO_DATA: ${INIT_DEMO_DATA:-1}
     networks:
       - default
   #
@@ -28,7 +41,7 @@ services:
       RQE_SECRET_KEY: ""
       #
       DL_CRY_ACTUAL_KEY_ID: KEY
-      DL_CRY_KEY_VAL_ID_KEY: "${CONTROL_API_CRYPTO_KEY}"
+      DL_CRY_KEY_VAL_ID_KEY: "${CONTROL_API_CRYPTO_KEY:-ZGF0YWxlbnN1bnNlY3VyZWZlcm5ldGNyeXB0b2tleQo=}"
       #
       US_HOST: http://us:8080
       #
@@ -51,7 +64,7 @@ services:
       RQE_SECRET_KEY: ""
       #
       DL_CRY_ACTUAL_KEY_ID: KEY
-      DL_CRY_KEY_VAL_ID_KEY: "${CONTROL_API_CRYPTO_KEY}"
+      DL_CRY_KEY_VAL_ID_KEY: "${CONTROL_API_CRYPTO_KEY:-ZGF0YWxlbnN1bnNlY3VyZWZlcm5ldGNyeXB0b2tleQo=}"
       #
       BI_COMPENG_PG_ON: 1
       BI_COMPENG_PG_URL: "postgresql://pg-user:${POSTGRES_PASSWORD:-postgres}@postgres:5432/pg-compeng-db"
@@ -71,6 +84,7 @@ services:
     environment:
       APP_INSTALLATION: opensource
       APP_ENV: prod
+      APP_PORT: 8080
       #
       MASTER_TOKEN: ${US_MASTER_TOKEN:-us-master-token}
       #
@@ -81,7 +95,8 @@ services:
       #
       HC: ${HC:-0}
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     networks:
       - default
   #

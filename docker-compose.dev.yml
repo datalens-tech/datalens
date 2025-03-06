@@ -8,6 +8,13 @@ services:
     networks:
       - default
 
+  demo:
+    extends:
+      file: docker-compose.yml
+      service: demo
+    networks:
+      - default
+
   control-api:
     extends:
       file: docker-compose.yml

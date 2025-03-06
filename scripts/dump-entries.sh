@@ -7,7 +7,7 @@ set -eo pipefail
 # [-o pipefail] - if any command in a pipeline fails, that return code will be used as the return code of the whole pipeline
 
 echo ""
-echo "Start dump UnitedStorage tables:"
+echo "Dump UnitedStorage tables:"
 echo "  - workbooks"
 echo "  - collections"
 echo "  - entries"
@@ -15,13 +15,25 @@ echo "  - revisions"
 echo "  - links"
 echo ""
 
-docker compose -f docker-compose.yml exec -T postgres pg_dump --inserts --on-conflict-do-nothing -Fc -a \
+docker --log-level error compose exec -T postgres sh -c 'pg_dump \
+  --inserts \
+  --format c \
+  --on-conflict-do-nothing \
+  --data-only \
   --table entries \
   --table revisions \
   --table workbooks \
   --table collections \
   --table links \
-  -U pg-us-user pg-us-db 2>/dev/null >./datalens_db.dump || echo "Dump error, exit..."
+  --username ${POSTGRES_USER} ${POSTGRES_DB_US}' >./datalens_db.dump
 
-echo ""
-echo "Dump done, saved at [./datalens_db.dump]"
+EXIT="$?"
+
+if [ "${EXIT}" != "0" ]; then
+  echo "Dump error, exit..."
+  exit "${EXIT}"
+else
+  echo ""
+  echo "Dump done, saved at [./datalens_db.dump]"
+  exit 0
+fi

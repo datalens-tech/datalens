@@ -8,10 +8,10 @@ set -eo pipefail
 
 SCRIPT_DIR=$(dirname -- "$(readlink -f -- "$0")")
 
-POSTGRES_VERSION=16
-
 if [ "${CI}" != "true" ]; then
   docker buildx create --use --name buildx-builder --bootstrap 2>/dev/null || echo "buildx container already exists..."
 fi
 
-docker buildx build "${SCRIPT_DIR}/../postgres" --build-arg "POSTGRES_VERSION=${POSTGRES_VERSION}" --push --platform linux/amd64,linux/arm64 -t "ghcr.io/datalens-tech/datalens-postgres:${POSTGRES_VERSION}"
+RELEASE_VERSION=$(yq -r '.releaseVersion' ./versions-config.json)
+
+docker buildx build "${SCRIPT_DIR}/../demo-data" --push --platform linux/amd64,linux/arm64 -t "ghcr.io/datalens-tech/datalens-demo-data:${RELEASE_VERSION}"

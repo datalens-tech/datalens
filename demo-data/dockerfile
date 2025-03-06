@@ -1,0 +1,25 @@
+FROM alpine:3.19
+
+ENV PYTHONUNBUFFERED=1
+
+ENV POSTGRES_USER='pg-user'
+ENV POSTGRES_DB_US='pg-us-db'
+ENV POSTGRES_DB_DEMO='pg-demo-db'
+
+ENV POSTGRES_HOST='postgres'
+ENV POSTGRES_PORT='5432'
+
+ENV INIT_SLEEP='5'
+ENV INIT_DEMO_DATA='true'
+
+RUN apk add --update --no-cache bash curl python3 py3-cryptography postgresql-client
+
+COPY ./init/ /init/
+COPY ./init-demo-data.sh /init/init-demo-data.sh
+COPY ./crypto.py /init/crypto.py
+
+RUN chmod +x /init/init-demo-data.sh
+
+WORKDIR /init
+
+ENTRYPOINT [ "./init-demo-data.sh" ]

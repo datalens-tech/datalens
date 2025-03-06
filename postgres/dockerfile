@@ -3,16 +3,26 @@ ARG POSTGRES_VERSION=16
 FROM postgres:${POSTGRES_VERSION}
 
 ENV PYTHONUNBUFFERED=1
+
 ENV POSTGRES_INITDB_ARGS='--encoding=UTF-8 --lc-collate=en_US.utf8 --lc-ctype=en_US.utf8'
 
-RUN apt update && apt upgrade -y && apt install -y bash curl python3 py3-cryptography
+ENV POSTGRES_USER='pg-user'
+ENV POSTGRES_DB_COMPENG='pg-compeng-db'
+ENV POSTGRES_DB_AUTH='pg-auth-db'
+ENV POSTGRES_DB_US='pg-us-db'
+ENV POSTGRES_DB_DEMO='pg-demo-db'
+
+ENV INIT_DEMO_DATA='true'
+
+RUN apt update && apt upgrade -y && apt install -y bash curl python3 python3-cryptography
+
+RUN ln -s /usr/bin/python3 /usr/bin/python
 
 RUN apt -y autoremove && \
   apt clean && \
   rm -rf /var/lib/apt/lists/*
 
-COPY ./init/ /init/
-COPY ./init-db.sh /docker-entrypoint-initdb.d/init-db.sh
+COPY ./init-postgres.sh /docker-entrypoint-initdb.d/init-postgres.sh
 COPY ./crypto.py /init/crypto.py
 
-RUN chmod +x /docker-entrypoint-initdb.d/init-db.sh
+RUN chmod +x /docker-entrypoint-initdb.d/init-postgres.sh
