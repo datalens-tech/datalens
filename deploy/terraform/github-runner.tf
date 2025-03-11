@@ -1,13 +1,13 @@
 locals {
   gh_owner = "datalens-tech"
-  gh_repo  = "datalens"
+  gh_label = "datalens-opensource"
 
   runner_ssh_access = false
 
   runner_os_image = "ubuntu-2404-lts-oslogin"
   runner_version  = "2.319.1"
 
-  runners_count = 2
+  runners_count = 3
   runners_ids   = local.is_create_github_runner ? [for i in range(0, local.runners_count) : { key = "ind-${i}", ind = i }] : []
 }
 
@@ -61,7 +61,7 @@ resource "yandex_compute_disk" "github-runner" {
 
   name     = "github-runner-${each.key}-disk"
   type     = "network-ssd"
-  size     = 20
+  size     = 200
   zone     = local.zones[each.value % length(local.zones)]
   image_id = data.yandex_compute_image.this.id
 
@@ -75,15 +75,17 @@ resource "yandex_compute_disk" "github-runner" {
 resource "yandex_compute_instance" "github-runner" {
   for_each = { for id in local.runners_ids : id.key => id.ind }
 
-  name        = "github-runner-${local.gh_repo}-${each.key}"
+  name        = "github-runner-${local.gh_label}-${each.key}"
   platform_id = "standard-v3"
   zone        = local.zones[each.value % length(local.zones)]
+
+  allow_stopping_for_update = true
 
   service_account_id = yandex_iam_service_account.github-runner["main"].id
 
   resources {
-    cores  = 2
-    memory = 4
+    cores  = 8
+    memory = 16
   }
 
   boot_disk {
@@ -108,11 +110,11 @@ resource "yandex_compute_instance" "github-runner" {
       VERSION = local.runner_version
 
       OWNER = local.gh_owner
-      REPO  = local.gh_repo
+      LABEL = local.gh_label
       IND   = "${each.value}"
 
       LOCKBOX_ID  = yandex_lockbox_secret.github-runner["main"].id
-      LOCKBOX_KEY = "RUNNER_${upper(replace(local.gh_repo, "-", "_"))}_${each.value}_TOKEN"
+      LOCKBOX_KEY = "RUNNER_${upper(replace(local.gh_label, "-", "_"))}_${each.value}_TOKEN"
     })
   }
 }
@@ -125,12 +127,14 @@ locals {
   # v4_gh_actions_cidr_blocks = [for cidr in sort(distinct([for c in local.github_meta["actions"] : join(".", slice(split(".", c), 0, 2)) if strcontains(c, ":") == false])) : "${cidr}.0.0/16"]
   # v4_gh_actions_cidr_blocks = [for cidr in sort(distinct(concat(local.github_meta["actions"], local.github_meta["web"]))) : cidr if strcontains(cidr, ":") == false]
 
-  ubuntu_apt_endpoint   = "archive.ubuntu.com"
-  gh_pipelinse_endpoint = "pipelines.actions.githubusercontent.com"
-  gh_vstoken_endpoint   = "vstoken.actions.githubusercontent.com"
+  ubuntu_apt_endpoint          = "archive.ubuntu.com"
+  ubuntu_apt_security_endpoint = "security.ubuntu.com"
+  gh_pipelinse_endpoint        = "pipelines.actions.githubusercontent.com"
+  gh_vstoken_endpoint          = "vstoken.actions.githubusercontent.com"
 
   common_endpoints = [
     local.ubuntu_apt_endpoint,
+    local.ubuntu_apt_security_endpoint,
   ]
   gh_endpoints = [
     local.gh_pipelinse_endpoint,
@@ -168,6 +172,7 @@ locals {
       { proto = "TCP", cidr_v4 = local.v4_gh_git_cidr_blocks, port = 22, desc = "github git ssh" },
       { proto = "TCP", cidr_v4 = local.v4_gh_git_cidr_blocks, port = 443, desc = "github git https" },
       { proto = "TCP", cidr_v4 = local.v4_gh_any_cidr_blocks, port = 443, desc = "any" },
+      { proto = "TCP", cidr_v4 = local.v4_gh_any_cidr_blocks, port = 80, desc = "any" },
     ],
     [for e in local.endpoints : { proto = "TCP", cidr_v4 = ["${data.dns_a_record_set.this[e].addrs[0]}/32"], port = 443, desc = e }],
     [for e in local.gh_endpoints : { proto = "TCP", cidr_v4 = ["${data.dns_a_record_set.github-runner-gh[e].addrs[0]}/32"], port = 443, desc = e }],
