@@ -14,10 +14,11 @@ concurrency:
 jobs:
   run:
     name: terraform
-    runs-on: 
+    runs-on:
       - self-hosted
       - linux
       - cloud
+      - datalens-opensource
     steps:
       - uses: actions/checkout@v4
         with:
@@ -34,8 +35,8 @@ jobs:
           ../scripts/tofu-opensource.sh --tofurc --cleanup --init --apply --approve
         working-directory: ./deploy/terraform
         env:
-          CI: "true"
+          CI: 'true'
           CLOUD_ID: ${{ vars.CLOUD_ID }}
           FOLDER_ID: ${{ vars.FOLDER_ID }}
           DOMAIN: ${{ vars.DOMAIN }}
-          TOFU_MIRROR: "terraform-mirror.yandexcloud.net"
+          TOFU_MIRROR: 'terraform-mirror.yandexcloud.net'
