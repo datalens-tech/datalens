@@ -23,6 +23,10 @@ RUN apt -y autoremove && \
   rm -rf /var/lib/apt/lists/*
 
 COPY ./init-postgres.sh /docker-entrypoint-initdb.d/init-postgres.sh
+COPY ./us-dump.sh /init/us-dump.sh
+COPY ./us-restore.sh /init/us-restore.sh
 COPY ./crypto.py /init/crypto.py
 
-RUN chmod +x /docker-entrypoint-initdb.d/init-postgres.sh
+RUN chmod +x /docker-entrypoint-initdb.d/init-postgres.sh && \
+  chmod +x /init/us-dump.sh && \
+  chmod +x /init/us-restore.sh

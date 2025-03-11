@@ -13,19 +13,14 @@ echo "  - collections"
 echo "  - entries"
 echo "  - revisions"
 echo "  - links"
-echo ""
 
-docker --log-level error compose exec -T postgres sh -c 'pg_dump \
-  --inserts \
-  --format c \
-  --on-conflict-do-nothing \
-  --data-only \
-  --table entries \
-  --table revisions \
-  --table workbooks \
-  --table collections \
-  --table links \
-  --username ${POSTGRES_USER} ${POSTGRES_DB_US}' >./datalens_db.dump
+DUMP_FILE="${1}"
+
+if [ -z "${DUMP_FILE}" ]; then
+  DUMP_FILE="./datalens_db.dump"
+fi
+
+docker --log-level error compose exec postgres /init/us-dump.sh >"${DUMP_FILE}"
 
 EXIT="$?"
 
@@ -34,6 +29,6 @@ if [ "${EXIT}" != "0" ]; then
   exit "${EXIT}"
 else
   echo ""
-  echo "Dump done, saved at [./datalens_db.dump]"
+  echo "Dump done, saved at [${DUMP_FILE}]"
   exit 0
 fi
