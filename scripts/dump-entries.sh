@@ -7,7 +7,7 @@ set -eo pipefail
 # [-o pipefail] - if any command in a pipeline fails, that return code will be used as the return code of the whole pipeline
 
 echo ""
-echo "Dump UnitedStorage tables:"
+echo "Start dump UnitedStorage entries..."
 echo "  - workbooks"
 echo "  - collections"
 echo "  - entries"
