@@ -58,7 +58,7 @@ spec:
             memory: {{ .Values.infra.postgres.resources.limits.memory }}
         volumeMounts:
         - name: postgres-volume
-          mountPath: /var/lib/pgsql/data
+          mountPath: /var/lib/postgresql/data
       volumes:
       - name: postgres-volume
         persistentVolumeClaim:

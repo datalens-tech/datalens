@@ -8,6 +8,7 @@ set -eo pipefail
 
 IS_FIX_DLS="false"
 IS_RESTORE_DEMO="false"
+IS_ROOT_USER="false"
 RESTORE_FILE="/tmp/datalens_db.dump"
 
 # parse args
@@ -19,6 +20,10 @@ for _ in "$@"; do
     ;;
   --demo)
     IS_RESTORE_DEMO="true"
+    shift # past argument with no value
+    ;;
+  --root-user)
+    IS_ROOT_USER="true"
     shift # past argument with no value
     ;;
   --file)
@@ -42,12 +47,17 @@ if [ -z "${POSTGRES_PORT}" ]; then POSTGRES_PORT="5432"; fi
 if [ -z "${POSTGRES_USER_US}" ]; then POSTGRES_USER_US="${POSTGRES_USER}"; fi
 if [ -z "${POSTGRES_PASSWORD_US}" ]; then POSTGRES_PASSWORD_US="${POSTGRES_PASSWORD}"; fi
 
+if [ "${IS_ROOT_USER}" == "true" ]; then
+  POSTGRES_USER_US="${POSTGRES_USER}"
+  POSTGRES_PASSWORD_US="${POSTGRES_PASSWORD}"
+fi
+
 export PGPASSWORD="${POSTGRES_PASSWORD_US}"
 
 if [ -f "${RESTORE_FILE}" ]; then
-  echo "  file exist" >&2
+  echo "  file exist"
 else
-  echo "  file [${RESTORE_FILE}] not found, exit..." >&2
+  echo "  file [${RESTORE_FILE}] not found, exit..."
   exit 1
 fi
 
@@ -103,7 +113,7 @@ if [ "${INIT_DEMO_DATA}" == "1" ] || [ "${INIT_DEMO_DATA}" == "true" ] || [ "${I
 
   if [ "${POSTGRES_USER_DEMO}" != "${POSTGRES_USER}" ]; then
     echo "  create [${POSTGRES_USER_DEMO}] user..."
-    psql -v ON_ERROR_STOP=1 --username "${POSTGRES_USER}" <<-EOSQL
+    psql -v ON_ERROR_STOP=1 --username "${POSTGRES_USER}" <<-EOSQL || true
   CREATE USER "${POSTGRES_USER_DEMO}" WITH PASSWORD '${POSTGRES_PASSWORD_DEMO}'
 EOSQL
   fi
@@ -111,12 +121,12 @@ EOSQL
   echo "  create [${POSTGRES_DB_DEMO}] database..."
   psql --host "${POSTGRES_HOST}" \
     --port "${POSTGRES_PORT}" \
-    --username "${POSTGRES_USER}" 2>/dev/null <<-EOSQL
+    --username "${POSTGRES_USER}" 2>/dev/null <<-EOSQL || true
   CREATE DATABASE "${POSTGRES_DB_DEMO}" WITH OWNER "${POSTGRES_USER_DEMO}" ENCODING 'UTF8' LC_COLLATE = 'en_US.utf8' LC_CTYPE = 'en_US.utf8';
 EOSQL
 
   echo "  add [pg_trgm,btree_gin,btree_gist,uuid-ossp] extensions to [${POSTGRES_DB_DEMO}] database..."
-  psql -v ON_ERROR_STOP=1 -d "${POSTGRES_DB_DEMO}" --username "${POSTGRES_USER}" <<-EOSQL
+  psql -v ON_ERROR_STOP=1 -d "${POSTGRES_DB_DEMO}" --username "${POSTGRES_USER}" <<-EOSQL || true
   CREATE EXTENSION IF NOT EXISTS pg_trgm;
   CREATE EXTENSION IF NOT EXISTS btree_gin;
   CREATE EXTENSION IF NOT EXISTS btree_gist;

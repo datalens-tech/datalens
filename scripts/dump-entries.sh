@@ -20,8 +20,8 @@ if [ -z "${DUMP_FILE}" ]; then
   DUMP_FILE="./datalens_db.dump"
 fi
 
-docker --log-level error compose exec postgres /init/us-dump.sh >"${DUMP_FILE}"
-docker --log-level error compose exec cat /tmp/us-dump.stderror.log
+docker --log-level error compose exec -T postgres /init/us-dump.sh >"${DUMP_FILE}"
+docker --log-level error compose exec -T cat /tmp/us-dump.stderror.log
 
 EXIT="$?"
 

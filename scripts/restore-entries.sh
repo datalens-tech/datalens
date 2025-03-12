@@ -25,7 +25,7 @@ docker --log-level error compose cp "${RESTORE_FILE}" "postgres:/tmp/datalens_db
 
 echo ""
 
-docker --log-level error compose exec --env "INIT_DEMO_DATA=${INIT_DEMO_DATA}" postgres /init/us-restore.sh
+docker --log-level error compose exec --env "INIT_DEMO_DATA=${INIT_DEMO_DATA}" postgres /init/us-restore.sh --root-user
 
 EXIT="$?"
 
