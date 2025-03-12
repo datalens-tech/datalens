@@ -11,6 +11,8 @@ spec:
   selector:
     matchLabels:
       app: datalens-postgres
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
