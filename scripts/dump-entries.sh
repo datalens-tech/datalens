@@ -21,6 +21,7 @@ if [ -z "${DUMP_FILE}" ]; then
 fi
 
 docker --log-level error compose exec postgres /init/us-dump.sh >"${DUMP_FILE}"
+docker --log-level error compose exec cat /tmp/us-dump.stderror.log
 
 EXIT="$?"
 
