@@ -26,4 +26,4 @@ pg_dump \
   --table revisions \
   --table workbooks \
   --table collections \
-  --table links
+  --table links 2>/tmp/us-dump.error.log
