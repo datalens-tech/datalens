@@ -80,7 +80,7 @@ secrets:
   POSTGRES_PASSWORD: null
 #
 postgres:
-  POSTGRES_HOST: datalens-postgres-cip
+  POSTGRES_HOST: postgres-cip
   POSTGRES_PORT: '5432'
   POSTGRES_USER: pg-user
   POSTGRES_DB_COMPENG: pg-compeng-db

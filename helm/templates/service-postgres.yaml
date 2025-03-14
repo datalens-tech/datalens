@@ -2,10 +2,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: datalens-postgres-cip
+  name: postgres-cip
 spec:
   selector:
-    app: datalens-postgres
+    app: postgres
   ports:
   - protocol: TCP
     port: 5432

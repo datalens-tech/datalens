@@ -4,19 +4,19 @@ metadata:
   name: datalens-ui
   namespace: {{ .Release.Namespace }}
   labels:
-    app: datalens-app-ui
+    app: app-ui
 spec:
   replicas: {{ .Values.application.ui.replicas }}
   selector:
     matchLabels:
-      app: datalens-app-ui
+      app: app-ui
   template:
     metadata:
       labels:
-        app: datalens-app-ui
+        app: app-ui
     spec:
       containers:
-        - name: datalens-app-ui
+        - name: app-ui
           image: "{{ .Values.registry.url }}/datalens-ui:{{ .Values.application.ui.version }}"
           ports:
             - containerPort: 8080
@@ -34,11 +34,11 @@ spec:
             - name: AUTH_ENDPOINT
               value: http://app-auth-cip:8080
             - name: US_ENDPOINT
-              value: http://datalens-us-cip:8080
+              value: http://app-us-cip:8080
             - name: BI_API_ENDPOINT
-              value: http://datalens-control-api-cip:8080
+              value: http://app-control-api-cip:8080
             - name: BI_DATA_ENDPOINT
-              value: http://datalens-data-api-cip:8080
+              value: http://app-data-api-cip:8080
             {{- if .Values.features.hc }}
             - name: HC
               value: '1'

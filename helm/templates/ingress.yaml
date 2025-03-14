@@ -12,7 +12,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: datalens-ui-cip
+            name: app-ui-service
             port:
               name: http
 {{- if .Values.ingress.tls.enabled }}

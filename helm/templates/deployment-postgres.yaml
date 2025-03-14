@@ -5,21 +5,21 @@ metadata:
   name: datalens-postgres
   namespace: {{ .Release.Namespace }}
   labels:
-    app: datalens-postgres
+    app: postgres
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: datalens-postgres
+      app: postgres
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: datalens-postgres
+        app: postgres
     spec:
       containers:
-      - name: datalens-postgres
+      - name: postgres
         image: "{{ .Values.registry.url }}/datalens-postgres:16"
         ports:
           - containerPort: 5432
@@ -41,7 +41,7 @@ spec:
             value: '1'
           {{- end }}
           - name: US_ENDPOINT
-            value: http://datalens-us-cip:8080
+            value: http://app-us-cip:8080
           - name: CONTROL_API_CRYPTO_KEY
             valueFrom:
               secretKeyRef:

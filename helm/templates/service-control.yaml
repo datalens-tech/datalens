@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: datalens-control-api-cip
+  name: app-control-api-cip
 spec:
   selector:
-    app: datalens-control-api
+    app: app-control-api
   ports:
   - protocol: TCP
     port: 8080

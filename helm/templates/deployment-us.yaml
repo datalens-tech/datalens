@@ -4,19 +4,19 @@ metadata:
   name: datalens-us
   namespace: {{ .Release.Namespace }}
   labels:
-    app: datalens-app-us
+    app: app-us
 spec:
   replicas: {{ .Values.application.us.replicas }}
   selector:
     matchLabels:
-      app: datalens-app-us
+      app: app-us
   template:
     metadata:
       labels:
-        app: datalens-app-us
+        app: app-us
     spec:
       containers:
-        - name: datalens-app-us
+        - name: app-us
           image: "{{ .Values.registry.url }}/datalens-us:{{ .Values.application.us.version }}"
           ports:
             - containerPort: 8080

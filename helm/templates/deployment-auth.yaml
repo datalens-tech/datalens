@@ -4,19 +4,19 @@ metadata:
   name: datalens-auth
   namespace: {{ .Release.Namespace }}
   labels:
-    app: datalens-app-auth
+    app: app-auth
 spec:
   replicas: {{ .Values.application.auth.replicas }}
   selector:
     matchLabels:
-      app: datalens-app-auth
+      app: app-auth
   template:
     metadata:
       labels:
-        app: datalens-app-auth
+        app: app-auth
     spec:
       containers:
-        - name: datalens-app-auth
+        - name: app-auth
           image: "{{ .Values.registry.url }}/datalens-auth:{{ .Values.application.auth.version }}"
           ports:
             - containerPort: 8080

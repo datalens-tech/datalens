@@ -4,19 +4,19 @@ metadata:
   name: datalens-control-api
   namespace: {{ .Release.Namespace }}
   labels:
-    app: datalens-app-control-api
+    app: app-control-api
 spec:
   replicas: {{ .Values.application.control_api.replicas }}
   selector:
     matchLabels:
-      app: datalens-app-control-api
+      app: app-control-api
   template:
     metadata:
       labels:
-        app: datalens-app-control-api
+        app: app-control-api
     spec:
       containers:
-        - name: datalens-app-control-api
+        - name: app-control-api
           image: "{{ .Values.registry.url }}/datalens-control-api:{{ .Values.application.control_api.version }}"
           ports:
             - containerPort: 8080
@@ -32,7 +32,7 @@ spec:
             - name: RQE_SECRET_KEY
               value: ''
             - name: US_HOST
-              value: http://datalens-us-cip:8080
+              value: http://app-us-cip:8080
             - name: DL_CRY_KEY_VAL_ID_KEY
               valueFrom:
                 secretKeyRef:
