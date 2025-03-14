@@ -5,8 +5,7 @@ metadata:
   name: datalens-ingress
 spec:
   rules:
-  - host: {{ .Values.ingress.domain }}
-    http:
+  - http:
       paths:
       - path: /
         pathType: Prefix
@@ -15,6 +14,9 @@ spec:
             name: app-ui-service
             port:
               name: http
+{{- if .Values.ingress.domain }}
+    host: {{ .Values.ingress.domain }}
+{{- end }}
 {{- if .Values.ingress.tls.enabled }}
   tls:
     - hosts:

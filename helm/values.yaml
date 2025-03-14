@@ -4,6 +4,7 @@ registry:
 release_version: '1.17.0'
 #
 ingress:
+  ip: null
   enabled: true
   domain: datalens.local
   np: false
