@@ -31,10 +31,13 @@ spec:
           - name: POSTGRES_DB_US
             value: {{ .Values.postgres.POSTGRES_DB_US  }}
           {{- if .Values.features.demo.enabled }}
+          - name: INIT_DEMO_DATA
+            value: "true"
           - name: POSTGRES_DB_DEMO
             value: {{ .Values.postgres.POSTGRES_DB_DEMO  }}
+          {{- else }}
           - name: INIT_DEMO_DATA
-            value: '1'
+            value: "false"
           {{- end }}
           {{- if .Values.features.hc }}
           - name: HC
