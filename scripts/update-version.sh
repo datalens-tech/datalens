@@ -37,10 +37,9 @@ RELEASE_VERSION="${RELEASE_VERSION}" \
   .application.data_api.version = strenv(DATA_API_VERSION) |
   .application.ui.version = strenv(UI_VERSION) |
   .application.us.version = strenv(US_VERSION) |
+  .application.auth.version = strenv(AUTH_VERSION) |
   .release_version = strenv(RELEASE_VERSION)
 ' ./helm/values.yaml
-
-# .application.auth.version = strenv(AUTH_VERSION) |
 
 echo ""
 echo "  update helm chart file: ./helm/Chart.yaml"
@@ -62,6 +61,5 @@ RELEASE_VERSION="${RELEASE_VERSION}" \
   .services.ui.image = strenv(UI_IMAGE) |
   .services.us.image = strenv(US_IMAGE) |
   .services.ui.environment.RELEASE_VERSION = strenv(RELEASE_VERSION)
+  .services.auth.image = strenv(AUTH_IMAGE) |
 ' ./docker-compose.yml
-
-# .services.auth.image = strenv(AUTH_IMAGE) |

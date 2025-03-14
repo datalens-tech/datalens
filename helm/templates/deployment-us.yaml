@@ -19,12 +19,14 @@ spec:
         - name: datalens-app-us
           image: "{{ .Values.registry.url }}/datalens-us:{{ .Values.application.us.version }}"
           ports:
-            - containerPort: 8083
+            - containerPort: 8080
           env:
             - name: APP_INSTALLATION
               value: opensource
             - name: APP_ENV
               value: prod
+            - name: APP_PORT
+              value: 8080
             - name: SKIP_INSTALL_DB_EXTENSIONS
               value: '1'
             - name: USE_DEMO_DATA

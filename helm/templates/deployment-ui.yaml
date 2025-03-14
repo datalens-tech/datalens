@@ -29,6 +29,10 @@ spec:
               value: full
             - name: AUTH_POLICY
               value: disabled
+            - name: AUTH_ENABLED
+              value: 'true'
+            - name: AUTH_ENDPOINT
+              value: http://app-auth-cip:8080
             - name: US_ENDPOINT
               value: http://datalens-us-cip:8080
             - name: BI_API_ENDPOINT
@@ -52,6 +56,16 @@ spec:
                 secretKeyRef:
                   name: datalens-secrets
                   key: US_MASTER_TOKEN
+            - name: AUTH_MASTER_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: datalens-secrets
+                  key: AUTH_MASTER_TOKEN
+            - name: AUTH_TOKEN_PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: datalens-secrets
+                  key: AUTH_TOKEN_PUBLIC_KEY
           resources:
             requests:
               cpu: {{ .Values.application.ui.resources.requests.cpu }}

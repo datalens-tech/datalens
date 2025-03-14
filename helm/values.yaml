@@ -60,8 +60,21 @@ application:
         memory: 256Mi
       limits:
         memory: 512Mi
+  auth:
+    replicas: 1
+    version: '0.18.0'
+    resources:
+      requests:
+        cpu: 0.5
+        memory: 256Mi
+      limits:
+        memory: 512Mi
 #
 secrets:
+  AUTH_TOKEN_PRIVATE_KEY: null
+  AUTH_TOKEN_PUBLIC_KEY: null
+  AUTH_ADMIN_PASSWORD: null
+  AUTH_MASTER_TOKEN: null
   US_MASTER_TOKEN: null
   CONTROL_API_CRYPTO_KEY: null
   POSTGRES_PASSWORD: null
@@ -72,6 +85,7 @@ postgres:
   POSTGRES_USER: pg-user
   POSTGRES_DB_COMPENG: pg-compeng-db
   POSTGRES_DB_US: pg-us-db
+  POSTGRES_DB_AUTH: pg-auth-db
   POSTGRES_DB_DEMO: pg-demo-db
 #
 features:

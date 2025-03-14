@@ -32,14 +32,12 @@ spec:
             - name: RQE_SECRET_KEY
               value: ''
             - name: DL_CRY_ACTUAL_KEY_ID
-              value: key_2
-            - name: DL_CRY_KEY_VAL_ID_key_1
-              value: h1ZpilcYLYRdWp7Nk8X1M1kBPiUi8rdjz9oBfHyUKIk=
+              value: KEY
             - name: BI_COMPENG_PG_ON
               value: '1'
             - name: US_HOST
               value: http://datalens-us-cip:8080
-            - name: DL_CRY_KEY_VAL_ID_key_2
+            - name: DL_CRY_KEY_VAL_ID_KEY
               valueFrom:
                 secretKeyRef:
                   name: datalens-secrets
@@ -54,6 +52,15 @@ spec:
                 secretKeyRef:
                   name: datalens-secrets
                   key: US_MASTER_TOKEN
+            - name: AUTH__TYPE
+              value: "NATIVE"
+            - name: AUTH__JWT_ALGORITHM
+              value: "PS256"
+            - name: AUTH__JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: datalens-secrets
+                  key: AUTH_TOKEN_PUBLIC_KEY
           resources:
             requests:
               cpu: {{ .Values.application.data_api.resources.requests.cpu }}
