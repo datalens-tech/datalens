@@ -43,6 +43,14 @@ spec:
             - name: HC
               value: '1'
             {{- end }}
+            {{- if .Values.features.hc.endpoint }}
+            - name: "HC_ENDPOINT"
+              value: {{ .Values.features.hc.endpoint }}
+            {{- end }}
+            {{- if .Values.features.hc.protocol }}
+            - name: "HC_PROTOCOL"
+              value: {{ .Values.features.hc.protocol }}
+            {{- end }}
             {{- if .Values.features.yandex_map.enabled }}
             - name: YANDEX_MAP_ENABLED
               value: '1'
