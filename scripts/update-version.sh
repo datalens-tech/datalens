@@ -61,5 +61,6 @@ RELEASE_VERSION="${RELEASE_VERSION}" \
   .services.ui.image = strenv(UI_IMAGE) |
   .services.us.image = strenv(US_IMAGE) |
   .services.ui.environment.RELEASE_VERSION = strenv(RELEASE_VERSION)
-  .services.auth.image = strenv(AUTH_IMAGE) |
 ' ./docker-compose.yml
+
+# .services.auth.image = strenv(AUTH_IMAGE) |
