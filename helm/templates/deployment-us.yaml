@@ -30,7 +30,7 @@ spec:
             - name: SKIP_INSTALL_DB_EXTENSIONS
               value: '1'
             - name: USE_DEMO_DATA
-              value: '1'
+              value: '0'
             {{- if .Values.features.hc }}
             - name: HC
               value: '1'
