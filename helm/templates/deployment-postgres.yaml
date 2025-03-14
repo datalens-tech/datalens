@@ -39,7 +39,7 @@ spec:
           - name: INIT_DEMO_DATA
             value: "false"
           {{- end }}
-          {{- if .Values.features.hc }}
+          {{- if .Values.features.hc.enabled }}
           - name: HC
             value: '1'
           {{- end }}

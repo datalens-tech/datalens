@@ -39,7 +39,7 @@ spec:
               value: http://app-control-api-cip:8080
             - name: BI_DATA_ENDPOINT
               value: http://app-data-api-cip:8080
-            {{- if .Values.features.hc }}
+            {{- if .Values.features.hc.enabled }}
             - name: HC
               value: '1'
             {{- end }}

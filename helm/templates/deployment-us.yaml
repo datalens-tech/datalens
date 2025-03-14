@@ -31,7 +31,7 @@ spec:
               value: '1'
             - name: USE_DEMO_DATA
               value: '0'
-            {{- if .Values.features.hc }}
+            {{- if .Values.features.hc.enabled }}
             - name: HC
               value: '1'
             {{- end }}
