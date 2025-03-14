@@ -53,7 +53,7 @@ application:
         memory: 512Mi
   us:
     replicas: 1
-    version: '0.310.0'
+    version: '0.329.0'
     resources:
       requests:
         cpu: 0.5

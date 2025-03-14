@@ -80,7 +80,7 @@ services:
   #
   us:
     container_name: datalens-us
-    image: ghcr.io/datalens-tech/datalens-us:0.310.0
+    image: ghcr.io/datalens-tech/datalens-us:0.329.0
     environment:
       APP_INSTALLATION: opensource
       APP_ENV: prod
