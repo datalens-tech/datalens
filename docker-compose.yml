@@ -102,7 +102,7 @@ services:
   #
   ui:
     container_name: datalens-ui
-    image: ghcr.io/datalens-tech/datalens-ui:0.2601.0
+    image: ghcr.io/datalens-tech/datalens-ui:0.2740.0
     environment:
       APP_MODE: full
       APP_ENV: production
