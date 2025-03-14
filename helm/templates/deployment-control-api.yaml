@@ -36,12 +36,12 @@ spec:
             - name: DL_CRY_KEY_VAL_ID_KEY
               valueFrom:
                 secretKeyRef:
-                  name: datalens-secrets
+                  name: {{ default "datalens-secrets" .Values.secrets.ref }}
                   key: CONTROL_API_CRYPTO_KEY
             - name: US_MASTER_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: datalens-secrets
+                  name: {{ default "datalens-secrets" .Values.secrets.ref }}
                   key: US_MASTER_TOKEN
             - name: AUTH__TYPE
               value: "NATIVE"
@@ -50,7 +50,7 @@ spec:
             - name: AUTH__JWT_KEY
               valueFrom:
                 secretKeyRef:
-                  name: datalens-secrets
+                  name: {{ default "datalens-secrets" .Values.secrets.ref }}
                   key: AUTH_TOKEN_PUBLIC_KEY
           resources:
             requests:

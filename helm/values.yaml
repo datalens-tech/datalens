@@ -10,6 +10,7 @@ ingress:
   tls:
     enabled: false
     secret:
+      ref: null
       crt: null
       key: null
 #
@@ -71,6 +72,8 @@ application:
         memory: 512Mi
 #
 secrets:
+  ref: null
+  #
   AUTH_TOKEN_PRIVATE_KEY: null
   AUTH_TOKEN_PUBLIC_KEY: null
   AUTH_ADMIN_PASSWORD: null

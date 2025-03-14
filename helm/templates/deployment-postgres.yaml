@@ -48,12 +48,12 @@ spec:
           - name: CONTROL_API_CRYPTO_KEY
             valueFrom:
               secretKeyRef:
-                name: datalens-secrets
+                name: {{ default "datalens-secrets" .Values.secrets.ref }}
                 key: CONTROL_API_CRYPTO_KEY
           - name: POSTGRES_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: datalens-secrets
+                name: {{ default "datalens-secrets" .Values.secrets.ref }}
                 key: POSTGRES_PASSWORD
         resources:
           requests:
