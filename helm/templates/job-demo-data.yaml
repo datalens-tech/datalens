@@ -5,12 +5,12 @@ metadata:
   name: datalens-demo-data
   namespace: {{ .Release.Namespace }}
   labels:
-    job-name: job-demo-data
+    job-name: datalens-demo-data
 spec:
   template:
     metadata:
       labels:
-        job-name: job-demo-data
+        job-name: datalens-demo-data
     spec:
       containers:
         - name: job-demo-data
