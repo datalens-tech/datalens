@@ -43,7 +43,7 @@ spec:
             - name: HC
               value: '1'
             - name: HC_MODULES
-              value:  exporting,export-data,stock,treemap
+              value: exporting,export-data,stock,treemap
             {{- end }}
             {{- if .Values.features.hc.endpoint }}
             - name: "HC_ENDPOINT"
