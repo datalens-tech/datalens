@@ -144,44 +144,45 @@ gen_sec() {
 }
 
 echo ""
-echo "🚀 DataLens auto production docker compose file generator..."
+echo "🚀 DataLens auto production Docker Compose file generator..."
 
 if [ "${IS_HELP}" == "true" ]; then
   echo ""
-  echo "usage: ./init.sh [--hc] [--yandex-map] [--yandex-map-token <token>] [--disable-demo] [--disable-auth] [--up]"
+  echo "Usage: ./init.sh [--hc] [--yandex-map] [--yandex-map-token <token>] [--disable-demo] [--disable-auth] [--up]"
   echo ""
-  echo "  --hc - enable Highcharts lib"
+  echo "  --hc - enable Highcharts library"
   echo "  --yandex-map - enable Yandex Map visualization type"
-  echo "  --yandex-map-token - pass token for Yandex Map api"
-  echo "  --disable-demo - disable demo data init"
-  echo "  --disable-auth - disable auth service"
-  echo "  --postgres-external - disable built-in postgres service"
-  echo "  --postgres-ssl - set ssl mode to [verify-full] for postgres connection"
-  echo "  --postgres-cert - set path to ssl certificate file for postgres connection"
-  echo "  --up - auto compose up with production file"
+  echo "  --yandex-map-token - provide token for Yandex Map API"
+  echo "  --disable-demo - disable demo data initialization"
+  echo "  --disable-auth - disable authentication service"
+  echo "  --postgres-external - disable built-in PostgreSQL service"
+  echo "  --postgres-ssl - set SSL mode to [verify-full] for PostgreSQL connection"
+  echo "  --postgres-cert - set path to SSL certificate file for PostgreSQL connection"
+  echo "  --demo - run demo data initialization script for external PostgreSQL database"
+  echo "  --up - automatically start services with production configuration"
   echo ""
   exit 0
 fi
 
 echo
-echo "Load env file..."
+echo "Loading environment file..."
 echo "  file: ${ENV_FILE_PATH}"
 load_env
 
 echo ""
-echo "Additional script args:"
-echo "  --hc - enable Highcharts lib"
+echo "Available script arguments:"
+echo "  --hc - enable Highcharts library"
 echo "  --yandex-map - enable Yandex Map visualization type"
-echo "  --yandex-map-token - pass token for Yandex Map api"
-echo "  --disable-demo - disable demo data init"
-echo "  --disable-auth - disable auth service"
-echo "  --postgres-external - disable built-in postgres service"
-echo "  --postgres-ssl - set ssl mode to [verify-full] for postgres connection"
-echo "  --postgres-cert - set path to ssl certificate file for postgres connection"
-echo "  --up - auto compose up with production file"
+echo "  --yandex-map-token - provide token for Yandex Map API"
+echo "  --disable-demo - disable demo data initialization"
+echo "  --disable-auth - disable authentication service"
+echo "  --postgres-external - disable built-in PostgreSQL service"
+echo "  --postgres-ssl - set SSL mode to [verify-full] for PostgreSQL connection"
+echo "  --postgres-cert - set path to SSL certificate file for PostgreSQL connection"
+echo "  --up - automatically start services with production configuration"
 
 echo ""
-echo "Generate secrets..."
+echo "Generating secrets..."
 echo "  - POSTGRES_PASSWORD"
 gen_sec POSTGRES_PASSWORD 32
 echo "  - US_MASTER_TOKEN"
@@ -250,7 +251,7 @@ fi
 
 if [ "${IS_RUN_INIT_DEMO_DATA}" == "true" ]; then
   echo ""
-  echo "Run only demo data init for external PostgreSQL..."
+  echo "Running demo data initialization for external PostgreSQL..."
 
   docker --log-level error compose run --rm --entrypoint /init/seed-demo-data.sh postgres
 
@@ -258,7 +259,7 @@ if [ "${IS_RUN_INIT_DEMO_DATA}" == "true" ]; then
 fi
 
 echo ""
-echo "Generate docker compose config to [docker-compose.production.yaml] file..."
+echo "Generating Docker Compose configuration to [docker-compose.production.yaml] file..."
 
 cat docker-compose.yaml >docker-compose.tmp.yaml
 
@@ -289,11 +290,11 @@ rm -rf docker-compose.tmp.yaml
 
 if [ "${IS_UP}" == "true" ]; then
   echo ""
-  echo "Up production compose file..."
+  echo "Starting Docker Compose services with production configuration..."
   echo ""
   docker --log-level error compose -f docker-compose.production.yaml up --remove-orphans --detach
 fi
 
 echo ""
-echo "Secrets and variables saved to [${ENV_FILE_PATH}] file..."
+echo "Secrets and variables have been saved to [${ENV_FILE_PATH}] file."
 echo ""
