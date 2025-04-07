@@ -1,4 +1,4 @@
-## v2.0.0 (2025-04-04)
+## v2.0.0 (2025-04-07)
 
 ### Image versions
 - datalens-auth: 0.0.0 -> 0.17.0 ([full changelog](https://github.com/datalens-tech/datalens-auth/compare/v0.0.0...v0.17.0))
@@ -72,8 +72,7 @@ docker compose exec -T postgres psql --username pg-user --dbname pg-us-db -c "UP
 - Added help argument for `init.sh` script with all available options (run `./init.sh --help` for details)
 
 ### New features
-- **Charts**: Unify revisions list. [datalens-tech/datalens-ui#2099](https://github.com/datalens-tech/datalens-ui/pull/2099)
-- **Auth**: Users by ids to schema. [datalens-tech/datalens-ui#2122](https://github.com/datalens-tech/datalens-ui/pull/2122)
+- **Auth**: Users by ids to schema, fix auth reload, fix get users list types response. [datalens-tech/datalens-ui#2122](https://github.com/datalens-tech/datalens-ui/pull/2122), [datalens-tech/datalens-ui#2136](https://github.com/datalens-tech/datalens-ui/pull/2136), [datalens-tech/datalens-ui#2175](https://github.com/datalens-tech/datalens-ui/pull/2175)
 - **Dashboards**: Add DialogRelations dash button with empty widget. [datalens-tech/datalens-ui#2198](https://github.com/datalens-tech/datalens-ui/pull/2198)
 - **Dashboards**: Make dash data optional if possible. [datalens-tech/datalens-ui#2257](https://github.com/datalens-tech/datalens-ui/pull/2257)
 
@@ -81,22 +80,16 @@ docker compose exec -T postgres psql --username pg-user --dbname pg-us-db -c "UP
 - **Charts**: Fixes for displaying charts on mobile devices. [datalens-tech/datalens-ui#2114](https://github.com/datalens-tech/datalens-ui/pull/2114)
 - **Dashboards**: Fix group controls auto height. [datalens-tech/datalens-ui#2131](https://github.com/datalens-tech/datalens-ui/pull/2131)
 - **Connectors**: Fix get connectors icons. [datalens-tech/datalens-ui#2130](https://github.com/datalens-tech/datalens-ui/pull/2130)
-- **Auth**: Fix auth reload. [datalens-tech/datalens-ui#2136](https://github.com/datalens-tech/datalens-ui/pull/2136)
-- **Auth**: Fix get users list types response. [datalens-tech/datalens-ui#2175](https://github.com/datalens-tech/datalens-ui/pull/2175)
 - **Dashboards**: Fix table of content layout when switching compact view of aside header. [datalens-tech/datalens-ui#2231](https://github.com/datalens-tech/datalens-ui/pull/2231)
 - **Charts**: Fix negative zero sign. [datalens-tech/datalens-ui#2242](https://github.com/datalens-tech/datalens-ui/pull/2242)
 - **Charts**: Fix hierarchies don't work like colors. [datalens-tech/datalens-ui#2282](https://github.com/datalens-tech/datalens-ui/pull/2282)
 
 ### Dependencies
-- **General components**: Add d3-sankey lib to ui-sandbox. [datalens-tech/datalens-ui#2115](https://github.com/datalens-tech/datalens-ui/pull/2115)
-- **General components**: Add dompurify@2.5.5. [datalens-tech/datalens-ui#2163](https://github.com/datalens-tech/datalens-ui/pull/2163)
-- **General components**: Bump dompurify from 2.5.5 to 3.2.4. [datalens-tech/datalens-ui#2166](https://github.com/datalens-tech/datalens-ui/pull/2166)
-- **General components**: Update @types/dompurify. [datalens-tech/datalens-ui#2177](https://github.com/datalens-tech/datalens-ui/pull/2177)
+- **General components**: Add dompurify@2.5.5, bump dompurify from 2.5.5 to 3.2.4, update @types/dompurify [datalens-tech/datalens-ui#2163](https://github.com/datalens-tech/datalens-ui/pull/2163), [datalens-tech/datalens-ui#2166](https://github.com/datalens-tech/datalens-ui/pull/2166), [datalens-tech/datalens-ui#2177](https://github.com/datalens-tech/datalens-ui/pull/2177)
 - **General components**: Update gravity-ui/icons pack. [datalens-tech/datalens-ui#2202](https://github.com/datalens-tech/datalens-ui/pull/2202)
-- **General components**: Move @datalens-tech/ui-sandbox-modules to the production deps. [datalens-tech/datalens-ui#2219](https://github.com/datalens-tech/datalens-ui/pull/2219)
+- **General components**: Move @datalens-tech/ui-sandbox-modules to the production deps, update @datalens-tech/ui-sandbox-modules. [datalens-tech/datalens-ui#2219](https://github.com/datalens-tech/datalens-ui/pull/2219), [datalens-tech/datalens-ui#2294](https://github.com/datalens-tech/datalens-ui/pull/2294)
 - **General components**: Update @gravity-ui/dashkit 8.26.0 -> 8.26.1. [datalens-tech/datalens-ui#2212](https://github.com/datalens-tech/datalens-ui/pull/2212)
 - **General components**: Switch to rspack. [datalens-tech/datalens-ui#2288](https://github.com/datalens-tech/datalens-ui/pull/2288)
-- **General components**: Update @datalens-tech/ui-sandbox-modules. [datalens-tech/datalens-ui#2294](https://github.com/datalens-tech/datalens-ui/pull/2294)
 - **General components**: Update @gravity-ui/chartkit. [datalens-tech/datalens-ui#2295](https://github.com/datalens-tech/datalens-ui/pull/2295)
 
 
