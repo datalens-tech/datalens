@@ -7,18 +7,18 @@
 - datalens-ui: 0.2601.0 -> 0.2760.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.2601.0...v0.2760.0))
 - datalens-us: 0.310.0 -> 0.332.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.310.0...v0.332.0))
 
-### Breaking changes
+### BREAKING CHANGES
 - Single PostgreSQL container now hosts all databases (`pg-us-db`, `pg-auth-db`, `pg-compeng-db`, `pg-demo-db`) for a simplified architecture and easier management
 - Demo data is now provided with the `datalens-postgres` container that can be enabled/disabled via the init script
 - PostgreSQL data is now stored in a persistent volume (`db-postgres`) instead of local filesystem storage for better data durability
 - Zitadel has been removed and replaced with a new native auth service (`datalens-auth`) for improved authentication and authorization
-- User accounts from Zitadel will be deleted during migration. Users need to be recreated in the new auth system
-- New security scheme with randomly generated `CONTROL_API_CRYPTO_KEY` variable for enhanced data protection
+- User accounts from Zitadel will be removed during migration. You need to recreate users in the new auth system
+- New security scheme with randomly generated value of `CONTROL_API_CRYPTO_KEY` variable for improving data protection
 - New production-ready docker-compose setup with `init.sh` script for automated deployment and configuration
 
 ### Migration guide from 1.x.x to 2.x.x
 ```bash
-# if you use a version prior to 1.23.0, before migration delete old table columns
+# if you use a version earlier to 1.23.0 you need to delete old table columns before migration
 docker compose exec -T pg-us psql -U us -d us-db-ci_purgeable -c 'ALTER TABLE workbooks DROP COLUMN project_id;'
 docker compose exec -T pg-us psql -U us -d us-db-ci_purgeable -c 'ALTER TABLE collections DROP COLUMN project_id;'
 
@@ -34,13 +34,13 @@ docker compose exec -T pg-us pg_dump --inserts --on-conflict-do-nothing -Fc -a \
 # down docker compose
 docker compose down
 
-# checkout to actual main with git
+# checkout to the actual main branch with git
 git checkout origin/main
 
 # up new datalens production ready version with auto generated secrets
 ./init.sh --disable-demo --up
 
-# restore backup with builtin script
+# restore backup with built-in script
 
 # ? if you want restore without demo data database
 ./scripts/restore-entries.sh ./datalens_db.dump
@@ -57,9 +57,9 @@ rm -rf metadata && rm -rf pg-demo-connection
 
 **Notes:**
 
-- If you used a new `CONTROL_API_CRYPTO_KEY`, after migration is completed, you need to update your source passwords in `Connections` resources in the DataLens interface
+- If you use a new value of `CONTROL_API_CRYPTO_KEY` you need to update your source passwords in `Connections` resources in the DataLens interface after migration is completed.
 
-- If you used the old demo data with the old database schema `opensource-demo.`, after migration is completed, you need to manually run this command:
+- If you use the old demo data with the old database schema `opensource-demo.` you need to run manually this command after migration is completed:
 
 ```bash
 docker compose exec -T postgres psql --username pg-user --dbname pg-us-db -c "UPDATE revisions SET data = REPLACE(data::text, 'opensource-demo', 'public')::jsonb;"
@@ -67,9 +67,9 @@ docker compose exec -T postgres psql --username pg-user --dbname pg-us-db -c "UP
 
 ### Deploy
 - **Backend**: Add linux/arm64 images for all services [datalens-tech/datalens-backend#893](https://github.com/datalens-tech/datalens-backend/pull/893)
-- Helm chart support for Kubernetes deployment with customizable configuration options (see `helm/` directory)
-- Terraform example for infrastructure deployment on cloud providers with complete application setup (see `terraform/` directory)
-- Added help argument for `init.sh` script with all available options (run `./init.sh --help` for details)
+- Add Helm chart support for Kubernetes deployment with customizable configuration options (see `helm/` directory)
+- Add Terraform example for infrastructure deployment on cloud providers with complete application setup (see `terraform/` directory)
+- Add help argument for `init.sh` script with all available options (run `./init.sh --help` for details)
 
 ### New features
 - **Auth**: Users by ids to schema, fix auth reload, fix get users list types response. [datalens-tech/datalens-ui#2122](https://github.com/datalens-tech/datalens-ui/pull/2122), [datalens-tech/datalens-ui#2136](https://github.com/datalens-tech/datalens-ui/pull/2136), [datalens-tech/datalens-ui#2175](https://github.com/datalens-tech/datalens-ui/pull/2175)
