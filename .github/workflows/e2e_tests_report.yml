@@ -14,18 +14,13 @@ jobs:
       (github.event.workflow_run.conclusion == 'success' || github.event.workflow_run.conclusion == 'failure')
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      pages: write
+      contents: read
       pull-requests: write
     steps:
-      - name: Checkout GitHub Pages Branch
+      - name: Checkout main
         uses: actions/checkout@v2
         with:
-          ref: gh-pages
-      - name: Set Git User
-        # see: https://github.com/actions/checkout/issues/13#issuecomment-724415212
-        run: |
-          git config user.email "" && git config user.name "GitHub Report"
+          ref: main
       - name: Download Artifacts
         uses: dawidd6/action-download-artifact@v6
         with:
@@ -35,37 +30,24 @@ jobs:
         run: |
           echo "HTML_REPORT_URL_PATH=$(cat playwright-report/report-link)" >> "$GITHUB_ENV"
           echo "REPORT_PR_NUMBER=$(cat playwright-report/report-pr)" >> "$GITHUB_ENV"
-      - name: Move report to commit folder
-        run: mkdir -p ${{ env.HTML_REPORT_URL_PATH }} && mv playwright-report/report ${{ env.HTML_REPORT_URL_PATH }}/report
-      - name: Push HTML Report
+      - name: Upload HTML Report
         timeout-minutes: 3
-        # commit report, then try push-rebase-loop until it's able to merge the HTML report to the gh-pages branch
-        # this is necessary when this job is running at least twice at the same time (e.g. through two pushes at the same time)
+        uses: shallwefootball/s3-upload-action@master
+        with:
+          aws_key_id: ${{ secrets.E2E_REPORT_S3_ACCESS_KEY }}
+          aws_secret_access_key: ${{ secrets.E2E_REPORT_S3_SECRET_KEY}}
+          aws_bucket: ${{ vars.E2E_REPORT_S3_BUCKET }}
+          endpoint: ${{ vars.E2E_REPORT_S3_ENDPOINT }}
+          source_dir: playwright-report/report
+          destination_dir: ${{ env.HTML_REPORT_URL_PATH }}/report
+      - name: Output Report URL as Worfklow Annotation
         run: |
-          git add .
-          git commit -m "workflow: add HTML report for ${{ env.HTML_REPORT_URL_PATH }}"
-
-          while true; do
-            git pull --rebase
-            if [ $? -ne 0 ]; then
-              echo "Failed to rebase. Please review manually."
-              exit 1
-            fi
-
-            git push
-            if [ $? -eq 0 ]; then
-              echo "Successfully pushed HTML report to repo."
-              exit 0
-            fi
-          done
-      - name: Output Report URL as Workflow Annotation
-        run: |
-          FULL_HTML_REPORT_URL=https://datalens-tech.github.io/datalens/${{ env.HTML_REPORT_URL_PATH }}/report
-
+          FULL_HTML_REPORT_URL=https://${{ vars.E2E_REPORT_S3_BUCKET }}.${{ vars.E2E_REPORT_HTML_ENDPOINT }}/${{ env.HTML_REPORT_URL_PATH }}/report
+          echo "FULL_HTML_REPORT_URL=${FULL_HTML_REPORT_URL}" >> "$GITHUB_ENV"
           echo "::notice title=📋 Published Playwright Test Report::$FULL_HTML_REPORT_URL"
       - name: Create Comment
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: e2e-report
           number: ${{ env.REPORT_PR_NUMBER }}
-          message: '[E2E Report](https://datalens-tech.github.io/datalens/${{ env.HTML_REPORT_URL_PATH }}/report) is ready.'
+          message: '[E2E Report](${{ env.FULL_HTML_REPORT_URL }}) is ready.'
