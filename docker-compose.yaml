@@ -60,7 +60,7 @@ services:
   #
   control-api:
     container_name: datalens-control-api
-    image: ghcr.io/datalens-tech/datalens-control-api:0.2233.0
+    image: ghcr.io/datalens-tech/datalens-control-api:0.2242.0-rc.1
     environment:
       BI_API_UWSGI_WORKERS_COUNT: 4
       RQE_FORCE_OFF: 1
@@ -84,7 +84,7 @@ services:
   #
   data-api:
     container_name: datalens-data-api
-    image: ghcr.io/datalens-tech/datalens-data-api:0.2233.0
+    image: ghcr.io/datalens-tech/datalens-data-api:0.2242.0-rc.1
     environment:
       GUNICORN_WORKERS_COUNT: 5
       RQE_FORCE_OFF: 1
@@ -114,7 +114,7 @@ services:
   #
   us:
     container_name: datalens-us
-    image: ghcr.io/datalens-tech/datalens-us:0.332.0
+    image: ghcr.io/datalens-tech/datalens-us:0.340.0
     environment:
       APP_INSTALLATION: opensource
       APP_ENV: prod
