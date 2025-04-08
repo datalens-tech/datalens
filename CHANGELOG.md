@@ -87,7 +87,6 @@ docker compose exec -T postgres psql --username pg-user --dbname pg-us-db -c "UP
 - **Formula**: Fix IF/CASE optimizations with obviously true conditions. [datalens-tech/datalens-backend#770](https://github.com/datalens-tech/datalens-backend/pull/770)
 - **Datasets**: Fix some cases of failing connection replacement. [datalens-tech/datalens-backend#847](https://github.com/datalens-tech/datalens-backend/pull/847)
 
-
 ### Dependencies
 - **General components**: Add dompurify@2.5.5, bump dompurify from 2.5.5 to 3.2.4, update @types/dompurify [datalens-tech/datalens-ui#2163](https://github.com/datalens-tech/datalens-ui/pull/2163), [datalens-tech/datalens-ui#2166](https://github.com/datalens-tech/datalens-ui/pull/2166), [datalens-tech/datalens-ui#2177](https://github.com/datalens-tech/datalens-ui/pull/2177)
 - **General components**: Update gravity-ui/icons pack. [datalens-tech/datalens-ui#2202](https://github.com/datalens-tech/datalens-ui/pull/2202)
