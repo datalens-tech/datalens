@@ -89,7 +89,7 @@ jobs:
         working-directory: ./datalens-ui
         run: |
           mkdir -p ./tests/artifacts
-          echo "reports/${{ github.head_ref || github.ref_name }}/${{ github.run_id }}/${{ github.run_attempt }}" > ./tests/artifacts/report-link
+          echo "${{ github.event.repository.name }}/reports/${{ github.head_ref || github.ref_name }}/${{ github.run_id }}/${{ github.run_attempt }}" > ./tests/artifacts/report-link
           echo "${{ github.event.pull_request.number }}" > ./tests/artifacts/report-pr
 
       - uses: actions/upload-artifact@v4
