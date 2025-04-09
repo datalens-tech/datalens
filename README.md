@@ -20,34 +20,43 @@ DataLens requires Docker to be installed. Follow these instructions depending on
 
 ### Running containers
 
-Use the following command to start DataLens containers:
+Clone repository:
 
 ```bash
 git clone https://github.com/datalens-tech/datalens && cd datalens
+```
 
+Then, for quick start, use the following command to start DataLens containers:
+
+```bash
 HC=1 docker compose up
 ```
 
-This command will launch all containers required to run DataLens, and the UI will be available on http://localhost:8080
+This command will launch all containers required to run DataLens, and the UI will be available on http://localhost:8080 (default user and password is `admin`, `admin`).
 
+<details>
+      <summary>Using different port for UI</summary>
 If you want to use a different port (e.g. `8081`), you can set it using the `UI_PORT` env variable:
-
+      
 ```bash
 UI_PORT=8081 docker compose up
 ```
+</details>
 
-For production usage we recommend generating a compose file with random secrets:
+However, for prolonged usage we recommend generating a compose file with random secrets:
 
 ```bash
 # generate random secrets with openssl, store it to .env file and prepare production compose template
 ./init.sh --hc
 
-# up production compose
+# and then run production compose
 docker compose -f ./docker-compose.production.yaml up -d
 
-# or with one command generate secrets and up production compose
+# you can also generate and run production compose file with one command
 ./init.sh --hc --up
 ```
+
+Output of `init.sh` will contain generated admin password.
 
 **Note:** You can find all script arguments by running the `./init.sh --help` command
 
@@ -61,7 +70,7 @@ docker compose -f ./docker-compose.production.yaml up -d
 </details>
 
 <details>
-            <summary>How to enable Yandex Map</summary>
+            <summary>How to enable Yandex Maps</summary>
 
 Available since [release v1.11.0](https://github.com/datalens-tech/datalens/releases/tag/v1.11.0)
 
