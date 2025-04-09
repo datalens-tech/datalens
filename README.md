@@ -78,8 +78,8 @@ Use the following container parameters for launch:
 
 | Parameter            | Description                                                    | Values        |
 | -------------------- | -------------------------------------------------------------- | ------------- |
-| `YANDEX_MAP_ENABLED` | Enable usage of Yandex Map visualization                       | `1` or `true` |
-| `YANDEX_MAP_TOKEN`   | Yandex Map [API key](https://yandex.ru/dev/jsapi-v2-1/doc/en/) | `<string>`    |
+| `YANDEX_MAP_ENABLED` | Enable usage of Yandex Maps visualization                       | `1` or `true` |
+| `YANDEX_MAP_TOKEN`   | Yandex Maps [API key](https://yandex.ru/dev/jsapi-v2-1/doc/en/) | `<string>`    |
 
 ```bash
 YANDEX_MAP_ENABLED=1 YANDEX_MAP_TOKEN=XXXXXXXXX docker compose up
