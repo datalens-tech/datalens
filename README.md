@@ -56,7 +56,7 @@ docker compose -f ./docker-compose.production.yaml up -d
 ./init.sh --hc --up
 ```
 
-Output of `init.sh` will contain generated admin password.
+Randomly generated admin password will be stored in the `.env` file and printed to terminal.
 
 **Note:** You can find all script arguments by running the `./init.sh --help` command
 
