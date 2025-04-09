@@ -26,7 +26,7 @@ Clone repository:
 git clone https://github.com/datalens-tech/datalens && cd datalens
 ```
 
-Then, for quick start, use the following command to start DataLens containers:
+Then, for a quick start, use the following command to start DataLens containers:
 
 ```bash
 HC=1 docker compose up
