@@ -43,7 +43,7 @@ UI_PORT=8081 docker compose up
 ```
 </details>
 
-However, for prolonged usage we recommend generating a compose file with random secrets:
+However, for production usage we recommend generating a compose file with random secrets:
 
 ```bash
 # generate random secrets with openssl, store it to .env file and prepare production compose template
