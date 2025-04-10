@@ -1,0 +1,71 @@
+{{ if .Values.infra.postgres.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: datalens-postgres
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: "{{ .Values.registry.url }}/datalens-postgres:16"
+        ports:
+          - containerPort: 5432
+        env:
+          - name: POSTGRES_USER
+            value: {{ .Values.postgres.POSTGRES_USER  }}
+          - name: POSTGRES_DB_COMPENG
+            value: {{ .Values.postgres.POSTGRES_DB_COMPENG  }}
+          - name: POSTGRES_DB_US
+            value: {{ .Values.postgres.POSTGRES_DB_US  }}
+          {{- if .Values.features.demo.enabled }}
+          - name: INIT_DB_DEMO
+            value: "true"
+          - name: POSTGRES_DB_DEMO
+            value: {{ .Values.postgres.POSTGRES_DB_DEMO  }}
+          {{- else }}
+          - name: INIT_DB_DEMO
+            value: "false"
+          {{- end }}
+          {{- if .Values.features.hc.enabled }}
+          - name: HC
+            value: '1'
+          {{- end }}
+          - name: INIT_DEMO_DATA
+            value: "false"
+          - name: CONTROL_API_CRYPTO_KEY
+            valueFrom:
+              secretKeyRef:
+                name: {{ default "datalens-secrets" .Values.secrets.ref }}
+                key: CONTROL_API_CRYPTO_KEY
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ default "datalens-secrets" .Values.secrets.ref }}
+                key: POSTGRES_PASSWORD
+        resources:
+          requests:
+            cpu: {{ .Values.infra.postgres.resources.requests.cpu }}
+            memory: {{ .Values.infra.postgres.resources.requests.memory }}
+          limits:
+            memory: {{ .Values.infra.postgres.resources.limits.memory }}
+        volumeMounts:
+        - name: postgres-volume
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: postgres-volume
+        persistentVolumeClaim:
+          claimName: datalens-postgres-volume
+{{ end }}

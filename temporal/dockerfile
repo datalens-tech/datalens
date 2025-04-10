@@ -1,0 +1,43 @@
+ARG TEMPORAL_VERSION=1.27.2
+
+FROM temporalio/auto-setup:${TEMPORAL_VERSION} AS temporal-setup
+
+FROM temporalio/server:${TEMPORAL_VERSION}
+
+USER root
+
+RUN apk add --no-cache postgresql-client
+
+COPY --from=temporal-setup /usr/local/bin/temporal-sql-tool /usr/local/bin/temporal-sql-tool
+RUN rm -rf /etc/temporal/schema
+COPY --from=temporal-setup /etc/temporal/schema/postgresql/v12/temporal/versioned /etc/temporal/schema/temporal
+COPY --from=temporal-setup /etc/temporal/schema/postgresql/v12/visibility/versioned /etc/temporal/schema/visibility
+
+COPY ./setup-temporal.sh /etc/temporal/setup-temporal.sh
+COPY ./init-namespaces.sh /etc/temporal/init-namespaces.sh
+COPY ./init-temporal.sh /etc/temporal/init-temporal.sh
+
+RUN chmod +x /etc/temporal/setup-temporal.sh && \
+  chmod +x /etc/temporal/init-namespaces.sh && \
+  chmod +x /etc/temporal/init-temporal.sh
+
+USER temporal
+
+ENV TEMPORAL_PORT='7233'
+
+ENV DB='postgres12'
+
+ENV DEFAULT_NAMESPACE_RETENTION='24h'
+ENV SKIP_NAMESPACES_CREATION='false'
+ENV NAMESPACES='default'
+
+ENV POSTGRES_HOST='postgres'
+ENV POSTGRES_PORT='5432'
+ENV POSTGRES_USER='pg-user'
+ENV POSTGRES_DB='pg-temporal-db'
+ENV POSTGRES_DB_VISIBILITY='pg-temporal-visibility-db'
+ENV POSTGRES_TLS_ENABLED='false'
+ENV POSTGRES_TLS_DISABLE_HOST_VERIFICATION='true'
+ENV POSTGRES_CONNECT_ATTRIBUTES=''
+
+ENTRYPOINT ["/etc/temporal/init-temporal.sh"]

@@ -1,0 +1,23 @@
+name: Helm lint
+
+on:
+  pull_request:
+    paths:
+      - 'helm/*'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    name: helm
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/setup-helm@v4.3.0
+      - name: run helm lint
+        run: helm lint ./helm

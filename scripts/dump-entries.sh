@@ -1,31 +1,34 @@
 #!/bin/bash
 
-# chmod +x ./scripts/dump-entries.sh
-# ./scripts/dump-entries.sh
+# exit setup
+set -eo pipefail
+# [-e] - immediately exit if any command has a non-zero exit status
+# [-x] - all executed commands are printed to the terminal [not secure]
+# [-o pipefail] - if any command in a pipeline fails, that return code will be used as the return code of the whole pipeline
 
-get_docker_compose_command() {
-  if command -v docker-compose &>/dev/null; then
-    echo "docker-compose"
-    return 0
-  elif command -v docker compose &>/dev/null; then
-    echo "docker compose"
-    return 0
-  else
-    echo "Compose plugin for docker is not installed. e.g. sudo apt install docker-compose-plugin" >/dev/stderr
-    exit 1
-  fi
-}
+echo ""
+echo "Start dump UnitedStorage entries..."
+echo "  - workbooks"
+echo "  - collections"
+echo "  - entries"
+echo "  - revisions"
+echo "  - links"
 
-mkdir -p ./backup
+DUMP_FILE="${1}"
 
-echo "Start dump tables: workbooks, collections, entries, revisions, links..."
+if [ -z "${DUMP_FILE}" ]; then
+  DUMP_FILE="./datalens_db.dump"
+fi
 
-$(get_docker_compose_command) -f docker-compose.yml exec -T pg-us pg_dump --inserts --on-conflict-do-nothing -Fc -a \
-  --table entries \
-  --table revisions \
-  --table workbooks \
-  --table collections \
-  --table links \
-  -U us us-db-ci_purgeable 2>/dev/null >./backup/pg_us_open_source_db.dump || echo "Dump error, exit..."
+docker --log-level error compose exec -T postgres /init/us-dump.sh >"${DUMP_FILE}"
 
-echo "Dump done, saved at [./backup/pg_us_open_source_db.dump]"
+EXIT="$?"
+
+if [ "${EXIT}" != "0" ]; then
+  echo "Dump error, exit..."
+  exit "${EXIT}"
+else
+  echo ""
+  echo "Dump done, saved at [${DUMP_FILE}]"
+  exit 0
+fi

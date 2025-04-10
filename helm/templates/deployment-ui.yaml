@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: datalens-ui
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: app-ui
+spec:
+  replicas: {{ .Values.application.ui.replicas }}
+  selector:
+    matchLabels:
+      app: app-ui
+  template:
+    metadata:
+      labels:
+        app: app-ui
+    spec:
+      containers:
+        - name: app-ui
+          image: "{{ .Values.registry.url }}/datalens-ui:{{ .Values.application.ui.version }}"
+          ports:
+            - containerPort: 8080
+          env:
+            - name: APP_INSTALLATION
+              value: opensource
+            - name: APP_ENV
+              value: production
+            - name: APP_MODE
+              value: full
+            - name: AUTH_POLICY
+              value: disabled
+            - name: AUTH_ENABLED
+              value: 'true'
+            - name: AUTH_ENDPOINT
+              value: http://app-auth-cip:8080
+            - name: US_ENDPOINT
+              value: http://app-us-cip:8080
+            - name: BI_API_ENDPOINT
+              value: http://app-control-api-cip:8080
+            - name: BI_DATA_ENDPOINT
+              value: http://app-data-api-cip:8080
+            {{- if .Values.features.hc.enabled }}
+            - name: HC
+              value: '1'
+            - name: HC_MODULES
+              value: exporting,export-data,stock,treemap
+            {{- end }}
+            {{- if .Values.features.hc.endpoint }}
+            - name: "HC_ENDPOINT"
+              value: {{ .Values.features.hc.endpoint }}
+            {{- end }}
+            {{- if .Values.features.hc.protocol }}
+            - name: "HC_PROTOCOL"
+              value: {{ .Values.features.hc.protocol }}
+            {{- end }}
+            {{- if .Values.features.yandex_map.enabled }}
+            - name: YANDEX_MAP_ENABLED
+              value: '1'
+            {{- end }}
+            {{- if .Values.features.yandex_map.token }}
+            - name: YANDEX_MAP_TOKEN
+              value: {{ .Values.features.yandex_map.token }}
+            {{- end }}
+            - name: US_MASTER_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default "datalens-secrets" .Values.secrets.ref }}
+                  key: US_MASTER_TOKEN
+            - name: AUTH_MASTER_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default "datalens-secrets" .Values.secrets.ref }}
+                  key: AUTH_MASTER_TOKEN
+            - name: AUTH_TOKEN_PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default "datalens-secrets" .Values.secrets.ref }}
+                  key: AUTH_TOKEN_PUBLIC_KEY
+          resources:
+            requests:
+              cpu: {{ .Values.application.ui.resources.requests.cpu }}
+              memory: {{ .Values.application.ui.resources.requests.memory }}
+            limits:
+              memory: {{ .Values.application.ui.resources.limits.memory }}

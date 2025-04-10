@@ -1,0 +1,42 @@
+name: Tofu apply
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  run:
+    name: tofu
+    runs-on:
+      - self-hosted
+      - linux
+      - cloud
+      - datalens-opensource
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: 1.8.2
+      - uses: nightstory/setup-yc@v1
+      - run: |
+          ../scripts/tofu.sh --tofurc --cleanup --init --silent --apply --approve
+        working-directory: ./terraform
+        env:
+          CI: 'true'
+          CLOUD_ID: ${{ vars.CLOUD_ID }}
+          FOLDER_ID: ${{ vars.FOLDER_ID }}
+          DOMAIN: ${{ vars.DOMAIN }}
+          TOFU_MIRROR: 'terraform-mirror.yandexcloud.net'

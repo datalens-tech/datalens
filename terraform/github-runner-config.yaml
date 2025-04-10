@@ -1,0 +1,44 @@
+#cloud-config
+runcmd:
+  - apt update && apt install -y jq zip unzip curl wget git docker.io docker-compose-v2
+  # install github cli
+  - mkdir -p -m 755 /etc/apt/keyrings
+  - wget -qO- https://cli.github.com/packages/githubcli-archive-keyring.gpg | tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null
+  - chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg
+  - echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+  - apt update && apt install gh -y
+  # install task cli
+  - su - root -c "curl -o ./task-install.sh -L https://taskfile.dev/install.sh"
+  - su - root -c "chmod +x ./task-install.sh && ./task-install.sh -d -b /usr/local/bin"
+  # install aws cli
+  - su - root -c "curl https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o awscli.zip"
+  - su - root -c "unzip awscli.zip && ./aws/install --update && rm -rf awscli.zip && rm -rf ./aws"
+  # install yc cli
+  - su - root -c "curl -o ./yc-install.sh -L https://storage.yandexcloud.net/yandexcloud-yc/install.sh"
+  - su - root -c "chmod +x ./yc-install.sh && ./yc-install.sh -i /tmp/yc -n && rm -rf ./yc-install.sh && mv /tmp/yc/bin/yc /usr/bin/yc"
+  # install mc cli
+  - su - root -c "curl https://dl.min.io/client/mc/release/linux-amd64/mc --create-dirs -o /usr/bin/mc"
+  - su - root -c "chmod +x /usr/bin/mc"
+  # install opentofu cli
+  - su - root -c "curl -O -L https://github.com/opentofu/opentofu/releases/download/v1.8.4/tofu_1.8.4_linux_amd64.zip"
+  - su - root -c "unzip tofu_1.8.4_linux_amd64.zip tofu -d /usr/bin/ && rm -f tofu_1.8.4_linux_amd64.zip && chmod +x /usr/bin/tofu"
+  # install kubectl cli
+  - su - root -c "curl -L https://dl.k8s.io/release/v1.31.5/bin/linux/amd64/kubectl -o /usr/bin/kubectl"
+  - su - root -c "chmod +x /usr/bin/kubectl"
+  # install helm cli
+  - su - root -c "curl -O -L https://get.helm.sh/helm-v3.17.1-linux-amd64.tar.gz"
+  - su - root -c "tar -xvzf helm-v3.17.1-linux-amd64.tar.gz && rm -rf helm-v3.17.1-linux-amd64.tar.gz && mv linux-amd64/helm /usr/bin/helm && rm -rf linux-amd64 && chmod +x /usr/bin/helm"
+  # install yq cli
+  - su - root -c "curl -O -L https://github.com/mikefarah/yq/releases/download/v4.45.1/yq_linux_amd64.tar.gz"
+  - su - root -c "tar -xvzf yq_linux_amd64.tar.gz && rm -rf yq_linux_amd64.tar.gz && mv yq_linux_amd64 /usr/bin/yq && chmod +x /usr/bin/yq"
+  # add non root user
+  - useradd -m github --shell /bin/bash && usermod -aG docker github
+  - su - github -c "mkdir -p /home/github/actions-runner"
+  # install github runner agent
+  - export RUNNER_ARCH=x64
+  - export RUNNER_TOKEN=$(yc lockbox payload get --id ${LOCKBOX_ID} --key ${LOCKBOX_KEY})
+  - su - github -c "cd /home/github/actions-runner && curl -O -L https://github.com/actions/runner/releases/download/v${VERSION}/actions-runner-linux-$${RUNNER_ARCH}-${VERSION}.tar.gz"
+  - su - github -c "cd /home/github/actions-runner && tar xzf ./actions-runner-linux-$${RUNNER_ARCH}-${VERSION}.tar.gz && rm -rf ./actions-runner-linux-$${RUNNER_ARCH}-${VERSION}.tar.gz"
+  - su - github -c "cd /home/github/actions-runner && ./config.sh --unattended --url https://github.com/${OWNER} --token $${RUNNER_TOKEN} --name github-runner-${LABEL}-ind-${IND} --runnergroup default --work _work --labels cloud,${LABEL}"
+  - su - root -c "cd /home/github/actions-runner && ./svc.sh install github"
+  - su - root -c "cd /home/github/actions-runner && ./svc.sh start"

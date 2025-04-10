@@ -24,13 +24,12 @@ jobs:
 
           UI_VERSION=$(echo "${VERSION_CONFIG}" | jq -r '.uiVersion')
           US_VERSION=$(echo "${VERSION_CONFIG}" | jq -r '.usVersion')
-          CONTROL_API_VERSION=$(echo "${VERSION_CONFIG}" | jq -r '.controlApiVersion')
-          DATA_API_VERSION=$(echo "${VERSION_CONFIG}" | jq -r '.dataApiVersion')
+          BACKEND_VERSION=$(echo "${VERSION_CONFIG}" | jq -r '.backendVersion')
 
           echo "UI_VERSION=$UI_VERSION" >> "$GITHUB_ENV"
           echo "US_VERSION=$US_VERSION" >> "$GITHUB_ENV"
-          echo "CONTROL_API_VERSION=$CONTROL_API_VERSION" >> "$GITHUB_ENV"
-          echo "DATA_API_VERSION=$DATA_API_VERSION" >> "$GITHUB_ENV"
+          echo "CONTROL_API_VERSION=$BACKEND_VERSION" >> "$GITHUB_ENV"
+          echo "DATA_API_VERSION=$BACKEND_VERSION" >> "$GITHUB_ENV"
 
       - uses: actions/checkout@v4
         with:
