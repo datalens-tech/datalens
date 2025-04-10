@@ -1,3 +1,27 @@
+## v2.1.0 (2025-04-10)
+
+### Image versions
+- datalens-auth: 0.17.0
+- datalens-control-api: 0.2233.0
+- datalens-data-api: 0.2233.0
+- datalens-ui: 0.2760.0 -> 0.2789.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.2760.0...v0.2789.0))
+- datalens-us: 0.332.0 -> 0.339.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.332.0...v0.339.0))
+
+### New features
+- **General components**: Add 'Copy ID' menu option for all entries. [datalens-tech/datalens-ui#2314](https://github.com/datalens-tech/datalens-ui/pull/2314)
+- **Charts**: Dash fixed header redesign. [datalens-tech/datalens-ui#1863](https://github.com/datalens-tech/datalens-ui/pull/1863)
+
+### Bug fixes
+- **Charts**: Error when using sorting in a bar chart. [datalens-tech/datalens-ui#2324](https://github.com/datalens-tech/datalens-ui/pull/2324)
+- **Charts**: Fix bar-y grouping. [datalens-tech/datalens-ui#2326](https://github.com/datalens-tech/datalens-ui/pull/2326)
+- **Charts**: Fix long table rendering with chart-chart filtering enabled. [datalens-tech/datalens-ui#2330](https://github.com/datalens-tech/datalens-ui/pull/2330)
+- **Charts**: Fix polyline with null values. [datalens-tech/datalens-ui#2327](https://github.com/datalens-tech/datalens-ui/pull/2327)
+
+### Dependencies
+- **General components**: Up quickjs-emscripten 0.29.1 -> 0.31.0. [datalens-tech/datalens-ui#2316](https://github.com/datalens-tech/datalens-ui/pull/2316)
+- **General components**: New e2e test system with single postgres container. [datalens-tech/datalens-ui#2341](https://github.com/datalens-tech/datalens-ui/pull/2341)
+
+
 ## v2.0.0 (2025-04-10)
 
 ### Image versions
