@@ -19,7 +19,9 @@
 
 ### Dependencies
 - **General components**: Up quickjs-emscripten 0.29.1 -> 0.31.0. [datalens-tech/datalens-ui#2316](https://github.com/datalens-tech/datalens-ui/pull/2316)
-- **General components**: New e2e test system with single postgres container. [datalens-tech/datalens-ui#2341](https://github.com/datalens-tech/datalens-ui/pull/2341)
+
+### CI
+New e2e test system with single postgres container. [datalens-tech/datalens-ui#2341](https://github.com/datalens-tech/datalens-ui/pull/2341)
 
 
 ## v2.0.0 (2025-04-10)
