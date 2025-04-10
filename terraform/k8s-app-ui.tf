@@ -73,15 +73,15 @@ resource "kubernetes_deployment" "ui" {
           }
           env {
             name  = "US_ENDPOINT"
-            value = "http://us-cip:8083"
+            value = "http://us-cip:8080"
           }
           env {
             name  = "BI_API_ENDPOINT"
-            value = "http://control-api-cip:8082"
+            value = "http://control-api-cip:8080"
           }
           env {
             name  = "BI_DATA_ENDPOINT"
-            value = "http://data-api-cip:8081"
+            value = "http://data-api-cip:8080"
           }
           env {
             name  = "AUTH_ENABLED"
@@ -128,7 +128,8 @@ resource "kubernetes_service" "ui_service" {
   for_each = toset(local.k8s_cluster_ready ? ["main"] : [])
 
   metadata {
-    name = "ui-np"
+    name      = "ui-np"
+    namespace = kubernetes_namespace.this.metadata[0].name
   }
   spec {
     selector = {

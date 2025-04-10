@@ -143,7 +143,8 @@ resource "kubernetes_service" "us_service" {
   for_each = toset(local.k8s_cluster_ready ? ["main"] : [])
 
   metadata {
-    name = "us-cip"
+    name      = "us-cip"
+    namespace = kubernetes_namespace.this.metadata[0].name
   }
   spec {
     selector = {

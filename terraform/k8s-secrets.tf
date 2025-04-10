@@ -173,7 +173,7 @@ resource "kubernetes_manifest" "lockbox" {
 
     metadata = {
       name      = "external-secret-lockbox"
-      namespace = "default"
+      namespace = kubernetes_namespace.this.metadata[0].name
     }
 
     spec = {
