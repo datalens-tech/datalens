@@ -116,7 +116,7 @@ resource "kubernetes_deployment" "data-api" {
           }
           env {
             name  = "US_HOST"
-            value = "http://us-cip:8083"
+            value = "http://us-cip:8080"
           }
           env {
             name = "US_MASTER_TOKEN"
@@ -154,7 +154,8 @@ resource "kubernetes_service" "data-api_service" {
   for_each = toset(local.k8s_cluster_ready ? ["main"] : [])
 
   metadata {
-    name = "data-api-cip"
+    name      = "data-api-cip"
+    namespace = kubernetes_namespace.this.metadata[0].name
   }
   spec {
     selector = {
@@ -162,7 +163,7 @@ resource "kubernetes_service" "data-api_service" {
     }
     port {
       name        = "http"
-      port        = 8081
+      port        = 8080
       target_port = 8080
       protocol    = "TCP"
     }

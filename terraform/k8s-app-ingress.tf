@@ -2,7 +2,8 @@ resource "kubernetes_ingress_v1" "k8s_ingress" {
   for_each = toset(local.k8s_cluster_ready ? ["main"] : [])
 
   metadata {
-    name = "k8s-ingress"
+    name      = "k8s-ingress"
+    namespace = kubernetes_namespace.this.metadata[0].name
     annotations = {
       "ingress.alb.yc.io/subnets"               = join(",", local.subnet_ids)
       "ingress.alb.yc.io/security-groups"       = yandex_vpc_security_group.alb.id
