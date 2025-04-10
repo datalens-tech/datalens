@@ -32,7 +32,7 @@ if [ ! -z "${US_ENDPOINT}" ]; then
   echo "  [demo] sleep ${DEMO_DATA_SLEEP} seconds..."
   sleep "${DEMO_DATA_SLEEP}"
 
-  RETRIES="10"
+  RETRIES="30"
   echo "  [demo] retries: ${RETRIES}"
 
   for RETRY in $(seq 1 $RETRIES); do

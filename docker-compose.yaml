@@ -3,7 +3,7 @@ services:
     container_name: datalens-postgres
     image: ghcr.io/datalens-tech/datalens-postgres:16
     healthcheck:
-      test: ["CMD", "pg_isready", "-d", "pg-us-db"]
+      test: ["CMD", "pg_isready" , "-d", "${POSTGRES_DB_US:-pg-us-db}", "-U", "${POSTGRES_USER:-pg-user}"]
       interval: 5s
       retries: 10
       start_period: 3s
