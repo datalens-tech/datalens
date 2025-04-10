@@ -16,6 +16,10 @@ IS_AUTH_ENABLED="true"
 IS_UP="false"
 IS_HELP="false"
 
+DOMAIN=""
+IP=""
+IS_HTTPS="false"
+
 POSTGRES_CERT=""
 IS_POSTGRES_EXTERNAL="false"
 IS_POSTGRES_SSL="false"
@@ -68,6 +72,20 @@ for _ in "$@"; do
     POSTGRES_CERT="${2}"
     shift # past argument
     shift # past value
+    ;;
+  --ip)
+    IP="${2}"
+    shift # past argument
+    shift # past value
+    ;;
+  --domain)
+    DOMAIN="${2}"
+    shift # past argument
+    shift # past value
+    ;;
+  --https)
+    IS_HTTPS="true"
+    shift # past argument with no value
     ;;
   --up)
     IS_UP="true"
@@ -148,17 +166,20 @@ echo "🚀 DataLens auto production Docker Compose file generator..."
 
 if [ "${IS_HELP}" == "true" ]; then
   echo ""
-  echo "Usage: ./init.sh [--hc] [--yandex-map] [--yandex-map-token <token>] [--disable-demo] [--disable-auth] [--up]"
+  echo "Usage: ./init.sh [--hc] [--domain <domain>] [--https] [--disable-demo] [--disable-auth] [--up]"
   echo ""
   echo "  --hc - enable Highcharts library"
-  echo "  --yandex-map - enable Yandex Map visualization type"
-  echo "  --yandex-map-token - provide token for Yandex Map API"
+  echo "  --yandex-map - enable Yandex Maps visualization type"
+  echo "  --yandex-map-token <token> - provide token for Yandex Maps API"
   echo "  --disable-demo - disable demo data initialization"
   echo "  --disable-auth - disable authentication service"
   echo "  --postgres-external - disable built-in PostgreSQL service"
   echo "  --postgres-ssl - set SSL mode to [verify-full] for PostgreSQL connection"
-  echo "  --postgres-cert - set path to SSL certificate file for PostgreSQL connection"
+  echo "  --postgres-cert <path> - set path to SSL certificate file for PostgreSQL connection"
   echo "  --demo - run demo data initialization script for external PostgreSQL database"
+  echo "  --ip <ip> - set custom ip address for deployment"
+  echo "  --domain <domain> - set custom domain for deployment"
+  echo "  --https - enable https mode for ui container endpoint"
   echo "  --up - automatically start services with production configuration"
   echo ""
   exit 0
@@ -172,13 +193,17 @@ load_env
 echo ""
 echo "Available script arguments:"
 echo "  --hc - enable Highcharts library"
-echo "  --yandex-map - enable Yandex Map visualization type"
-echo "  --yandex-map-token - provide token for Yandex Map API"
+echo "  --yandex-map - enable Yandex Maps visualization type"
+echo "  --yandex-map-token <token> - provide token for Yandex Maps API"
 echo "  --disable-demo - disable demo data initialization"
 echo "  --disable-auth - disable authentication service"
 echo "  --postgres-external - disable built-in PostgreSQL service"
 echo "  --postgres-ssl - set SSL mode to [verify-full] for PostgreSQL connection"
-echo "  --postgres-cert - set path to SSL certificate file for PostgreSQL connection"
+echo "  --postgres-cert <path> - set path to SSL certificate file for PostgreSQL connection"
+echo "  --demo - run demo data initialization script for external PostgreSQL database"
+echo "  --ip <ip> - set custom ip address for deployment"
+echo "  --domain <domain> - set custom domain for deployment"
+echo "  --https - enable https mode for ui container endpoint"
 echo "  --up - automatically start services with production configuration"
 
 echo ""
@@ -247,6 +272,25 @@ fi
 if [ "${IS_DEMO_ENABLED}" != "true" ]; then
   export INIT_DEMO_DATA="0"
   write_env INIT_DEMO_DATA "0"
+fi
+
+# shellcheck disable=SC2236
+if [ ! -z "${DOMAIN}" ]; then
+  if [ "${IS_HTTPS}" == "true" ]; then
+    UI_APP_ENDPOINT="https://${DOMAIN}"
+  else
+    UI_APP_ENDPOINT="http://${DOMAIN}"
+  fi
+elif [ ! -z "${IP}" ]; then
+  if [ "${IS_HTTPS}" == "true" ]; then
+    UI_APP_ENDPOINT="https://${IP}"
+  else
+    UI_APP_ENDPOINT="http://${IP}"
+  fi
+fi
+# shellcheck disable=SC2236
+if [ ! -z "${UI_APP_ENDPOINT}" ]; then
+  write_env UI_APP_ENDPOINT "\"${UI_APP_ENDPOINT}\"" force
 fi
 
 if [ "${IS_RUN_INIT_DEMO_DATA}" == "true" ]; then
