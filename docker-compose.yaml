@@ -96,7 +96,7 @@ services:
   #
   us:
     container_name: datalens-us
-    image: ghcr.io/datalens-tech/datalens-us:0.332.0
+    image: ghcr.io/datalens-tech/datalens-us:0.339.0
     environment:
       APP_INSTALLATION: opensource
       APP_ENV: prod
@@ -153,7 +153,7 @@ services:
   #
   ui:
     container_name: datalens-ui
-    image: ghcr.io/datalens-tech/datalens-ui:0.2760.0
+    image: ghcr.io/datalens-tech/datalens-ui:0.2789.0
     environment:
       APP_MODE: full
       APP_ENV: production
