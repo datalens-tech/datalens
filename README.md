@@ -1,4 +1,4 @@
-# DataLens
+# DataLens &middot; [![Release](https://img.shields.io/github/v/release/datalens-tech/datalens?logo=github)](https://github.com/datalens-tech/datalens/releases) [![last commit](https://img.shields.io/github/last-commit/datalens-tech/datalens?logo=github)](https://github.com/datalens-tech/datalens/commits/main)
 
 [**DataLens**](https://datalens.tech) is a modern business intelligence and data visualization system. It was developed and extensively used as a primary BI tool in Yandex and is also available as a part of [Yandex Cloud](https://datalens.yandex.com) platform. See also [our roadmap](https://github.com/orgs/datalens-tech/projects/1), [releases notes](https://github.com/datalens-tech/datalens/releases) and [community in telegram](https://t.me/YandexDataLens).
 
