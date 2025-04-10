@@ -76,8 +76,8 @@ Available since [release v1.11.0](https://github.com/datalens-tech/datalens/rele
 
 Use the following container parameters for launch:
 
-| Parameter            | Description                                                    | Values        |
-| -------------------- | -------------------------------------------------------------- | ------------- |
+| Parameter            | Description                                                     | Values        |
+| -------------------- | --------------------------------------------------------------- | ------------- |
 | `YANDEX_MAP_ENABLED` | Enable usage of Yandex Maps visualization                       | `1` or `true` |
 | `YANDEX_MAP_TOKEN`   | Yandex Maps [API key](https://yandex.ru/dev/jsapi-v2-1/doc/en/) | `<string>`    |
 
@@ -182,6 +182,16 @@ DataLens supports the following roles:
 
 We use the `db-postgres` docker volume to store PostgreSQL data. If you want to start over, you can delete this volume: it will be recreated with demo objects on the next start of the `datalens` compose.
 
+#### How can I use a custom domain or IP address for the UI container endpoint?
+
+If you use reverse proxy with HTTPS and custom domain, you can generate docker compose file with these arguments:
+
+`./init.sh --domain <domain> --https`
+
+If you use IP address as endpoint, you can generate docker compose file with this argument:
+
+`./init.sh --ip <ip>`
+
 #### How can I specify external PostgreSQL database?
 
 You can check a production deployment example with high availability in a Kubernetes cluster using Tofu (Terraform) in the `terraform/` directory.
@@ -195,6 +205,17 @@ POSTGRES_HOST=
 POSTGRES_PORT=6432
 POSTGRES_USER=pg-user
 POSTGRES_PASSWORD=
+```
+
+If you want to override default database names, you can specify it in environment variables:
+
+```bash
+# .env file example
+
+POSTGRES_DB_COMPENG='pg-compeng-db'
+POSTGRES_DB_AUTH='pg-auth-db'
+POSTGRES_DB_US='pg-us-db'
+POSTGRES_DB_DEMO='pg-demo-db'
 ```
 
 After that, you can start DataLens with the following command:
