@@ -46,7 +46,7 @@ application:
         memory: 1024Mi
   ui:
     replicas: 1
-    version: '0.2760.0'
+    version: '0.2789.0'
     resources:
       requests:
         cpu: 0.25
@@ -55,7 +55,7 @@ application:
         memory: 512Mi
   us:
     replicas: 1
-    version: '0.332.0'
+    version: '0.339.0'
     resources:
       requests:
         cpu: 0.5
