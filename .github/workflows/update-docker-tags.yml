@@ -47,9 +47,10 @@ jobs:
           password: ${{ secrets.GH_REGISTRY_TOKEN }}
       - name: Pull images and push with release tag
         run: |
-          docker buildx imagetools create --tag ${{ env.REGISTRY }}/${{ env.CONTROL_API_IMAGE_NAME }}:release ${{ env.REGISTRY }}/${{ env.CONTROL_API_IMAGE_NAME }}:${{ env.BACKEND_VERSION }}
-          docker buildx imagetools create --tag ${{ env.REGISTRY }}/${{ env.DATA_API_IMAGE_NAME }}:release ${{ env.REGISTRY }}/${{ env.DATA_API_IMAGE_NAME }}:${{ env.BACKEND_VERSION }}
           docker buildx imagetools create --tag ${{ env.REGISTRY }}/${{ env.UI_IMAGE_NAME }}:release ${{ env.REGISTRY }}/${{ env.UI_IMAGE_NAME }}:${{ env.UI_VERSION }}
           docker buildx imagetools create --tag ${{ env.REGISTRY }}/${{ env.US_IMAGE_NAME }}:release ${{ env.REGISTRY }}/${{ env.US_IMAGE_NAME }}:${{ env.US_VERSION }}
           docker buildx imagetools create --tag ${{ env.REGISTRY }}/${{ env.AUTH_IMAGE_NAME }}:release ${{ env.REGISTRY }}/${{ env.AUTH_IMAGE_NAME }}:${{ env.AUTH_VERSION }}
           docker buildx imagetools create --tag ${{ env.REGISTRY }}/${{ env.UI_IMAGE_NAME }}:release-e2e ${{ env.REGISTRY }}/${{ env.UI_IMAGE_NAME }}:${{ env.UI_VERSION }}-e2e
+
+# docker buildx imagetools create --tag ${{ env.REGISTRY }}/${{ env.CONTROL_API_IMAGE_NAME }}:release ${{ env.REGISTRY }}/${{ env.CONTROL_API_IMAGE_NAME }}:${{ env.BACKEND_VERSION }}
+# docker buildx imagetools create --tag ${{ env.REGISTRY }}/${{ env.DATA_API_IMAGE_NAME }}:release ${{ env.REGISTRY }}/${{ env.DATA_API_IMAGE_NAME }}:${{ env.BACKEND_VERSION }}
