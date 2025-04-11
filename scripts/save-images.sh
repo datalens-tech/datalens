@@ -10,6 +10,8 @@ IMAGE_PLATFORM="linux/$(uname -m | grep -o --color=never arm64 || echo amd64)"
 
 IS_GZIP_COMPRESS="true"
 IS_FORCE="false"
+IS_SPLIT="false"
+TARGET_DIR="."
 
 # parse args
 for _ in "$@"; do
@@ -19,8 +21,17 @@ for _ in "$@"; do
     shift # past argument
     shift # past value
     ;;
+  --target-dir)
+    TARGET_DIR="${2}"
+    shift # past argument
+    shift # past value
+    ;;
   --no-compress)
     IS_GZIP_COMPRESS="false"
+    shift # past argument with no value
+    ;;
+  --split)
+    IS_SPLIT="true"
     shift # past argument with no value
     ;;
   --force)
@@ -66,13 +77,42 @@ echo "Saving images..."
 
 # shellcheck disable=SC2001
 IMAGES_SAVE="${IMAGES_PULL}"
-echo "${IMAGES_SAVE}" >./datalens-images.txt
+echo "${IMAGES_SAVE}" >"${TARGET_DIR}/datalens-images.txt"
 
 IMAGES_SAVE_PRETTY=$(echo "${IMAGES_SAVE}" | sort | sed 's|^|  - |')
 echo "${IMAGES_SAVE_PRETTY}"
 echo ""
 
-OUT_FILE="./datalens-images.tar"
+if [ "${IS_SPLIT}" == "true" ]; then
+  echo "Save each image as separate file..."
+
+  for IMG in ${IMAGES_SAVE}; do
+    IMG_FILE=$(echo "${IMG}" | sed 's|ghcr.io/datalens-tech/||g' | sed 's|:|-|g')
+
+    TARGET_FILE="${TARGET_DIR}/${IMG_FILE}.tar"
+
+    if [ "${IS_FORCE}" == "true" ]; then
+      rm -rf "${TARGET_FILE}"
+      rm -rf "${TARGET_FILE}.gz"
+    fi
+
+    if [ -f "${OUT_FILE}" ] || [ -f "${OUT_GZ_FILE}" ]; then
+      echo "Images tar file [${TARGET_FILE}] or [${TARGET_FILE}.gz] already exists, skip..."
+      continue
+    fi
+
+    docker save "${IMG}" -o "${TARGET_FILE}"
+
+    if [ "${IS_GZIP_COMPRESS}" == "true" ]; then
+      gzip --fast <"${TARGET_FILE}" >"${TARGET_FILE}.tmp" && mv "${TARGET_FILE}.tmp" "${TARGET_FILE}.gz"
+      rm -rf "${TARGET_FILE}"
+    fi
+  done
+
+  exit 0
+fi
+
+OUT_FILE="${TARGET_DIR}/datalens-images.tar"
 OUT_GZ_FILE="${OUT_FILE}.gz"
 
 if [ "${IS_FORCE}" == "true" ]; then

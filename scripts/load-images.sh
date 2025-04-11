@@ -6,6 +6,33 @@ set -eo pipefail
 # [-x] - all executed commands are printed to the terminal [not secure]
 # [-o pipefail] - if any command in a pipeline fails, that return code will be used as the return code of the whole pipeline
 
+IS_SPLIT="false"
+
+# parse args
+for _ in "$@"; do
+  case ${1} in
+  --split)
+    IS_SPLIT="true"
+    shift # past argument with no value
+    ;;
+  -*)
+    echo "unknown arg: ${1}"
+    exit 1
+    ;;
+  *) ;;
+  esac
+done
+
+if [ "${IS_SPLIT}" == "true" ]; then
+  echo "Load docker images from separated archives..."
+
+  for IMG in *.tar.gz; do
+    docker load --input "${IMG}"
+  done
+
+  exit 0
+fi
+
 LOAD_FILE="./datalens-images.tar.gz"
 
 if [ -f "${LOAD_FILE}" ]; then
