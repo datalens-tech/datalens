@@ -8,6 +8,9 @@ set -eo pipefail
 
 IMAGE_PLATFORM="linux/$(uname -m | grep -o --color=never arm64 || echo amd64)"
 
+IS_GZIP_COMPRESS="true"
+IS_FORCE="false"
+
 # parse args
 for _ in "$@"; do
   case ${1} in
@@ -15,6 +18,14 @@ for _ in "$@"; do
     IMAGE_PLATFORM="${2}"
     shift # past argument
     shift # past value
+    ;;
+  --no-compress)
+    IS_GZIP_COMPRESS="false"
+    shift # past argument with no value
+    ;;
+  --force)
+    IS_FORCE="true"
+    shift # past argument with no value
     ;;
   -*)
     echo "unknown arg: ${1}"
@@ -51,9 +62,6 @@ for IMG in ${IMAGES_PULL}; do
 done
 
 echo ""
-echo "Prepare version meta file..."
-
-echo ""
 echo "Saving images..."
 
 # shellcheck disable=SC2001
@@ -67,6 +75,11 @@ echo ""
 OUT_FILE="./datalens-images.tar"
 OUT_GZ_FILE="${OUT_FILE}.gz"
 
+if [ "${IS_FORCE}" == "true" ]; then
+  rm -rf "${OUT_FILE}"
+  rm -rf "${OUT_GZ_FILE}"
+fi
+
 echo "  file: ${OUT_FILE}"
 
 if [ ! -f "${OUT_FILE}" ] && [ ! -f "${OUT_GZ_FILE}" ]; then
@@ -76,7 +89,13 @@ if [ ! -f "${OUT_FILE}" ] && [ ! -f "${OUT_GZ_FILE}" ]; then
   # shellcheck disable=SC2086
   docker save ${IMAGES_SAVE} -o "${OUT_FILE}"
 else
-  echo "Images tar file [${OUT_FILE}] already exists, skip..."
+  echo "Images tar file [${OUT_FILE}] or [${OUT_GZ_FILE}] already exists, skip..."
+fi
+
+if [ "${IS_GZIP_COMPRESS}" == "false" ]; then
+  echo ""
+  echo "Compress disabled, skip..."
+  exit 0
 fi
 
 echo ""
