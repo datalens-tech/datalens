@@ -39,7 +39,7 @@ echo ""
 echo "Start pack all release to single archive..."
 echo "  platform: ${IMAGE_PLATFORM}"
 
-"${SCRIPT_DIR}/save-images.sh" --platform "${IMAGE_PLATFORM}"
+"${SCRIPT_DIR}/save-images.sh" --platform "${IMAGE_PLATFORM}" --force
 
 echo ""
 echo "Continue pack release..."
