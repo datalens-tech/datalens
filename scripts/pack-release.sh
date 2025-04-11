@@ -70,7 +70,7 @@ echo ""
 echo "Copy resources to [dist/datalens-${VERSION}] directory..."
 
 cp "${SCRIPT_DIR}/../README.md" "${OUT_PATH}/datalens-${VERSION}/README.md"
-cp "${SCRIPT_DIR}/docker-compose.yaml" "${OUT_PATH}/datalens-${VERSION}/docker-compose.yaml"
+cp "${SCRIPT_DIR}/../docker-compose.yaml" "${OUT_PATH}/datalens-${VERSION}/docker-compose.yaml"
 cp "${SCRIPT_DIR}/save-images.sh" "${OUT_PATH}/datalens-${VERSION}/save-images.sh"
 cp "${SCRIPT_DIR}/load-images.sh" "${OUT_PATH}/datalens-${VERSION}/load-images.sh"
 cp "${SCRIPT_DIR}/dump-entries.sh" "${OUT_PATH}/datalens-${VERSION}/dump-entries.sh"
