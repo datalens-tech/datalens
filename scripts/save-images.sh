@@ -51,9 +51,6 @@ for IMG in ${IMAGES_PULL}; do
 done
 
 echo ""
-echo "Prepare version meta file..."
-
-echo ""
 echo "Saving images..."
 
 # shellcheck disable=SC2001

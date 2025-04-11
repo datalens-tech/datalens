@@ -18,3 +18,5 @@ datalens_db.dump
 
 docker-compose.tmp.yaml
 docker-compose.production.yaml
+
+dist/
