@@ -92,7 +92,7 @@ echo ""
 echo "Pack release to [dist/datalens-${VERSION}/${FILE_RELEASE}] file..."
 
 # shellcheck disable=SC2035
-cd "${OUT_PATH}" && tar --no-xattrs -cvf "${OUT_PATH}/${FILE_RELEASE}.tmp" * &>/dev/null && mv "${OUT_PATH}/${FILE_RELEASE}.tmp" "${OUT_PATH}/datalens-${VERSION}/${FILE_RELEASE}"
+cd "${OUT_PATH}/datalens-${VERSION}" && tar --no-xattrs -cvf "${OUT_PATH}/${FILE_RELEASE}.tmp" * &>/dev/null && mv "${OUT_PATH}/${FILE_RELEASE}.tmp" "${OUT_PATH}/datalens-${VERSION}/${FILE_RELEASE}"
 
 popd &>/dev/null
 
