@@ -21,8 +21,12 @@ locals {
 
   domain = var.DOMAIN
 
+  # auto create wildcard domain certificate
+  is_create_wildcard_certificate = true
+
   # auto create demo db with demo data and demo entries in us db
-  is_create_demo_db = true
+  is_create_demo_db   = true
+  is_create_demo_data = false
 
   # auto create dns zone in cloud
   is_create_dns_zone = false
@@ -41,6 +45,9 @@ locals {
 
   # auto deploy external logging stack
   k8s_logging = true
+
+  # install argo cd
+  k8s_argo_cd = true
 
   # use local k8s ipv4 or external ipv4
   k8s_allow_from_public_net    = true

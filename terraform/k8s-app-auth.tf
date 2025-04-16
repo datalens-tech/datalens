@@ -68,11 +68,11 @@ resource "kubernetes_deployment" "auth" {
 
           resources {
             limits = {
-              memory = "1024Mi"
+              memory = "512Mi"
             }
             requests = {
-              cpu    = "1"
-              memory = "512Mi"
+              cpu    = "0.5"
+              memory = "256Mi"
             }
           }
           env {

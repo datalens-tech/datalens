@@ -15,7 +15,11 @@ resource "kubernetes_ingress_v1" "k8s_ingress" {
 
   spec {
     tls {
-      hosts       = [local.domain]
+      hosts = concat(
+        [local.domain],
+        local.is_create_wildcard_certificate ? ["*.${local.domain}"] : [],
+        local.k8s_argo_cd ? ["argocd.${local.domain}"] : [],
+      )
       secret_name = "yc-certmgr-cert-id-${yandex_cm_certificate.this.id}"
     }
 
@@ -34,6 +38,29 @@ resource "kubernetes_ingress_v1" "k8s_ingress" {
 
           path      = "/"
           path_type = "Prefix"
+        }
+      }
+    }
+
+    dynamic "rule" {
+      for_each = toset(local.k8s_argo_cd ? ["main"] : [])
+
+      content {
+        host = "argocd.${local.domain}"
+        http {
+          path {
+            backend {
+              service {
+                name = "argo-cd-argocd-server"
+                port {
+                  number = 80
+                }
+              }
+            }
+
+            path      = "/"
+            path_type = "Prefix"
+          }
         }
       }
     }

@@ -55,14 +55,6 @@ data "dns_a_record_set" "this" {
   host = each.key
 }
 
-data "dns_a_record_set" "domain" {
-  for_each = toset(!local.is_create_dns_zone ? ["main"] : [])
-
-  host = local.domain
-
-  depends_on = [yandex_dns_recordset.this]
-}
-
 data "http" "this" {
   for_each = local.k8s_use_external_ipv4 && !local.k8s_connect_by_internal_ipv4 ? { ip = "https://api.ipify.org", github = "https://api.github.com/meta" } : { github = "https://api.github.com/meta" }
 
@@ -95,7 +87,6 @@ locals {
       { proto = "ANY", cidr_v4 = local.v4_k8s_cidr_blocks, from_port = 0, to_port = 65535, desc = "k8s" },
       { proto = "TCP", cidr_v4 = local.v4_gh_api_cidr_blocks, port = 443, desc = "github api" },
     ],
-    local.is_create_dns_zone ? [] : [{ proto = "TCP", cidr_v4 = ["${data.dns_a_record_set.domain["main"].addrs[0]}/32"], port = 443, desc = "domain" }],
     [for e in local.endpoints : { proto = "TCP", cidr_v4 = ["${data.dns_a_record_set.this[e].addrs[0]}/32"], port = 443, desc = e }],
     local.k8s_monitoring ? [{ proto = "TCP", cidr_v4 = local.v4_k8s_any_cidr_blocks, port = 443, desc = "any" }] : [],
   )

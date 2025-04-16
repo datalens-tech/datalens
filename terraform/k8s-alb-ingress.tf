@@ -11,7 +11,7 @@ resource "helm_release" "alb_ingress" {
 
   chart = "yc-alb-ingress-controller-chart"
 
-  version    = "v0.2.8"
+  version    = "v0.2.23"
   repository = "oci://${local.cr_endpoint}/yc-marketplace/yandex-cloud/yc-alb-ingress"
 
   namespace        = "alb-ingress"
@@ -86,7 +86,7 @@ resource "yandex_vpc_security_group" "alb" {
 
 resource "yandex_cm_certificate" "this" {
   name    = "${local.service}-k8s-alb-ingress-cert"
-  domains = [local.domain]
+  domains = local.is_create_wildcard_certificate ? ["*.${local.domain}", local.domain] : [local.domain]
 
   managed {
     challenge_type  = "DNS_CNAME"
@@ -97,7 +97,7 @@ resource "yandex_cm_certificate" "this" {
 locals {
   alb_ipv4_address = yandex_vpc_address.this.external_ipv4_address[0].address
 
-  dns_records = [
+  dns_records = concat([
     {
       key  = "cert-0"
       name = yandex_cm_certificate.this.challenges[0].dns_name,
@@ -109,8 +109,15 @@ locals {
       name = "${local.domain}.",
       type = "A",
       data = local.alb_ipv4_address
-    },
-  ]
+    }
+    ], local.is_create_wildcard_certificate ? [
+    {
+      key  = "domain-1"
+      name = "*.${local.domain}.",
+      type = "A",
+      data = local.alb_ipv4_address
+    }
+  ] : [])
 }
 
 resource "yandex_dns_zone" "this" {

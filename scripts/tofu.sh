@@ -267,6 +267,7 @@ fi
 
 echo ""
 echo "🔍 validate config..."
+echo ""
 
 if [ "${IS_SILENT}" == "true" ]; then
   tofu validate >/dev/null || exit 1
