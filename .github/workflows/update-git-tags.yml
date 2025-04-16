@@ -34,6 +34,7 @@ jobs:
           ref: v${{ env.UI_VERSION }}
           token: ${{ secrets.GH_TOKEN }}
       - name: update release tag
+        working-directory: ./datalens-ui
         run: |
           git tag -f release v${{ env.UI_VERSION }}
           git push origin release --force
