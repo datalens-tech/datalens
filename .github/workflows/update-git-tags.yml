@@ -32,6 +32,7 @@ jobs:
           repository: datalens-tech/datalens-ui
           path: ./datalens-ui
           ref: v${{ env.UI_VERSION }}
+          token: ${{ secrets.GH_TOKEN }}
       - name: update release tag
         run: |
           git tag -f release v${{ env.UI_VERSION }}
