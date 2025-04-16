@@ -46,16 +46,16 @@ resource "kubernetes_deployment" "control-api" {
 
           resources {
             limits = {
-              memory = "2048Mi"
+              memory = "1024Mi"
             }
             requests = {
-              cpu    = "1"
-              memory = "1024Mi"
+              cpu    = "0.5"
+              memory = "512Mi"
             }
           }
           env {
             name  = "BI_API_UWSGI_WORKERS_COUNT"
-            value = "4"
+            value = "3"
           }
           env {
             name  = "CONNECTOR_AVAILABILITY_VISIBLE"

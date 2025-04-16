@@ -1,5 +1,9 @@
 resource "kubernetes_job" "postgresql_demo_data" {
-  for_each = toset(local.k8s_cluster_ready && local.is_create_demo_db ? ["main"] : [])
+  for_each = toset(
+    local.k8s_cluster_ready &&
+    local.is_create_demo_db &&
+    local.is_create_demo_data
+  ? ["main"] : [])
 
   metadata {
     name      = "postgres-demo-data"

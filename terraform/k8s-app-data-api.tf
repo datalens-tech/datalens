@@ -61,11 +61,11 @@ resource "kubernetes_deployment" "data-api" {
 
           resources {
             limits = {
-              memory = "2048Mi"
+              memory = "1024Mi"
             }
             requests = {
               cpu    = "1"
-              memory = "1024Mi"
+              memory = "512Mi"
             }
           }
           env {
