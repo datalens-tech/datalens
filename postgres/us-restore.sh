@@ -128,7 +128,7 @@ if [ "${IS_FIX_CONNECTIONS}" == "true" ]; then
     --username "${POSTGRES_USER_US}" \
     --dbname "${POSTGRES_DB_US}" <<-EOSQL
   UPDATE entries SET unversioned_data = jsonb_set(unversioned_data, '{password,cypher_text}', '"${NULL_PASSWORD}"', true) WHERE unversioned_data #> '{password,cypher_text}' IS NOT NULL;
-  UPDATE entries SET unversioned_data = jsonb_set(unversioned_data, '{token,key_id}', '"KEY"', true) WHERE unversioned_data #> '{token,key_id}' IS NOT NULL;
+  UPDATE entries SET unversioned_data = jsonb_set(unversioned_data, '{token,cypher_text}', '"${NULL_PASSWORD}"', true) WHERE unversioned_data #> '{token,cypher_text}' IS NOT NULL;
 EOSQL
 fi
 
