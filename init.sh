@@ -26,6 +26,8 @@ IS_POSTGRES_SSL="false"
 
 IS_RUN_INIT_DEMO_DATA="false"
 
+IS_LEGACY_DOCKER_COMPOSE="false"
+
 YANDEX_MAP_TOKEN=""
 
 # parse args
@@ -89,6 +91,10 @@ for _ in "$@"; do
     ;;
   --up)
     IS_UP="true"
+    shift # past argument with no value
+    ;;
+  --legacy-docker-compose)
+    IS_LEGACY_DOCKER_COMPOSE="true"
     shift # past argument with no value
     ;;
   -*)
@@ -322,9 +328,10 @@ if [ "${IS_POSTGRES_EXTERNAL}" == "true" ]; then
     sed 's|_\\n_|\n|g')
 
   echo "${COMPOSE_CONFIG}" >docker-compose.tmp.yaml
+fi
 
-  # shellcheck disable=SC2086
-  docker --log-level error compose -f docker-compose.tmp.yaml config ${COMPOSE_UP_SERVICES} >docker-compose.production.yaml
+if [ "${IS_LEGACY_DOCKER_COMPOSE}" == "true" ]; then
+  docker-compose -f docker-compose.tmp.yaml config >docker-compose.production.yaml
 else
   # shellcheck disable=SC2086
   docker --log-level error compose -f docker-compose.tmp.yaml config ${COMPOSE_UP_SERVICES} >docker-compose.production.yaml
@@ -336,7 +343,12 @@ if [ "${IS_UP}" == "true" ]; then
   echo ""
   echo "Starting Docker Compose services with production configuration..."
   echo ""
-  docker --log-level error compose -f docker-compose.production.yaml up --remove-orphans --detach
+
+  if [ "${IS_LEGACY_DOCKER_COMPOSE}" == "true" ]; then
+    docker-compose -f docker-compose.production.yaml up --remove-orphans --detach
+  else
+    docker --log-level error compose -f docker-compose.production.yaml up --remove-orphans --detach
+  fi
 fi
 
 echo ""
