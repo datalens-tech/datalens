@@ -84,6 +84,7 @@ if [ "${IS_RESET_PASSWORDS}" == "true" ]; then
     --username "${POSTGRES_USER_US}" \
     --dbname "${POSTGRES_DB_US}" <<-EOSQL
   UPDATE entries SET unversioned_data = jsonb_set(unversioned_data, '{password,cypher_text}', '"${NULL_PASSWORD}"', true) WHERE unversioned_data #> '{password,cypher_text}' IS NOT NULL;
+  UPDATE entries SET unversioned_data = jsonb_set(unversioned_data, '{token,cypher_text}', '"${NULL_PASSWORD}"', true) WHERE unversioned_data #> '{token,cypher_text}' IS NOT NULL;
 EOSQL
   exit 0
 fi
@@ -97,6 +98,7 @@ if [ "${IS_RESET_CRYPTO_KEY}" == "true" ]; then
     --username "${POSTGRES_USER_US}" \
     --dbname "${POSTGRES_DB_US}" <<-EOSQL
   UPDATE entries SET unversioned_data = jsonb_set(unversioned_data, '{password,key_id}', '"KEY"', true) WHERE unversioned_data #> '{password,key_id}' IS NOT NULL;
+  UPDATE entries SET unversioned_data = jsonb_set(unversioned_data, '{token,key_id}', '"KEY"', true) WHERE unversioned_data #> '{token,key_id}' IS NOT NULL;
 EOSQL
   exit 0
 fi
@@ -126,6 +128,7 @@ if [ "${IS_FIX_CONNECTIONS}" == "true" ]; then
     --username "${POSTGRES_USER_US}" \
     --dbname "${POSTGRES_DB_US}" <<-EOSQL
   UPDATE entries SET unversioned_data = jsonb_set(unversioned_data, '{password,cypher_text}', '"${NULL_PASSWORD}"', true) WHERE unversioned_data #> '{password,cypher_text}' IS NOT NULL;
+  UPDATE entries SET unversioned_data = jsonb_set(unversioned_data, '{token,cypher_text}', '"${NULL_PASSWORD}"', true) WHERE unversioned_data #> '{token,cypher_text}' IS NOT NULL;
 EOSQL
 fi
 
@@ -138,6 +141,7 @@ if [ "${IS_FIX_CRYPTO_KEY}" == "true" ]; then
     --username "${POSTGRES_USER_US}" \
     --dbname "${POSTGRES_DB_US}" <<-EOSQL
   UPDATE entries SET unversioned_data = jsonb_set(unversioned_data, '{password,key_id}', '"KEY"', true) WHERE unversioned_data #> '{password,key_id}' IS NOT NULL;
+  UPDATE entries SET unversioned_data = jsonb_set(unversioned_data, '{token,key_id}', '"KEY"', true) WHERE unversioned_data #> '{token,key_id}' IS NOT NULL;
 EOSQL
 fi
 
