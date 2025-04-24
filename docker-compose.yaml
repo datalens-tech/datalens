@@ -60,7 +60,7 @@ services:
   #
   control-api:
     container_name: datalens-control-api
-    image: ghcr.io/datalens-tech/datalens-control-api:0.2242.0-rc.1
+    image: ghcr.io/datalens-tech/datalens-control-api:0.2253.0
     environment:
       BI_API_UWSGI_WORKERS_COUNT: 4
       RQE_FORCE_OFF: 1
@@ -84,7 +84,7 @@ services:
   #
   data-api:
     container_name: datalens-data-api
-    image: ghcr.io/datalens-tech/datalens-data-api:0.2242.0-rc.1
+    image: ghcr.io/datalens-tech/datalens-data-api:0.2253.0
     environment:
       GUNICORN_WORKERS_COUNT: 5
       RQE_FORCE_OFF: 1
@@ -142,6 +142,34 @@ services:
     networks:
       - default
   #
+  ui-api:
+    container_name: datalens-ui-api
+    image: ghcr.io/datalens-tech/datalens-ui:0.2848.0
+    environment:
+      APP_MODE: api
+      APP_ENV: production
+      APP_INSTALLATION: opensource
+      #
+      AUTH_POLICY: disabled
+      #
+      US_ENDPOINT: http://us:8080
+      AUTH_ENDPOINT: http://auth:8080
+      BI_API_ENDPOINT: http://control-api:8080
+      BI_DATA_ENDPOINT: http://data-api:8080
+      #
+      US_MASTER_TOKEN: ${US_MASTER_TOKEN:-us-master-token}
+      #
+      RELEASE_VERSION: '2.0.0'
+      #
+      AUTH_ENABLED: ${AUTH_ENABLED:-true}
+      AUTH_MASTER_TOKEN: ${AUTH_MASTER_TOKEN:-auth-master-token}
+      AUTH_TOKEN_PUBLIC_KEY: ${AUTH_TOKEN_PUBLIC_KEY:------BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA+HICDZMfimMIiGdd0dPr\n2N3zxHOJqiVXuvUj/aBBS7c8760rJUh4344sP/0Gid558yH/v1MtzZ0R9w09v6gb\nSNrSiNwIUNGPhbnm9Jf+kMezsI/rkcIdoVm3KJ8CFUYy6MRPzW7iJmIVRHBb82v1\nmAYCCQFU6IRtFIa9hQ8wedWwxqXZekSNS+6NB37dmmQB9kz2E3MY+KRLigOh4i3p\nCZ1ti3HVvMa9Rlgk9FmoWExzub5ECChqwm+vn8yFXjYW7kUSClcV2xx4nbQWqjrR\nyyLk6W2BNOuCFVvz0j+5XkpLAt7tljtVZc+572HBEKpF2mAdmAip5NzeDhKqucJ+\nZQIDAQAB\n-----END PUBLIC KEY-----}
+    depends_on:
+      - us
+    volumes: []
+    networks:
+      - default
+  #
   meta-manager:
     container_name: datalens-meta-manager
     image: ghcr.io/datalens-tech/datalens-meta-manager:0.0.0
@@ -157,12 +185,14 @@ services:
       #
       US_ENDPOINT: http://us:8080
       BI_API_ENDPOINT: http://control-api:8080
+      UI_API_ENDPOINT: http://ui-api:8080
       TEMPORAL_ENDPOINT: temporal:7233
       #
       AUTH_ENABLED: ${AUTH_ENABLED:-true}
       AUTH_TOKEN_PUBLIC_KEY: ${AUTH_TOKEN_PUBLIC_KEY:------BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA+HICDZMfimMIiGdd0dPr\n2N3zxHOJqiVXuvUj/aBBS7c8760rJUh4344sP/0Gid558yH/v1MtzZ0R9w09v6gb\nSNrSiNwIUNGPhbnm9Jf+kMezsI/rkcIdoVm3KJ8CFUYy6MRPzW7iJmIVRHBb82v1\nmAYCCQFU6IRtFIa9hQ8wedWwxqXZekSNS+6NB37dmmQB9kz2E3MY+KRLigOh4i3p\nCZ1ti3HVvMa9Rlgk9FmoWExzub5ECChqwm+vn8yFXjYW7kUSClcV2xx4nbQWqjrR\nyyLk6W2BNOuCFVvz0j+5XkpLAt7tljtVZc+572HBEKpF2mAdmAip5NzeDhKqucJ+\nZQIDAQAB\n-----END PUBLIC KEY-----}
     depends_on:
       - temporal
+      - ui-api
     volumes: []
     networks:
       - default
@@ -194,7 +224,7 @@ services:
   #
   ui:
     container_name: datalens-ui
-    image: ghcr.io/datalens-tech/datalens-ui:0.2760.0
+    image: ghcr.io/datalens-tech/datalens-ui:0.2839.0
     environment:
       APP_MODE: full
       APP_ENV: production

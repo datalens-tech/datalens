@@ -65,6 +65,17 @@ services:
     networks:
       - default
 
+  ui-api:
+    extends:
+      file: docker-compose.yaml
+      service: ui-api
+    depends_on:
+      - us
+    ports:
+      - 3040:8080
+    networks:
+      - default
+
   meta-manager:
     extends:
       file: docker-compose.yaml
@@ -72,7 +83,7 @@ services:
     depends_on:
       - temporal
     ports:
-      - 3040:8080
+      - 3050:8080
     networks:
       - default
 
