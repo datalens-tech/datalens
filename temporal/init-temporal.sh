@@ -38,6 +38,17 @@ if [ -z "${TEMPORAL_CLI_ADDRESS}" ]; then
   export TEMPORAL_CLI_ADDRESS="${TEMPORAL_ADDRESS}"
 fi
 
+if [ "${TEMPORAL_AUTH_ENABLED}" == "1" ]; then
+  export TEMPORAL_AUTH_AUTHORIZER="default"
+  export TEMPORAL_AUTH_CLAIM_MAPPER="default"
+  export TEMPORAL_JWT_KEY_SOURCE1="http://localhost:8080/.well-known/jwks.json"
+  export SERVICES="frontend:history:matching:worker:internal-frontend"
+  export USE_INTERNAL_FRONTEND="1"
+
+  source venv/bin/activate
+  python run_jwks_server.py &
+fi
+
 dockerize -template /etc/temporal/config/config_template.yaml:/etc/temporal/config/docker.yaml
 
 /etc/temporal/setup-temporal.sh

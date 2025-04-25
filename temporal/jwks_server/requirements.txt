@@ -1,0 +1,12 @@
+blinker==1.9.0
+cffi==1.17.1
+click==8.1.8
+Flask==3.1.0
+itsdangerous==2.2.0
+Jinja2==3.1.6
+MarkupSafe==3.0.2
+protobuf==6.30.2
+pycparser==2.22
+types-protobuf==5.29.1.20250403
+typing_extensions==4.13.1
+Werkzeug==3.1.3

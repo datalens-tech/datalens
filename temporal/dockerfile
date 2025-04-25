@@ -6,7 +6,9 @@ FROM temporalio/server:${TEMPORAL_VERSION}
 
 USER root
 
-RUN apk add --no-cache postgresql-client
+ENV PYTHONUNBUFFERED=1
+RUN apk add --update --no-cache python3 postgresql-client py3-pip && \
+    ln -sf python3 /usr/bin/python 
 
 COPY --from=temporal-setup /usr/local/bin/temporal-sql-tool /usr/local/bin/temporal-sql-tool
 RUN rm -rf /etc/temporal/schema
@@ -21,6 +23,13 @@ RUN chmod +x /etc/temporal/setup-temporal.sh && \
   chmod +x /etc/temporal/init-namespaces.sh && \
   chmod +x /etc/temporal/init-temporal.sh
 
+COPY ./jwks_server/requirements.txt /etc/temporal/requirements.txt
+COPY ./jwks_server/run_jwks_server.py /etc/temporal/run_jwks_server.py
+
+RUN python -m venv /etc/temporal/venv && \
+    source /etc/temporal/venv/bin/activate && \
+    pip install -r /etc/temporal/requirements.txt
+
 USER temporal
 
 ENV TEMPORAL_PORT='7233'
@@ -29,7 +38,7 @@ ENV DB='postgres12'
 
 ENV DEFAULT_NAMESPACE_RETENTION='24h'
 ENV SKIP_NAMESPACES_CREATION='false'
-ENV NAMESPACES='default'
+ENV NAMESPACES='ui,us,backend'
 
 ENV POSTGRES_HOST='postgres'
 ENV POSTGRES_PORT='5432'

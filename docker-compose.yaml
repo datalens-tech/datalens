@@ -40,6 +40,23 @@ services:
     networks:
       - default
   #
+  temporal:
+    container_name: datalens-temporal
+    image: ghcr.io/datalens-tech/datalens-temporal:1.27.2
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-postgres}"
+      TEMPORAL_ADDRESS: ${TEMPORAL_ADDRESS:-temporal:7233} # used by Temporal CLI
+      TEMPORAL_AUTH_ENABLED: "${TEMPORAL_AUTH_ENABLED:-0}"
+      TEMPORAL_AUTH_TOKEN: "${TEMPORAL_AUTH_ADMIN_TOKEN:-eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImFkbWluIn0.ewogICJzdWIiOiAiYWRtaW4iLAogICJleHAiOiA0OTAxMzMwNTk2LAogICJwZXJtaXNzaW9ucyI6IFsidGVtcG9yYWwtc3lzdGVtOmFkbWluIl0KfQ.HWtBpGr8q66MKyMsJoyptSJE4CbqmewtczYOKAdvrZPYMs_bYedqJy76eiZQPkz33dbB9AySuOSr_lEkyWiQe-P2i4SMLQgPM85maoBt8Oz_7pOy7YLX6CLzJR59BQ8EWzJPBN7XW9bzBi3AJXDjFFD_6aE1V-9heyKgqvysxulYEP64ZruOt-8mIhz3X8oZ6aHQtpBDGT9PD_gCe06iDrcfgOGFEr4sT06n9KekKIx93tYhN4iBZDnEQJT34g46GuO7VeUZaG-R5kzZ23hhmvBq1M99TD_8ZTGVMJoRNb9-n8P93o3NG9Fy4fONIGvlB9NTI2QpsY4vn1TEJN7fpQ}"
+      JWKS_DATA: '${JWKS_DATA:-{  "keys": [  {  "kty": "RSA",  "use": "sig",  "alg": "RS256",  "kid": "admin",  "n": "yKvQjQ4-XQlWm3tnZsP7GylFg8-f5ukWSvQf40jXEsLAw832WVXcJ9yTmZkV5bx3zhO0GQSptrQWcdkDmO8-299wur7V03bhUOQSYOjJ93FKau22rXWbW0Ii6kgBKWHh2OqSIlGx9XangwVaLLXTRQlV6bU7QcfEw6OpNtiDvL2z1M76aYhdh4YPeG5aKDcH0rfKu_6k57xfOXnIWeRy_l80GvP4ji5rJNSl-Vk4WXpKme0tyX3aAQAFlgCSxaZ5ggz09XcBb4gykKNJxxQV3fm7SAuRJCfwQqD6PFOKHqY0sIgHGMnPe_C2EKhrmzdTdSbTQEdoLUP_BBUtqA62Zw",  "e": "AQAB"  },  {  "kty": "RSA",  "use": "sig",  "alg": "RS256",  "kid": "backend",  "n": "rjwgvsBMKrBbp11QctaiaHVuexHeSjjS188hmlTpNiLLAKZkmvjLQIGzV02YUX0lm_4Sa8le2Ew0m9y50wm3JNGYyUPMrYpBlZBhidLXXPjQ5JJsHkYKuXieTopO7R59VRzSvVpcLaSBpELlqMOwQoujBzo8WCK54DGkl4Det5QqTs8xI2_tU5onyYjrSyGAEyCew_J7gLN6rCxgRnyIsxohogo9fjB4mdHzAR_zXOf0DSB2u068PmPehXIYQjzFOeDMbpjIz7j9AK3SVfMd9t2Oesfqpsl5YYxiFxqCFRMULilWYhI-h4Ifu4NLHVRKXvtayUuxq1xAIq_gG4aJ5Q",  "e": "AQAB"  },  {  "kty": "RSA",  "use": "sig",  "alg": "RS256",  "kid": "ui",  "n": "sS6hoiImi_xXFKWSRpOl5dOJQabtGl2oVXg5i98eLPAVk6XvKqKiUsOPA7vNuuxwjl7W3xmc7L_MCx-dL4-04H9woiiHZUcmxMW61a24bP6lrO2p2kepHhQOon0bdJf5KSLwoiupkqSZpudZFpq_JxXwcwhWbUyoxoSHWY9Dmfz6AUwtvFks1-gifhwy7H4EDQ3vB5x8cosoTLQ-QfgesSc4-U6udHPD-wG1coaV4ufvAInrE9OSljsSQqGGtJfE6DNpmuIqTONw4SoGGA1zFbqlx1FHEnOMMlkRTZoOFaK0zargmF1rib6Ez-wamkCe5Pur926S1D4vDXmKSE5Ihw",  "e": "AQAB"  },  {  "kty": "RSA",  "use": "sig",  "alg": "RS256",  "kid": "us",  "n": "4KJyPG3iVvA4eiyGz7BbyusJrHLszjFReLetIlnGr4Mld0FTA_zV4DE3MbjyL-GXuvUMhJtI7uC82WH7runbUlRbihZkrkuEm10t67NdW301aN4H9nYir80kQnCT2kcSLWzDtG4-ImWNxUabVTWsalB_jbyxv9o-m8Fqh39XojUczI-vrs-gmIAgGevln-kb4JDVB_VmcY_9MgpXM5_eOmKsC6WzAurqRJZCFzC0p4SObGj3QwkJ3oO_-gTnBXU5O3g0SXzC7eTjuC5W3LoNGrSTr6bC-Ek5mC6mtiY6pzpxQsrlAfC1TjHSSc7CEO3CIX-T1JqEDpGs3TLWRhfzkQ",  "e": "AQAB"  }    ]    }'
+    ports:
+      - ${TEMPORAL_PORT:-7233}:7233
+    networks:
+      - default
+  #
   control-api:
     container_name: datalens-control-api
     image: ghcr.io/datalens-tech/datalens-control-api:0.2233.0
@@ -60,6 +77,8 @@ services:
       AUTH__TYPE: ${AUTH_TYPE:-NATIVE}
       AUTH__JWT_ALGORITHM: 'PS256'
       AUTH__JWT_KEY: ${AUTH_TOKEN_PUBLIC_KEY:------BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA+HICDZMfimMIiGdd0dPr\n2N3zxHOJqiVXuvUj/aBBS7c8760rJUh4344sP/0Gid558yH/v1MtzZ0R9w09v6gb\nSNrSiNwIUNGPhbnm9Jf+kMezsI/rkcIdoVm3KJ8CFUYy6MRPzW7iJmIVRHBb82v1\nmAYCCQFU6IRtFIa9hQ8wedWwxqXZekSNS+6NB37dmmQB9kz2E3MY+KRLigOh4i3p\nCZ1ti3HVvMa9Rlgk9FmoWExzub5ECChqwm+vn8yFXjYW7kUSClcV2xx4nbQWqjrR\nyyLk6W2BNOuCFVvz0j+5XkpLAt7tljtVZc+572HBEKpF2mAdmAip5NzeDhKqucJ+\nZQIDAQAB\n-----END PUBLIC KEY-----}
+      #
+      TEMPORAL_AUTH_TOKEN: ${TEMPORAL_AUTH_BACKEND_TOKEN:-eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImJhY2tlbmQifQ.ewogICJzdWIiOiAiYmFja2VuZCIsCiAgImV4cCI6IDQ5MDEzMzA1OTYsCiAgInBlcm1pc3Npb25zIjogWyJiYWNrZW5kOmFkbWluIl0KfQ.chVJjOlIfXMxYLRLgbg9tDZDLAMq4v3YnHenZYqwKdc4eZiBclWfmRFFZi5wtPq8ymtJqdwldVsawJCr_pnlW4wl_cboLqRCxjNA2DfRoHRyjIiDGp7P36TKCQOesQNDy4brB24dtnZ-eEL4Iw5kzTkU1AvgAWrxIkGR0G8Hk_vDflU6FHsDiUr5TN9fbh7D0bI_nRZCBQjwUZsgM6gcb-UD_kPklrBrzj7PmrKSZiMOPWPBCl-eeF-OU0MlRGNMVOLosXJmXnE7unqg05MX4mEEyH175msHCU0Bgk5gCQnDcG4x4MIOHoDROImpDgj0BJuQf2aSuaMe8cvnQs5j6Q}
     volumes: []
     networks:
       - default
@@ -87,6 +106,8 @@ services:
       AUTH__TYPE: ${AUTH_TYPE:-NATIVE}
       AUTH__JWT_ALGORITHM: 'PS256'
       AUTH__JWT_KEY: ${AUTH_TOKEN_PUBLIC_KEY:------BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA+HICDZMfimMIiGdd0dPr\n2N3zxHOJqiVXuvUj/aBBS7c8760rJUh4344sP/0Gid558yH/v1MtzZ0R9w09v6gb\nSNrSiNwIUNGPhbnm9Jf+kMezsI/rkcIdoVm3KJ8CFUYy6MRPzW7iJmIVRHBb82v1\nmAYCCQFU6IRtFIa9hQ8wedWwxqXZekSNS+6NB37dmmQB9kz2E3MY+KRLigOh4i3p\nCZ1ti3HVvMa9Rlgk9FmoWExzub5ECChqwm+vn8yFXjYW7kUSClcV2xx4nbQWqjrR\nyyLk6W2BNOuCFVvz0j+5XkpLAt7tljtVZc+572HBEKpF2mAdmAip5NzeDhKqucJ+\nZQIDAQAB\n-----END PUBLIC KEY-----}
+      #
+      TEMPORAL_AUTH_TOKEN: ${TEMPORAL_AUTH_BACKEND_TOKEN:-eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImJhY2tlbmQifQ.ewogICJzdWIiOiAiYmFja2VuZCIsCiAgImV4cCI6IDQ5MDEzMzA1OTYsCiAgInBlcm1pc3Npb25zIjogWyJiYWNrZW5kOmFkbWluIl0KfQ.chVJjOlIfXMxYLRLgbg9tDZDLAMq4v3YnHenZYqwKdc4eZiBclWfmRFFZi5wtPq8ymtJqdwldVsawJCr_pnlW4wl_cboLqRCxjNA2DfRoHRyjIiDGp7P36TKCQOesQNDy4brB24dtnZ-eEL4Iw5kzTkU1AvgAWrxIkGR0G8Hk_vDflU6FHsDiUr5TN9fbh7D0bI_nRZCBQjwUZsgM6gcb-UD_kPklrBrzj7PmrKSZiMOPWPBCl-eeF-OU0MlRGNMVOLosXJmXnE7unqg05MX4mEEyH175msHCU0Bgk5gCQnDcG4x4MIOHoDROImpDgj0BJuQf2aSuaMe8cvnQs5j6Q}
     depends_on:
       postgres:
         condition: service_healthy
@@ -117,6 +138,8 @@ services:
       #
       AUTH_ENABLED: ${AUTH_ENABLED:-true}
       AUTH_TOKEN_PUBLIC_KEY: ${AUTH_TOKEN_PUBLIC_KEY:------BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA+HICDZMfimMIiGdd0dPr\n2N3zxHOJqiVXuvUj/aBBS7c8760rJUh4344sP/0Gid558yH/v1MtzZ0R9w09v6gb\nSNrSiNwIUNGPhbnm9Jf+kMezsI/rkcIdoVm3KJ8CFUYy6MRPzW7iJmIVRHBb82v1\nmAYCCQFU6IRtFIa9hQ8wedWwxqXZekSNS+6NB37dmmQB9kz2E3MY+KRLigOh4i3p\nCZ1ti3HVvMa9Rlgk9FmoWExzub5ECChqwm+vn8yFXjYW7kUSClcV2xx4nbQWqjrR\nyyLk6W2BNOuCFVvz0j+5XkpLAt7tljtVZc+572HBEKpF2mAdmAip5NzeDhKqucJ+\nZQIDAQAB\n-----END PUBLIC KEY-----}
+      #
+      TEMPORAL_AUTH_TOKEN: ${TEMPORAL_AUTH_US_TOKEN:-eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InVzIn0.ewogICJzdWIiOiAidXMiLAogICJleHAiOiA0OTAxMzMwNTk2LAogICJwZXJtaXNzaW9ucyI6IFsidXM6YWRtaW4iXQp9.2eBttP3aQOr9ALQ77Dl8W47jIElkEi-ZuB8FLh1B_aK3wj1RbHQc4OejjfhSAJ3AJfRtx_7rlMzYPXCC8BO-MmUp2GoFopm-FTXATEM4ws9Lfrk1fR0ow1Z7KkpIEh52eo_NIiMyADLgM0f91B20Gjz6tsHUMQ4Nn17IH5fmulTE3myzUaYXh65CeppN4AXjpwAMkjQmPWcYdPI4-IZwsR5N0vWiAQg9HAn1O-cxmZUDPbt1VG1wkY3WGCNxQ1gH5PYs9Y0eyJegJbB4ha36QrU5rE0DR7gLhKYC5b2C8eQiDN4bf7X78s8wUz632VivH3n92i___T7OsV7I7uxXlQ}
     depends_on:
       postgres:
         condition: service_healthy
@@ -177,6 +200,8 @@ services:
       AUTH_ENABLED: ${AUTH_ENABLED:-true}
       AUTH_MASTER_TOKEN: ${AUTH_MASTER_TOKEN:-auth-master-token}
       AUTH_TOKEN_PUBLIC_KEY: ${AUTH_TOKEN_PUBLIC_KEY:------BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA+HICDZMfimMIiGdd0dPr\n2N3zxHOJqiVXuvUj/aBBS7c8760rJUh4344sP/0Gid558yH/v1MtzZ0R9w09v6gb\nSNrSiNwIUNGPhbnm9Jf+kMezsI/rkcIdoVm3KJ8CFUYy6MRPzW7iJmIVRHBb82v1\nmAYCCQFU6IRtFIa9hQ8wedWwxqXZekSNS+6NB37dmmQB9kz2E3MY+KRLigOh4i3p\nCZ1ti3HVvMa9Rlgk9FmoWExzub5ECChqwm+vn8yFXjYW7kUSClcV2xx4nbQWqjrR\nyyLk6W2BNOuCFVvz0j+5XkpLAt7tljtVZc+572HBEKpF2mAdmAip5NzeDhKqucJ+\nZQIDAQAB\n-----END PUBLIC KEY-----}
+      #
+      TEMPORAL_AUTH_TOKEN: ${TEMPORAL_AUTH_UI_TOKEN:-eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InVpIn0.ewogICJzdWIiOiAidWkiLAogICJleHAiOiA0OTAxMzMwNTk2LAogICJwZXJtaXNzaW9ucyI6IFsidWk6YWRtaW4iXQp9.GphwMdjPXN3HT2NWidGg0fPywre4kyPjcQNcMcJxQcpEfQosQ2gfMSFN8eS-HM_K6AR705yETigHcELkihjA084HAvtl4lh6lArSbp1iG2ei8-bu8BDd4qHf5bjtTlX-RxkTPOhOGTL9z7zpwl3eQ99O3fnLXRXTeHmBI-NKzotSSQfEi_rBWeWDjXNMbQja0FbYd7nBhQ5zjGy9HWVn0A5QJMADNPm5Joh2Z_zwh4OxE4zkfO1XP07VSOsCXsrRTQEcwLW00iUM4A8Rwof8aQIvoGqVhYEoXX75x7bEz4lxzlkCn09s72t-LgDjGH2D7ImZbvWYPuzHPcsk9dIYRw}
     depends_on:
       - us
     volumes: []
