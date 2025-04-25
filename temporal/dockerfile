@@ -6,9 +6,7 @@ FROM temporalio/server:${TEMPORAL_VERSION}
 
 USER root
 
-ENV PYTHONUNBUFFERED=1
-RUN apk add --update --no-cache python3 postgresql-client py3-pip && \
-    ln -sf python3 /usr/bin/python 
+RUN apk add --update --no-cache postgresql-client
 
 COPY --from=temporal-setup /usr/local/bin/temporal-sql-tool /usr/local/bin/temporal-sql-tool
 RUN rm -rf /etc/temporal/schema
@@ -22,13 +20,6 @@ COPY ./init-temporal.sh /etc/temporal/init-temporal.sh
 RUN chmod +x /etc/temporal/setup-temporal.sh && \
   chmod +x /etc/temporal/init-namespaces.sh && \
   chmod +x /etc/temporal/init-temporal.sh
-
-COPY ./jwks_server/requirements.txt /etc/temporal/requirements.txt
-COPY ./jwks_server/run_jwks_server.py /etc/temporal/run_jwks_server.py
-
-RUN python -m venv /etc/temporal/venv && \
-    source /etc/temporal/venv/bin/activate && \
-    pip install -r /etc/temporal/requirements.txt
 
 USER temporal
 
