@@ -8,7 +8,7 @@ locals {
   runner_version  = "2.319.1"
 
   runners_count = 3
-  runners_ids    = local.is_create_github_runner ? [for i in range(0, local.runners_count) : { key = "ind-${i}", ind = i }] : []
+  runners_ids   = local.is_create_github_runner ? [for i in range(0, local.runners_count) : { key = "ind-${i}", ind = i }] : []
 }
 
 resource "yandex_lockbox_secret" "github-runner" {
