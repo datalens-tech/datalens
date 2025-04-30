@@ -14,6 +14,8 @@ IS_APPROVE="false"
 IS_INIT="false"
 IS_TOFURC="false"
 IS_SILENT="false"
+IS_LINT="false"
+IS_LINT_FIX="false"
 IS_DOCKER_LOGIN="false"
 IS_HELM_LOGIN="false"
 
@@ -93,6 +95,14 @@ for _ in "$@"; do
     IS_TOFURC="true"
     shift # past argument with no value
     ;;
+  --lint)
+    IS_LINT="true"
+    shift # past argument with no value
+    ;;
+  --lint-fix)
+    IS_LINT_FIX="true"
+    shift # past argument with no value
+    ;;
   -*)
     echo "unknown arg: ${1}"
     exit 1
@@ -100,6 +110,20 @@ for _ in "$@"; do
   *) ;;
   esac
 done
+
+if [ "${IS_LINT}" == "true" ]; then
+  echo "🛡️ lint terraform files.."
+  tofu fmt -recursive -check -diff || exit 1
+  echo "✅ terraform files is valid"
+  exit 0
+fi
+
+if [ "${IS_LINT_FIX}" == "true" ]; then
+  echo "🛠️ fix terraform files style.."
+  tofu fmt -recursive -diff
+  echo "✅ terraform files is valid"
+  exit 0
+fi
 
 if [ -f ./.env ]; then
   # shellcheck disable=SC1091
