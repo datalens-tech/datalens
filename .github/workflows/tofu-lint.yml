@@ -1,0 +1,29 @@
+name: Tofu lint
+
+on:
+  pull_request:
+    paths:
+      - 'terraform/**'
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    name: tofu
+    runs-on:
+      - self-hosted
+      - linux
+      - cloud
+      - datalens-opensource
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: 1.8.2
+      - run: |
+          ../scripts/tofu.sh --lint
+        working-directory: ./terraform
