@@ -12,6 +12,7 @@ IS_HC_ENABLED="false"
 IS_YANDEX_MAP_ENABLED="false"
 IS_DEMO_ENABLED="true"
 IS_AUTH_ENABLED="true"
+IS_TEMPORAL_AUTH_ENABLED="false"
 
 IS_UP="false"
 IS_HELP="false"
@@ -97,6 +98,10 @@ for _ in "$@"; do
     IS_LEGACY_DOCKER_COMPOSE="true"
     shift # past argument with no value
     ;;
+  --temporal-auth)
+    IS_TEMPORAL_AUTH_ENABLED="true"
+    shift # past argument with no value
+    ;;
   -*)
     echo "unknown arg: ${1}"
     exit 1
@@ -167,6 +172,175 @@ gen_sec() {
   fi
 }
 
+base64url_encode() {
+  base64 | tr '+/' '-_' | tr -d '='
+}
+
+hex_to_base64url () {
+  xxd -r -p | base64 | tr '+/' '-_' | tr -d '='
+}
+
+gen_temporal_auth_tokens() {
+  PRIVATE_KEYS_DIR="${1}"
+
+  echo "PRIVATE_KEYS_DIR=$PRIVATE_KEYS_DIR"
+
+  for private_key_file in "$PRIVATE_KEYS_DIR"/*.pem; do
+    SERVICE=$(basename "$private_key_file" | sed 's/-private\.[^.]*$//')
+    NOW=$(date +%s)
+    EXPIRATION=3155760000 # 100 years
+    EXPIRATION_TIME=$((NOW + EXPIRATION))
+    PERMISSIONS='["'$SERVICE':admin"]'
+
+    if [ "$SERVICE" == "admin" ];then
+      PERMISSIONS='["temporal-system:admin"]'
+    fi
+
+    HEADER='{"alg":"RS256","typ":"JWT","kid":"'$SERVICE'"}'
+    PAYLOAD=$(cat <<EOF
+{
+  "sub": "$SERVICE",
+  "exp": $EXPIRATION_TIME,
+  "permissions": $PERMISSIONS
+}
+EOF
+)
+
+    HEADER_ENCODED=$(echo -n "$HEADER" | base64url_encode)
+    PAYLOAD_ENCODED=$(echo -n "$PAYLOAD" | base64url_encode)
+
+    SIGNATURE_DATA="${HEADER_ENCODED}.${PAYLOAD_ENCODED}"
+    SIGNATURE=$(echo -n "$SIGNATURE_DATA" | openssl dgst -sha256 -sign "$private_key_file" | base64url_encode)
+
+    JWT="${SIGNATURE_DATA}.${SIGNATURE}"
+    SERVICE_UPPER=$(echo $SERVICE | tr a-z A-Z)
+
+    export "TEMPORAL_AUTH_${SERVICE_UPPER}_TOKEN=${JWT}"
+    write_env "TEMPORAL_AUTH_${SERVICE_UPPER}_TOKEN" "${JWT}"
+  done
+}
+
+gen_temporal_rsa_keys() {
+  KEYS_DIR="./temporal/jwt"
+  KEY_SIZE=2048
+  SERVICES="ui:us:backend:admin"
+
+  mkdir -p $KEYS_DIR/{private,public}
+
+  IFS=':' read -ra SUBS <<< "$SERVICES"
+  for SUB in "${SUBS[@]}"; do
+    PRIVATE_KEY="$KEYS_DIR/private/$SUB-private.pem"
+    PUBLIC_KEY="$KEYS_DIR/public/$SUB-public.pem"
+
+    if [ -f "${PRIVATE_KEY}" ] && [ -f "${PUBLIC_KEY}" ]; then
+        echo "Private key: $PRIVATE_KEY exist"
+        echo "Public key: $PUBLIC_KEY exist"
+        continue
+    fi
+
+    openssl genpkey -algorithm RSA \
+        -out "$PRIVATE_KEY" \
+        -pkeyopt rsa_keygen_bits:$KEY_SIZE
+    openssl rsa -pubout -in "$PRIVATE_KEY" -out "$PUBLIC_KEY"
+
+    chmod 600 "$PRIVATE_KEY"
+
+    
+  done
+
+  gen_jwks_json "$KEYS_DIR/public/"
+  gen_temporal_auth_tokens "$KEYS_DIR/private/"
+}
+
+gen_jwks_json() {
+  PUBLIC_KEYS_DIR="${1}"
+  KEY_TYPE="RSA"
+  ALG="RS256"
+  USE="sig"
+
+  # Check if necessary tools are installed
+  if ! command -v openssl &> /dev/null; then
+      echo "Error: openssl is required but not installed."
+      exit 1
+  fi
+
+  # Initialize JWKS structure
+  JWKS_DATA='{
+  "keys": ['
+
+  first_key=true
+
+  # Process each public key file in the specified directory
+  for pubkey_file in "$PUBLIC_KEYS_DIR"/*.pem; do
+      # Skip if no files match the pattern
+      [ -e "$pubkey_file" ] || continue
+      
+      # Extract key information using OpenSSL
+      key_data=$(openssl rsa -pubin -in "$pubkey_file" -text -noout 2>/dev/null)
+      
+      if [ $? -ne 0 ]; then
+          echo "Warning: Skipping $pubkey_file (not a valid RSA public key)" >&2
+          continue
+      fi
+      
+      # Extract modulus (n) and exponent (e)
+      modulus_hex=$(openssl rsa -pubin -in "$pubkey_file" -modulus -noout | sed 's/Modulus=//')
+      exponent_dec=$(openssl rsa -pubin -in "$pubkey_file" -text -noout | grep "Exponent:" | awk '{print $2}')
+      
+      # Convert modulus to base64url
+      modulus_base64url=$(echo $modulus_hex | hex_to_base64url)
+      
+      # Convert exponent to hex and then to base64url
+      exponent_hex=$(printf '%x' $exponent_dec)
+      # Ensure even number of characters
+      if [ $((${#exponent_hex} % 2)) -eq 1 ]; then
+          exponent_hex="0$exponent_hex"
+      fi
+      exponent_base64url=$(echo $exponent_hex | hex_to_base64url)
+      
+      # Add comma before all keys except the first one
+      if [ "$first_key" = true ]; then
+          first_key=false
+      else
+          JWKS_DATA+=","
+      fi
+
+      kid=$(basename "$pubkey_file" | sed 's/-public\.[^.]*$//')
+      
+      # Add key entry to JWKS data
+      JWKS_DATA+=$(cat << EOF
+  {
+  "kty": "$KEY_TYPE",
+  "use": "$USE",
+  "alg": "$ALG",
+  "kid": "$kid",
+  "n": "$modulus_base64url",
+  "e": "$exponent_base64url"
+  }
+EOF
+)
+    done
+
+    # Close the JWKS structure
+    JWKS_DATA+='
+    ]
+    }'
+
+    # Check if any keys were processed
+    if [ "$first_key" = true ]; then
+        echo "Warning: No valid RSA public keys found in $PUBLIC_KEYS_DIR" >&2
+        JWKS_DATA='{
+    "keys": []
+    }'
+    fi
+
+    JWKS_DATA=$(echo "$JWKS_DATA" | tr -d '\n')
+
+    # Export the environment variable
+    export JWKS_DATA="$JWKS_DATA"
+    write_env JWKS_DATA "'${JWKS_DATA}'"
+}
+
 echo ""
 echo "🚀 DataLens auto production Docker Compose file generator..."
 
@@ -221,7 +395,7 @@ gen_sec US_MASTER_TOKEN 32
 echo "  - CONTROL_API_CRYPTO_KEY"
 gen_sec CONTROL_API_CRYPTO_KEY 32 base64
 
-COMPOSE_UP_SERVICES="control-api data-api us ui"
+COMPOSE_UP_SERVICES="control-api data-api us ui temporal"
 
 if [ "${IS_POSTGRES_EXTERNAL}" != "true" ]; then
   COMPOSE_UP_SERVICES="${COMPOSE_UP_SERVICES} postgres"
@@ -262,6 +436,13 @@ else
 
   write_env AUTH_ENABLED "false"
   write_env AUTH_TYPE "NONE"
+fi
+
+if [ "${IS_TEMPORAL_AUTH_ENABLED}" == "true" ]; then
+  export TEMPORAL_AUTH_ENABLED="1"
+  write_env TEMPORAL_AUTH_ENABLED "1"
+
+  gen_temporal_rsa_keys
 fi
 
 if [ "${IS_HC_ENABLED}" == "true" ]; then
