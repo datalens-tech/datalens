@@ -51,7 +51,7 @@ services:
       POSTGRES_DB_VISIBILITY: ${POSTGRES_DB_TEMPORAL_VISIBILITY:-pg-temporal-visibility-db}
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-postgres}"
       #
-      NAMESPACES: meta-manager,backend
+      NAMESPACES: meta-manager
     depends_on:
       postgres:
         condition: service_healthy
@@ -172,7 +172,7 @@ services:
   #
   meta-manager:
     container_name: datalens-meta-manager
-    image: ghcr.io/datalens-tech/datalens-meta-manager:0.0.0
+    image: ghcr.io/datalens-tech/datalens-meta-manager:0.22.0
     environment:
       APP_INSTALLATION: opensource
       APP_ENV: prod
@@ -184,7 +184,6 @@ services:
       POSTGRES_DSN_LIST: "postgres://${POSTGRES_USER:-pg-user}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB_META_MANAGER:-pg-meta-manager-db}${POSTGRES_ARGS:-}"
       #
       US_ENDPOINT: http://us:8080
-      BI_API_ENDPOINT: http://control-api:8080
       UI_API_ENDPOINT: http://ui-api:8080
       TEMPORAL_ENDPOINT: temporal:7233
       #
