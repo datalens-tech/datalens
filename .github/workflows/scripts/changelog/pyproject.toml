@@ -1,0 +1,10 @@
+[project]
+name = "changelog"
+version = "0.1.0"
+description = "Changelog gatherer utility"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "attrs>=25.3.0",
+    "requests>=2.32.3",
+]

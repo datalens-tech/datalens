@@ -1,0 +1,107 @@
+registry:
+  url: 'ghcr.io/datalens-tech'
+#
+release_version: '2.0.0'
+#
+ingress:
+  ip: null
+  enabled: true
+  domain: datalens.local
+  np: false
+  tls:
+    enabled: false
+    secret:
+      ref: null
+      crt: null
+      key: null
+#
+infra:
+  postgres:
+    enabled: true
+    resources:
+      requests:
+        cpu: 250m
+        memory: 128Mi
+      limits:
+        memory: 512Mi
+#
+application:
+  control_api:
+    replicas: 1
+    version: '0.2233.0'
+    resources:
+      requests:
+        cpu: 0.5
+        memory: 512Mi
+      limits:
+        memory: 1024Mi
+  data_api:
+    replicas: 1
+    version: '0.2233.0'
+    resources:
+      requests:
+        cpu: 1
+        memory: 512Mi
+      limits:
+        memory: 1024Mi
+  ui:
+    replicas: 1
+    version: '0.2789.0'
+    resources:
+      requests:
+        cpu: 0.25
+        memory: 256Mi
+      limits:
+        memory: 512Mi
+  us:
+    replicas: 1
+    version: '0.339.0'
+    resources:
+      requests:
+        cpu: 0.5
+        memory: 256Mi
+      limits:
+        memory: 512Mi
+  auth:
+    replicas: 1
+    version: '0.17.0'
+    resources:
+      requests:
+        cpu: 0.5
+        memory: 256Mi
+      limits:
+        memory: 512Mi
+#
+secrets:
+  ref: null
+  #
+  AUTH_TOKEN_PRIVATE_KEY: null
+  AUTH_TOKEN_PUBLIC_KEY: null
+  AUTH_ADMIN_PASSWORD: null
+  AUTH_MASTER_TOKEN: null
+  US_MASTER_TOKEN: null
+  CONTROL_API_CRYPTO_KEY: null
+  POSTGRES_PASSWORD: null
+#
+postgres:
+  POSTGRES_HOST: postgres-cip
+  POSTGRES_PORT: '5432'
+  POSTGRES_USER: pg-user
+  POSTGRES_DB_COMPENG: pg-compeng-db
+  POSTGRES_DB_US: pg-us-db
+  POSTGRES_DB_AUTH: pg-auth-db
+  POSTGRES_DB_DEMO: pg-demo-db
+#
+features:
+  auth:
+    enabled: true
+  demo:
+    enabled: true
+  hc:
+    enabled: false
+    endpoint: ''
+    protocol: ''
+  yandex_map:
+    enabled: false
+    token: ''
+#

@@ -24,13 +24,12 @@ jobs:
 
           UI_VERSION=$(echo "${VERSION_CONFIG}" | jq -r '.uiVersion')
           US_VERSION=$(echo "${VERSION_CONFIG}" | jq -r '.usVersion')
-          CONTROL_API_VERSION=$(echo "${VERSION_CONFIG}" | jq -r '.controlApiVersion')
-          DATA_API_VERSION=$(echo "${VERSION_CONFIG}" | jq -r '.dataApiVersion')
+          BACKEND_VERSION=$(echo "${VERSION_CONFIG}" | jq -r '.backendVersion')
 
           echo "UI_VERSION=$UI_VERSION" >> "$GITHUB_ENV"
           echo "US_VERSION=$US_VERSION" >> "$GITHUB_ENV"
-          echo "CONTROL_API_VERSION=$CONTROL_API_VERSION" >> "$GITHUB_ENV"
-          echo "DATA_API_VERSION=$DATA_API_VERSION" >> "$GITHUB_ENV"
+          echo "CONTROL_API_VERSION=$BACKEND_VERSION" >> "$GITHUB_ENV"
+          echo "DATA_API_VERSION=$BACKEND_VERSION" >> "$GITHUB_ENV"
 
       - uses: actions/checkout@v4
         with:
@@ -65,9 +64,9 @@ jobs:
         if: always()
         working-directory: ./datalens-ui
         run: |
-            echo "export report from docker run"
-            rm -rf ./tests/artifacts
-            npm run test:e2e:docker:report
+          echo "export report from docker run"
+          rm -rf ./tests/artifacts
+          npm run test:e2e:docker:report
         env:
           US_VERSION: ${{ env.US_VERSION }}
           CONTROL_API_VERSION: ${{ env.CONTROL_API_VERSION }}
@@ -90,7 +89,7 @@ jobs:
         working-directory: ./datalens-ui
         run: |
           mkdir -p ./tests/artifacts
-          echo "reports/${{ github.head_ref || github.ref_name }}/${{ github.run_id }}/${{ github.run_attempt }}" > ./tests/artifacts/report-link
+          echo "${{ github.event.repository.name }}/reports/${{ github.head_ref || github.ref_name }}/${{ github.run_id }}/${{ github.run_attempt }}" > ./tests/artifacts/report-link
           echo "${{ github.event.pull_request.number }}" > ./tests/artifacts/report-pr
 
       - uses: actions/upload-artifact@v4

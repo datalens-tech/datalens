@@ -1,0 +1,26 @@
+{{ if .Values.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: datalens-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: app-ui-service
+            port:
+              name: http
+{{- if .Values.ingress.domain }}
+    host: {{ .Values.ingress.domain }}
+{{- end }}
+{{- if .Values.ingress.tls.enabled }}
+  tls:
+    - hosts:
+        - {{ .Values.ingress.domain }}
+      secretName: {{ default "ingress-tls-secret" .Values.ingress.tls.secret.ref}}
+{{- end }}
+{{ end }}

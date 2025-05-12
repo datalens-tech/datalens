@@ -1,0 +1,73 @@
+ARG POSTGRES_VERSION=16
+
+FROM postgres:${POSTGRES_VERSION}
+
+ENV PYTHONUNBUFFERED=1
+
+ENV POSTGRES_INITDB_ARGS='--encoding=UTF-8 --lc-collate=en_US.utf8 --lc-ctype=en_US.utf8'
+
+ENV HC=0
+
+ENV POSTGRES_HOST='localhost'
+ENV POSTGRES_PORT='5432'
+ENV POSTGRES_USER='pg-user'
+
+ENV POSTGRES_DB_COMPENG='pg-compeng-db'
+ENV POSTGRES_DB_AUTH='pg-auth-db'
+ENV POSTGRES_DB_US='pg-us-db'
+ENV POSTGRES_DB_DEMO='pg-demo-db'
+ENV POSTGRES_DB_META_MANAGER='pg-meta-manager-db'
+ENV POSTGRES_DB_TEMPORAL='pg-temporal-db'
+ENV POSTGRES_DB_TEMPORAL_VISIBILITY='pg-temporal-visibility-db'
+
+ENV POSTGRES_DUMP_FORMAT='custom'
+ENV POSTGRES_DUMP_SKIP_CONFLICT='true'
+ENV POSTGRES_DUMP_CLEAR_META='false'
+
+ENV INIT_DB_DEMO='true'
+ENV INIT_DB_AUTH='true'
+ENV INIT_DB_META_MANAGER='true'
+ENV INIT_DB_TEMPORAL='true'
+
+ENV DEMO_DATA_SLEEP='3'
+ENV DEMO_DATA_NAME='OpenSource Demo'
+ENV INIT_DEMO_DATA='true'
+
+ENV INIT_EXTERNAL_POSTGRES='false'
+
+RUN apt update && apt upgrade -y && apt install -y bash curl python3 python3-cryptography
+
+RUN ln -s /usr/bin/python3 /usr/bin/python
+
+RUN apt -y autoremove && \
+  apt clean && \
+  rm -rf /var/lib/apt/lists/*
+
+COPY ./init-postgres.sh /docker-entrypoint-initdb.d/init-postgres.sh
+
+COPY ./init-db-auth.sh /init/init-db-auth.sh
+COPY ./init-db-meta-manager.sh /init/init-db-meta-manager.sh
+COPY ./init-db-temporal.sh /init/init-db-temporal.sh
+COPY ./init-db-demo.sh /init/init-db-demo.sh
+
+COPY ./seed-demo-data.sh /init/seed-demo-data.sh
+
+COPY ./us-dump.sh /init/us-dump.sh
+COPY ./us-restore.sh /init/us-restore.sh
+
+COPY ./crypto.py /init/crypto.py
+
+RUN chmod +x /docker-entrypoint-initdb.d/init-postgres.sh && \
+  chmod +x /init/init-db-auth.sh && \
+  chmod +x /init/init-db-meta-manager.sh && \
+  chmod +x /init/init-db-temporal.sh && \
+  chmod +x /init/init-db-demo.sh && \
+  chmod +x /init/seed-demo-data.sh && \
+  chmod +x /init/us-dump.sh && \
+  chmod +x /init/us-restore.sh
+
+# fix postgres password listen override
+RUN sed -i 's|_main() {|_main() {\n        export PGPORT="\${PGPORT:-\$POSTGRES_PORT}"|' /usr/local/bin/docker-entrypoint.sh
+
+# demo data
+COPY ./demo-data/ /init/demo-data/

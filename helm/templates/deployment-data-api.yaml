@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: datalens-data-api
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: app-data-api
+spec:
+  replicas: {{ .Values.application.data_api.replicas }}
+  selector:
+    matchLabels:
+      app: app-data-api
+  template:
+    metadata:
+      labels:
+        app: app-data-api
+    spec:
+      containers:
+        - name: app-data-api
+          image: "{{ .Values.registry.url }}/datalens-data-api:{{ .Values.application.data_api.version }}"
+          ports:
+            - containerPort: 8080
+          env:
+            - name: GUNICORN_WORKERS_COUNT
+              value: '5'
+            - name: RQE_FORCE_OFF
+              value: '1'
+            - name: CACHES_ON
+              value: '0'
+            - name: MUTATIONS_CACHES_ON
+              value: '0'
+            - name: RQE_SECRET_KEY
+              value: ''
+            - name: DL_CRY_ACTUAL_KEY_ID
+              value: KEY
+            - name: BI_COMPENG_PG_ON
+              value: '1'
+            - name: US_HOST
+              value: http://app-us-cip:8080
+            - name: DL_CRY_KEY_VAL_ID_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default "datalens-secrets" .Values.secrets.ref }}
+                  key: CONTROL_API_CRYPTO_KEY
+            - name: BI_COMPENG_PG_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default "datalens-secrets" .Values.secrets.ref }}
+                  key: POSTGRES_DSN_LIST_COMPENG
+            - name: US_MASTER_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default "datalens-secrets" .Values.secrets.ref }}
+                  key: US_MASTER_TOKEN
+            - name: AUTH__TYPE
+              value: "NATIVE"
+            - name: AUTH__JWT_ALGORITHM
+              value: "PS256"
+            - name: AUTH__JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: datalens-secrets
+                  key: AUTH_TOKEN_PUBLIC_KEY
+          resources:
+            requests:
+              cpu: {{ .Values.application.data_api.resources.requests.cpu }}
+              memory: {{ .Values.application.data_api.resources.requests.memory }}
+            limits:
+              memory: {{ .Values.application.data_api.resources.limits.memory }}

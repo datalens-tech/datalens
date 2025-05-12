@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: datalens-control-api
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: app-control-api
+spec:
+  replicas: {{ .Values.application.control_api.replicas }}
+  selector:
+    matchLabels:
+      app: app-control-api
+  template:
+    metadata:
+      labels:
+        app: app-control-api
+    spec:
+      containers:
+        - name: app-control-api
+          image: "{{ .Values.registry.url }}/datalens-control-api:{{ .Values.application.control_api.version }}"
+          ports:
+            - containerPort: 8080
+          env:
+            - name: BI_API_UWSGI_WORKERS_COUNT
+              value: '4'
+            - name: CONNECTOR_AVAILABILITY_VISIBLE
+              value: clickhouse,postgres,chyt,ydb,mysql,greenplum,mssql,appmetrica_api,metrika_api
+            - name: RQE_FORCE_OFF
+              value: '1'
+            - name: DL_CRY_ACTUAL_KEY_ID
+              value: KEY
+            - name: RQE_SECRET_KEY
+              value: ''
+            - name: US_HOST
+              value: http://app-us-cip:8080
+            - name: DL_CRY_KEY_VAL_ID_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default "datalens-secrets" .Values.secrets.ref }}
+                  key: CONTROL_API_CRYPTO_KEY
+            - name: US_MASTER_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default "datalens-secrets" .Values.secrets.ref }}
+                  key: US_MASTER_TOKEN
+            - name: AUTH__TYPE
+              value: "NATIVE"
+            - name: AUTH__JWT_ALGORITHM
+              value: "PS256"
+            - name: AUTH__JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default "datalens-secrets" .Values.secrets.ref }}
+                  key: AUTH_TOKEN_PUBLIC_KEY
+          resources:
+            requests:
+              cpu: {{ .Values.application.control_api.resources.requests.cpu }}
+              memory: {{ .Values.application.control_api.resources.requests.memory }}
+            limits:
+              memory: {{ .Values.application.control_api.resources.limits.memory }}

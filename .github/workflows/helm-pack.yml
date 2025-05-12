@@ -1,0 +1,36 @@
+name: Helm pack
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'helm/*'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  REGISTRY: ghcr.io
+  OCI_NAME: datalens-tech/helm
+
+jobs:
+  run:
+    name: helm
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/setup-helm@v4.3.0
+      - uses: frenck/action-setup-yq@v1
+      - name: pack helm chart
+        run: |
+          HELM_CHART_VERSION=$(yq -r '.version' helm/Chart.yaml)
+          helm package helm --version "${HELM_CHART_VERSION}"
+          helm registry login ${{ env.REGISTRY }} --username ${{ github.actor }} --password ${{ secrets.GITHUB_TOKEN }}
+          helm push "datalens-${HELM_CHART_VERSION}.tgz" oci://${{ env.REGISTRY }}/${{ env.OCI_NAME }}

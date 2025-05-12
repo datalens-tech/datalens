@@ -5,21 +5,24 @@ on:
     inputs:
       dl_back_version:
         type: string
-        description: "datalens-backend version"
+        description: 'datalens-backend version'
       dl_ui_version:
         type: string
-        description: "datalens-ui version"
+        description: 'datalens-ui version'
       dl_us_version:
         type: string
-        description: "datalens-us version"
+        description: 'datalens-us version'
+      dl_auth_version:
+        type: string
+        description: 'datalens-auth version'
       release_type:
         type: choice
-        description: "Release type"
+        description: 'Release type'
         options:
-          - "major"
-          - "minor"
-          - "patch"
-        default: "minor"
+          - 'major'
+          - 'minor'
+          - 'patch'
+        default: 'minor'
 
 permissions:
   contents: write
@@ -27,7 +30,7 @@ permissions:
 
 jobs:
   run:
-    name: "Create release"
+    name: 'Create release'
     runs-on: ubuntu-latest
     outputs:
       branch: ${{ steps.create_branch.outputs.branch }}
@@ -35,13 +38,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: "${{ github.event.inputs.branch }}"
+          ref: '${{ github.event.inputs.branch }}'
           fetch-depth: 0
 
       - name: Setup python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: '3.10'
 
       - name: Install python dependencies
         working-directory: .github/workflows/scripts/changelog
@@ -53,19 +56,24 @@ jobs:
           dl_back_version=${{ github.event.inputs.dl_back_version }}
           dl_ui_version=${{ github.event.inputs.dl_ui_version }}
           dl_us_version=${{ github.event.inputs.dl_us_version }}
+          dl_auth_version=${{ github.event.inputs.dl_auth_version }}
 
           result=""
 
-          if [[ -n "${dl_back_version}" ]]; then
+          if [ -n "${dl_back_version}" ]; then
             result="datalens-backend:${dl_back_version}"
           fi
 
-          if [[ -n "${dl_ui_version}" ]]; then
+          if [ -n "${dl_ui_version}" ]; then
             result="$result datalens-ui:${dl_ui_version}"
           fi
 
-          if [[ -n "${dl_us_version}" ]]; then
+          if [ -n "${dl_us_version}" ]; then
             result="$result datalens-us:${dl_us_version}"
+          fi
+
+          if [ -n "${dl_auth_version}" ]; then
+            result="$result datalens-auth:${dl_auth_version}"
           fi
 
           echo "versions_input=${result}" | tee -a $GITHUB_OUTPUT
@@ -110,7 +118,7 @@ jobs:
         run: |
           git add CHANGELOG.md versions-config.json
           git commit --message "DataLens release v${{ steps.gather_changelog.outputs.release_version }}"
-          git push origin ${{ steps.create_branch.outputs.branch }} 
+          git push origin ${{ steps.create_branch.outputs.branch }}
 
       - name: Create PR
         env:
@@ -124,12 +132,12 @@ jobs:
             If the description needs changing, do not edit the description manually, instead edit the \`CHANGELOG.md\` file in this PR and the release will be updated automatically.
             
             When you are ready to confirm this release, merge this PR and publish the release (in that order, to keep release tags consistent)."
-          
+
           pr_link=$(gh pr create \
             --title "Release DataLens v${{ steps.gather_changelog.outputs.release_version }}" \
             --body "$pr_body" \
             --base main \
             --head ${{ steps.create_branch.outputs.branch }} \
             --draft)
-          
+
           echo "::notice title=Created PR::$pr_link"

@@ -1,0 +1,40 @@
+name: Update git tags
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    name: git
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: get version config
+        run: |
+          VERSION_CONFIG=$(cat ./versions-config.json)
+
+          UI_VERSION=$(echo "${VERSION_CONFIG}" | jq -r '.uiVersion')
+
+          echo "UI_VERSION=$UI_VERSION" >> "$GITHUB_ENV"
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          repository: datalens-tech/datalens-ui
+          path: ./datalens-ui
+          ref: v${{ env.UI_VERSION }}
+          token: ${{ secrets.GH_TOKEN }}
+      - name: update release tag
+        working-directory: ./datalens-ui
+        run: |
+          git tag -f release v${{ env.UI_VERSION }}
+          git push origin release --force

@@ -1,0 +1,52 @@
+{{- if and .Values.features.demo.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: datalens-demo-data
+  namespace: {{ .Release.Namespace }}
+  labels:
+    job-name: datalens-demo-data
+  annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-delete-policy: hook-succeeded,before-hook-creation
+spec:
+  template:
+    metadata:
+      labels:
+        job-name: datalens-demo-data
+    spec:
+      containers:
+        - name: job-demo-data
+          image: "{{ .Values.registry.url }}/datalens-postgres:16"
+          command: ["/init/seed-demo-data.sh"]
+          env:
+            - name: CONTROL_API_CRYPTO_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default "datalens-secrets" .Values.secrets.ref }}
+                  key: CONTROL_API_CRYPTO_KEY
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default "datalens-secrets" .Values.secrets.ref }}
+                  key: POSTGRES_PASSWORD
+            - name: US_ENDPOINT
+              value: http://app-us-cip:8080
+            - name: POSTGRES_HOST
+              value: {{ .Values.postgres.POSTGRES_HOST }}
+            - name: POSTGRES_PORT
+              value: {{ .Values.postgres.POSTGRES_PORT | quote }}
+            - name: POSTGRES_USER
+              value: {{ .Values.postgres.POSTGRES_USER }}
+            - name: POSTGRES_DB_US
+              value: {{ .Values.postgres.POSTGRES_DB_US }}
+            - name: POSTGRES_DB_DEMO
+              value: {{ .Values.postgres.POSTGRES_DB_DEMO }}
+            {{ if .Values.features.hc.enabled }}
+            - name: "HC"
+              value: "1"
+            {{ end }}
+      restartPolicy: OnFailure
+  activeDeadlineSeconds: 600
+  backoffLimit: 10
+{{- end }}
