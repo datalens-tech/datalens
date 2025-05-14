@@ -49,8 +49,6 @@ else
   exit 1
 fi
 
-docker --log-level error compose cp "${RESTORE_FILE}" "postgres:/tmp/datalens_db.dump"
-
 echo ""
 
 RESTORE_ARGS=""
@@ -64,9 +62,19 @@ if [ "${IS_RESTORE_DEMO}" == "true" ]; then
   RESTORE_ARGS="${RESTORE_ARGS} --demo"
 fi
 
-docker --log-level error compose exec postgres /init/us-restore.sh --root-user ${RESTORE_ARGS}
+if docker compose ps --services postgres | grep -q -s postgres; then
+  docker --log-level error compose cp "${RESTORE_FILE}" "postgres:/tmp/datalens_db.dump"
+  docker --log-level error compose exec postgres /init/us-restore.sh --root-user ${RESTORE_ARGS}
+else
+  echo "Running restore command for external PostgreSQL..."
+  echo ""
+  RESTORE_FILE=$(realpath "${RESTORE_FILE}")
+  docker --log-level error compose run --volume "${RESTORE_FILE}:/tmp/datalens_db.dump" --rm --entrypoint /init/us-restore.sh postgres --root-user ${RESTORE_ARGS}
+fi
 
 EXIT="$?"
+
+echo ""
 
 if [ "${EXIT}" != "0" ]; then
   echo "Restore error, exit..."

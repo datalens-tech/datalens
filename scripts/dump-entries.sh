@@ -20,9 +20,18 @@ if [ -z "${DUMP_FILE}" ]; then
   DUMP_FILE="./datalens_db.dump"
 fi
 
-docker --log-level error compose exec -T postgres /init/us-dump.sh >"${DUMP_FILE}"
+if docker compose ps --services postgres | grep -q -s postgres; then
+  docker --log-level error compose exec -T postgres /init/us-dump.sh >"${DUMP_FILE}"
+else
+  echo ""
+  echo "Running dump command for external PostgreSQL..."
+  echo ""
+  docker --log-level error compose run -T --rm --entrypoint /init/us-dump.sh postgres >"${DUMP_FILE}"
+fi
 
 EXIT="$?"
+
+echo ""
 
 if [ "${EXIT}" != "0" ]; then
   echo "Dump error, exit..."
