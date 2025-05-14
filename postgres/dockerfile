@@ -55,6 +55,8 @@ COPY ./seed-demo-data.sh /init/seed-demo-data.sh
 COPY ./us-dump.sh /init/us-dump.sh
 COPY ./us-restore.sh /init/us-restore.sh
 
+COPY ./utils.sh /init/utils.sh
+
 COPY ./crypto.py /init/crypto.py
 
 RUN chmod +x /docker-entrypoint-initdb.d/init-postgres.sh && \
@@ -64,9 +66,10 @@ RUN chmod +x /docker-entrypoint-initdb.d/init-postgres.sh && \
   chmod +x /init/init-db-demo.sh && \
   chmod +x /init/seed-demo-data.sh && \
   chmod +x /init/us-dump.sh && \
-  chmod +x /init/us-restore.sh
+  chmod +x /init/us-restore.sh && \
+  chmod +x /init/utils.sh
 
-# fix postgres password listen override
+# fix postgres port listen override
 RUN sed -i 's|_main() {|_main() {\n        export PGPORT="\${PGPORT:-\$POSTGRES_PORT}"|' /usr/local/bin/docker-entrypoint.sh
 
 # demo data
