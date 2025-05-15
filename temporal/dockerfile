@@ -6,7 +6,7 @@ FROM temporalio/server:${TEMPORAL_VERSION}
 
 USER root
 
-RUN apk add --no-cache postgresql-client
+RUN apk add --update --no-cache postgresql-client
 
 COPY --from=temporal-setup /usr/local/bin/temporal-sql-tool /usr/local/bin/temporal-sql-tool
 RUN rm -rf /etc/temporal/schema
@@ -29,7 +29,7 @@ ENV DB='postgres12'
 
 ENV DEFAULT_NAMESPACE_RETENTION='24h'
 ENV SKIP_NAMESPACES_CREATION='false'
-ENV NAMESPACES='default'
+ENV NAMESPACES='ui,us,backend'
 
 ENV POSTGRES_HOST='postgres'
 ENV POSTGRES_PORT='5432'
