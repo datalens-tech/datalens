@@ -10,7 +10,7 @@ services:
 
   temporal:
     extends:
-      file: docker-compose.yaml
+      file: docker-compose.wip.yaml
       service: temporal
     depends_on:
       postgres:
@@ -67,7 +67,7 @@ services:
 
   ui-api:
     extends:
-      file: docker-compose.yaml
+      file: docker-compose.wip.yaml
       service: ui-api
     depends_on:
       - us
@@ -78,10 +78,13 @@ services:
 
   meta-manager:
     extends:
-      file: docker-compose.yaml
+      file: docker-compose.wip.yaml
       service: meta-manager
     depends_on:
-      - temporal
+      temporal:
+        condition: service_healthy
+      ui-api:
+        condition: service_started
     ports:
       - 3050:8080
     networks:

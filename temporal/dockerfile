@@ -16,10 +16,12 @@ COPY --from=temporal-setup /etc/temporal/schema/postgresql/v12/visibility/versio
 COPY ./setup-temporal.sh /etc/temporal/setup-temporal.sh
 COPY ./init-namespaces.sh /etc/temporal/init-namespaces.sh
 COPY ./init-temporal.sh /etc/temporal/init-temporal.sh
+COPY ./healthcheck.sh /etc/temporal/healthcheck.sh
 
 RUN chmod +x /etc/temporal/setup-temporal.sh && \
   chmod +x /etc/temporal/init-namespaces.sh && \
-  chmod +x /etc/temporal/init-temporal.sh
+  chmod +x /etc/temporal/init-temporal.sh && \
+  chmod +x /etc/temporal/healthcheck.sh
 
 USER temporal
 
@@ -39,5 +41,7 @@ ENV POSTGRES_DB_VISIBILITY='pg-temporal-visibility-db'
 ENV POSTGRES_TLS_ENABLED='false'
 ENV POSTGRES_TLS_DISABLE_HOST_VERIFICATION='true'
 ENV POSTGRES_CONNECT_ATTRIBUTES=''
+
+HEALTHCHECK --interval=5s --start-period=5s --retries=10 CMD ["/etc/temporal/healthcheck.sh"]
 
 ENTRYPOINT ["/etc/temporal/init-temporal.sh"]
