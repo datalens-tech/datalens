@@ -22,7 +22,7 @@ services:
 
   temporal-ui:
     container_name: datalens-temporal-ui
-    image: temporalio/ui:2.34.0
+    image: ghcr.io/datalens-tech/temporal-ui:2.34.0
     environment:
       TEMPORAL_ADDRESS: temporal:7233
     depends_on:
