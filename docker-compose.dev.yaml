@@ -115,7 +115,7 @@ services:
       file: docker-compose.yaml
       service: ui
     # TODO: remove override after release
-    image: ghcr.io/datalens-tech/datalens-ui:0.2839.0
+    image: ghcr.io/datalens-tech/datalens-ui:0.2917.0
     depends_on:
       - us
     networks:
