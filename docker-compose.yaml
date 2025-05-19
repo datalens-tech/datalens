@@ -165,14 +165,21 @@ services:
       AUTH_ENDPOINT: http://auth:8080
       BI_API_ENDPOINT: http://control-api:8080
       BI_DATA_ENDPOINT: http://data-api:8080
+      META_MANAGER_ENDPOINT: http://meta-manager:8080
       #
       US_MASTER_TOKEN: ${US_MASTER_TOKEN:-us-master-token}
       #
       RELEASE_VERSION: '2.0.0'
       #
       HC: ${HC:-0}
+      HC_ENDPOINT: ${HC_ENDPOINT:-}
+      HC_PROTOCOL: ${HC_PROTOCOL:-}
+      HC_MODULES: ${HC_MODULES:-}
+      #
       YANDEX_MAP_ENABLED: ${YANDEX_MAP_ENABLED:-0}
       YANDEX_MAP_TOKEN: ${YANDEX_MAP_TOKEN:-}
+      #
+      EXPORT_WORKBOOK_ENABLED: ${EXPORT_WORKBOOK_ENABLED:-false}
       #
       AUTH_ENABLED: ${AUTH_ENABLED:-true}
       AUTH_MASTER_TOKEN: ${AUTH_MASTER_TOKEN:-auth-master-token}

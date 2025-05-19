@@ -8,10 +8,36 @@ services:
     networks:
       - default
 
+  temporal:
+    extends:
+      file: docker-compose.wip.yaml
+      service: temporal
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - 7233:7233
+    networks:
+      - default
+
+  temporal-ui:
+    container_name: datalens-temporal-ui
+    image: ghcr.io/datalens-tech/temporal-ui:2.34.0
+    environment:
+      TEMPORAL_ADDRESS: temporal:7233
+    depends_on:
+      - temporal
+    ports:
+      - 8233:8080
+    networks:
+      - default
+
   control-api:
     extends:
       file: docker-compose.yaml
       service: control-api
+    # TODO: remove override after release
+    image: ghcr.io/datalens-tech/datalens-control-api:0.2253.0
     ports:
       - 8010:8080
     networks:
@@ -21,6 +47,8 @@ services:
     extends:
       file: docker-compose.yaml
       service: data-api
+    # TODO: remove override after release
+    image: ghcr.io/datalens-tech/datalens-data-api:0.2253.0
     depends_on:
       postgres:
         condition: service_healthy
@@ -33,6 +61,8 @@ services:
     extends:
       file: docker-compose.yaml
       service: us
+    # TODO: remove override after release
+    image: ghcr.io/datalens-tech/datalens-us:0.350.0
     depends_on:
       postgres:
         condition: service_healthy
@@ -41,10 +71,37 @@ services:
     networks:
       - default
 
+  ui-api:
+    extends:
+      file: docker-compose.wip.yaml
+      service: ui-api
+    depends_on:
+      - us
+    ports:
+      - 3040:8080
+    networks:
+      - default
+
+  meta-manager:
+    extends:
+      file: docker-compose.wip.yaml
+      service: meta-manager
+    depends_on:
+      temporal:
+        condition: service_healthy
+      ui-api:
+        condition: service_started
+    ports:
+      - 3050:8080
+    networks:
+      - default
+
   auth:
     extends:
       file: docker-compose.yaml
       service: auth
+    # TODO: remove override after release
+    image: ghcr.io/datalens-tech/datalens-auth:0.20.0
     depends_on:
       postgres:
         condition: service_healthy
@@ -57,6 +114,8 @@ services:
     extends:
       file: docker-compose.yaml
       service: ui
+    # TODO: remove override after release
+    image: ghcr.io/datalens-tech/datalens-ui:0.2917.0
     depends_on:
       - us
     networks:
