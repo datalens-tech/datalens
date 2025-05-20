@@ -27,7 +27,7 @@ for NS in "${INIT_NAMESPACES[@]}"; do
 
   if ! temporal operator namespace describe "${NS}"; then
     echo "  [temporal-init-namespaces] create [${NS}] namespace..."
-    temporal operator namespace create --retention "${DEFAULT_NAMESPACE_RETENTION}" --description "Namespace for Temporal Server." "${NS}"
+    temporal operator namespace create --retention "${DEFAULT_NAMESPACE_RETENTION}" --description "Namespace for Temporal Server." -n "${NS}"
     echo "  [temporal-init-namespaces] namespace [${NS}] registration complete...."
   else
     echo "  [temporal-init-namespaces] namespace [${NS}] already registered, skip..."

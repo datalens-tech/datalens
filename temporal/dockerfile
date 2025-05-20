@@ -6,7 +6,7 @@ FROM temporalio/server:${TEMPORAL_VERSION}
 
 USER root
 
-RUN apk add --no-cache postgresql-client
+RUN apk add --no-cache postgresql-client openssl
 
 COPY --from=temporal-setup /usr/local/bin/temporal-sql-tool /usr/local/bin/temporal-sql-tool
 RUN rm -rf /etc/temporal/schema
@@ -14,11 +14,13 @@ COPY --from=temporal-setup /etc/temporal/schema/postgresql/v12/temporal/versione
 COPY --from=temporal-setup /etc/temporal/schema/postgresql/v12/visibility/versioned /etc/temporal/schema/visibility
 
 COPY ./setup-temporal.sh /etc/temporal/setup-temporal.sh
+COPY ./setup-auth-jwks.sh /etc/temporal/setup-auth-jwks.sh
 COPY ./init-namespaces.sh /etc/temporal/init-namespaces.sh
 COPY ./init-temporal.sh /etc/temporal/init-temporal.sh
 COPY ./healthcheck.sh /etc/temporal/healthcheck.sh
 
 RUN chmod +x /etc/temporal/setup-temporal.sh && \
+  chmod +x /etc/temporal/setup-auth-jwks.sh && \
   chmod +x /etc/temporal/init-namespaces.sh && \
   chmod +x /etc/temporal/init-temporal.sh && \
   chmod +x /etc/temporal/healthcheck.sh
@@ -29,9 +31,10 @@ ENV TEMPORAL_PORT='7233'
 
 ENV DB='postgres12'
 
+ENV NUM_HISTORY_SHARDS='512'
 ENV DEFAULT_NAMESPACE_RETENTION='24h'
 ENV SKIP_NAMESPACES_CREATION='false'
-ENV NAMESPACES='default'
+ENV NAMESPACES='meta-manager'
 
 ENV POSTGRES_HOST='postgres'
 ENV POSTGRES_PORT='5432'

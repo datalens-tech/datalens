@@ -57,7 +57,7 @@ if [ "${IS_RESET_ADMIN_PASSWORD}" == "true" ]; then
 
   SALT=$(openssl rand 16)
   SALT_HEX=$(echo -n "${SALT}" | od -A n -t x1 -v | tr -d ' \n')
-  SALT_BASE64URL=$(echo -n "${SALT}" | base64 | tr '+/' '-_' | tr -d '=')
+  SALT_BASE64URL=$(echo -n "${SALT}" | openssl enc -base64 -A | tr '+/' '-_' | tr -d '=')
 
   echo "  new admin password: ${PASSWORD_VALUE}"
 
@@ -72,7 +72,7 @@ if [ "${IS_RESET_ADMIN_PASSWORD}" == "true" ]; then
       -kdfopt "pass:${PASSWORD_VALUE}" -kdfopt "hexsalt:${SALT_HEX}" \
       -kdfopt "n:${COST_ITERATIONS}" -kdfopt "r:${BLOCK_SIZE}" -kdfopt "p:${PARALLELIZATION}" \
       -kdfopt "maxmem_bytes:${MAX_MEMORY_BYTES}" \
-      -binary scrypt | base64 | tr '+/' '-_' | tr -d '='
+      -binary scrypt | openssl enc -base64 -A | tr '+/' '-_' | tr -d '='
   )
 
   PASSWORD_HASH="${SALT_BASE64URL}:${KEY_BASE64URL}"
