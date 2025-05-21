@@ -12,6 +12,8 @@ services:
     extends:
       file: docker-compose.yaml
       service: temporal
+    environment:
+      TEMPORAL_AUTH_ENABLED: false
     depends_on:
       postgres:
         condition: service_healthy
@@ -25,6 +27,7 @@ services:
     image: ghcr.io/datalens-tech/temporal-ui:2.34.0
     environment:
       TEMPORAL_ADDRESS: temporal:7233
+      TEMPORAL_AUTH_ENABLED: false
     depends_on:
       - temporal
     ports:

@@ -24,6 +24,15 @@ infra:
         memory: 128Mi
       limits:
         memory: 512Mi
+  temporal:
+    enabled: true
+    auth: true
+    resources:
+      requests:
+        cpu: 250m
+        memory: 128Mi
+      limits:
+        memory: 512Mi
 #
 application:
   control_api:
@@ -46,7 +55,16 @@ application:
         memory: 1024Mi
   ui:
     replicas: 1
-    version: '0.2920.0'
+    version: '0.2926.0'
+    resources:
+      requests:
+        cpu: 0.25
+        memory: 256Mi
+      limits:
+        memory: 512Mi
+  ui-api:
+    replicas: 1
+    version: '0.2926.0'
     resources:
       requests:
         cpu: 0.25
@@ -71,10 +89,15 @@ application:
         memory: 256Mi
       limits:
         memory: 512Mi
-  ui-api:
-    version: 0.2920.0
   meta-manager:
-    version: 0.31.0
+    replicas: 1
+    version: '0.31.0'
+    resources:
+      requests:
+        cpu: 0.5
+        memory: 256Mi
+      limits:
+        memory: 512Mi
 #
 secrets:
   ref: null
@@ -108,4 +131,6 @@ features:
   yandex_map:
     enabled: false
     token: ''
+  export:
+    enabled: true
 #
