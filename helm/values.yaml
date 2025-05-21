@@ -1,7 +1,7 @@
 registry:
   url: 'ghcr.io/datalens-tech'
 #
-release_version: '2.0.0'
+release_version: '2.2.0'
 #
 ingress:
   ip: null
@@ -71,6 +71,10 @@ application:
         memory: 256Mi
       limits:
         memory: 512Mi
+  ui-api:
+    version: 0.2920.0
+  meta-manager:
+    version: 0.31.0
 #
 secrets:
   ref: null
