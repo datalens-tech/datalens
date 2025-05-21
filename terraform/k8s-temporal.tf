@@ -105,8 +105,8 @@ resource "kubernetes_service" "temporal_service" {
     }
     port {
       name        = "http"
-      port        = 8080
-      target_port = 8080
+      port        = 7233
+      target_port = 7233
       protocol    = "TCP"
     }
     type = "ClusterIP"
