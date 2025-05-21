@@ -4,6 +4,7 @@
 - datalens-auth: 0.17.0 -> 0.20.0 ([full changelog](https://github.com/datalens-tech/datalens-auth/compare/v0.17.0...v0.20.0))
 - datalens-control-api: 0.2233.0 -> 0.2253.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2233.0...v0.2253.0))
 - datalens-data-api: 0.2233.0 -> 0.2253.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2233.0...v0.2253.0))
+- datalens-meta-manager: 0.0.0 -> 0.29.0 ([full changelog](https://github.com/datalens-tech/datalens-meta-manager/compare/v0.0.0...v0.29.0))
 - datalens-ui: 0.2789.0 -> 0.2920.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.2789.0...v0.2920.0))
 - datalens-us: 0.339.0 -> 0.350.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.339.0...v0.350.0))
 
