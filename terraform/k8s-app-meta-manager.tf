@@ -23,9 +23,6 @@ resource "kubernetes_deployment" "meta-manager" {
         }
       }
       spec {
-        image_pull_secrets {
-          name = "docker-registry-secret"
-        }
         container {
           image = "ghcr.io/datalens-tech/datalens-meta-manager:${local.meta_manager_version}"
           name  = "app-meta-manager"
