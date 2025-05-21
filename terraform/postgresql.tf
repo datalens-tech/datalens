@@ -117,6 +117,19 @@ locals {
     local.is_create_temporal_service ? [local.pg_temporal_user] : []
   )
 
+  pg_databases = merge(
+    {
+      for _, user in local.pg_users : replace(user, "-user", "-db") => {
+        user = user
+      }
+    },
+    local.is_create_temporal_service ? {
+      replace(local.pg_temporal_user, "-user", "-visibility-db") = {
+        user = local.pg_temporal_user
+      }
+    } : {}
+  )
+
   pg_db_extension = [
     "pg_trgm",
     "btree_gin",
@@ -149,13 +162,32 @@ resource "yandex_mdb_postgresql_user" "this" {
   conn_limit = 80
 }
 
+moved {
+  from = yandex_mdb_postgresql_database.this["pg-us-user"]
+  to   = yandex_mdb_postgresql_database.this["pg-us-db"]
+}
+
+moved {
+  from = yandex_mdb_postgresql_database.this["pg-compeng-user"]
+  to   = yandex_mdb_postgresql_database.this["pg-compeng-db"]
+}
+
+moved {
+  from = yandex_mdb_postgresql_database.this["pg-auth-user"]
+  to   = yandex_mdb_postgresql_database.this["pg-auth-db"]
+}
+
+moved {
+  from = yandex_mdb_postgresql_database.this["pg-demo-user"]
+  to   = yandex_mdb_postgresql_database.this["pg-demo-db"]
+}
+
 resource "yandex_mdb_postgresql_database" "this" {
-  for_each = toset(local.pg_users)
+  for_each = local.pg_databases
 
-  name = replace(each.key, "-user", "-db")
-
+  name       = each.key
   cluster_id = yandex_mdb_postgresql_cluster.this.id
-  owner      = yandex_mdb_postgresql_user.this[each.key].name
+  owner      = yandex_mdb_postgresql_user.this[each.value.user].name
 
   lc_collate = "en_US.UTF-8"
   lc_type    = "en_US.UTF-8"

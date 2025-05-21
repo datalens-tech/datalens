@@ -139,20 +139,20 @@ resource "yandex_lockbox_secret_version" "this" {
   }
 
   dynamic "entries" {
-    for_each = local.pg_users
+    for_each = local.pg_databases
 
     content {
-      key        = "POSTGRES_DSN_CLUSTER_${upper(replace(replace(replace(entries.value, "pg-", ""), "-user", ""), "-", "_"))}"
-      text_value = "postgres://${entries.value}:${random_password.pg_password[entries.value].result}@${local.pg_cluster_host}:${local.pg_cluster_port}/${yandex_mdb_postgresql_database.this[entries.value].name}"
+      key        = "POSTGRES_DSN_CLUSTER_${upper(replace(replace(replace(entries.key, "pg-", ""), "-db", ""), "-", "_"))}"
+      text_value = "postgres://${entries.value.user}:${random_password.pg_password[entries.value.user].result}@${local.pg_cluster_host}:${local.pg_cluster_port}/${yandex_mdb_postgresql_database.this[entries.key].name}"
     }
   }
 
   dynamic "entries" {
-    for_each = local.pg_users
+    for_each = local.pg_databases
 
     content {
-      key        = "POSTGRES_DSN_LIST_${upper(replace(replace(replace(entries.value, "pg-", ""), "-user", ""), "-", "_"))}"
-      text_value = join(",", [for host in local.pg_hosts : "postgres://${entries.value}:${random_password.pg_password[entries.value].result}@${host}:${local.pg_cluster_port}/${yandex_mdb_postgresql_database.this[entries.value].name}"])
+      key        = "POSTGRES_DSN_LIST_${upper(replace(replace(replace(entries.key, "pg-", ""), "-db", ""), "-", "_"))}"
+      text_value = join(",", [for host in local.pg_hosts : "postgres://${entries.value.user}:${random_password.pg_password[entries.value.user].result}@${host}:${local.pg_cluster_port}/${yandex_mdb_postgresql_database.this[entries.key].name}"])
     }
   }
 
