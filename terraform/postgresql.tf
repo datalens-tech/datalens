@@ -99,18 +99,22 @@ resource "yandex_mdb_postgresql_cluster" "this" {
 }
 
 locals {
-  pg_us_user      = "pg-us-user"
-  pg_compeng_user = "pg-compeng-user"
-  pg_auth_user    = "pg-auth-user"
-  pg_demo_user    = "pg-demo-user"
+  pg_us_user           = "pg-us-user"
+  pg_compeng_user      = "pg-compeng-user"
+  pg_auth_user         = "pg-auth-user"
+  pg_demo_user         = "pg-demo-user"
+  pg_meta_manager_user = "pg-meta-manager-user"
+  pg_temporal_user     = "pg-temporal-user"
 
   pg_users = concat(
     [
       local.pg_us_user,
       local.pg_compeng_user,
       local.pg_auth_user,
+      local.pg_meta_manager_user,
     ],
-    local.is_create_demo_db ? [local.pg_demo_user] : []
+    local.is_create_demo_db ? [local.pg_demo_user] : [],
+    local.is_create_temporal_service ? [local.pg_temporal_user] : []
   )
 
   pg_db_extension = [

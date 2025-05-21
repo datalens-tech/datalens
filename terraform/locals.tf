@@ -9,11 +9,12 @@ locals {
 locals {
   service = "datalens-opensource"
 
-  versions        = jsondecode(file("${path.module}/../versions-config.json"))
-  ui_version      = local.versions["uiVersion"]
-  us_version      = local.versions["usVersion"]
-  auth_version    = local.versions["authVersion"]
-  backend_version = local.versions["backendVersion"]
+  versions             = jsondecode(file("${path.module}/../versions-config.json"))
+  ui_version           = local.versions["uiVersion"]
+  us_version           = local.versions["usVersion"]
+  auth_version         = local.versions["authVersion"]
+  meta_manager_version = local.versions["metaManagerVersion"]
+  backend_version      = local.versions["backendVersion"]
 
   profile   = var.PROFILE
   cloud_id  = var.CLOUD_ID
@@ -27,6 +28,9 @@ locals {
   # auto create demo db with demo data and demo entries in us db
   is_create_demo_db   = true
   is_create_demo_data = false
+
+  # auto create temporal service
+  is_create_temporal_service = true
 
   # auto create dns zone in cloud
   is_create_dns_zone = false
