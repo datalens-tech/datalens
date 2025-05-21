@@ -65,7 +65,7 @@ resource "kubernetes_deployment" "ui-api" {
           }
           env {
             name  = "APP_MODE"
-            value = "full"
+            value = "api"
           }
           env {
             name  = "AUTH_POLICY"
