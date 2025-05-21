@@ -54,11 +54,11 @@ resource "kubernetes_deployment" "temporal" {
           }
           env {
             name  = "POSTGRES_DB"
-            value = "prod"
+            value = replace(local.pg_temporal_user, "-user", "-db")
           }
           env {
             name  = "POSTGRES_DB_VISIBILITY"
-            value = "prod"
+            value = replace(local.pg_temporal_user, "-user", "-visibility-db")
           }
           env {
             name  = "NAMESPACES"

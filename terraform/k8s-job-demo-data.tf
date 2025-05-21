@@ -64,7 +64,7 @@ resource "kubernetes_job" "postgresql_demo_data" {
           }
           env {
             name  = "POSTGRES_DB_US"
-            value = yandex_mdb_postgresql_database.this[local.pg_us_user].name
+            value = replace(local.pg_us_user, "-user", "-db")
           }
           env {
             name  = "POSTGRES_USER_DEMO"
@@ -72,7 +72,7 @@ resource "kubernetes_job" "postgresql_demo_data" {
           }
           env {
             name  = "POSTGRES_DB_DEMO"
-            value = yandex_mdb_postgresql_database.this[local.pg_demo_user].name
+            value = replace(local.pg_demo_user, "-user", "-db")
           }
         }
         restart_policy = "OnFailure"

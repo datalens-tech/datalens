@@ -159,7 +159,7 @@ resource "yandex_mdb_postgresql_user" "this" {
   name       = each.key
   password   = random_password.pg_password[each.key].result
 
-  conn_limit = 80
+  conn_limit = 60
 }
 
 moved {

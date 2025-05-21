@@ -171,7 +171,7 @@ services:
   #
   meta-manager:
     container_name: datalens-meta-manager
-    image: ghcr.io/datalens-tech/datalens-meta-manager:0.31.0
+    image: ghcr.io/datalens-tech/datalens-meta-manager:0.32.0
     environment:
       APP_INSTALLATION: opensource
       APP_ENV: prod
