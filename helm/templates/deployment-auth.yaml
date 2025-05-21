@@ -1,3 +1,4 @@
+{{- if and .Values.features.auth.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -73,3 +74,4 @@ spec:
               memory: {{ .Values.application.auth.resources.requests.memory }}
             limits:
               memory: {{ .Values.application.auth.resources.limits.memory }}
+{{- end }}

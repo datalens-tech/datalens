@@ -22,8 +22,10 @@ infra:
       requests:
         cpu: 250m
         memory: 128Mi
+        storage: 1Gi
       limits:
         memory: 512Mi
+        storage: 10Gi
   temporal:
     enabled: true
     auth: true
@@ -109,6 +111,9 @@ secrets:
   US_MASTER_TOKEN: null
   CONTROL_API_CRYPTO_KEY: null
   POSTGRES_PASSWORD: null
+  EXPORT_DATA_VERIFICATION_KEY: null
+  TEMPORAL_AUTH_PRIVATE_KEY: null
+  TEMPORAL_AUTH_PUBLIC_KEY: null
 #
 postgres:
   POSTGRES_HOST: postgres-cip
@@ -117,7 +122,10 @@ postgres:
   POSTGRES_DB_COMPENG: pg-compeng-db
   POSTGRES_DB_US: pg-us-db
   POSTGRES_DB_AUTH: pg-auth-db
+  POSTGRES_DB_META_MANAGER: pg-meta-manager-db
   POSTGRES_DB_DEMO: pg-demo-db
+  POSTGRES_DB_TEMPORAL: pg-temporal-db
+  POSTGRES_DB_TEMPORAL_VISIBILITY: pg-temporal-visibility-db
 #
 features:
   auth:
