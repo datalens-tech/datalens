@@ -66,7 +66,6 @@
 - **General components**: Add gallery store. [datalens-tech/datalens-ui#2494](https://github.com/datalens-tech/datalens-ui/pull/2494)
 
 ### Chores
-- Stop use UseMovePermAction feature. [datalens-tech/datalens-ui#2384](https://github.com/datalens-tech/datalens-ui/pull/2384)
 - Remove UseMovePermAction feature. [datalens-tech/datalens-ui#2386](https://github.com/datalens-tech/datalens-ui/pull/2386)
 
 ### Build
@@ -176,7 +175,7 @@ docker compose exec -T postgres psql --username pg-user --dbname pg-us-db -c "UP
 - **Auth**: Users by ids to schema, fix auth reload, fix get users list types response. [datalens-tech/datalens-ui#2122](https://github.com/datalens-tech/datalens-ui/pull/2122), [datalens-tech/datalens-ui#2136](https://github.com/datalens-tech/datalens-ui/pull/2136), [datalens-tech/datalens-ui#2175](https://github.com/datalens-tech/datalens-ui/pull/2175)
 - **Dashboards**: Add DialogRelations dash button with empty widget. [datalens-tech/datalens-ui#2198](https://github.com/datalens-tech/datalens-ui/pull/2198)
 - **Dashboards**: Make dash data optional if possible. [datalens-tech/datalens-ui#2257](https://github.com/datalens-tech/datalens-ui/pull/2257)
-  **Formula**: Optimize AGO by propagating date filters into lookup queries. [datalens-tech/datalens-backend#674](https://github.com/datalens-tech/datalens-backend/pull/674)
+- **Formula**: Optimize AGO by propagating date filters into lookup queries. [datalens-tech/datalens-backend#674](https://github.com/datalens-tech/datalens-backend/pull/674)
 
 ### Bug fixes
 - **Charts**: Fixes for displaying charts on mobile devices. [datalens-tech/datalens-ui#2114](https://github.com/datalens-tech/datalens-ui/pull/2114)
