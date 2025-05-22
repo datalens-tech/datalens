@@ -29,8 +29,10 @@ spec:
               value: full
             - name: AUTH_POLICY
               value: disabled
+            {{- if and .Values.features.auth.enabled }}
             - name: AUTH_ENABLED
               value: 'true'
+            {{- end }}
             - name: AUTH_ENDPOINT
               value: http://app-auth-cip:8080
             - name: US_ENDPOINT
@@ -39,6 +41,10 @@ spec:
               value: http://app-control-api-cip:8080
             - name: BI_DATA_ENDPOINT
               value: http://app-data-api-cip:8080
+            {{- if .Values.features.export.enabled }}
+            - name: META_MANAGER_ENDPOINT
+              value: http://app-meta-manager-cip:8080
+            {{- end }}
             {{- if .Values.features.hc.enabled }}
             - name: HC
               value: '1'
@@ -61,11 +67,19 @@ spec:
             - name: YANDEX_MAP_TOKEN
               value: {{ .Values.features.yandex_map.token }}
             {{- end }}
+            {{- if .Values.features.export.enabled }}
+            - name: EXPORT_WORKBOOK_ENABLED
+              value: '1'
+            {{- else}}
+            - name: EXPORT_WORKBOOK_ENABLED
+              value: '0'
+            {{- end }}
             - name: US_MASTER_TOKEN
               valueFrom:
                 secretKeyRef:
                   name: {{ default "datalens-secrets" .Values.secrets.ref }}
                   key: US_MASTER_TOKEN
+            {{- if and .Values.features.auth.enabled }}
             - name: AUTH_MASTER_TOKEN
               valueFrom:
                 secretKeyRef:
@@ -76,6 +90,7 @@ spec:
                 secretKeyRef:
                   name: {{ default "datalens-secrets" .Values.secrets.ref }}
                   key: AUTH_TOKEN_PUBLIC_KEY
+            {{- end }}
           resources:
             requests:
               cpu: {{ .Values.application.ui.resources.requests.cpu }}
