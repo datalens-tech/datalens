@@ -38,7 +38,7 @@ spec:
           - name: POSTGRES_DB_META_MANAGER
             value: {{ .Values.postgres.POSTGRES_DB_META_MANAGER }}
           {{- end }}
-          {{- if .Values.temporal.enabled }}
+          {{- if .Values.infra.temporal.enabled }}
           - name: POSTGRES_DB_TEMPORAL
             value: {{ .Values.postgres.POSTGRES_DB_TEMPORAL }}
           - name: POSTGRES_DB_TEMPORAL_VISIBILITY
