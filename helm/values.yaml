@@ -64,7 +64,7 @@ application:
         memory: 256Mi
       limits:
         memory: 512Mi
-  ui-api:
+  ui_api:
     replicas: 1
     version: '0.2933.0'
     resources:
@@ -91,7 +91,7 @@ application:
         memory: 256Mi
       limits:
         memory: 512Mi
-  meta-manager:
+  meta_manager:
     replicas: 1
     version: '0.32.0'
     resources:

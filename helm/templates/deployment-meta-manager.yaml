@@ -7,7 +7,7 @@ metadata:
   labels:
     app: app-meta-manager
 spec:
-  replicas: {{ .Values.application.meta-manager.replicas }}
+  replicas: {{ .Values.application.meta_manager.replicas }}
   selector:
     matchLabels:
       app: app-meta-manager
@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: app-meta-manager
-          image: "{{ .Values.registry.url }}/datalens-meta-manager:{{ .Values.application.meta-manager.version }}"
+          image: "{{ .Values.registry.url }}/datalens-meta-manager:{{ .Values.application.meta_manager.version }}"
           ports:
             - containerPort: 8080
           env:
@@ -74,8 +74,8 @@ spec:
             {{- end }}
           resources:
             requests:
-              cpu: {{ .Values.application.meta-manager.resources.requests.cpu }}
-              memory: {{ .Values.application.meta-manager.resources.requests.memory }}
+              cpu: {{ .Values.application.meta_manager.resources.requests.cpu }}
+              memory: {{ .Values.application.meta_manager.resources.requests.memory }}
             limits:
-              memory: {{ .Values.application.meta-manager.resources.limits.memory }}
+              memory: {{ .Values.application.meta_manager.resources.limits.memory }}
 {{- end }}
