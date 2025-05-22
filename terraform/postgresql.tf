@@ -162,26 +162,6 @@ resource "yandex_mdb_postgresql_user" "this" {
   conn_limit = 60
 }
 
-moved {
-  from = yandex_mdb_postgresql_database.this["pg-us-user"]
-  to   = yandex_mdb_postgresql_database.this["pg-us-db"]
-}
-
-moved {
-  from = yandex_mdb_postgresql_database.this["pg-compeng-user"]
-  to   = yandex_mdb_postgresql_database.this["pg-compeng-db"]
-}
-
-moved {
-  from = yandex_mdb_postgresql_database.this["pg-auth-user"]
-  to   = yandex_mdb_postgresql_database.this["pg-auth-db"]
-}
-
-moved {
-  from = yandex_mdb_postgresql_database.this["pg-demo-user"]
-  to   = yandex_mdb_postgresql_database.this["pg-demo-db"]
-}
-
 resource "yandex_mdb_postgresql_database" "this" {
   for_each = local.pg_databases
 
