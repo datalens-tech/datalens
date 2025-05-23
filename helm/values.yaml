@@ -1,7 +1,7 @@
 registry:
   url: 'ghcr.io/datalens-tech'
 #
-release_version: '2.0.0'
+release_version: '2.2.0'
 #
 ingress:
   ip: null
@@ -22,13 +22,24 @@ infra:
       requests:
         cpu: 250m
         memory: 128Mi
+        storage: 1Gi
+      limits:
+        memory: 512Mi
+        storage: 10Gi
+  temporal:
+    enabled: true
+    auth: true
+    resources:
+      requests:
+        cpu: 250m
+        memory: 128Mi
       limits:
         memory: 512Mi
 #
 application:
   control_api:
     replicas: 1
-    version: '0.2233.0'
+    version: '0.2273.1'
     resources:
       requests:
         cpu: 0.5
@@ -37,7 +48,7 @@ application:
         memory: 1024Mi
   data_api:
     replicas: 1
-    version: '0.2233.0'
+    version: '0.2273.1'
     resources:
       requests:
         cpu: 1
@@ -46,7 +57,16 @@ application:
         memory: 1024Mi
   ui:
     replicas: 1
-    version: '0.2789.0'
+    version: '0.2933.0'
+    resources:
+      requests:
+        cpu: 0.25
+        memory: 256Mi
+      limits:
+        memory: 512Mi
+  ui_api:
+    replicas: 1
+    version: '0.2933.0'
     resources:
       requests:
         cpu: 0.25
@@ -55,7 +75,7 @@ application:
         memory: 512Mi
   us:
     replicas: 1
-    version: '0.339.0'
+    version: '0.350.0'
     resources:
       requests:
         cpu: 0.5
@@ -64,13 +84,26 @@ application:
         memory: 512Mi
   auth:
     replicas: 1
-    version: '0.17.0'
+    version: '0.20.0'
     resources:
       requests:
         cpu: 0.5
         memory: 256Mi
       limits:
         memory: 512Mi
+  meta_manager:
+    replicas: 1
+    version: '0.32.0'
+    resources:
+      requests:
+        cpu: 0.5
+        memory: 256Mi
+      limits:
+        memory: 512Mi
+  ui-api:
+    version: 0.2933.0
+  meta-manager:
+    version: 0.32.0
 #
 secrets:
   ref: null
@@ -82,6 +115,9 @@ secrets:
   US_MASTER_TOKEN: null
   CONTROL_API_CRYPTO_KEY: null
   POSTGRES_PASSWORD: null
+  EXPORT_DATA_VERIFICATION_KEY: null
+  TEMPORAL_AUTH_PRIVATE_KEY: null
+  TEMPORAL_AUTH_PUBLIC_KEY: null
 #
 postgres:
   POSTGRES_HOST: postgres-cip
@@ -90,7 +126,10 @@ postgres:
   POSTGRES_DB_COMPENG: pg-compeng-db
   POSTGRES_DB_US: pg-us-db
   POSTGRES_DB_AUTH: pg-auth-db
+  POSTGRES_DB_META_MANAGER: pg-meta-manager-db
   POSTGRES_DB_DEMO: pg-demo-db
+  POSTGRES_DB_TEMPORAL: pg-temporal-db
+  POSTGRES_DB_TEMPORAL_VISIBILITY: pg-temporal-visibility-db
 #
 features:
   auth:
@@ -104,4 +143,6 @@ features:
   yandex_map:
     enabled: false
     token: ''
+  export:
+    enabled: true
 #

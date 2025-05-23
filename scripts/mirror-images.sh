@@ -28,7 +28,8 @@ for IMG in ${IMAGES_PULL}; do
   IMG_TARGET=$(
     echo "${IMG}" |
       sed -E 's|^.+/(.+):.+\.[0-9]{2}([0-9]+)-([0-9]+)-.+$|\1:\2.\3|' |
-      sed -E 's|temporalio/ui|temporal-ui|'
+      sed -E 's|temporalio/ui|temporal-ui|' |
+      sed -E 's|cr.fluentbit.io/fluent/||'
   )
 
   echo "  mirror start: [${IMG}] -> [${MIRROR_PREFIX}/${IMG_TARGET}]"

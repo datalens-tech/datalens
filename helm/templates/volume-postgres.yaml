@@ -1,4 +1,4 @@
-{{ if .Values.infra.postgres.enabled }}
+{{- if .Values.infra.postgres.enabled }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -8,7 +8,7 @@ spec:
     - ReadWriteOncePod
   resources:
     requests:
-      storage: 1Gi
+      storage: {{ .Values.infra.postgres.resources.requests.storage }}
     limits:
-      storage: 10Gi
-{{ end }}
+      storage: {{ .Values.infra.postgres.resources.limits.storage }}
+{{- end }}

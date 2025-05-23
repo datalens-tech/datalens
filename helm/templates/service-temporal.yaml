@@ -1,13 +1,13 @@
-{{- if .Values.infra.postgres.enabled }}
+{{- if .Values.infra.temporal.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres-cip
+  name: temporal-cip
 spec:
   selector:
-    app: postgres
+    app: temporal
   ports:
   - protocol: TCP
-    port: 5432
+    port: 7233
   clusterIP: None
 {{- end }}

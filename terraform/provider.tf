@@ -5,6 +5,14 @@ terraform {
       source  = "yandex-cloud/yandex"
       version = "0.124.0" # 16.07.2024
     }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "2.36.0"
+    }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "2.17.0"
+    }
   }
 
   backend "s3" {

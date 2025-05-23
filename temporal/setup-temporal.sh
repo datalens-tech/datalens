@@ -82,6 +82,4 @@ temporal-sql-tool \
   --tls-disable-host-verification="${POSTGRES_TLS_DISABLE_HOST_VERIFICATION}" \
   update-schema -d /etc/temporal/schema/visibility
 
-/etc/temporal/init-namespaces.sh &
-
 echo "  [temporal-setup] finish temporal setup..."

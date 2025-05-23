@@ -15,6 +15,9 @@ on:
       dl_auth_version:
         type: string
         description: 'datalens-auth version'
+      dl_meta_manager_version:
+        type: string
+        description: 'datalens-meta-manager version'
       release_type:
         type: choice
         description: 'Release type'
@@ -57,6 +60,7 @@ jobs:
           dl_ui_version=${{ github.event.inputs.dl_ui_version }}
           dl_us_version=${{ github.event.inputs.dl_us_version }}
           dl_auth_version=${{ github.event.inputs.dl_auth_version }}
+          dl_meta_manager_version=${{ github.event.inputs.dl_meta_manager_version }}
 
           result=""
 
@@ -74,6 +78,10 @@ jobs:
 
           if [ -n "${dl_auth_version}" ]; then
             result="$result datalens-auth:${dl_auth_version}"
+          fi
+
+          if [ -n "${dl_meta_manager_version}" ]; then
+            result="$result datalens-meta-manager:${dl_meta_manager_version}"
           fi
 
           echo "versions_input=${result}" | tee -a $GITHUB_OUTPUT

@@ -14,12 +14,14 @@ BACKEND_VERSION=$(yq -r '.backendVersion' ./versions-config.json)
 UI_VERSION=$(yq -r '.uiVersion' ./versions-config.json)
 US_VERSION=$(yq -r '.usVersion' ./versions-config.json)
 AUTH_VERSION=$(yq -r '.authVersion' ./versions-config.json)
+META_MANAGER_VERSION=$(yq -r '.metaManagerVersion' ./versions-config.json)
 
 echo "  release: ${RELEASE_VERSION}"
 echo "  backend: ${BACKEND_VERSION}"
 echo "  ui: ${UI_VERSION}"
 echo "  us: ${US_VERSION}"
 echo "  auth: ${AUTH_VERSION}"
+echo "  meta-manager: ${META_MANAGER_VERSION}"
 
 echo ""
 echo "  update helm values file: ./helm/values.yaml"
@@ -29,12 +31,15 @@ RELEASE_VERSION="${RELEASE_VERSION}" \
   UI_VERSION="${UI_VERSION}" \
   US_VERSION="${US_VERSION}" \
   AUTH_VERSION="${AUTH_VERSION}" \
+  META_MANAGER_VERSION="${META_MANAGER_VERSION}" \
   yq -i '
   .application.control_api.version = strenv(BACKEND_VERSION) |
   .application.data_api.version = strenv(BACKEND_VERSION) |
   .application.ui.version = strenv(UI_VERSION) |
+  .application.ui-api.version = strenv(UI_VERSION) |
   .application.us.version = strenv(US_VERSION) |
   .application.auth.version = strenv(AUTH_VERSION) |
+  .application.meta-manager.version = strenv(META_MANAGER_VERSION) |
   .release_version = strenv(RELEASE_VERSION)
 ' ./helm/values.yaml
 
@@ -52,11 +57,14 @@ RELEASE_VERSION="${RELEASE_VERSION}" \
   UI_IMAGE="ghcr.io/datalens-tech/datalens-ui:${UI_VERSION}" \
   US_IMAGE="ghcr.io/datalens-tech/datalens-us:${US_VERSION}" \
   AUTH_IMAGE="ghcr.io/datalens-tech/datalens-auth:${AUTH_VERSION}" \
+  META_MANAGER_IMAGE="ghcr.io/datalens-tech/datalens-meta-manager:${META_MANAGER_VERSION}" \
   yq -i '
   .services.control-api.image = strenv(CONTROL_API_IMAGE) |
   .services.data-api.image = strenv(DATA_API_IMAGE) |
   .services.ui.image = strenv(UI_IMAGE) |
+  .services.ui-api.image = strenv(UI_IMAGE) |
   .services.us.image = strenv(US_IMAGE) |
   .services.auth.image = strenv(AUTH_IMAGE) |
+  .services.meta-manager.image = strenv(META_MANAGER_IMAGE) |
   .services.ui.environment.RELEASE_VERSION = strenv(RELEASE_VERSION)
 ' ./docker-compose.yaml

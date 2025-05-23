@@ -24,9 +24,14 @@ POSTGRES_CERT=""
 IS_POSTGRES_EXTERNAL="false"
 IS_POSTGRES_SSL="false"
 
+IS_TEMPORAL_ENABLED="true"
+IS_TEMPORAL_AUTH_ENABLED="true"
+IS_WORKBOOK_EXPORT_ENABLED="true"
+
 IS_RUN_INIT_DEMO_DATA="false"
 
 IS_LEGACY_DOCKER_COMPOSE="false"
+IS_ALWAYS_IMAGE_PULL="true"
 
 YANDEX_MAP_TOKEN=""
 
@@ -58,8 +63,25 @@ for _ in "$@"; do
     IS_DEMO_ENABLED="false"
     shift # past argument with no value
     ;;
+  --disable-workbook-export)
+    IS_WORKBOOK_EXPORT_ENABLED="false"
+    shift # past argument with no value
+    ;;
+  --disable-always-image-pull)
+    IS_ALWAYS_IMAGE_PULL="false"
+    shift # past argument with no value
+    ;;
   --disable-auth)
     IS_AUTH_ENABLED="false"
+    shift # past argument with no value
+    ;;
+  --disable-temporal)
+    IS_TEMPORAL_ENABLED="false"
+    IS_WORKBOOK_EXPORT_ENABLED="false"
+    shift # past argument with no value
+    ;;
+  --disable-temporal-auth)
+    IS_TEMPORAL_AUTH_ENABLED="false"
     shift # past argument with no value
     ;;
   --postgres-external)
@@ -114,7 +136,7 @@ load_env() {
 }
 
 get_env() {
-  if grep -v "^#" "${ENV_FILE_PATH}" 2>/dev/null | grep -q -s "${1}="; then
+  if grep -v "^#" "${ENV_FILE_PATH}" 2>/dev/null | grep -q -s "^${1}="; then
     ENV_VAL=$(grep -v "^#" "${ENV_FILE_PATH}" | grep "${1}=" | sed "s|${1}=||" | tr -d ' ')
     echo "$ENV_VAL"
   fi
@@ -140,7 +162,7 @@ remove_env() {
   # shellcheck disable=SC2236
   if [ ! -z "$(get_env "$1")" ]; then
     ENV_CONTENT=$(cat "${ENV_FILE_PATH}")
-    echo "$ENV_CONTENT" | grep -v "${1}=" >"${ENV_FILE_PATH}"
+    echo "$ENV_CONTENT" | grep -v "^${1}=" >"${ENV_FILE_PATH}"
   fi
   return 0
 }
@@ -152,7 +174,7 @@ gen_sec() {
 
   if [ "${FORMAT}" == "base64" ]; then
     # shellcheck disable=SC2086
-    PASS=$(openssl rand -base64 ${ENV_LENGTH} | tr -dc a-zA-Z0-9 | head -c ${ENV_LENGTH} | openssl base64)
+    PASS=$(openssl rand -base64 ${ENV_LENGTH} | tr -dc a-zA-Z0-9 | head -c ${ENV_LENGTH} | openssl enc -base64 -A)
     write_env "${ENV_KEY}" "\"${PASS}\""
   elif [ "${FORMAT}" == "rsa" ]; then
     PRIVATE=$(openssl genpkey -algorithm RSA -pkeyopt "rsa_keygen_bits:${ENV_LENGTH}" 2>/dev/null)
@@ -178,7 +200,11 @@ if [ "${IS_HELP}" == "true" ]; then
   echo "  --yandex-map - enable Yandex Maps visualization type"
   echo "  --yandex-map-token <token> - provide token for Yandex Maps API"
   echo "  --disable-demo - disable demo data initialization"
+  echo "  --disable-workbook-export - disable workbook export to JSON feature"
   echo "  --disable-auth - disable authentication service"
+  echo "  --disable-temporal - disable temporal workflow service"
+  echo "  --disable-temporal-auth - disable JWT auth for temporal service"
+  echo "  --disable-always-image-pull - disable always pull policy for images at deployment"
   echo "  --postgres-external - disable built-in PostgreSQL service"
   echo "  --postgres-ssl - set SSL mode to [verify-full] for PostgreSQL connection"
   echo "  --postgres-cert <path> - set path to SSL certificate file for PostgreSQL connection"
@@ -202,7 +228,11 @@ echo "  --hc - enable Highcharts library"
 echo "  --yandex-map - enable Yandex Maps visualization type"
 echo "  --yandex-map-token <token> - provide token for Yandex Maps API"
 echo "  --disable-demo - disable demo data initialization"
+echo "  --disable-workbook-export - disable workbook export to JSON feature"
 echo "  --disable-auth - disable authentication service"
+echo "  --disable-temporal - disable temporal workflow service"
+echo "  --disable-temporal-auth - disable JWT auth for temporal service"
+echo "  --disable-always-image-pull - disable always pull policy for images at deployment"
 echo "  --postgres-external - disable built-in PostgreSQL service"
 echo "  --postgres-ssl - set SSL mode to [verify-full] for PostgreSQL connection"
 echo "  --postgres-cert <path> - set path to SSL certificate file for PostgreSQL connection"
@@ -234,6 +264,30 @@ if [ ! -z "${POSTGRES_CERT}" ] && [ -f "${POSTGRES_CERT}" ]; then
 elif [ "${IS_POSTGRES_SSL}" == "true" ]; then
   export POSTGRES_ARGS="?sslmode=verify-full"
   write_env POSTGRES_ARGS "\"${POSTGRES_ARGS}\""
+fi
+
+if [ "${IS_WORKBOOK_EXPORT_ENABLED}" == "true" ]; then
+  echo "  - EXPORT_DATA_VERIFICATION_KEY"
+  gen_sec EXPORT_DATA_VERIFICATION_KEY 32
+fi
+
+if [ "${IS_TEMPORAL_ENABLED}" == "true" ] && [ "${IS_TEMPORAL_AUTH_ENABLED}" == "true" ]; then
+  echo "  - TEMPORAL_AUTH [RSA 4096]"
+  gen_sec TEMPORAL_AUTH 4096 rsa
+
+  remove_env TEMPORAL_AUTH_ENABLED
+  unset TEMPORAL_AUTH_ENABLED
+else
+  export TEMPORAL_AUTH_ENABLED="false"
+
+  export TEMPORAL_AUTH_PUBLIC_KEY="-"
+  export TEMPORAL_AUTH_PRIVATE_KEY="-"
+
+  write_env TEMPORAL_AUTH_ENABLED "false"
+fi
+
+if [ "${IS_TEMPORAL_ENABLED}" == "true" ]; then
+  COMPOSE_UP_SERVICES="${COMPOSE_UP_SERVICES} temporal"
 fi
 
 if [ "${IS_AUTH_ENABLED}" == "true" ]; then
@@ -280,6 +334,13 @@ if [ "${IS_DEMO_ENABLED}" != "true" ]; then
   write_env INIT_DEMO_DATA "0"
 fi
 
+if [ "${IS_WORKBOOK_EXPORT_ENABLED}" != "true" ]; then
+  export EXPORT_WORKBOOK_ENABLED="0"
+  write_env EXPORT_WORKBOOK_ENABLED "0"
+else
+  COMPOSE_UP_SERVICES="${COMPOSE_UP_SERVICES} meta-manager ui-api"
+fi
+
 # shellcheck disable=SC2236
 if [ ! -z "${DOMAIN}" ]; then
   if [ "${IS_HTTPS}" == "true" ]; then
@@ -297,6 +358,10 @@ fi
 # shellcheck disable=SC2236
 if [ ! -z "${UI_APP_ENDPOINT}" ]; then
   write_env UI_APP_ENDPOINT "\"${UI_APP_ENDPOINT}\"" force
+fi
+
+if [ "${IS_ALWAYS_IMAGE_PULL}" != "true" ]; then
+  export IMAGE_PULL_POLICY="missing"
 fi
 
 if [ "${IS_RUN_INIT_DEMO_DATA}" == "true" ]; then

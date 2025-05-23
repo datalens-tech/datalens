@@ -1,11 +1,11 @@
-{{- if and .Values.features.auth.enabled }}
+{{- if and .Values.features.export.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: app-auth-cip
+  name: app-meta-manager-cip
 spec:
   selector:
-    app: app-auth
+    app: app-meta-manager
   ports:
   - protocol: TCP
     port: 8080

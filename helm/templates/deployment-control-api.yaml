@@ -43,6 +43,7 @@ spec:
                 secretKeyRef:
                   name: {{ default "datalens-secrets" .Values.secrets.ref }}
                   key: US_MASTER_TOKEN
+            {{- if and .Values.features.auth.enabled }}
             - name: AUTH__TYPE
               value: "NATIVE"
             - name: AUTH__JWT_ALGORITHM
@@ -52,6 +53,10 @@ spec:
                 secretKeyRef:
                   name: {{ default "datalens-secrets" .Values.secrets.ref }}
                   key: AUTH_TOKEN_PUBLIC_KEY
+            {{- else }}
+            - name: AUTH__TYPE
+              value: "NONE"
+            {{- end }}
           resources:
             requests:
               cpu: {{ .Values.application.control_api.resources.requests.cpu }}

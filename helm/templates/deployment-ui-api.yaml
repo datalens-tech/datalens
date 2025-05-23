@@ -1,0 +1,41 @@
+{{- if and .Values.features.export.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: datalens-ui-api
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: app-ui-api
+spec:
+  replicas: {{ .Values.application.ui_api.replicas }}
+  selector:
+    matchLabels:
+      app: app-ui-api
+  template:
+    metadata:
+      labels:
+        app: app-ui-api
+    spec:
+      containers:
+        - name: app-ui-api
+          image: "{{ .Values.registry.url }}/datalens-ui:{{ .Values.application.ui.version }}"
+          ports:
+            - containerPort: 8080
+          env:
+            - name: APP_INSTALLATION
+              value: opensource
+            - name: APP_ENV
+              value: production
+            - name: APP_MODE
+              value: api
+            - name: US_ENDPOINT
+              value: http://app-us-cip:8080
+            - name: BI_API_ENDPOINT
+              value: http://app-control-api-cip:8080
+          resources:
+            requests:
+              cpu: {{ .Values.application.ui_api.resources.requests.cpu }}
+              memory: {{ .Values.application.ui_api.resources.requests.memory }}
+            limits:
+              memory: {{ .Values.application.ui_api.resources.limits.memory }}
+{{- end }}

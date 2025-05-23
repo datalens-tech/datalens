@@ -74,8 +74,10 @@ locals {
     { key = "US_MASTER_TOKEN", length = 32 },
     { key = "AUTH_MASTER_TOKEN", length = 32 },
     { key = "AUTH_ADMIN_PASSWORD", length = 32 },
+    { key = "EXPORT_DATA_VERIFICATION_KEY", length = 32 },
     { key = "CONTROL_API_CRYPTO_KEY", length = 32, type = "base64" },
     { key = "AUTH_TOKEN", length = 4096, type = "rsa" },
+    { key = "TEMPORAL_AUTH", length = 4096, type = "rsa" },
   ]
 }
 
@@ -137,11 +139,20 @@ resource "yandex_lockbox_secret_version" "this" {
   }
 
   dynamic "entries" {
-    for_each = local.pg_users
+    for_each = local.pg_databases
 
     content {
-      key        = "POSTGRES_DSN_CLUSTER_${upper(replace(replace(entries.value, "pg-", ""), "-user", ""))}"
-      text_value = "postgres://${entries.value}:${random_password.pg_password[entries.value].result}@${local.pg_cluster_host}:${local.pg_cluster_port}/${yandex_mdb_postgresql_database.this[entries.value].name}"
+      key        = "POSTGRES_DSN_CLUSTER_${upper(replace(replace(replace(entries.key, "pg-", ""), "-db", ""), "-", "_"))}"
+      text_value = "postgres://${entries.value.user}:${random_password.pg_password[entries.value.user].result}@${local.pg_cluster_host}:${local.pg_cluster_port}/${yandex_mdb_postgresql_database.this[entries.key].name}"
+    }
+  }
+
+  dynamic "entries" {
+    for_each = local.pg_databases
+
+    content {
+      key        = "POSTGRES_DSN_LIST_${upper(replace(replace(replace(entries.key, "pg-", ""), "-db", ""), "-", "_"))}"
+      text_value = join(",", [for host in local.pg_hosts : "postgres://${entries.value.user}:${random_password.pg_password[entries.value.user].result}@${host}:${local.pg_cluster_port}/${yandex_mdb_postgresql_database.this[entries.key].name}"])
     }
   }
 
@@ -149,16 +160,7 @@ resource "yandex_lockbox_secret_version" "this" {
     for_each = local.pg_users
 
     content {
-      key        = "POSTGRES_DSN_LIST_${upper(replace(replace(entries.value, "pg-", ""), "-user", ""))}"
-      text_value = join(",", [for host in local.pg_hosts : "postgres://${entries.value}:${random_password.pg_password[entries.value].result}@${host}:${local.pg_cluster_port}/${yandex_mdb_postgresql_database.this[entries.value].name}"])
-    }
-  }
-
-  dynamic "entries" {
-    for_each = local.pg_users
-
-    content {
-      key        = "POSTGRES_PASSWORD_${upper(replace(replace(entries.value, "pg-", ""), "-user", ""))}"
+      key        = "POSTGRES_PASSWORD_${upper(replace(replace(replace(entries.value, "pg-", ""), "-user", ""), "-", "_"))}"
       text_value = random_password.pg_password[entries.value].result
     }
   }

@@ -4,6 +4,7 @@
 [![datalens-us](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2Fdatalens-tech%2Fdatalens%2Fraw%2Fmain%2Fversions-config.json&query=%24.usVersion&label=us%20version)](https://github.com/datalens-tech/datalens/datalens-us)
 [![datalens-backend](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2Fdatalens-tech%2Fdatalens%2Fraw%2Fmain%2Fversions-config.json&query=%24.backendVersion&label=backend%20version)](https://github.com/datalens-tech/datalens/datalens-backend)
 [![datalens-auth](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2Fdatalens-tech%2Fdatalens%2Fraw%2Fmain%2Fversions-config.json&query=%24.authVersion&label=auth%20version)](https://github.com/datalens-tech/datalens/datalens-auth)
+[![datalens-meta-manager](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2Fdatalens-tech%2Fdatalens%2Fraw%2Fmain%2Fversions-config.json&query=%24.metaManagerVersion&label=meta-manager%20version)](https://github.com/datalens-tech/datalens/datalens-meta-manager)
 
 
 
@@ -119,14 +120,18 @@ For deployment in a Kubernetes cluster, you can use Helm chart from an OCI-compa
 First install Helm release:
 
 ```bash
-# generating rsa keys for auth service
+# generating rsa keys for auth service and temporal
 AUTH_TOKEN_PRIVATE_KEY=$(openssl genpkey -algorithm RSA -pkeyopt "rsa_keygen_bits:4096" 2>/dev/null)
 AUTH_TOKEN_PUBLIC_KEY=$(echo "${AUTH_TOKEN_PRIVATE_KEY}" | openssl rsa -pubout 2>/dev/null)
+TEMPORAL_AUTH_PRIVATE_KEY=$(openssl genpkey -algorithm RSA -pkeyopt "rsa_keygen_bits:4096" 2>/dev/null)
+TEMPORAL_AUTH_PUBLIC_KEY=$(echo "${TEMPORAL_AUTH_PRIVATE_KEY}" | openssl rsa -pubout 2>/dev/null)
 
 helm upgrade --install datalens oci://ghcr.io/datalens-tech/helm/datalens \
 --namespace datalens --create-namespace \
 --set "secrets.AUTH_TOKEN_PRIVATE_KEY=${AUTH_TOKEN_PRIVATE_KEY}" \
---set "secrets.AUTH_TOKEN_PUBLIC_KEY=${AUTH_TOKEN_PUBLIC_KEY}"
+--set "secrets.AUTH_TOKEN_PUBLIC_KEY=${AUTH_TOKEN_PUBLIC_KEY}" \
+--set "secrets.TEMPORAL_AUTH_PRIVATE_KEY=${TEMPORAL_AUTH_PRIVATE_KEY}" \
+--set "secrets.TEMPORAL_AUTH_PUBLIC_KEY=${TEMPORAL_AUTH_PUBLIC_KEY}"
 ```
 
 **Note:** Helm template engine does not provide built-in functions for creating private and public RSA keys.
@@ -147,6 +152,7 @@ DataLens consists of three main parts:
 - [**Backend**](https://github.com/datalens-tech/datalens-backend) is a set of Python applications and libraries. It is responsible for connecting to data sources, generating queries for them, and post-processing the data (including formula calculations). The result of this work is an abstract dataset that can be used in UI for charts data request.
 - [**UnitedStorage (US)**](https://github.com/datalens-tech/datalens-us) is a Node.js service that uses PostgreSQL to store metadata and configuration of all DataLens objects.
 - [**Auth**](https://github.com/datalens-tech/datalens-auth) is a Node.js service that provides authentication/authorization layer for DataLens.
+- [**MetaManager**](https://github.com/datalens-tech/datalens-meta-manager) is a Node.js service that provides workflow workers for export/import workbooks.
 
 ## What's already available
 
@@ -222,6 +228,9 @@ If you want to override default database names, you can specify it in environmen
 POSTGRES_DB_COMPENG='pg-compeng-db'
 POSTGRES_DB_AUTH='pg-auth-db'
 POSTGRES_DB_US='pg-us-db'
+POSTGRES_DB_META_MANAGER='pg-meta-manager-db'
+POSTGRES_DB_TEMPORAL='pg-temporal-db'
+POSTGRES_DB_TEMPORAL_VISIBILITY='pg-temporal-visibility-db'
 POSTGRES_DB_DEMO='pg-demo-db'
 ```
 
@@ -263,6 +272,36 @@ If you're using a managed database, it's also possible that extensions for your 
 #### Why do I see two compose files: docker-compose.yaml & docker-compose.dev.yaml?
 
 File `docker-compose.dev.yaml` is a special compose file that is needed only for development purposes. When you run DataLens in production mode, you always need to use `docker-compose.yaml` file or `./init.sh` script.
+
+#### How can I disable authentication?
+
+If you need to run DataLens without authentication (for development or testing purposes), you can use the `--disable-auth` flag with the init script:
+
+```bash
+./init.sh --disable-auth --up
+```
+
+This will generate a compose file without the authentication service, allowing direct access to DataLens without login credentials.
+
+#### How can I disable workbook export?
+
+If you want to disable the workbook export feature to save resources or simplify your deployment, use the `--disable-workbook-export` flag:
+
+```bash
+./init.sh --disable-workbook-export --up
+```
+
+This will disable the workbook export to JSON feature and remove the meta-manager and ui-api services from the deployment.
+
+#### How can I disable Temporal service for limited resources systems?
+
+For systems with limited resources, you can disable the Temporal workflow service using the `--disable-temporal` flag:
+
+```bash
+./init.sh --disable-temporal --up
+```
+
+This will remove the Temporal service from the deployment, which significantly reduces resource usage. Note that disabling Temporal will also automatically disable the workbook export feature, as it depends on Temporal workflows.
 
 #### What are the minimum system requirements?
 

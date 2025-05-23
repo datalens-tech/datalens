@@ -1,4 +1,4 @@
-{{ if .Values.infra.postgres.enabled }}
+{{- if .Values.infra.postgres.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -25,16 +25,30 @@ spec:
           - containerPort: 5432
         env:
           - name: POSTGRES_USER
-            value: {{ .Values.postgres.POSTGRES_USER  }}
+            value: {{ .Values.postgres.POSTGRES_USER }}
           - name: POSTGRES_DB_COMPENG
-            value: {{ .Values.postgres.POSTGRES_DB_COMPENG  }}
+            value: {{ .Values.postgres.POSTGRES_DB_COMPENG }}
           - name: POSTGRES_DB_US
-            value: {{ .Values.postgres.POSTGRES_DB_US  }}
+            value: {{ .Values.postgres.POSTGRES_DB_US }}
+          {{- if and .Values.features.auth.enabled }}
+          - name: POSTGRES_DB_AUTH
+            value: {{ .Values.postgres.POSTGRES_DB_AUTH }}
+          {{- end }}
+          {{- if and .Values.features.export.enabled }}
+          - name: POSTGRES_DB_META_MANAGER
+            value: {{ .Values.postgres.POSTGRES_DB_META_MANAGER }}
+          {{- end }}
+          {{- if .Values.infra.temporal.enabled }}
+          - name: POSTGRES_DB_TEMPORAL
+            value: {{ .Values.postgres.POSTGRES_DB_TEMPORAL }}
+          - name: POSTGRES_DB_TEMPORAL_VISIBILITY
+            value: {{ .Values.postgres.POSTGRES_DB_TEMPORAL_VISIBILITY }}
+          {{- end }}
           {{- if .Values.features.demo.enabled }}
           - name: INIT_DB_DEMO
             value: "true"
           - name: POSTGRES_DB_DEMO
-            value: {{ .Values.postgres.POSTGRES_DB_DEMO  }}
+            value: {{ .Values.postgres.POSTGRES_DB_DEMO }}
           {{- else }}
           - name: INIT_DB_DEMO
             value: "false"
@@ -68,4 +82,4 @@ spec:
       - name: postgres-volume
         persistentVolumeClaim:
           claimName: datalens-postgres-volume
-{{ end }}
+{{- end }}

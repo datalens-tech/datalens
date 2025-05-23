@@ -47,10 +47,21 @@
           "version_descriptor": "authVersion"
         }
       ]
+    },
+    {
+      "name": "datalens-meta-manager",
+      "url": "https://github.com/datalens-tech/datalens-meta-manager",
+      "images": [
+        {
+          "name": "datalens-meta-manager",
+          "version_descriptor": "metaManagerVersion"
+        }
+      ]
     }
   ],
   "changelog_include_label": "changelog",
   "include_root_repo_changes": true,
+  "release_version_descriptor": "releaseVersion",
   "images_versions_section": "Image versions",
   "other_changes_section": "Other",
   "single_section_title": "Changes",

@@ -26,8 +26,30 @@ if ! pg_isready --quiet -h "${POSTGRES_HOST}" -p "${POSTGRES_PORT}" -U "${POSTGR
   exit 1
 fi
 
+if [ "${TEMPORAL_AUTH_ENABLED}" == "true" ]; then
+  echo "[temporal] auth enabled, preparing jwt token for healthcheck..."
+
+  HEADER='{"alg":"RS256","typ":"JWT","kid":"temporal"}'
+  PAYLOAD='{"sub":"admin","iat":'$(date +%s)',"permissions":["temporal-system:admin"]}'
+
+  HEADER_BASE64URL=$(echo -n "${HEADER}" | openssl enc -base64 -A | tr '+/' '-_' | tr -d '=')
+  PAYLOAD_BASE64URL=$(echo -n "${PAYLOAD}" | openssl enc -base64 -A | tr '+/' '-_' | tr -d '=')
+  UNSIGNED_JWT="${HEADER_BASE64URL}.${PAYLOAD_BASE64URL}"
+
+  # shellcheck disable=SC2001
+  SIGN_JWT=$(
+    echo -n "${UNSIGNED_JWT}" |
+      openssl dgst -sha256 -sign <(echo "${TEMPORAL_AUTH_PRIVATE_KEY}" | sed 's|\\n|\n|g') |
+      openssl enc -base64 -A |
+      tr '+/' '-_' |
+      tr -d '='
+  )
+
+  TEMPORAL_AUTH_TOKEN="${UNSIGNED_JWT}.${SIGN_JWT}"
+fi
+
 # check temporal
-if ! temporal operator cluster health | grep -q -s SERVING; then
+if ! temporal operator cluster health --api-key "${TEMPORAL_AUTH_TOKEN}" | grep -q -s SERVING; then
   echo "[temporal-healthcheck] temporal cluster is not ready, exit..."
   exit 1
 fi
@@ -36,7 +58,7 @@ fi
 IFS=',' read -ra INIT_NAMESPACES <<<"${NAMESPACES}"
 
 for NS in "${INIT_NAMESPACES[@]}"; do
-  if ! temporal operator namespace describe "${NS}"; then
+  if ! temporal operator namespace describe -n "${NS}" --api-key "${TEMPORAL_AUTH_TOKEN}" >/dev/null; then
     echo "[temporal-healthcheck] temporal namespace [${NS}] is not found, exit..."
     exit 1
   fi
