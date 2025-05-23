@@ -4,9 +4,43 @@
 - datalens-auth: 0.17.0 -> 0.20.0 ([full changelog](https://github.com/datalens-tech/datalens-auth/compare/v0.17.0...v0.20.0))
 - datalens-control-api: 0.2233.0 -> 0.2253.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2233.0...v0.2253.0))
 - datalens-data-api: 0.2233.0 -> 0.2253.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2233.0...v0.2253.0))
-- datalens-meta-manager: 0.0.0 -> 0.31.0 ([full changelog](https://github.com/datalens-tech/datalens-meta-manager/compare/v0.0.0...v0.31.0))
-- datalens-ui: 0.2789.0 -> 0.2926.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.2789.0...v0.2926.0))
+- datalens-meta-manager: 0.0.0 -> 0.32.0 ([full changelog](https://github.com/datalens-tech/datalens-meta-manager/compare/v0.0.0...v0.32.0))
+- datalens-ui: 0.2789.0 -> 0.2933.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.2789.0...v0.2933.0))
 - datalens-us: 0.339.0 -> 0.350.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.339.0...v0.350.0))
+
+### 🆕 Workbook Import/Export
+
+DataLens introduces a new workbook import/export functionality that enables users to seamlessly transfer workbooks between different DataLens instances. This feature is built on:
+
+- **Meta-Manager**: A dedicated service that handles long-running tasks within DataLens, currently focused on workbook imports and exports.
+- **Temporal**: A reliable workflow orchestration platform that ensures operations complete successfully even in the event of system failures.
+
+This functionality can be disabled using the following args:
+- `--disable-temporal` - disables the Temporal service
+- `--disable-workbook-export` - disables the workbook export functionality
+
+#### ⚠️ Upgrade Guide
+
+If you're using an external PostgreSQL cluster and upgrading to a version with `meta-manager` and `temporal` service, you'll need to create additional databases:
+
+- **If you have root access to the PostgreSQL cluster**
+
+You can automatically create additional databases by running these commands:
+```sh
+docker compose run --rm --entrypoint init-db-temporal.sh postgres
+docker compose run --rm --entrypoint init-db-meta-manager.sh postgres
+```
+
+- **If you don't have root access**
+
+You'll need to manually create the following databases:
+  ```
+  POSTGRES_DB_META_MANAGER='pg-meta-manager-db'
+  POSTGRES_DB_TEMPORAL='pg-temporal-db'
+  POSTGRES_DB_TEMPORAL_VISIBILITY='pg-temporal-visibility-db'
+  ```
+
+- If you're using the built-in PostgreSQL in the Docker Compose setup, no additional action is required.
 
 ### New features
 - **Connectors**: Add TCPS for OracleDB connector. [datalens-tech/datalens-backend#913](https://github.com/datalens-tech/datalens-backend/pull/913)
@@ -33,7 +67,7 @@
 - **Charts**: Fix change field format. [datalens-tech/datalens-ui#2355](https://github.com/datalens-tech/datalens-ui/pull/2355)
 - **Charts**, **General components**, **Dashboards**: Fix long widget header and scroll in SplitPane. [datalens-tech/datalens-ui#2381](https://github.com/datalens-tech/datalens-ui/pull/2381)
 - **Navigation**: Fix styles for long text in user menu. [datalens-tech/datalens-ui#2371](https://github.com/datalens-tech/datalens-ui/pull/2371)
-- Fix IPv6 bind for images. [datalens-tech/datalens-backend#969](https://github.com/datalens-tech/datalens-backend/pull/969)
+- **Deploy**: Fix IPv6 bind for images. [datalens-tech/datalens-backend#969](https://github.com/datalens-tech/datalens-backend/pull/969)
 - **Dashboards**: Fix tabs connections for group_control. [datalens-tech/datalens-ui#2391](https://github.com/datalens-tech/datalens-ui/pull/2391)
 - **Connectors**: Unpin mssql binary dependencies. [datalens-tech/datalens-backend#973](https://github.com/datalens-tech/datalens-backend/pull/973)
 - **General components**: Change namings in palettes settings section. [datalens-tech/datalens-ui#2349](https://github.com/datalens-tech/datalens-ui/pull/2349)
