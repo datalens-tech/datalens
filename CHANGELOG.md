@@ -34,11 +34,11 @@ docker compose run --rm --entrypoint init-db-meta-manager.sh postgres
 - **If you don't have root access**
 
 You'll need to manually create the following databases:
-  ```
-  POSTGRES_DB_META_MANAGER='pg-meta-manager-db'
-  POSTGRES_DB_TEMPORAL='pg-temporal-db'
-  POSTGRES_DB_TEMPORAL_VISIBILITY='pg-temporal-visibility-db'
-  ```
+```sh
+POSTGRES_DB_META_MANAGER='pg-meta-manager-db'
+POSTGRES_DB_TEMPORAL='pg-temporal-db'
+POSTGRES_DB_TEMPORAL_VISIBILITY='pg-temporal-visibility-db'
+```
 
 - If you're using the built-in PostgreSQL in the Docker Compose setup, no additional action is required.
 
