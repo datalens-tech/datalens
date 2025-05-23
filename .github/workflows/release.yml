@@ -81,7 +81,7 @@ jobs:
           fi
 
           if [ -n "${dl_meta_manager_version}" ]; then
-            result="$result datalens-meta-manger:${dl_meta_manager_version}"
+            result="$result datalens-meta-manager:${dl_meta_manager_version}"
           fi
 
           echo "versions_input=${result}" | tee -a $GITHUB_OUTPUT

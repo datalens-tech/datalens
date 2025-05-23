@@ -1,4 +1,4 @@
-## v2.2.0 (2025-05-19)
+## v2.2.0 (2025-05-23)
 
 ### Image versions
 - datalens-auth: 0.17.0 -> 0.20.0 ([full changelog](https://github.com/datalens-tech/datalens-auth/compare/v0.17.0...v0.20.0))
@@ -60,6 +60,7 @@ POSTGRES_DB_TEMPORAL_VISIBILITY='pg-temporal-visibility-db'
 - **General components**: Add UsersSuggest component. [datalens-tech/datalens-ui#2437](https://github.com/datalens-tech/datalens-ui/pull/2437)
 - **General components**: Add EntrySuggest component. [datalens-tech/datalens-ui#2439](https://github.com/datalens-tech/datalens-ui/pull/2439)
 - **Charts**: Add table whiteSpace setting. [datalens-tech/datalens-ui#2452](https://github.com/datalens-tech/datalens-ui/pull/2452)
+- **Optimization**: Avoid double deserialization for cached datasets. [datalens-tech/datalens-backend#960](https://github.com/datalens-tech/datalens-backend/pull/960)
 
 ### Bug fixes
 - **Connectors**: Fix postgres COUNT_ITEM and LEN. [datalens-tech/datalens-backend#925](https://github.com/datalens-tech/datalens-backend/pull/925)
