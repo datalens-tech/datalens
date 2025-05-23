@@ -39,7 +39,7 @@ infra:
 application:
   control_api:
     replicas: 1
-    version: '0.2253.0'
+    version: '0.2273.1'
     resources:
       requests:
         cpu: 0.5
@@ -48,7 +48,7 @@ application:
         memory: 1024Mi
   data_api:
     replicas: 1
-    version: '0.2253.0'
+    version: '0.2273.1'
     resources:
       requests:
         cpu: 1
