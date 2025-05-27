@@ -331,6 +331,8 @@ if __name__ == "__main__":
     for repo in changelog_config["repositories"]:
         for img in repo.get("images", []):
             new_image_versions[img["version_descriptor"]] = IMG_VERSIONS_BY_NAME[img["name"]]["to"]
+    if changelog_config.get("release_version_descriptor", None):
+        new_image_versions[changelog_config["release_version_descriptor"]] = normalize_version(new_release)
     if not dry_run:
         with open(args.version_config_path, "w") as f:
             json.dump(new_image_versions, f, indent=4, sort_keys=True)

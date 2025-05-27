@@ -19,6 +19,7 @@ env:
   UI_IMAGE_NAME: datalens-tech/datalens-ui
   US_IMAGE_NAME: datalens-tech/datalens-us
   AUTH_IMAGE_NAME: datalens-tech/datalens-auth
+  META_MANAGER_IMAGE_NAME: datalens-tech/datalens-meta-manager
 
 jobs:
   run:
@@ -36,11 +37,13 @@ jobs:
           UI_VERSION=$(echo "${VERSION_CONFIG}" | jq -r '.uiVersion')
           US_VERSION=$(echo "${VERSION_CONFIG}" | jq -r '.usVersion')
           AUTH_VERSION=$(echo "${VERSION_CONFIG}" | jq -r '.authVersion')
+          META_MANAGER_VERSION=$(echo "${VERSION_CONFIG}" | jq -r '.metaManagerVersion')
 
           echo "BACKEND_VERSION=$BACKEND_VERSION" >> "$GITHUB_ENV"
           echo "UI_VERSION=$UI_VERSION" >> "$GITHUB_ENV"
           echo "US_VERSION=$US_VERSION" >> "$GITHUB_ENV"
           echo "AUTH_VERSION=$AUTH_VERSION" >> "$GITHUB_ENV"
+          echo "META_MANAGER_VERSION=$META_MANAGER_VERSION" >> "$GITHUB_ENV"
       - uses: docker/setup-buildx-action@v3
       - name: Login to the Container registry
         uses: docker/login-action@v3
@@ -53,6 +56,7 @@ jobs:
           docker buildx imagetools create --tag ${{ env.REGISTRY }}/${{ env.UI_IMAGE_NAME }}:release ${{ env.REGISTRY }}/${{ env.UI_IMAGE_NAME }}:${{ env.UI_VERSION }}
           docker buildx imagetools create --tag ${{ env.REGISTRY }}/${{ env.US_IMAGE_NAME }}:release ${{ env.REGISTRY }}/${{ env.US_IMAGE_NAME }}:${{ env.US_VERSION }}
           docker buildx imagetools create --tag ${{ env.REGISTRY }}/${{ env.AUTH_IMAGE_NAME }}:release ${{ env.REGISTRY }}/${{ env.AUTH_IMAGE_NAME }}:${{ env.AUTH_VERSION }}
+          docker buildx imagetools create --tag ${{ env.REGISTRY }}/${{ env.META_MANAGER_IMAGE_NAME }}:release ${{ env.REGISTRY }}/${{ env.META_MANAGER_IMAGE_NAME }}:${{ env.META_MANAGER_VERSION }}
           docker buildx imagetools create --tag ${{ env.REGISTRY }}/${{ env.UI_IMAGE_NAME }}:release-e2e ${{ env.REGISTRY }}/${{ env.UI_IMAGE_NAME }}:${{ env.UI_VERSION }}-e2e
           docker buildx imagetools create --tag ${{ env.REGISTRY }}/${{ env.CONTROL_API_IMAGE_NAME }}:release ${{ env.REGISTRY }}/${{ env.CONTROL_API_IMAGE_NAME }}:${{ env.BACKEND_VERSION }}
           docker buildx imagetools create --tag ${{ env.REGISTRY }}/${{ env.DATA_API_IMAGE_NAME }}:release ${{ env.REGISTRY }}/${{ env.DATA_API_IMAGE_NAME }}:${{ env.BACKEND_VERSION }}

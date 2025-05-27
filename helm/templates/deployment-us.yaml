@@ -45,6 +45,20 @@ spec:
                 secretKeyRef:
                   name: {{ default "datalens-secrets" .Values.secrets.ref }}
                   key: POSTGRES_DSN_LIST_US
+            {{- if and .Values.features.auth.enabled }}
+            - name: AUTH_ENABLED
+              value: 'true'
+            - name: AUTH_MASTER_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default "datalens-secrets" .Values.secrets.ref }}
+                  key: AUTH_MASTER_TOKEN
+            - name: AUTH_TOKEN_PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default "datalens-secrets" .Values.secrets.ref }}
+                  key: AUTH_TOKEN_PUBLIC_KEY
+            {{- end }}
           resources:
             requests:
               cpu: {{ .Values.application.us.resources.requests.cpu }}

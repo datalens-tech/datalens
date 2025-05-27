@@ -99,18 +99,35 @@ resource "yandex_mdb_postgresql_cluster" "this" {
 }
 
 locals {
-  pg_us_user      = "pg-us-user"
-  pg_compeng_user = "pg-compeng-user"
-  pg_auth_user    = "pg-auth-user"
-  pg_demo_user    = "pg-demo-user"
+  pg_us_user           = "pg-us-user"
+  pg_compeng_user      = "pg-compeng-user"
+  pg_auth_user         = "pg-auth-user"
+  pg_demo_user         = "pg-demo-user"
+  pg_meta_manager_user = "pg-meta-manager-user"
+  pg_temporal_user     = "pg-temporal-user"
 
   pg_users = concat(
     [
       local.pg_us_user,
       local.pg_compeng_user,
       local.pg_auth_user,
+      local.pg_meta_manager_user,
     ],
-    local.is_create_demo_db ? [local.pg_demo_user] : []
+    local.is_create_demo_db ? [local.pg_demo_user] : [],
+    local.is_create_temporal_service ? [local.pg_temporal_user] : []
+  )
+
+  pg_databases = merge(
+    {
+      for _, user in local.pg_users : replace(user, "-user", "-db") => {
+        user = user
+      }
+    },
+    local.is_create_temporal_service ? {
+      replace(local.pg_temporal_user, "-user", "-visibility-db") = {
+        user = local.pg_temporal_user
+      }
+    } : {}
   )
 
   pg_db_extension = [
@@ -142,16 +159,15 @@ resource "yandex_mdb_postgresql_user" "this" {
   name       = each.key
   password   = random_password.pg_password[each.key].result
 
-  conn_limit = 80
+  conn_limit = 60
 }
 
 resource "yandex_mdb_postgresql_database" "this" {
-  for_each = toset(local.pg_users)
+  for_each = local.pg_databases
 
-  name = replace(each.key, "-user", "-db")
-
+  name       = each.key
   cluster_id = yandex_mdb_postgresql_cluster.this.id
-  owner      = yandex_mdb_postgresql_user.this[each.key].name
+  owner      = yandex_mdb_postgresql_user.this[each.value.user].name
 
   lc_collate = "en_US.UTF-8"
   lc_type    = "en_US.UTF-8"

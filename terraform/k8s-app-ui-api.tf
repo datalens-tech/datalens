@@ -1,11 +1,11 @@
-resource "kubernetes_deployment" "ui" {
+resource "kubernetes_deployment" "ui-api" {
   for_each = toset(local.k8s_cluster_ready ? ["main"] : [])
 
   metadata {
-    name      = "ui"
+    name      = "ui-api"
     namespace = kubernetes_namespace.this.metadata[0].name
     labels = {
-      app = "app-ui"
+      app = "app-ui-api"
     }
   }
 
@@ -13,19 +13,19 @@ resource "kubernetes_deployment" "ui" {
     replicas = 3
     selector {
       match_labels = {
-        app = "app-ui"
+        app = "app-ui-api"
       }
     }
     template {
       metadata {
         labels = {
-          app = "app-ui"
+          app = "app-ui-api"
         }
       }
       spec {
         container {
           image = "ghcr.io/datalens-tech/datalens-ui:${local.ui_version}"
-          name  = "app-ui"
+          name  = "app-ui-api"
 
           port {
             container_port = 8080
@@ -65,7 +65,7 @@ resource "kubernetes_deployment" "ui" {
           }
           env {
             name  = "APP_MODE"
-            value = "full"
+            value = "api"
           }
           env {
             name  = "AUTH_POLICY"
@@ -79,77 +79,29 @@ resource "kubernetes_deployment" "ui" {
             name  = "BI_API_ENDPOINT"
             value = "http://control-api-cip:8080"
           }
-          env {
-            name  = "BI_DATA_ENDPOINT"
-            value = "http://data-api-cip:8080"
-          }
-          env {
-            name  = "META_MANAGER_ENDPOINT"
-            value = "http://meta-manager-cip:8080"
-          }
-          env {
-            name  = "EXPORT_WORKBOOK_ENABLED"
-            value = "true"
-          }
-          env {
-            name  = "AUTH_ENABLED"
-            value = "true"
-          }
-          env {
-            name  = "AUTH_ENDPOINT"
-            value = "http://auth-cip:8080"
-          }
-          env {
-            name = "AUTH_TOKEN_PUBLIC_KEY"
-            value_from {
-              secret_key_ref {
-                name = "k8s-lockbox-secret"
-                key  = "AUTH_TOKEN_PUBLIC_KEY"
-              }
-            }
-          }
-          env {
-            name = "US_MASTER_TOKEN"
-            value_from {
-              secret_key_ref {
-                name = "k8s-lockbox-secret"
-                key  = "US_MASTER_TOKEN"
-              }
-            }
-          }
-          env {
-            name = "AUTH_MASTER_TOKEN"
-            value_from {
-              secret_key_ref {
-                name = "k8s-lockbox-secret"
-                key  = "AUTH_MASTER_TOKEN"
-              }
-            }
-          }
         }
       }
     }
   }
 }
 
-resource "kubernetes_service" "ui_service" {
+resource "kubernetes_service" "ui-api_service" {
   for_each = toset(local.k8s_cluster_ready ? ["main"] : [])
 
   metadata {
-    name      = "ui-np"
+    name      = "ui-api-cip"
     namespace = kubernetes_namespace.this.metadata[0].name
   }
   spec {
     selector = {
-      app = "app-ui"
+      app = "app-ui-api"
     }
     port {
       name        = "http"
       port        = 8080
       target_port = 8080
       protocol    = "TCP"
-      node_port   = 30080
     }
-    type = "NodePort"
+    type = "ClusterIP"
   }
 }

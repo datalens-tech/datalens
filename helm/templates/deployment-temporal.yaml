@@ -1,0 +1,60 @@
+{{- if .Values.infra.temporal.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: datalens-temporal
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: temporal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: temporal
+  template:
+    metadata:
+      labels:
+        app: temporal
+    spec:
+      containers:
+        - name: temporal
+          image: "{{ .Values.registry.url }}/datalens-temporal:1.27.2"
+          ports:
+            - containerPort: 7233
+          env:
+            - name: POSTGRES_HOST
+              value: {{ .Values.postgres.POSTGRES_HOST }}
+            - name: POSTGRES_PORT
+              value: {{ .Values.postgres.POSTGRES_PORT | quote }}
+            - name: POSTGRES_USER
+              value: {{ .Values.postgres.POSTGRES_USER }}
+            - name: POSTGRES_DB
+              value: {{ .Values.postgres.POSTGRES_DB_TEMPORAL }}
+            - name: POSTGRES_DB_VISIBILITY
+              value: {{ .Values.postgres.POSTGRES_DB_TEMPORAL_VISIBILITY }}
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default "datalens-secrets" .Values.secrets.ref }}
+                  key: POSTGRES_PASSWORD
+            - name: TEMPORAL_AUTH_ENABLED
+              value: {{ .Values.infra.temporal.auth | quote }}
+            - name: TEMPORAL_AUTH_PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default "datalens-secrets" .Values.secrets.ref }}
+                  key: TEMPORAL_AUTH_PUBLIC_KEY
+            - name: TEMPORAL_AUTH_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default "datalens-secrets" .Values.secrets.ref }}
+                  key: TEMPORAL_AUTH_PRIVATE_KEY
+            - name: NAMESPACES
+              value: meta-manager
+          resources:
+            requests:
+              cpu: {{ .Values.infra.temporal.resources.requests.cpu }}
+              memory: {{ .Values.infra.temporal.resources.requests.memory }}
+            limits:
+              memory: {{ .Values.infra.temporal.resources.limits.memory }}
+{{- end }}

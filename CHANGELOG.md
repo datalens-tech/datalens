@@ -1,3 +1,113 @@
+## v2.2.0 (2025-05-23)
+
+### Image versions
+- datalens-auth: 0.17.0 -> 0.20.0 ([full changelog](https://github.com/datalens-tech/datalens-auth/compare/v0.17.0...v0.20.0))
+- datalens-control-api: 0.2233.0 -> 0.2273.1 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2233.0...v0.2273.1))
+- datalens-data-api: 0.2233.0 -> 0.2273.1 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2233.0...v0.2273.1))
+- datalens-meta-manager: 0.0.0 -> 0.32.0 ([full changelog](https://github.com/datalens-tech/datalens-meta-manager/compare/v0.0.0...v0.32.0))
+- datalens-ui: 0.2789.0 -> 0.2933.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.2789.0...v0.2933.0))
+- datalens-us: 0.339.0 -> 0.350.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.339.0...v0.350.0))
+
+### 🆕 Workbook Import/Export
+
+DataLens introduces a new workbook import/export functionality that enables users to seamlessly transfer workbooks between different DataLens instances. This feature is built on:
+
+- **Meta-Manager**: A dedicated service that handles long-running tasks within DataLens, currently focused on workbook imports and exports.
+- **Temporal**: A reliable workflow orchestration platform that ensures operations complete successfully even in the event of system failures.
+
+This functionality can be disabled using the following args:
+- `--disable-temporal` - disables the Temporal service
+- `--disable-workbook-export` - disables the workbook export functionality
+
+#### ⚠️ Upgrade Guide
+
+If you're using an external PostgreSQL cluster and upgrading to a version with `meta-manager` and `temporal` service, you'll need to create additional databases:
+
+- **If you have root access to the PostgreSQL cluster**
+
+You can automatically create additional databases by running these commands:
+```sh
+docker compose run --rm --entrypoint init-db-temporal.sh postgres
+docker compose run --rm --entrypoint init-db-meta-manager.sh postgres
+```
+
+- **If you don't have root access**
+
+You'll need to manually create the following databases:
+```sh
+POSTGRES_DB_META_MANAGER='pg-meta-manager-db'
+POSTGRES_DB_TEMPORAL='pg-temporal-db'
+POSTGRES_DB_TEMPORAL_VISIBILITY='pg-temporal-visibility-db'
+```
+
+- If you're using the built-in PostgreSQL in the Docker Compose setup, no additional action is required.
+
+### New features
+- **Workbooks**: Import/Export of workbooks.
+- **Connectors**: Add TCPS for OracleDB connector. [datalens-tech/datalens-backend#913](https://github.com/datalens-tech/datalens-backend/pull/913)
+- **Dashboards**: Set minimal possible counter for future calculations. [datalens-tech/datalens-ui#2351](https://github.com/datalens-tech/datalens-ui/pull/2351)
+- **Connectors**: Add support for tls connections for ydb. [datalens-tech/datalens-backend#946](https://github.com/datalens-tech/datalens-backend/pull/946)
+- **Charts**: Add a bar chart to the list of visualizations in the ql chart. [datalens-tech/datalens-ui#2362](https://github.com/datalens-tech/datalens-ui/pull/2362)
+- **Connectors**: Delete `ym:s:offlinePointRegionName` field from Metrica. [datalens-tech/datalens-backend#945](https://github.com/datalens-tech/datalens-backend/pull/945)
+- **Formula**: Add new placement `auto` to tooltip func. [datalens-tech/datalens-backend#978](https://github.com/datalens-tech/datalens-backend/pull/978)
+- **Connectors**: Add RawSQLLevelRow connection form element. [datalens-tech/datalens-ui#2401](https://github.com/datalens-tech/datalens-ui/pull/2401)
+- **Charts**: Add unreleased query param. [datalens-tech/datalens-ui#2418](https://github.com/datalens-tech/datalens-ui/pull/2418)
+- **Charts**: Add settings for scale and center in maps. [datalens-tech/datalens-ui#2370](https://github.com/datalens-tech/datalens-ui/pull/2370)
+- **Charts**, **Dashboards**: Changed chart widgets controls elements styles and behavior. [datalens-tech/datalens-ui#2383](https://github.com/datalens-tech/datalens-ui/pull/2383)
+- **General components**: Support resolve authenticated users logins in the change history and entity list. [datalens-tech/datalens-ui#2429](https://github.com/datalens-tech/datalens-ui/pull/2429)
+- **General components**: Add code copy button for wysiwyg. [datalens-tech/datalens-ui#2443](https://github.com/datalens-tech/datalens-ui/pull/2443)
+- **General components**: Rename Service Settings Palettes page to General settings. [datalens-tech/datalens-ui#2438](https://github.com/datalens-tech/datalens-ui/pull/2438)
+- **Charts**, **Dashboards**: Support hide chart menu by param on dash. [datalens-tech/datalens-ui#2455](https://github.com/datalens-tech/datalens-ui/pull/2455)
+- **General components**: Add UsersSuggest component. [datalens-tech/datalens-ui#2437](https://github.com/datalens-tech/datalens-ui/pull/2437)
+- **General components**: Add EntrySuggest component. [datalens-tech/datalens-ui#2439](https://github.com/datalens-tech/datalens-ui/pull/2439)
+- **Charts**: Add table whiteSpace setting. [datalens-tech/datalens-ui#2452](https://github.com/datalens-tech/datalens-ui/pull/2452)
+- **Optimization**: Avoid double deserialization for cached datasets. [datalens-tech/datalens-backend#960](https://github.com/datalens-tech/datalens-backend/pull/960)
+
+### Bug fixes
+- **Connectors**: Fix postgres COUNT_ITEM and LEN. [datalens-tech/datalens-backend#925](https://github.com/datalens-tech/datalens-backend/pull/925)
+- **Dashboards**: Change mutation to resize observer. [datalens-tech/datalens-ui#2352](https://github.com/datalens-tech/datalens-ui/pull/2352)
+- **Charts**: Fix change field format. [datalens-tech/datalens-ui#2355](https://github.com/datalens-tech/datalens-ui/pull/2355)
+- **Charts**, **General components**, **Dashboards**: Fix long widget header and scroll in SplitPane. [datalens-tech/datalens-ui#2381](https://github.com/datalens-tech/datalens-ui/pull/2381)
+- **Navigation**: Fix styles for long text in user menu. [datalens-tech/datalens-ui#2371](https://github.com/datalens-tech/datalens-ui/pull/2371)
+- **Deploy**: Fix IPv6 bind for images. [datalens-tech/datalens-backend#969](https://github.com/datalens-tech/datalens-backend/pull/969)
+- **Dashboards**: Fix tabs connections for group_control. [datalens-tech/datalens-ui#2391](https://github.com/datalens-tech/datalens-ui/pull/2391)
+- **Connectors**: Unpin mssql binary dependencies. [datalens-tech/datalens-backend#973](https://github.com/datalens-tech/datalens-backend/pull/973)
+- **General components**: Change namings in palettes settings section. [datalens-tech/datalens-ui#2349](https://github.com/datalens-tech/datalens-ui/pull/2349)
+- **General components**: Add danger view for delete buttons. [datalens-tech/datalens-ui#2394](https://github.com/datalens-tech/datalens-ui/pull/2394)
+- **Dashboards**: Fix TOC order. [datalens-tech/datalens-ui#2411](https://github.com/datalens-tech/datalens-ui/pull/2411)
+- **Datasets**: Fix dataset initial current tab. [datalens-tech/datalens-ui#2406](https://github.com/datalens-tech/datalens-ui/pull/2406)
+- **Charts**: Fix table shadow for pinned columns. [datalens-tech/datalens-ui#2421](https://github.com/datalens-tech/datalens-ui/pull/2421)
+- **Charts**: Fix ql beforeunload handler. [datalens-tech/datalens-ui#2422](https://github.com/datalens-tech/datalens-ui/pull/2422)
+- **Dashboards**: Add autofocus when editing text widgets. [datalens-tech/datalens-ui#2441](https://github.com/datalens-tech/datalens-ui/pull/2441)
+- **Dashboards**: Fix loading chart veil style. [datalens-tech/datalens-ui#2457](https://github.com/datalens-tech/datalens-ui/pull/2457)
+- **Dashboards**: Fix copy and paste manual group_control selectors. [datalens-tech/datalens-ui#2459](https://github.com/datalens-tech/datalens-ui/pull/2459)
+- **Dashboards**: Fix scaled fractions while calculating height. [datalens-tech/datalens-ui#2463](https://github.com/datalens-tech/datalens-ui/pull/2463)
+- **Charts**: Fix markup tooltip. [datalens-tech/datalens-ui#2456](https://github.com/datalens-tech/datalens-ui/pull/2456)
+- **Charts**: Fix view of chart in focus mode on mobile. [datalens-tech/datalens-ui#2466](https://github.com/datalens-tech/datalens-ui/pull/2466)
+- **Dashboards**: Fix hover widget menu styles. [datalens-tech/datalens-ui#2468](https://github.com/datalens-tech/datalens-ui/pull/2468)
+- **Dashboards**: Fix copy and paste of group selectors. [datalens-tech/datalens-ui#2475](https://github.com/datalens-tech/datalens-ui/pull/2475)
+- **Charts**: Fix displaying values with null in bar-y. [datalens-tech/datalens-ui#2476](https://github.com/datalens-tech/datalens-ui/pull/2476)
+- **General components**: Reduce the margin value for h6 titles in user text on Mac OS. [datalens-tech/datalens-ui#2398](https://github.com/datalens-tech/datalens-ui/pull/2398)
+- **Dashboards**: Fix veil on dark theme. [datalens-tech/datalens-ui#2484](https://github.com/datalens-tech/datalens-ui/pull/2484)
+
+### Security
+- **General components**: Up Ubuntu to 24.04 and Node.js to 22 with security fixes. [datalens-tech/datalens-ui#2143](https://github.com/datalens-tech/datalens-ui/pull/2143)
+
+### Dependencies
+- **General components**: Up @gravity-ui/chartkit to 5.22.0. [datalens-tech/datalens-ui#2338](https://github.com/datalens-tech/datalens-ui/pull/2338)
+- **General components**: Update @gravity-ui/app-builder to 0.26.0. [datalens-tech/datalens-ui#2374](https://github.com/datalens-tech/datalens-ui/pull/2374)
+- **General components**: Update @gravity-ui/nodekit to 2.3.0. [datalens-tech/datalens-ui#2410](https://github.com/datalens-tech/datalens-ui/pull/2410)
+- **General components**: Bump http-proxy-middleware from 2.0.7 to 2.0.9. [datalens-tech/datalens-ui#2405](https://github.com/datalens-tech/datalens-ui/pull/2405)
+- **General components**: Bump undici from 6.21.1 to 6.21.3. [datalens-tech/datalens-ui#2490](https://github.com/datalens-tech/datalens-ui/pull/2490)
+- **General components**: Add @reduxjs/toolkit. [datalens-tech/datalens-ui#2494](https://github.com/datalens-tech/datalens-ui/pull/2494)
+
+### Chores
+- Remove UseMovePermAction feature. [datalens-tech/datalens-ui#2386](https://github.com/datalens-tech/datalens-ui/pull/2386)
+
+### Build
+- Update base ubuntu image to 24.04. [datalens-tech/datalens-backend#968](https://github.com/datalens-tech/datalens-backend/pull/968)
+
+
 ## v2.1.0 (2025-04-10)
 
 ### Image versions
@@ -101,7 +211,7 @@ docker compose exec -T postgres psql --username pg-user --dbname pg-us-db -c "UP
 - **Auth**: Users by ids to schema, fix auth reload, fix get users list types response. [datalens-tech/datalens-ui#2122](https://github.com/datalens-tech/datalens-ui/pull/2122), [datalens-tech/datalens-ui#2136](https://github.com/datalens-tech/datalens-ui/pull/2136), [datalens-tech/datalens-ui#2175](https://github.com/datalens-tech/datalens-ui/pull/2175)
 - **Dashboards**: Add DialogRelations dash button with empty widget. [datalens-tech/datalens-ui#2198](https://github.com/datalens-tech/datalens-ui/pull/2198)
 - **Dashboards**: Make dash data optional if possible. [datalens-tech/datalens-ui#2257](https://github.com/datalens-tech/datalens-ui/pull/2257)
-  **Formula**: Optimize AGO by propagating date filters into lookup queries. [datalens-tech/datalens-backend#674](https://github.com/datalens-tech/datalens-backend/pull/674)
+- **Formula**: Optimize AGO by propagating date filters into lookup queries. [datalens-tech/datalens-backend#674](https://github.com/datalens-tech/datalens-backend/pull/674)
 
 ### Bug fixes
 - **Charts**: Fixes for displaying charts on mobile devices. [datalens-tech/datalens-ui#2114](https://github.com/datalens-tech/datalens-ui/pull/2114)

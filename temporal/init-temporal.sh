@@ -12,10 +12,12 @@ export DBNAME="${POSTGRES_DB}"
 export VISIBILITY_DBNAME="${POSTGRES_DB_VISIBILITY}"
 export POSTGRES_PWD="${POSTGRES_PASSWORD}"
 
-HOSTNAME="$(hostname)"
+if [ -z "${BIND_ON_IP}" ]; then
+  HOSTNAME="$(hostname)"
+  BIND_ON_IP=$(getent hosts "${HOSTNAME}" | cut -d ' ' -f 1)
+  export BIND_ON_IP
+fi
 
-BIND_ON_IP=$(getent hosts "${HOSTNAME}" | cut -d ' ' -f 1)
-export BIND_ON_IP
 echo "[temporal] bind on ip: ${BIND_ON_IP}"
 
 if [ "${BIND_ON_IP}" == "0.0.0.0" ] || [ "${BIND_ON_IP}" == "::0" ]; then
@@ -41,5 +43,34 @@ fi
 dockerize -template /etc/temporal/config/config_template.yaml:/etc/temporal/config/docker.yaml
 
 /etc/temporal/setup-temporal.sh
+
+echo "[temporal] start temp temporal server..."
+
+/etc/temporal/start-temporal.sh &
+PID=$!
+/etc/temporal/init-namespaces.sh
+
+echo "[temporal] stop temp temporal server..."
+kill $PID
+wait $PID
+
+if [ "${TEMPORAL_AUTH_ENABLED}" == "true" ]; then
+  echo "[temporal] auth enabled, preparing jwks..."
+
+  export TEMPORAL_AUTH_AUTHORIZER="default"
+  export TEMPORAL_AUTH_CLAIM_MAPPER="default"
+  export TEMPORAL_JWT_KEY_SOURCE1="http://localhost:8080/.well-known/jwks.json"
+  export SERVICES="frontend:history:matching:worker:internal-frontend"
+  export USE_INTERNAL_FRONTEND="1"
+
+  JWKS_DATA=$(/etc/temporal/setup-auth-jwks.sh)
+
+  while true; do (
+    echo -e 'HTTP/1.1 200 OK\r\n'
+    echo -e "${JWKS_DATA}"
+  ) | nc -lp 8080 &>/dev/null; done &
+fi
+
+dockerize -template /etc/temporal/config/config_template.yaml:/etc/temporal/config/docker.yaml
 
 exec /etc/temporal/start-temporal.sh

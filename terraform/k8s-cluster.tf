@@ -132,13 +132,13 @@ resource "yandex_kubernetes_node_group" "this" {
 
     resources {
       cores         = 8
-      memory        = 8
+      memory        = 16
       core_fraction = 100
     }
 
     boot_disk {
       type = "network-ssd"
-      size = 32
+      size = 64
     }
 
     container_runtime {
