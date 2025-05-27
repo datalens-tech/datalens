@@ -43,6 +43,7 @@ POSTGRES_DB_TEMPORAL_VISIBILITY='pg-temporal-visibility-db'
 - If you're using the built-in PostgreSQL in the Docker Compose setup, no additional action is required.
 
 ### New features
+- **Workbooks**: Import/Export of workbooks.
 - **Connectors**: Add TCPS for OracleDB connector. [datalens-tech/datalens-backend#913](https://github.com/datalens-tech/datalens-backend/pull/913)
 - **Dashboards**: Set minimal possible counter for future calculations. [datalens-tech/datalens-ui#2351](https://github.com/datalens-tech/datalens-ui/pull/2351)
 - **Connectors**: Add support for tls connections for ydb. [datalens-tech/datalens-backend#946](https://github.com/datalens-tech/datalens-backend/pull/946)
@@ -98,7 +99,7 @@ POSTGRES_DB_TEMPORAL_VISIBILITY='pg-temporal-visibility-db'
 - **General components**: Update @gravity-ui/nodekit to 2.3.0. [datalens-tech/datalens-ui#2410](https://github.com/datalens-tech/datalens-ui/pull/2410)
 - **General components**: Bump http-proxy-middleware from 2.0.7 to 2.0.9. [datalens-tech/datalens-ui#2405](https://github.com/datalens-tech/datalens-ui/pull/2405)
 - **General components**: Bump undici from 6.21.1 to 6.21.3. [datalens-tech/datalens-ui#2490](https://github.com/datalens-tech/datalens-ui/pull/2490)
-- **General components**: Add gallery store. [datalens-tech/datalens-ui#2494](https://github.com/datalens-tech/datalens-ui/pull/2494)
+- **General components**: Add @reduxjs/toolkit. [datalens-tech/datalens-ui#2494](https://github.com/datalens-tech/datalens-ui/pull/2494)
 
 ### Chores
 - Remove UseMovePermAction feature. [datalens-tech/datalens-ui#2386](https://github.com/datalens-tech/datalens-ui/pull/2386)
