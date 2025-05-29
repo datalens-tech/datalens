@@ -187,33 +187,54 @@ def gather_changelog(cfg: dict[str, Any], repos_dir: Path, gh_headers: dict[str,
         )
         LOGGER.info(f"Got {len(commits)} commits from range {tag_from}..{tag_to} for {repo_full_name}")
 
-        for idx, commit in enumerate(commits):
-            LOGGER.info(f"[{idx + 1}/{len(commits)}] Fetching PRs for commit {commit.sha}")
-            prs_info = gh.get_pull_requests_by_commit(
+        pr_numbers_from_commits = []
+        commits_for_search = []
+        prs_info = []
+
+        for commit in commits:
+            match = re.search(r'\(#(\d+)\)$', commit.message)
+            if match:
+                pr_number = match.group(1)
+                pr_numbers_from_commits.append(pr_number)
+            else:
+                LOGGER.warning(f"Could not extract PR number from commit message: {commit.message}, will be grubbed from search")
+                commits_for_search.append(commit)
+        if len(pr_numbers_from_commits) > 0:
+            prs_info = gh.get_pull_requests_by_numbers(
+                repo_full_name, pr_numbers_from_commits, gh_headers, changelog_config["changelog_include_label"]
+            )
+            LOGGER.info(f"[{len(prs_info)}] Fetched PRs with graphql")
+
+        for idx, commit in enumerate(commits_for_search):
+            LOGGER.info(f"[{idx + 1}/{len(commits_for_search)}] Fetching PRs for commit {commit.sha}")
+            prs_info_commit = gh.get_pull_requests_by_commit(
                 repo_full_name, commit, gh_headers, changelog_config["changelog_include_label"]
             )
+            prs_info.extend(prs_info_commit)
 
-            for pr in prs_info:
-                pr_components = []
-                for component in changelog_config["component_tags"]["tags"]:
-                    prefix = changelog_config["component_tags"]["prefix"]
-                    tag = prefix + component["id"]
-                    if tag in pr.labels:
-                        pr_components.append(component["text"])
+        prs_info = sorted(prs_info, key=lambda x: x.number)
+        
+        for idx, pr in enumerate(prs_info):
+            pr_components = []
+            for component in changelog_config["component_tags"]["tags"]:
+                prefix = changelog_config["component_tags"]["prefix"]
+                tag = prefix + component["id"]
+                if tag in pr.labels:
+                    pr_components.append(component["text"])
 
-                section = next(  # sortable section tuple: weight (order idx in config) and name
-                    (
-                        (idx, section["text"])
-                        for idx, section in enumerate(changelog_config["section_tags"]["tags"])
-                        if f"{changelog_config['section_tags']['prefix']}{section['id']}" in pr.labels
-                    ),
-                    other_changes_section,  # changes without a section (type)
-                )
+            section = next(  # sortable section tuple: weight (order idx in config) and name
+                (
+                    (idx, section["text"])
+                    for idx, section in enumerate(changelog_config["section_tags"]["tags"])
+                    if f"{changelog_config['section_tags']['prefix']}{section['id']}" in pr.labels
+                ),
+                other_changes_section,  # changes without a section (type)
+            )
 
-                changelog[section].append((
-                    pr.merged_at,
-                    CF.pr(pr_components, pr.title, pr.number, repository["url"]),
-                ))
+            changelog[section].append((
+                pr.merged_at,
+                CF.pr(pr_components, pr.title, pr.number, repository["url"]),
+            ))
 
     if len(changelog) == 1 and changelog.get(other_changes_section) is not None:
         # switch to a prettier section title if all changes are untyped
@@ -280,6 +301,12 @@ if __name__ == "__main__":
         current_repo_versions[root_repo_name_short] = latest_release
         new_repo_versions[root_repo_name_short] = ""
     populate_helper_maps(changelog_config, current_repo_versions, new_repo_versions)
+
+    # Clone repos
+    if not args.repos_dir.exists():
+        args.repos_dir.mkdir(parents=True)
+    for repo in changelog_config["repositories"]:
+        gh.clone_repository(repo["url"], args.repos_dir / repo["name"])
 
     # Gather changes
     CF = ChangelogFormatter
