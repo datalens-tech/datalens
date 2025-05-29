@@ -27,8 +27,8 @@ If you're using an external PostgreSQL cluster and upgrading to a version with `
 
 You can automatically create additional databases by running these commands:
 ```sh
-docker compose run --rm --entrypoint init-db-temporal.sh postgres
-docker compose run --rm --entrypoint init-db-meta-manager.sh postgres
+docker compose run --rm --entrypoint /init/init-db-temporal.sh postgres
+docker compose run --rm --entrypoint /init/init-db-meta-manager.sh postgres
 ```
 
 - **If you don't have root access**
