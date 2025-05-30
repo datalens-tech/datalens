@@ -7,6 +7,7 @@ import time
 import urllib
 from pathlib import Path
 from typing import Callable, Optional
+import shutil
 
 import attr
 import requests
@@ -140,6 +141,51 @@ def get_pull_requests_by_commit(repo_full_name: str, commit: CommitInfo, auth_he
         LOGGER.warning(f"Got >1 ({len(prs_info)}) PRs for search str {search_str}")
     return prs_info
 
+def get_pull_requests_by_numbers(repo_full_name: str, pr_numbers: list[str], auth_headers: dict, include_label: Optional[str] = None) -> list[PullRequestInfo]:
+    repos_search = repo_full_name.split("/")
+    query_prefix = "query($owner: String!, $repo: String!) { repository(owner: $owner, name: $repo) {"
+    all_prs_info = []
+
+    # process in batches of 50
+    for i in range(0, len(pr_numbers), 50):
+        batch = pr_numbers[i:i+50]
+        pr_seed = [f"pr{num}: pullRequest(number: {num}) {{ number title state labels(first: 10){{nodes{{name}}}} mergedAt }}" 
+                  for num in batch]
+
+        prs_info_raw = request_with_retries(
+            functools.partial(
+                requests.post,
+                url="https://api.github.com/graphql",
+                headers=auth_headers,
+                json={
+                    "query": query_prefix + " ".join(pr_seed) + "} }",
+                    "variables": {
+                        "owner": repos_search[0],
+                        "repo": repos_search[1]
+                    }
+                }
+            )
+        )
+        prs_info_raw.raise_for_status()
+        
+        batch_prs = [
+            PullRequestInfo(
+                title=pr_raw["title"],
+                number=pr_raw["number"],
+                merged_at=pr_raw["mergedAt"],
+                labels=[label["name"] for label in pr_raw["labels"].get("nodes", [])],
+            )
+            for pr_raw in prs_info_raw.json()['data']['repository'].values() 
+            if pr_raw["state"] == "MERGED"
+        ]
+        all_prs_info.extend(batch_prs)
+
+    if include_label is not None:
+        all_prs_info = [pr for pr in all_prs_info if bool(set(pr.labels) & set([include_label]))]
+
+    return all_prs_info
+
+
 
 def find_release_by_tag(repo_full_name: str, headers: dict[str, str], release_tag: str) -> str:
     release_resp = request_with_retries(
@@ -154,3 +200,33 @@ def find_release_by_tag(repo_full_name: str, headers: dict[str, str], release_ta
     if release is None:
         raise RuntimeError(f'Could not find a release by tag "{release_tag}"')
     return release["id"]
+
+def clone_repository(repo_url: str, repo_path: Path) -> None:
+    clone_url = f"{repo_url}.git"
+
+    gh_token = os.getenv("GH_TOKEN")
+    if gh_token is not None and "github.com" in repo_url:
+        clone_url = clone_url.replace("github.com", f"{gh_token}@github.com")
+
+    if repo_path.exists():
+        try:
+            LOGGER.info(f"Pull existed repo: [{repo_url}] in [{repo_path}]")
+            subprocess.run(
+                ["git", "pull", "origin"],
+                check= True,
+                capture_output=True,
+                text=True,
+                cwd=repo_path,
+            )          
+            return
+        except:
+            LOGGER.info(f"Pull repo error, trying to remove and clone: [{repo_url}] in [{repo_path}]")
+            shutil.rmtree(repo_path)
+
+    LOGGER.info(f"Clone new repo: [{repo_url}] to [{repo_path}]")
+    subprocess.run(
+        ["git", "clone", clone_url, repo_path],
+        check= True,
+        capture_output=True,
+        text=True,
+    )

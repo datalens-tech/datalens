@@ -90,11 +90,6 @@ jobs:
         run: |
           git config user.email "" && git config user.name "GitHub Release"
 
-      - name: Clone repos
-        working-directory: .github/workflows/scripts/changelog
-        run: |
-          CONFIG_FILE="./changelog_config.json" bash clone_repos.sh
-
       - name: Run changelog gatherer
         id: gather_changelog
         working-directory: .github/workflows/scripts/changelog

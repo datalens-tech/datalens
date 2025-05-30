@@ -36,11 +36,6 @@ done
 
 echo "  release type: ${RELEASE_TYPE}"
 
-echo "  clone all repositories..."
-pushd ".github/workflows/scripts/changelog" >/dev/null
-rm -rf ./repos && ./clone_repos.sh &>/dev/null
-popd >/dev/null
-
 if [ -z "${GH_TOKEN}" ]; then
   echo ""
   echo "  env variable GH_TOKEN is empty, try to set from [gh] cli..."
