@@ -14,7 +14,7 @@
 - **Import/Export workbooks**: Add ShowDetails button for export workbooks. [datalens-tech/datalens-ui#2506](https://github.com/datalens-tech/datalens-ui/pull/2506)
 - **Import/Export workbooks**: Add new notifications for export/import. [datalens-tech/datalens-ui#2527](https://github.com/datalens-tech/datalens-ui/pull/2527)
 - **Import/Export workbooks**: Add retry button for fatal errors in export workbooks. [datalens-tech/datalens-ui#2562](https://github.com/datalens-tech/datalens-ui/pull/2562)
-- **Charts**: Add wrap settings on table cells in Wizard. [datalens-tech/datalens-ui#2569](https://github.com/datalens-tech/datalens-ui/pull/2569)
+- **Charts**: Add wrap settings on table cells in charts. [datalens-tech/datalens-ui#2569](https://github.com/datalens-tech/datalens-ui/pull/2569)
 
 ### Bug fixes
 - **General components**: Fix status in entries resolve of export workbook. [datalens-tech/datalens-ui#2539](https://github.com/datalens-tech/datalens-ui/pull/2539)
