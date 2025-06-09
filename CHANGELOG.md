@@ -22,8 +22,6 @@
 - **Import/Export workbooks**: Fix show details button for export. [datalens-tech/datalens-ui#2535](https://github.com/datalens-tech/datalens-ui/pull/2535)
 
 ### Dependencies
-- **General components**: Up @datalens-tech/ui-sandbox-modules 0.35.0 -> 0.36.0. [datalens-tech/datalens-ui#2555](https://github.com/datalens-tech/datalens-ui/pull/2555)
-- **General components**: Revert "Up @datalens-tech/ui-sandbox-modules 0.35.0 -> 0.36.0 (#2555)". [datalens-tech/datalens-ui#2559](https://github.com/datalens-tech/datalens-ui/pull/2559)
 - **General components**: Up @datalens-tech/ui-sandbox-modules 0.35.0 -> 0.36.0. [datalens-tech/datalens-ui#2560](https://github.com/datalens-tech/datalens-ui/pull/2560)
 
 
