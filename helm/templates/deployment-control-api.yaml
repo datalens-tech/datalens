@@ -24,7 +24,7 @@ spec:
             - name: BI_API_UWSGI_WORKERS_COUNT
               value: '4'
             - name: CONNECTOR_AVAILABILITY_VISIBLE
-              value: clickhouse,postgres,chyt,ydb,mysql,greenplum,mssql,appmetrica_api,metrika_api
+              value: clickhouse,postgres,chyt,ydb,mysql,greenplum,mssql,oracle,trino,appmetrica_api,metrika_api
             - name: RQE_FORCE_OFF
               value: '1'
             - name: DL_CRY_ACTUAL_KEY_ID
