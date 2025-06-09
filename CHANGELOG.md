@@ -9,13 +9,17 @@
 - datalens-us: 0.350.0 -> 0.352.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.350.0...v0.352.0))
 
 ### New features
-- **General components**: Add retry button for fatal errors in export workbooks. [datalens-tech/datalens-ui#2562](https://github.com/datalens-tech/datalens-ui/pull/2562)
 - **Connectors**: Add Oracle connector. [datalens-tech/datalens-backend#1076](https://github.com/datalens-tech/datalens-backend/pull/1076)
 - **Connectors**: Add Trino connector. [datalens-tech/datalens-backend#1075](https://github.com/datalens-tech/datalens-backend/pull/1075)
+- **Import/Export workbooks**: Add ShowDetails button for export workbooks. [datalens-tech/datalens-ui#2506](https://github.com/datalens-tech/datalens-ui/pull/2506)
+- **Import/Export workbooks**: Add new notifications for export/import. [datalens-tech/datalens-ui#2527](https://github.com/datalens-tech/datalens-ui/pull/2527)
+- **Import/Export workbooks**: Add retry button for fatal errors in export workbooks. [datalens-tech/datalens-ui#2562](https://github.com/datalens-tech/datalens-ui/pull/2562)
+- **Charts**: Add wrap settings on table cells in Wizard. [datalens-tech/datalens-ui#2569](https://github.com/datalens-tech/datalens-ui/pull/2569)
 
 ### Bug fixes
 - **General components**: Fix status in entries resolve of export workbook. [datalens-tech/datalens-ui#2539](https://github.com/datalens-tech/datalens-ui/pull/2539)
-- **General components**: Fix disabled "Open workbook" button in case of click on importing workbook row. [datalens-tech/datalens-ui#2577](https://github.com/datalens-tech/datalens-ui/pull/2577)
+- **Import/Export workbooks**: Fix disabled "Open workbook" button in case of click on importing workbook row. [datalens-tech/datalens-ui#2577](https://github.com/datalens-tech/datalens-ui/pull/2577)
+- **Import/Export workbooks**: Fix show details button for export. [datalens-tech/datalens-ui#2535](https://github.com/datalens-tech/datalens-ui/pull/2535)
 
 ### Dependencies
 - **General components**: Up @datalens-tech/ui-sandbox-modules 0.35.0 -> 0.36.0. [datalens-tech/datalens-ui#2555](https://github.com/datalens-tech/datalens-ui/pull/2555)
