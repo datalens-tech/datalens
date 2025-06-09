@@ -1,3 +1,27 @@
+## v2.3.0 (2025-06-09)
+
+### Image versions
+- datalens-auth: 0.20.0
+- datalens-control-api: 0.2273.1 -> 0.2282.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2273.1...v0.2282.0))
+- datalens-data-api: 0.2273.1 -> 0.2282.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2273.1...v0.2282.0))
+- datalens-meta-manager: 0.32.0 -> 0.35.0 ([full changelog](https://github.com/datalens-tech/datalens-meta-manager/compare/v0.32.0...v0.35.0))
+- datalens-ui: 0.2933.0 -> 0.2983.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.2933.0...v0.2983.0))
+- datalens-us: 0.350.0 -> 0.352.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.350.0...v0.352.0))
+
+### New features
+- **General components**: Add retry button for fatal errors in export workbooks. [datalens-tech/datalens-ui#2562](https://github.com/datalens-tech/datalens-ui/pull/2562)
+- **Connectors**: Add Trino connector. [datalens-tech/datalens-backend#1075](https://github.com/datalens-tech/datalens-backend/pull/1075)
+
+### Bug fixes
+- **General components**: Fix status in entries resolve of export workbook. [datalens-tech/datalens-ui#2539](https://github.com/datalens-tech/datalens-ui/pull/2539)
+- **General components**: Fix disabled "Open workbook" button in case of click on importing workbook row. [datalens-tech/datalens-ui#2577](https://github.com/datalens-tech/datalens-ui/pull/2577)
+
+### Dependencies
+- **General components**: Up @datalens-tech/ui-sandbox-modules 0.35.0 -> 0.36.0. [datalens-tech/datalens-ui#2555](https://github.com/datalens-tech/datalens-ui/pull/2555)
+- **General components**: Revert "Up @datalens-tech/ui-sandbox-modules 0.35.0 -> 0.36.0 (#2555)". [datalens-tech/datalens-ui#2559](https://github.com/datalens-tech/datalens-ui/pull/2559)
+- **General components**: Up @datalens-tech/ui-sandbox-modules 0.35.0 -> 0.36.0. [datalens-tech/datalens-ui#2560](https://github.com/datalens-tech/datalens-ui/pull/2560)
+
+
 ## v2.2.0 (2025-05-23)
 
 ### Image versions
