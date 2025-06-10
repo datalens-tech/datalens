@@ -1,7 +1,7 @@
 registry:
   url: 'ghcr.io/datalens-tech'
 #
-release_version: '2.2.0'
+release_version: '2.3.0'
 #
 ingress:
   ip: null
@@ -39,7 +39,7 @@ infra:
 application:
   control_api:
     replicas: 1
-    version: '0.2273.1'
+    version: '0.2282.0'
     resources:
       requests:
         cpu: 0.5
@@ -48,7 +48,7 @@ application:
         memory: 1024Mi
   data_api:
     replicas: 1
-    version: '0.2273.1'
+    version: '0.2282.0'
     resources:
       requests:
         cpu: 1
@@ -57,7 +57,7 @@ application:
         memory: 1024Mi
   ui:
     replicas: 1
-    version: '0.2933.0'
+    version: '0.2983.0'
     resources:
       requests:
         cpu: 0.25
@@ -66,7 +66,7 @@ application:
         memory: 512Mi
   ui_api:
     replicas: 1
-    version: '0.2933.0'
+    version: '0.2983.0'
     resources:
       requests:
         cpu: 0.25
@@ -75,7 +75,7 @@ application:
         memory: 512Mi
   us:
     replicas: 1
-    version: '0.350.0'
+    version: '0.352.0'
     resources:
       requests:
         cpu: 0.5
@@ -93,17 +93,13 @@ application:
         memory: 512Mi
   meta_manager:
     replicas: 1
-    version: '0.32.0'
+    version: '0.35.0'
     resources:
       requests:
         cpu: 0.5
         memory: 256Mi
       limits:
         memory: 512Mi
-  ui-api:
-    version: 0.2933.0
-  meta-manager:
-    version: 0.32.0
 #
 secrets:
   ref: null

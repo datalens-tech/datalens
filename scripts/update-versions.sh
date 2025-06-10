@@ -36,10 +36,10 @@ RELEASE_VERSION="${RELEASE_VERSION}" \
   .application.control_api.version = strenv(BACKEND_VERSION) |
   .application.data_api.version = strenv(BACKEND_VERSION) |
   .application.ui.version = strenv(UI_VERSION) |
-  .application.ui-api.version = strenv(UI_VERSION) |
+  .application.ui_api.version = strenv(UI_VERSION) |
   .application.us.version = strenv(US_VERSION) |
   .application.auth.version = strenv(AUTH_VERSION) |
-  .application.meta-manager.version = strenv(META_MANAGER_VERSION) |
+  .application.meta_manager.version = strenv(META_MANAGER_VERSION) |
   .release_version = strenv(RELEASE_VERSION)
 ' ./helm/values.yaml
 
