@@ -5,8 +5,9 @@ services:
     pull_policy: ${IMAGE_PULL_POLICY:-always}
     healthcheck:
       test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB_US:-pg-us-db}", "-U", "${POSTGRES_USER:-pg-user}"]
-      interval: 5s
-      retries: 10
+      interval: 10s
+      retries: 3
+      timeout: 5s
       start_period: 3s
     environment:
       HC: ${HC:-0}
@@ -47,9 +48,11 @@ services:
     pull_policy: ${IMAGE_PULL_POLICY:-always}
     healthcheck:
       test: ["CMD", "/etc/temporal/healthcheck.sh"]
-      interval: 5s
-      retries: 10
+      interval: 10s
+      retries: 3
+      timeout: 5s
       start_period: 3s
+    user: root
     environment:
       POSTGRES_HOST: ${POSTGRES_HOST:-postgres}
       POSTGRES_PORT: ${POSTGRES_PORT:-5432}
