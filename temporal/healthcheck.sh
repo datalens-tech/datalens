@@ -36,14 +36,17 @@ if [ "${TEMPORAL_AUTH_ENABLED}" == "true" ]; then
   PAYLOAD_BASE64URL=$(echo -n "${PAYLOAD}" | openssl enc -base64 -A | tr '+/' '-_' | tr -d '=')
   UNSIGNED_JWT="${HEADER_BASE64URL}.${PAYLOAD_BASE64URL}"
 
+  PRIVATE_KEY_FILE="/tmp/temporal-auth-private-key-${RANDOM}.pem"
   # shellcheck disable=SC2001
+  echo "${TEMPORAL_AUTH_PRIVATE_KEY}" | sed 's|\\n|\n|g' >"${PRIVATE_KEY_FILE}"
   SIGN_JWT=$(
     echo -n "${UNSIGNED_JWT}" |
-      openssl dgst -sha256 -sign <(echo "${TEMPORAL_AUTH_PRIVATE_KEY}" | sed 's|\\n|\n|g') |
+      openssl dgst -sha256 -sign "${PRIVATE_KEY_FILE}" |
       openssl enc -base64 -A |
       tr '+/' '-_' |
       tr -d '='
   )
+  rm -rf "${PRIVATE_KEY_FILE}"
 
   TEMPORAL_AUTH_TOKEN="${UNSIGNED_JWT}.${SIGN_JWT}"
 fi
