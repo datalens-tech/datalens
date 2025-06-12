@@ -52,7 +52,6 @@ services:
       retries: 3
       timeout: 5s
       start_period: 3s
-    user: root
     environment:
       POSTGRES_HOST: ${POSTGRES_HOST:-postgres}
       POSTGRES_PORT: ${POSTGRES_PORT:-5432}
