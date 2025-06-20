@@ -88,9 +88,13 @@ git show origin/main:versions-config.json >./versions-config.json
 
 VERSION_CONFIG_FILE=$(cat ./versions-config.json)
 echo "${VERSION_CONFIG_FILE}" | jq 'if has("uiVersion") then . else . + {uiVersion: "0.0.0"} end' >./versions-config.json
+VERSION_CONFIG_FILE=$(cat ./versions-config.json)
 echo "${VERSION_CONFIG_FILE}" | jq 'if has("backendVersion") then . else . + {backendVersion: "0.0.0"} end' >./versions-config.json
+VERSION_CONFIG_FILE=$(cat ./versions-config.json)
 echo "${VERSION_CONFIG_FILE}" | jq 'if has("usVersion") then . else . + {usVersion: "0.0.0"} end' >./versions-config.json
+VERSION_CONFIG_FILE=$(cat ./versions-config.json)
 echo "${VERSION_CONFIG_FILE}" | jq 'if has("authVersion") then . else . + {authVersion: "0.0.0"} end' >./versions-config.json
+VERSION_CONFIG_FILE=$(cat ./versions-config.json)
 echo "${VERSION_CONFIG_FILE}" | jq 'if has("metaManagerVersion") then . else . + {metaManagerVersion: "0.0.0"} end' >./versions-config.json
 
 uv run releaser.py \
