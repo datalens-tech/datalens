@@ -1,0 +1,8 @@
+ARG image=ubuntu:22.04
+FROM ${image}
+
+RUN pip install -U watchdog
+
+COPY ./entrypoint.sh /opt/dev/entrypoint.sh
+
+ENTRYPOINT [ "/opt/dev/entrypoint.sh" ]

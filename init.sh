@@ -14,7 +14,23 @@ IS_DEMO_ENABLED="true"
 IS_AUTH_ENABLED="true"
 
 IS_UP="false"
+IS_DOWN="false"
+IS_STOP="false"
 IS_HELP="false"
+
+IS_DEV="false"
+IS_DEV_BUILD="false"
+IS_REINIT_DB="false"
+IS_UP_UI="true"
+IS_UP_UI_API="true"
+IS_UP_US="true"
+IS_UP_AUTH="true"
+IS_UP_META_MANAGER="true"
+IS_UP_CONTROL_API="true"
+IS_UP_DATA_API="true"
+
+IS_RM_ENV="false"
+IS_RM_VOLUMES="false"
 
 DOMAIN=""
 IP=""
@@ -113,6 +129,26 @@ for _ in "$@"; do
     ;;
   --up)
     IS_UP="true"
+    shift # past argument with no value
+    ;;
+  --down)
+    IS_DOWN="true"
+    shift # past argument with no value
+    ;;
+  --stop)
+    IS_STOP="true"
+    shift # past argument with no value
+    ;;
+  --dev)
+    IS_DEV="true"
+    shift # past argument with no value
+    ;;
+  --rm-env | --remove-env)
+    IS_RM_ENV="true"
+    shift # past argument with no value
+    ;;
+  --rm-volumes | --remove-volumes)
+    IS_RM_VOLUMES="true"
     shift # past argument with no value
     ;;
   --legacy-docker-compose)
@@ -221,6 +257,45 @@ echo
 echo "Loading environment file..."
 echo "  file: ${ENV_FILE_PATH}"
 load_env
+
+if [ "${IS_REINIT_DB}" == "true" ]; then
+  echo ""
+  echo "Reinit database before start..."
+
+  docker --log-level error compose rm --stop --force postgres us auth meta-manager
+  docker --log-level error compose down --volumes postgres us auth meta-manager
+fi
+
+if [ "${IS_STOP}" == "true" ]; then
+  echo ""
+  echo "Stop application..."
+
+  docker --log-level error compose --stop --force
+  docker --log-level error compose -f docker-compose.dev.yaml rm --stop --force
+
+  echo ""
+  exit 0
+fi
+
+if [ "${IS_DOWN}" == "true" ]; then
+  echo ""
+  echo "Down application and remove containers..."
+
+  docker --log-level error compose down --remove-orphans
+
+  if [ "${IS_RM_ENV}" == "true" ]; then
+    echo ""
+    echo "Remove [${ENV_FILE_PATH}] file..."
+    rm -rf "${ENV_FILE_PATH}"
+  fi
+  if [ "${IS_RM_VOLUMES}" == "true" ]; then
+    echo ""
+    echo "Remove all docker volumes..."
+    docker --log-level error compose down --remove-orphans --volumes
+  fi
+  echo ""
+  exit 0
+fi
 
 echo ""
 echo "Available script arguments:"
@@ -380,6 +455,81 @@ if [ "${IS_RUN_INIT_DEMO_DATA}" == "true" ]; then
 
   docker --log-level error compose run --rm --entrypoint /init/seed-demo-data.sh postgres
 
+  exit 0
+fi
+
+if [ "${IS_DEV}" == "true" ]; then
+  echo ""
+  echo "Starting Docker Compose services with DEV mode..."
+  echo ""
+
+  DOCKER_COMPOSE_CONFIG=docker-compose.base.yml
+  DOCKER_COMPOSE_DEV_CONFIG=docker-compose.dev.yml
+
+  COMPOSE_UP_SERVICES="control-api data-api"
+  COMPOSE_DOWN_SERVICES=""
+  COMPOSE_DEV_UP_SERVICES=""
+  COMPOSE_LOG_SERVICES=""
+
+  if [ "${IS_DEV_UI}" == "true" ]; then
+    COMPOSE_DEV_UP_SERVICES="${COMPOSE_DEV_UP_SERVICES} ui"
+    COMPOSE_LOG_SERVICES="${COMPOSE_LOG_SERVICES} ui"
+  elif [ "${IS_UP_UI}" == "true" ]; then
+    COMPOSE_UP_SERVICES="${COMPOSE_UP_SERVICES} ui"
+  else
+    COMPOSE_DOWN_SERVICES="${COMPOSE_DOWN_SERVICES} ui"
+  fi
+
+  if [ "${IS_DEV_US}" == "true" ]; then
+    COMPOSE_DEV_UP_SERVICES="${COMPOSE_DEV_UP_SERVICES} us"
+    COMPOSE_LOG_SERVICES="${COMPOSE_LOG_SERVICES} us"
+  elif [ "${IS_UP_US}" == "true" ]; then
+    COMPOSE_UP_SERVICES="${COMPOSE_UP_SERVICES} us"
+  else
+    COMPOSE_DOWN_SERVICES="${COMPOSE_DOWN_SERVICES} us"
+  fi
+
+  if [ "${IS_DEV_AUTH}" == "true" ]; then
+    COMPOSE_DEV_UP_SERVICES="${COMPOSE_DEV_UP_SERVICES} auth"
+    COMPOSE_LOG_SERVICES="${COMPOSE_LOG_SERVICES} auth"
+  elif [ "${IS_UP_AUTH}" == "true" ]; then
+    COMPOSE_UP_SERVICES="${COMPOSE_UP_SERVICES} auth"
+  else
+    COMPOSE_DOWN_SERVICES="${COMPOSE_DOWN_SERVICES} auth"
+  fi
+
+  if [ "${IS_UP_FILE_CONNECTOR}" == "true" ]; then
+    COMPOSE_UP_SERVICES="${COMPOSE_UP_SERVICES} redis clickhouse s3 file-secure-reader file-uploader-worker file-uploader-api"
+    export CONNECTORS="${CONNECTORS},file"
+  else
+    COMPOSE_DOWN_SERVICES="${COMPOSE_DOWN_SERVICES} redis clickhouse s3 file-secure-reader file-uploader-worker file-uploader-api"
+  fi
+
+  if [ ! -z "${COMPOSE_DOWN_SERVICES}" ]; then
+    # shellcheck disable=SC2086
+    docker --log-level error compose ${DOCKER_COMPOSE_ADDITIONAL_CONFIG} -f ${DOCKER_COMPOSE_CONFIG} rm --stop --force ${COMPOSE_DOWN_SERVICES} >/dev/null 2>&1
+  fi
+
+  # shellcheck disable=SC2086
+  docker --log-level error compose ${DOCKER_COMPOSE_ADDITIONAL_CONFIG} -f ${DOCKER_COMPOSE_CONFIG} up -d --remove-orphans ${COMPOSE_UP_SERVICES}
+
+  if [ ! -z "${COMPOSE_DEV_UP_SERVICES}" ]; then
+    # shellcheck disable=SC2086
+    docker --log-level error compose -f ${DOCKER_COMPOSE_DEV_CONFIG} up -d ${COMPOSE_DEV_UP_SERVICES}
+  fi
+
+  if [ ! -z "${COMPOSE_LOG_SERVICES}" ]; then
+    # shellcheck disable=SC2086
+    docker --log-level error compose -f ${DOCKER_COMPOSE_CONFIG} logs -f ${COMPOSE_LOG_SERVICES}
+  fi
+
+  if [ "${IS_LEGACY_DOCKER_COMPOSE}" == "true" ]; then
+    docker-compose -f docker-compose.production.yaml up --remove-orphans --detach
+  else
+    docker --log-level error compose -f docker-compose.production.yaml up --remove-orphans --detach
+  fi
+
+  echo ""
   exit 0
 fi
 
