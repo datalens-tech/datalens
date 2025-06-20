@@ -59,7 +59,7 @@ resource "kubernetes_deployment" "control-api" {
           }
           env {
             name  = "CONNECTOR_AVAILABILITY_VISIBLE"
-            value = "clickhouse,postgres,chyt,ydb,mysql,greenplum,mssql,appmetrica_api,metrika_api"
+            value = "clickhouse,postgres,chyt,ydb,mysql,greenplum,mssql,oracle,trino,appmetrica_api,metrika_api"
           }
           env {
             name  = "RQE_FORCE_OFF"

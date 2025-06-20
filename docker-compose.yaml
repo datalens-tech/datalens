@@ -73,7 +73,7 @@ services:
   #
   control-api:
     container_name: datalens-control-api
-    image: ghcr.io/datalens-tech/datalens-control-api:0.2273.1
+    image: ghcr.io/datalens-tech/datalens-control-api:0.2282.0
     environment:
       BI_API_UWSGI_WORKERS_COUNT: 4
       RQE_FORCE_OFF: 1
@@ -86,7 +86,7 @@ services:
       #
       US_MASTER_TOKEN: ${US_MASTER_TOKEN:-us-master-token}
       #
-      CONNECTOR_AVAILABILITY_VISIBLE: clickhouse,postgres,chyt,ydb,mysql,greenplum,mssql,appmetrica_api,metrika_api
+      CONNECTOR_AVAILABILITY_VISIBLE: clickhouse,postgres,chyt,ydb,mysql,greenplum,mssql,oracle,trino,appmetrica_api,metrika_api
       #
       AUTH__TYPE: ${AUTH_TYPE:-NATIVE}
       AUTH__JWT_ALGORITHM: 'PS256'
@@ -97,7 +97,7 @@ services:
   #
   data-api:
     container_name: datalens-data-api
-    image: ghcr.io/datalens-tech/datalens-data-api:0.2273.1
+    image: ghcr.io/datalens-tech/datalens-data-api:0.2282.0
     environment:
       GUNICORN_WORKERS_COUNT: 5
       RQE_FORCE_OFF: 1
@@ -127,7 +127,7 @@ services:
   #
   us:
     container_name: datalens-us
-    image: ghcr.io/datalens-tech/datalens-us:0.350.0
+    image: ghcr.io/datalens-tech/datalens-us:0.352.0
     environment:
       APP_INSTALLATION: opensource
       APP_ENV: prod
@@ -157,7 +157,7 @@ services:
   #
   ui-api:
     container_name: datalens-ui-api
-    image: ghcr.io/datalens-tech/datalens-ui:0.2933.0
+    image: ghcr.io/datalens-tech/datalens-ui:0.2983.0
     environment:
       APP_MODE: api
       APP_ENV: production
@@ -173,7 +173,7 @@ services:
   #
   meta-manager:
     container_name: datalens-meta-manager
-    image: ghcr.io/datalens-tech/datalens-meta-manager:0.32.0
+    image: ghcr.io/datalens-tech/datalens-meta-manager:0.35.0
     environment:
       APP_INSTALLATION: opensource
       APP_ENV: prod
@@ -231,7 +231,7 @@ services:
   #
   ui:
     container_name: datalens-ui
-    image: ghcr.io/datalens-tech/datalens-ui:0.2933.0
+    image: ghcr.io/datalens-tech/datalens-ui:0.2983.0
     environment:
       APP_MODE: full
       APP_ENV: production
@@ -247,7 +247,7 @@ services:
       #
       US_MASTER_TOKEN: ${US_MASTER_TOKEN:-us-master-token}
       #
-      RELEASE_VERSION: '2.2.0'
+      RELEASE_VERSION: '2.3.0'
       #
       HC: ${HC:-0}
       HC_ENDPOINT: ${HC_ENDPOINT:-}

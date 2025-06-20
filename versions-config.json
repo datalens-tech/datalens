@@ -1,8 +1,8 @@
 {
     "authVersion": "0.20.0",
-    "backendVersion": "0.2273.1",
-    "metaManagerVersion": "0.32.0",
-    "releaseVersion": "2.2.0",
-    "uiVersion": "0.2933.0",
-    "usVersion": "0.350.0"
+    "backendVersion": "0.2282.0",
+    "metaManagerVersion": "0.35.0",
+    "releaseVersion": "2.3.0",
+    "uiVersion": "0.2983.0",
+    "usVersion": "0.352.0"
 }
