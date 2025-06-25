@@ -316,7 +316,7 @@ if [ "${IS_LOCK}" == "true" ]; then
     hashicorp/time \
     hashicorp/tls \
     hashicorp/kubernetes \
-    yandex-cloud/yandex
+    registry.terraform.io/yandex-cloud/yandex
 fi
 
 echo ""
