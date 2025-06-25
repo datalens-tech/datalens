@@ -1,6 +1,5 @@
 # terraform
 .terraform
-.terraform.lock.hcl
 
 # service account
 sa_key.json
