@@ -2,8 +2,8 @@
 terraform {
   required_providers {
     yandex = {
-      source  = "yandex-cloud/yandex"
-      version = "0.124.0" # 16.07.2024
+      source  = "registry.terraform.io/yandex-cloud/yandex"
+      version = "0.142.0" # 22.05.2025
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"

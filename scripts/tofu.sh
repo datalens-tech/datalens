@@ -302,7 +302,7 @@ if [ "${IS_LOCK}" == "true" ]; then
   # remove old lock file
   rm -f .terraform.lock.hcl
 
-  terraform providers lock \
+  tofu providers lock \
     -net-mirror="https://${TOFU_MIRROR}" \
     -platform=linux_amd64 \
     -platform=linux_arm64 \
