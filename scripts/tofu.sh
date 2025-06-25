@@ -272,10 +272,10 @@ if [ "${IS_TOFURC}" == "true" ]; then
   echo 'provider_installation {
   network_mirror {
     url = "https://'"${TOFU_MIRROR}"'/"
-    include = ["registry.opentofu.org/*/*"]
+    include = ["registry.terraform.io/*/*", "registry.opentofu.org/*/*"]
   }
   direct {
-    exclude = ["registry.opentofu.org/*/*"]
+    exclude = ["registry.terraform.io/*/*", "registry.opentofu.org/*/*"]
   }
 }' >~/.tofurc
 fi
