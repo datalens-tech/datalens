@@ -74,6 +74,9 @@ spec:
             cpu: {{ .Values.infra.postgres.resources.requests.cpu }}
             memory: {{ .Values.infra.postgres.resources.requests.memory }}
           limits:
+            {{- if .Values.infra.postgres.resources.limits.cpu }}
+            cpu: {{ .Values.infra.postgres.resources.limits.cpu }}
+            {{- end }}
             memory: {{ .Values.infra.postgres.resources.limits.memory }}
         volumeMounts:
         - name: postgres-volume

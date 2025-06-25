@@ -56,5 +56,8 @@ spec:
               cpu: {{ .Values.infra.temporal.resources.requests.cpu }}
               memory: {{ .Values.infra.temporal.resources.requests.memory }}
             limits:
+              {{- if .Values.infra.temporal.resources.limits.cpu }}
+              cpu: {{ .Values.infra.temporal.resources.limits.cpu }}
+              {{- end }}
               memory: {{ .Values.infra.temporal.resources.limits.memory }}
 {{- end }}

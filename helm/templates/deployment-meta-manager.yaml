@@ -77,5 +77,8 @@ spec:
               cpu: {{ .Values.application.meta_manager.resources.requests.cpu }}
               memory: {{ .Values.application.meta_manager.resources.requests.memory }}
             limits:
+              {{- if .Values.application.meta_manager.resources.limits.cpu }}
+              cpu: {{ .Values.application.meta_manager.resources.limits.cpu }}
+              {{- end }}
               memory: {{ .Values.application.meta_manager.resources.limits.memory }}
 {{- end }}

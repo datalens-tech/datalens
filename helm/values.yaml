@@ -24,6 +24,7 @@ infra:
         memory: 128Mi
         storage: 1Gi
       limits:
+        cpu: null
         memory: 512Mi
         storage: 10Gi
   temporal:
@@ -34,6 +35,7 @@ infra:
         cpu: 250m
         memory: 128Mi
       limits:
+        cpu: null
         memory: 512Mi
 #
 application:
@@ -45,6 +47,7 @@ application:
         cpu: 0.5
         memory: 512Mi
       limits:
+        cpu: null
         memory: 1024Mi
   data_api:
     replicas: 1
@@ -54,6 +57,7 @@ application:
         cpu: 1
         memory: 512Mi
       limits:
+        cpu: null
         memory: 1024Mi
   ui:
     replicas: 1
@@ -63,6 +67,7 @@ application:
         cpu: 0.25
         memory: 256Mi
       limits:
+        cpu: null
         memory: 512Mi
   ui_api:
     replicas: 1
@@ -72,6 +77,7 @@ application:
         cpu: 0.25
         memory: 256Mi
       limits:
+        cpu: null
         memory: 512Mi
   us:
     replicas: 1
@@ -81,6 +87,7 @@ application:
         cpu: 0.5
         memory: 256Mi
       limits:
+        cpu: null
         memory: 512Mi
   auth:
     replicas: 1
@@ -90,6 +97,7 @@ application:
         cpu: 0.5
         memory: 256Mi
       limits:
+        cpu: null
         memory: 512Mi
   meta_manager:
     replicas: 1
@@ -99,6 +107,7 @@ application:
         cpu: 0.5
         memory: 256Mi
       limits:
+        cpu: null
         memory: 512Mi
 #
 secrets:

@@ -64,4 +64,7 @@ spec:
               cpu: {{ .Values.application.us.resources.requests.cpu }}
               memory: {{ .Values.application.us.resources.requests.memory }}
             limits:
+              {{- if .Values.application.us.resources.limits.cpu }}
+              cpu: {{ .Values.application.us.resources.limits.cpu }}
+              {{- end }}
               memory: {{ .Values.application.us.resources.limits.memory }}
