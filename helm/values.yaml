@@ -27,6 +27,11 @@ infra:
         cpu: null
         memory: 512Mi
         storage: 10Gi
+    tls:
+      enabled: false
+      secret:
+        ref: null
+        ca: null
   temporal:
     enabled: true
     auth: true
