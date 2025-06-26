@@ -20,7 +20,7 @@ infra:
     enabled: true
     resources:
       requests:
-        cpu: 250m
+        cpu: 0.25
         memory: 128Mi
         storage: 1Gi
       limits:
@@ -37,7 +37,7 @@ infra:
     auth: true
     resources:
       requests:
-        cpu: 250m
+        cpu: 0.25
         memory: 128Mi
       limits:
         cpu: null
