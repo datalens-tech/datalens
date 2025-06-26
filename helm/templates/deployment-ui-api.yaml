@@ -37,5 +37,8 @@ spec:
               cpu: {{ .Values.application.ui_api.resources.requests.cpu }}
               memory: {{ .Values.application.ui_api.resources.requests.memory }}
             limits:
+              {{- if .Values.application.ui_api.resources.limits.cpu }}
+              cpu: {{ .Values.application.ui_api.resources.limits.cpu }}
+              {{- end }}
               memory: {{ .Values.application.ui_api.resources.limits.memory }}
 {{- end }}

@@ -62,4 +62,7 @@ spec:
               cpu: {{ .Values.application.control_api.resources.requests.cpu }}
               memory: {{ .Values.application.control_api.resources.requests.memory }}
             limits:
+              {{- if .Values.application.control_api.resources.limits.cpu }}
+              cpu: {{ .Values.application.control_api.resources.limits.cpu }}
+              {{- end }}
               memory: {{ .Values.application.control_api.resources.limits.memory }}

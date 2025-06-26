@@ -71,4 +71,7 @@ spec:
               cpu: {{ .Values.application.data_api.resources.requests.cpu }}
               memory: {{ .Values.application.data_api.resources.requests.memory }}
             limits:
+              {{- if .Values.application.data_api.resources.limits.cpu }}
+              cpu: {{ .Values.application.data_api.resources.limits.cpu }}
+              {{- end }}
               memory: {{ .Values.application.data_api.resources.limits.memory }}

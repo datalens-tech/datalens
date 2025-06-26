@@ -73,5 +73,8 @@ spec:
               cpu: {{ .Values.application.auth.resources.requests.cpu }}
               memory: {{ .Values.application.auth.resources.requests.memory }}
             limits:
+              {{- if .Values.application.auth.resources.limits.cpu }}
+              cpu: {{ .Values.application.auth.resources.limits.cpu }}
+              {{- end }}
               memory: {{ .Values.application.auth.resources.limits.memory }}
 {{- end }}
