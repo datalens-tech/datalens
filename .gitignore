@@ -7,6 +7,7 @@ venv/
 .DS_Store
 .idea
 .env
+.env.*
 
 debug.log
 cert.pem
