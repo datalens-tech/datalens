@@ -43,6 +43,7 @@ ENV POSTGRES_DB='pg-temporal-db'
 ENV POSTGRES_DB_VISIBILITY='pg-temporal-visibility-db'
 ENV POSTGRES_TLS_ENABLED='false'
 ENV POSTGRES_TLS_DISABLE_HOST_VERIFICATION='true'
+ENV POSTGRES_TLS_CA_FILE=''
 ENV POSTGRES_CONNECT_ATTRIBUTES=''
 
 HEALTHCHECK --interval=5s --start-period=5s --retries=10 CMD ["/etc/temporal/healthcheck.sh"]

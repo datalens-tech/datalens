@@ -72,6 +72,13 @@ spec:
                   name: {{ default "datalens-secrets" .Values.secrets.ref }}
                   key: AUTH_TOKEN_PUBLIC_KEY
             {{- end }}
+          {{- if and .Values.infra.postgres.tls.enabled (or .Values.infra.postgres.tls.secret.ref .Values.infra.postgres.tls.secret.ca) }}
+          volumeMounts:
+          - name: postgres-tls
+            mountPath: /certs/postgres-ca.crt
+            subPath: ca.crt
+            readOnly: true
+          {{- end }}
           resources:
             requests:
               cpu: {{ .Values.application.meta_manager.resources.requests.cpu }}
@@ -81,4 +88,10 @@ spec:
               cpu: {{ .Values.application.meta_manager.resources.limits.cpu }}
               {{- end }}
               memory: {{ .Values.application.meta_manager.resources.limits.memory }}
+      {{- if and .Values.infra.postgres.tls.enabled (or .Values.infra.postgres.tls.secret.ref .Values.infra.postgres.tls.secret.ca) }}
+      volumes:
+        - name: postgres-tls
+          secret:
+            secretName: {{ default "postgres-tls-secret" .Values.infra.postgres.tls.secret.ref }}
+      {{- end }}
 {{- end }}

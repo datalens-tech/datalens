@@ -51,6 +51,23 @@ spec:
                   key: TEMPORAL_AUTH_PRIVATE_KEY
             - name: NAMESPACES
               value: meta-manager
+            {{- if and .Values.infra.postgres.tls.enabled }}
+            - name: POSTGRES_TLS_ENABLED
+              value: "true"
+            - name: POSTGRES_TLS_DISABLE_HOST_VERIFICATION
+              value: "false"
+            {{- end }}
+            {{- if or .Values.infra.postgres.tls.secret.ref .Values.infra.postgres.tls.secret.ca }}
+            - name: POSTGRES_TLS_CA_FILE
+              value: "/certs/postgres-ca.crt"
+            {{- end }}
+          {{- if and .Values.infra.postgres.tls.enabled (or .Values.infra.postgres.tls.secret.ref .Values.infra.postgres.tls.secret.ca) }}
+          volumeMounts:
+          - name: postgres-tls
+            mountPath: /certs/postgres-ca.crt
+            subPath: ca.crt
+            readOnly: true
+          {{- end }}
           resources:
             requests:
               cpu: {{ .Values.infra.temporal.resources.requests.cpu }}
@@ -60,4 +77,10 @@ spec:
               cpu: {{ .Values.infra.temporal.resources.limits.cpu }}
               {{- end }}
               memory: {{ .Values.infra.temporal.resources.limits.memory }}
+      {{- if and .Values.infra.postgres.tls.enabled (or .Values.infra.postgres.tls.secret.ref .Values.infra.postgres.tls.secret.ca) }}
+      volumes:
+        - name: postgres-tls
+          secret:
+            secretName: {{ default "postgres-tls-secret" .Values.infra.postgres.tls.secret.ref }}
+      {{- end }}
 {{- end }}
