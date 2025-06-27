@@ -259,10 +259,20 @@ fi
 
 # shellcheck disable=SC2236
 if [ ! -z "${POSTGRES_CERT}" ] && [ -f "${POSTGRES_CERT}" ]; then
-  export POSTGRES_ARGS="?sslmode=verify-full&sslrootcert=/certs/root.crt"
+  export POSTGRES_TLS_ENABLED="true"
+  export POSTGRES_TLS_DISABLE_HOST_VERIFICATION="false"
+  export POSTGRES_TLS_CA_FILE="/certs/postgres-ca.crt"
+  export POSTGRES_ARGS="?sslmode=verify-full&sslrootcert=/certs/postgres-ca.crt"
+  write_env POSTGRES_TLS_ENABLED "true"
+  write_env POSTGRES_TLS_DISABLE_HOST_VERIFICATION "false"
+  write_env POSTGRES_TLS_CA_FILE "/certs/postgres-ca.crt"
   write_env POSTGRES_ARGS "\"${POSTGRES_ARGS}\""
 elif [ "${IS_POSTGRES_SSL}" == "true" ]; then
+  export POSTGRES_TLS_ENABLED="true"
+  export POSTGRES_TLS_DISABLE_HOST_VERIFICATION="false"
   export POSTGRES_ARGS="?sslmode=verify-full"
+  write_env POSTGRES_TLS_ENABLED "true"
+  write_env POSTGRES_TLS_DISABLE_HOST_VERIFICATION "false"
   write_env POSTGRES_ARGS "\"${POSTGRES_ARGS}\""
 fi
 
@@ -384,7 +394,7 @@ if [ "${IS_POSTGRES_EXTERNAL}" == "true" ]; then
   # shellcheck disable=SC2236
   if [ ! -z "${POSTGRES_CERT}" ] && [ -f "${POSTGRES_CERT}" ]; then
     # shellcheck disable=SC2001
-    COMPOSE_CONFIG=$(echo "${COMPOSE_CONFIG}" | sed 's|    volumes: \[\]|    volumes:\n      - ./cert.pem:/certs/root.crt|g')
+    COMPOSE_CONFIG=$(echo "${COMPOSE_CONFIG}" | sed "s|    volumes: \[\]|    volumes:\n      - ${POSTGRES_CERT}:/certs/postgres-ca.crt|g")
   fi
 
   COMPOSE_CONFIG=$(echo "${COMPOSE_CONFIG}" |

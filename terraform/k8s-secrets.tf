@@ -143,7 +143,7 @@ resource "yandex_lockbox_secret_version" "this" {
 
     content {
       key        = "POSTGRES_DSN_CLUSTER_${upper(replace(replace(replace(entries.key, "pg-", ""), "-db", ""), "-", "_"))}"
-      text_value = "postgres://${entries.value.user}:${random_password.pg_password[entries.value.user].result}@${local.pg_cluster_host}:${local.pg_cluster_port}/${yandex_mdb_postgresql_database.this[entries.key].name}"
+      text_value = "postgres://${entries.value.user}:${random_password.pg_password[entries.value.user].result}@${local.pg_cluster_host}:${local.pg_cluster_port}/${yandex_mdb_postgresql_database.this[entries.key].name}?sslmode=verify-full"
     }
   }
 
@@ -152,7 +152,7 @@ resource "yandex_lockbox_secret_version" "this" {
 
     content {
       key        = "POSTGRES_DSN_LIST_${upper(replace(replace(replace(entries.key, "pg-", ""), "-db", ""), "-", "_"))}"
-      text_value = join(",", [for host in local.pg_hosts : "postgres://${entries.value.user}:${random_password.pg_password[entries.value.user].result}@${host}:${local.pg_cluster_port}/${yandex_mdb_postgresql_database.this[entries.key].name}"])
+      text_value = join(",", [for host in local.pg_hosts : "postgres://${entries.value.user}:${random_password.pg_password[entries.value.user].result}@${host}:${local.pg_cluster_port}/${yandex_mdb_postgresql_database.this[entries.key].name}?sslmode=verify-full"])
     }
   }
 

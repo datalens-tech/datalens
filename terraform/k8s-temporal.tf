@@ -24,8 +24,9 @@ resource "kubernetes_deployment" "temporal" {
       }
       spec {
         container {
-          image = "ghcr.io/datalens-tech/datalens-temporal:1.27.2"
-          name  = "temporal"
+          image             = "ghcr.io/datalens-tech/datalens-temporal:1.27.2"
+          image_pull_policy = "Always"
+          name              = "temporal"
 
           port {
             container_port = 7233
@@ -59,6 +60,14 @@ resource "kubernetes_deployment" "temporal" {
           env {
             name  = "POSTGRES_DB_VISIBILITY"
             value = replace(local.pg_temporal_user, "-user", "-visibility-db")
+          }
+          env {
+            name  = "POSTGRES_TLS_ENABLED"
+            value = "true"
+          }
+          env {
+            name  = "POSTGRES_TLS_DISABLE_HOST_VERIFICATION"
+            value = "false"
           }
           env {
             name  = "NAMESPACES"

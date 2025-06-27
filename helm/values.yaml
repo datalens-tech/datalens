@@ -20,19 +20,24 @@ infra:
     enabled: true
     resources:
       requests:
-        cpu: 250m
+        cpu: 0.25
         memory: 128Mi
         storage: 1Gi
       limits:
         cpu: null
         memory: 512Mi
         storage: 10Gi
+    tls:
+      enabled: false
+      secret:
+        ref: null
+        ca: null
   temporal:
     enabled: true
     auth: true
     resources:
       requests:
-        cpu: 250m
+        cpu: 0.25
         memory: 128Mi
       limits:
         cpu: null

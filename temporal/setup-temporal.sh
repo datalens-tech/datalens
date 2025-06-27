@@ -32,54 +32,28 @@ if [ "${RETRY}" == "${RETRIES}" ]; then
   exit 1
 fi
 
-export SQL_PASSWORD="${POSTGRES_PASSWORD}"
-
 echo "  [temporal-setup] setup initial temporal schema"
 temporal-sql-tool \
-  --plugin "${DB}" \
-  --endpoint "${POSTGRES_HOST}" \
-  --user "${POSTGRES_USER}" \
-  --port "${POSTGRES_PORT}" \
   --database "${POSTGRES_DB}" \
   --connect-attributes "${POSTGRES_CONNECT_ATTRIBUTES}" \
-  --tls="${POSTGRES_TLS_ENABLED}" \
-  --tls-disable-host-verification="${POSTGRES_TLS_DISABLE_HOST_VERIFICATION}" \
   setup-schema -v 0.0
 
 echo "  [temporal-setup] update temporal schema"
 temporal-sql-tool \
-  --plugin postgres12 \
-  --endpoint "${POSTGRES_HOST}" \
-  --user "${POSTGRES_USER}" \
-  --port "${POSTGRES_PORT}" \
   --database "${POSTGRES_DB}" \
   --connect-attributes "${POSTGRES_CONNECT_ATTRIBUTES}" \
-  --tls="${POSTGRES_TLS_ENABLED}" \
-  --tls-disable-host-verification="${POSTGRES_TLS_DISABLE_HOST_VERIFICATION}" \
   update-schema -d /etc/temporal/schema/temporal
 
 echo "  [temporal-setup] setup initial temporal visibility schema"
 temporal-sql-tool \
-  --plugin "${DB}" \
-  --endpoint "${POSTGRES_HOST}" \
-  --user "${POSTGRES_USER}" \
-  --port "${POSTGRES_PORT}" \
   --database "${POSTGRES_DB_VISIBILITY}" \
   --connect-attributes "${POSTGRES_CONNECT_ATTRIBUTES}" \
-  --tls="${POSTGRES_TLS_ENABLED}" \
-  --tls-disable-host-verification="${POSTGRES_TLS_DISABLE_HOST_VERIFICATION}" \
   setup-schema -v 0.0
 
 echo "  [temporal-setup] update temporal visibility schema"
 temporal-sql-tool \
-  --plugin postgres12 \
-  --endpoint "${POSTGRES_HOST}" \
-  --user "${POSTGRES_USER}" \
-  --port "${POSTGRES_PORT}" \
   --database "${POSTGRES_DB_VISIBILITY}" \
   --connect-attributes "${POSTGRES_CONNECT_ATTRIBUTES}" \
-  --tls="${POSTGRES_TLS_ENABLED}" \
-  --tls-disable-host-verification="${POSTGRES_TLS_DISABLE_HOST_VERIFICATION}" \
   update-schema -d /etc/temporal/schema/visibility
 
 echo "  [temporal-setup] finish temporal setup..."
