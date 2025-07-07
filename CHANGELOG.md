@@ -9,6 +9,8 @@
 - datalens-us: 0.352.0 -> 0.358.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.352.0...v0.358.0))
 
 ### New features
+- **Deploy**: Add full TLS support for PostgreSQL and Temporal services [datalens-tech/datalens#340](https://github.com/datalens-tech/datalens/pull/340)
+- **Deploy**: Add optional CPU limits to Helm chart [datalens-tech/datalens#337](https://github.com/datalens-tech/datalens/pull/337)
 - **Auth**: Add env to disable signup [datalens-tech/datalens-auth#52](https://github.com/datalens-tech/datalens-auth/pull/52)
 - **Charts**: Remove extra part of path in possible preview chart url. [datalens-tech/datalens-ui#2583](https://github.com/datalens-tech/datalens-ui/pull/2583)
 - **Dashboards**: Save connections for selectors pasted inside the selectors dialog. [datalens-tech/datalens-ui#2590](https://github.com/datalens-tech/datalens-ui/pull/2590)
