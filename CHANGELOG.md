@@ -1,3 +1,34 @@
+## v2.4.0 (2025-07-07)
+
+### Image versions
+- datalens-auth: 0.20.0 -> 0.21.0 ([full changelog](https://github.com/datalens-tech/datalens-auth/compare/v0.20.0...v0.21.0))
+- datalens-control-api: 0.2282.0
+- datalens-data-api: 0.2282.0
+- datalens-meta-manager: 0.35.0 -> 0.40.0 ([full changelog](https://github.com/datalens-tech/datalens-meta-manager/compare/v0.35.0...v0.40.0))
+- datalens-ui: 0.2983.0 -> 0.3029.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.2983.0...v0.3029.0))
+- datalens-us: 0.352.0 -> 0.358.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.352.0...v0.358.0))
+
+### New features
+- **Deploy**: Add full TLS support for PostgreSQL and Temporal services [datalens-tech/datalens#340](https://github.com/datalens-tech/datalens/pull/340)
+- **Deploy**: Add optional CPU limits to Helm chart [datalens-tech/datalens#337](https://github.com/datalens-tech/datalens/pull/337)
+- **Auth**: Add env to disable signup [datalens-tech/datalens-auth#52](https://github.com/datalens-tech/datalens-auth/pull/52)
+- **Charts**: Remove extra part of path in possible preview chart url. [datalens-tech/datalens-ui#2583](https://github.com/datalens-tech/datalens-ui/pull/2583)
+- **Dashboards**: Save connections for selectors pasted inside the selectors dialog. [datalens-tech/datalens-ui#2590](https://github.com/datalens-tech/datalens-ui/pull/2590)
+- **Dashboards**: Add dash undo redo. [datalens-tech/datalens-ui#2613](https://github.com/datalens-tech/datalens-ui/pull/2613)
+- **Datasets**: Row selection in Dataset table by Shift key. [datalens-tech/datalens-ui#2611](https://github.com/datalens-tech/datalens-ui/pull/2611)
+
+### Bug fixes
+- **Charts**: Fix null value in bar-cell. [datalens-tech/datalens-ui#2584](https://github.com/datalens-tech/datalens-ui/pull/2584)
+- **Charts**: Fix params lost in redirect from /preview/:source/:id. [datalens-tech/datalens-ui#2594](https://github.com/datalens-tech/datalens-ui/pull/2594)
+- **Dashboards**: Fix dash spacings. [datalens-tech/datalens-ui#2620](https://github.com/datalens-tech/datalens-ui/pull/2620)
+- **Dashboards**: Fix anchor fade color in fixed header. [datalens-tech/datalens-ui#2621](https://github.com/datalens-tech/datalens-ui/pull/2621)
+
+### Dependencies
+- **General components**: Up @gravity-ui/nodekit to 2.4.1 and up @gravity-ui/expresskit to 2.4.0 with spanId support. [datalens-tech/datalens-ui#2581](https://github.com/datalens-tech/datalens-ui/pull/2581)
+- **General components**: Update @gravity-ui/app-builder from 0.26.0 to 0.28.0. [datalens-tech/datalens-ui#2586](https://github.com/datalens-tech/datalens-ui/pull/2586)
+- **General components**: Update yup to 1.6.1. [datalens-tech/datalens-ui#2628](https://github.com/datalens-tech/datalens-ui/pull/2628)
+
+
 ## v2.3.0 (2025-06-20)
 
 ### Image versions
