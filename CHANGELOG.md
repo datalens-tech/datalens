@@ -9,9 +9,10 @@
 - datalens-us: 0.352.0 -> 0.358.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.352.0...v0.358.0))
 
 ### New features
+- **Auth**: Add env to disable signup [datalens-tech/datalens-auth#52](https://github.com/datalens-tech/datalens-auth/pull/52)
 - **Charts**: Remove extra part of path in possible preview chart url. [datalens-tech/datalens-ui#2583](https://github.com/datalens-tech/datalens-ui/pull/2583)
 - **Dashboards**: Save connections for selectors pasted inside the selectors dialog. [datalens-tech/datalens-ui#2590](https://github.com/datalens-tech/datalens-ui/pull/2590)
-- **Dashboards**: [OS] Add dash undo redo. [datalens-tech/datalens-ui#2613](https://github.com/datalens-tech/datalens-ui/pull/2613)
+- **Dashboards**: Add dash undo redo. [datalens-tech/datalens-ui#2613](https://github.com/datalens-tech/datalens-ui/pull/2613)
 - **Datasets**: Row selection in Dataset table by Shift key. [datalens-tech/datalens-ui#2611](https://github.com/datalens-tech/datalens-ui/pull/2611)
 
 ### Bug fixes
@@ -22,7 +23,6 @@
 
 ### Dependencies
 - **General components**: Up @gravity-ui/nodekit to 2.4.1 and up @gravity-ui/expresskit to 2.4.0 with spanId support. [datalens-tech/datalens-ui#2581](https://github.com/datalens-tech/datalens-ui/pull/2581)
-- **General components**: Fix dev-mode app start. [datalens-tech/datalens-ui#2580](https://github.com/datalens-tech/datalens-ui/pull/2580)
 - **General components**: Update @gravity-ui/app-builder from 0.26.0 to 0.28.0. [datalens-tech/datalens-ui#2586](https://github.com/datalens-tech/datalens-ui/pull/2586)
 - **General components**: Update yup to 1.6.1. [datalens-tech/datalens-ui#2628](https://github.com/datalens-tech/datalens-ui/pull/2628)
 
