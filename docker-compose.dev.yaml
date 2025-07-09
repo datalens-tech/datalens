@@ -93,7 +93,6 @@ services:
       args:
         - image=ghcr.io/datalens-tech/datalens-us:0.358.0
     tty: true
-    user: root
     environment:
       RUN_DEV: npx tsc-watch --onSuccess ./scripts/preflight.sh
     volumes:
@@ -118,7 +117,6 @@ services:
       args:
         - image=ghcr.io/datalens-tech/datalens-ui:0.3038.0
     tty: true
-    user: root
     environment:
       RUN_DEV: npm run i18n:prepare && npx app-builder dev
     volumes:
@@ -145,7 +143,6 @@ services:
       args:
         - image=ghcr.io/datalens-tech/datalens-meta-manager:0.40.0
     tty: true
-    user: root
     environment:
       RUN_DEV: npx tsc-watch --onSuccess ./scripts/preflight.sh
     volumes:
@@ -171,7 +168,6 @@ services:
       args:
         - image=ghcr.io/datalens-tech/datalens-auth:0.21.0
     tty: true
-    user: root
     environment:
       RUN_DEV: npx tsc-watch --onSuccess ./scripts/preflight.sh
     volumes:
@@ -194,7 +190,6 @@ services:
       args:
         - image=ghcr.io/datalens-tech/datalens-ui:0.3038.0
     tty: true
-    user: root
     environment:
       RUN_DEV: npm run i18n:prepare && npx app-builder dev
     volumes:
