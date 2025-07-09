@@ -45,7 +45,6 @@ services:
       args:
         - image=ghcr.io/datalens-tech/datalens-control-api:0.2282.0
     tty: true
-    user: root
     environment:
       RUN_DEV: /etc/service/dl_api/run
     volumes:
@@ -70,7 +69,6 @@ services:
       args:
         - image=ghcr.io/datalens-tech/datalens-data-api:0.2282.0
     tty: true
-    user: root
     environment:
       RUN_DEV: /etc/service/dl_api/run
     volumes:

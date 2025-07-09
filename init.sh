@@ -311,8 +311,13 @@ gen_sec() {
   fi
 }
 
-echo ""
-echo "🚀 DataLens start initialization..."
+if [ "${IS_HELP}" != "true" ]; then
+  echo ""
+  echo "🚀 DataLens start initialization..."
+else
+  echo ""
+  echo "🛟 DataLens init script help!"
+fi
 
 if [ "${IS_DEV}" == "true" ]; then
   echo ""
@@ -323,6 +328,7 @@ if [ "${IS_HELP}" == "true" ]; then
   echo ""
   echo "Usage: ./init.sh [--hc] [--domain <domain>] [--https] [--disable-demo] [--disable-auth] [--up]"
   echo ""
+  echo "Deployment options:"
   echo "  --hc - enable Highcharts library"
   echo "  --yandex-map - enable Yandex Maps visualization type"
   echo "  --yandex-map-token <token> - provide token for Yandex Maps API"
