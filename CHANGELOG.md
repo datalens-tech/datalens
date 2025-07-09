@@ -1,3 +1,23 @@
+## v2.4.1 (2025-07-09)
+
+### Image versions
+- datalens-auth: 0.21.0
+- datalens-control-api: 0.2282.0
+- datalens-data-api: 0.2282.0
+- datalens-meta-manager: 0.40.0
+- datalens-ui: 0.3029.0 -> 0.3038.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.3029.0...v0.3038.0))
+- datalens-us: 0.358.0
+
+### New features
+- **Dashboards**: Add hint for titles in dashbords and reports. [datalens-tech/datalens-ui#2603](https://github.com/datalens-tech/datalens-ui/pull/2603)
+
+### Bug fixes
+- **Charts**: Replaced "Measure Names" with "Column Names" for QL charts wizard. [datalens-tech/datalens-ui#2630](https://github.com/datalens-tech/datalens-ui/pull/2630)
+- **Auth**: Add env to disable signup. [datalens-tech/datalens-ui#2635](https://github.com/datalens-tech/datalens-ui/pull/2635)
+- **Dashboards**: Fix markdown content in title hints. [datalens-tech/datalens-ui#2642](https://github.com/datalens-tech/datalens-ui/pull/2642)
+- **Auth**: Update invalid password message. [datalens-tech/datalens-ui#2638](https://github.com/datalens-tech/datalens-ui/pull/2638)
+
+
 ## v2.4.0 (2025-07-07)
 
 ### Image versions
