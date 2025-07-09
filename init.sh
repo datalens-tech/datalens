@@ -413,7 +413,11 @@ if [ "${IS_DOWN}" == "true" ]; then
   if [ "${IS_RM_VOLUMES}" == "true" ]; then
     echo ""
     echo "Remove all docker volumes..."
-    docker --log-level error compose down --remove-orphans --volumes
+    if [ "${IS_DEV}" == "true" ]; then
+      docker --log-level error compose -f docker-compose.dev.yaml down --remove-orphans --volumes
+    else
+      docker --log-level error compose down --remove-orphans --volumes
+    fi
   fi
   echo ""
   exit 0
