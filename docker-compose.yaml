@@ -161,7 +161,7 @@ services:
   #
   ui-api:
     container_name: datalens-ui-api
-    image: ghcr.io/datalens-tech/datalens-ui:0.3029.0
+    image: ghcr.io/datalens-tech/datalens-ui:0.3038.0
     environment:
       APP_MODE: api
       APP_ENV: production
@@ -235,7 +235,7 @@ services:
   #
   ui:
     container_name: datalens-ui
-    image: ghcr.io/datalens-tech/datalens-ui:0.3029.0
+    image: ghcr.io/datalens-tech/datalens-ui:0.3038.0
     environment:
       APP_MODE: full
       APP_ENV: production
@@ -251,7 +251,7 @@ services:
       #
       US_MASTER_TOKEN: ${US_MASTER_TOKEN:-us-master-token}
       #
-      RELEASE_VERSION: '2.4.0'
+      RELEASE_VERSION: '2.4.1'
       #
       HC: ${HC:-0}
       HC_ENDPOINT: ${HC_ENDPOINT:-}
