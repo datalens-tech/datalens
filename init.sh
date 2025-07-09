@@ -19,8 +19,19 @@ IS_STOP="false"
 IS_HELP="false"
 
 IS_DEV="false"
+IS_DEV_ENV="false"
 IS_DEV_BUILD="false"
+
+IS_DEV_UI="false"
+IS_DEV_UI_API="false"
+IS_DEV_US="false"
+IS_DEV_AUTH="false"
+IS_DEV_META_MANAGER="false"
+IS_DEV_CONTROL_API="false"
+IS_DEV_DATA_API="false"
+
 IS_REINIT_DB="false"
+
 IS_UP_UI="true"
 IS_UP_UI_API="true"
 IS_UP_US="true"
@@ -89,6 +100,7 @@ for _ in "$@"; do
     ;;
   --disable-auth)
     IS_AUTH_ENABLED="false"
+    IS_UP_AUTH="false"
     shift # past argument with no value
     ;;
   --disable-temporal)
@@ -141,6 +153,80 @@ for _ in "$@"; do
     ;;
   --dev)
     IS_DEV="true"
+    shift # past argument with no value
+    ;;
+  --dev-env)
+    IS_DEV_ENV="true"
+    shift # past argument with no value
+    ;;
+  --dev-light)
+    IS_AUTH_ENABLED="false"
+    IS_TEMPORAL_ENABLED="false"
+    IS_WORKBOOK_EXPORT_ENABLED="false"
+    shift # past argument with no value
+    ;;
+  --dev-build)
+    IS_DEV_BUILD="true"
+    shift # past argument with no value
+    ;;
+  --dev-ui)
+    IS_DEV_UI="true"
+    shift # past argument with no value
+    ;;
+  --dev-no-ui)
+    IS_UP_UI="false"
+    shift # past argument with no value
+    ;;
+  --dev-ui-api)
+    IS_DEV_UI_API="true"
+    shift # past argument with no value
+    ;;
+  --dev-no-ui-api)
+    IS_UP_UI_API="false"
+    shift # past argument with no value
+    ;;
+  --dev-us)
+    IS_DEV_US="true"
+    shift # past argument with no value
+    ;;
+  --dev-no-us)
+    IS_UP_US="false"
+    shift # past argument with no value
+    ;;
+  --dev-auth)
+    IS_DEV_AUTH="true"
+    shift # past argument with no value
+    ;;
+  --dev-no-auth)
+    IS_UP_AUTH="false"
+    shift # past argument with no value
+    ;;
+  --dev-meta-manager)
+    IS_DEV_META_MANAGER="true"
+    shift # past argument with no value
+    ;;
+  --dev-no-meta-manager)
+    IS_UP_META_MANAGER="false"
+    shift # past argument with no value
+    ;;
+  --dev-control-api)
+    IS_DEV_CONTROL_API="true"
+    shift # past argument with no value
+    ;;
+  --dev-no-control-api)
+    IS_UP_CONTROL_API="false"
+    shift # past argument with no value
+    ;;
+  --dev-data-api)
+    IS_DEV_DATA_API="true"
+    shift # past argument with no value
+    ;;
+  --dev-no-data-api)
+    IS_UP_DATA_API="false"
+    shift # past argument with no value
+    ;;
+  --reinit-db)
+    IS_REINIT_DB="true"
     shift # past argument with no value
     ;;
   --rm-env | --remove-env)
@@ -226,7 +312,12 @@ gen_sec() {
 }
 
 echo ""
-echo "🚀 DataLens auto production Docker Compose file generator..."
+echo "🚀 DataLens start initialization..."
+
+if [ "${IS_DEV}" == "true" ]; then
+  echo ""
+  echo "🚧 --- [DEV MODE] --- 🚧"
+fi
 
 if [ "${IS_HELP}" == "true" ]; then
   echo ""
@@ -250,17 +341,42 @@ if [ "${IS_HELP}" == "true" ]; then
   echo "  --https - enable https mode for ui container endpoint"
   echo "  --up - automatically start services with production configuration"
   echo ""
+  echo "Development mode options:"
+  echo "  --dev - enable development mode"
+  echo "  --dev-env - force use environment file in development mode"
+  echo "  --dev-light - disable auth, temporal and workbook export for lighter development setup"
+  echo "  --dev-build - rebuild development containers before starting"
+  echo "  --dev-<service> - run [ui/ui-api/us/auth/meta-manager/control-api/data-api] service in development mode"
+  echo "  --dev-no-<service> - disable up [ui/ui-api/us/auth/meta-manager/control-api/data-api] service"
+  echo ""
+  echo "Other options:"
+  echo "  --reinit-db - force reinitialize database before start"
+  echo "  --rm-env | --remove-env - remove environment file"
+  echo "  --rm-volumes | --remove-volumes - remove all docker volumes"
+  echo "  --legacy-docker-compose - use legacy docker-compose command instead of docker compose"
+  echo ""
   exit 0
 fi
 
-echo
-echo "Loading environment file..."
-echo "  file: ${ENV_FILE_PATH}"
-load_env
+IS_USE_ENV_AND_SECRETS="false"
+if [ "${IS_DEV}" != "true" ] || [ "${IS_DEV_ENV}" == "true" ]; then
+  IS_USE_ENV_AND_SECRETS="true"
+fi
+
+if [ "${IS_USE_ENV_AND_SECRETS}" == "true" ]; then
+  echo
+  echo "Loading environment file..."
+  echo "  file: ${ENV_FILE_PATH}"
+  load_env
+else
+  echo
+  echo "⚠️  Skip loading environment file..."
+fi
 
 if [ "${IS_REINIT_DB}" == "true" ]; then
   echo ""
-  echo "Reinit database before start..."
+  echo "♻️  Reinit database before start..."
+  echo ""
 
   docker --log-level error compose rm --stop --force postgres us auth meta-manager
   docker --log-level error compose down --volumes postgres us auth meta-manager
@@ -297,34 +413,16 @@ if [ "${IS_DOWN}" == "true" ]; then
   exit 0
 fi
 
-echo ""
-echo "Available script arguments:"
-echo "  --hc - enable Highcharts library"
-echo "  --yandex-map - enable Yandex Maps visualization type"
-echo "  --yandex-map-token <token> - provide token for Yandex Maps API"
-echo "  --disable-demo - disable demo data initialization"
-echo "  --disable-workbook-export - disable workbook export to JSON feature"
-echo "  --disable-auth - disable authentication service"
-echo "  --disable-temporal - disable temporal workflow service"
-echo "  --disable-temporal-auth - disable JWT auth for temporal service"
-echo "  --disable-always-image-pull - disable always pull policy for images at deployment"
-echo "  --postgres-external - disable built-in PostgreSQL service"
-echo "  --postgres-ssl - set SSL mode to [verify-full] for PostgreSQL connection"
-echo "  --postgres-cert <path> - set path to SSL certificate file for PostgreSQL connection"
-echo "  --demo - run demo data initialization script for external PostgreSQL database"
-echo "  --ip <ip> - set custom ip address for deployment"
-echo "  --domain <domain> - set custom domain for deployment"
-echo "  --https - enable https mode for ui container endpoint"
-echo "  --up - automatically start services with production configuration"
-
-echo ""
-echo "Generating secrets..."
-echo "  - POSTGRES_PASSWORD"
-gen_sec POSTGRES_PASSWORD 32
-echo "  - US_MASTER_TOKEN"
-gen_sec US_MASTER_TOKEN 32
-echo "  - CONTROL_API_CRYPTO_KEY"
-gen_sec CONTROL_API_CRYPTO_KEY 32 base64
+if [ "${IS_USE_ENV_AND_SECRETS}" == "true" ]; then
+  echo ""
+  echo "🔐 Generating secrets..."
+  echo "  - POSTGRES_PASSWORD"
+  gen_sec POSTGRES_PASSWORD 32
+  echo "  - US_MASTER_TOKEN"
+  gen_sec US_MASTER_TOKEN 32
+  echo "  - CONTROL_API_CRYPTO_KEY"
+  gen_sec CONTROL_API_CRYPTO_KEY 32 base64
+fi
 
 COMPOSE_UP_SERVICES="control-api data-api us ui"
 
@@ -352,13 +450,17 @@ elif [ "${IS_POSTGRES_SSL}" == "true" ]; then
 fi
 
 if [ "${IS_WORKBOOK_EXPORT_ENABLED}" == "true" ]; then
-  echo "  - EXPORT_DATA_VERIFICATION_KEY"
-  gen_sec EXPORT_DATA_VERIFICATION_KEY 32
+  if [ "${IS_USE_ENV_AND_SECRETS}" == "true" ]; then
+    echo "  - EXPORT_DATA_VERIFICATION_KEY"
+    gen_sec EXPORT_DATA_VERIFICATION_KEY 32
+  fi
 fi
 
 if [ "${IS_TEMPORAL_ENABLED}" == "true" ] && [ "${IS_TEMPORAL_AUTH_ENABLED}" == "true" ]; then
-  echo "  - TEMPORAL_AUTH [RSA 4096]"
-  gen_sec TEMPORAL_AUTH 4096 rsa
+  if [ "${IS_USE_ENV_AND_SECRETS}" == "true" ]; then
+    echo "  - TEMPORAL_AUTH [RSA 4096]"
+    gen_sec TEMPORAL_AUTH 4096 rsa
+  fi
 
   remove_env TEMPORAL_AUTH_ENABLED
   unset TEMPORAL_AUTH_ENABLED
@@ -376,15 +478,24 @@ if [ "${IS_TEMPORAL_ENABLED}" == "true" ]; then
 fi
 
 if [ "${IS_AUTH_ENABLED}" == "true" ]; then
-  echo "  - AUTH_ADMIN_PASSWORD"
-  gen_sec AUTH_ADMIN_PASSWORD 16
-  echo "  - AUTH_MASTER_TOKEN"
-  gen_sec AUTH_MASTER_TOKEN 32
-  echo "  - AUTH_TOKEN [RSA 4096]"
-  gen_sec AUTH_TOKEN 4096 rsa
+  if [ "${IS_USE_ENV_AND_SECRETS}" == "true" ]; then
+    echo "  - AUTH_ADMIN_PASSWORD"
+    gen_sec AUTH_ADMIN_PASSWORD 16
+    echo "  - AUTH_MASTER_TOKEN"
+    gen_sec AUTH_MASTER_TOKEN 32
+    echo "  - AUTH_TOKEN [RSA 4096]"
+    gen_sec AUTH_TOKEN 4096 rsa
 
-  echo ""
-  echo "Admin user password: $(get_env AUTH_ADMIN_PASSWORD)"
+    echo ""
+    echo "Admin credentials:"
+    echo "  - login: admin"
+    echo "  - password: $(get_env AUTH_ADMIN_PASSWORD)"
+  elif [ "${IS_DEV}" == "true" ]; then
+    echo ""
+    echo "Admin credentials:"
+    echo "  - login: admin"
+    echo "  - password: admin"
+  fi
 
   remove_env AUTH_ENABLED
   remove_env AUTH_TYPE
@@ -459,19 +570,59 @@ if [ "${IS_RUN_INIT_DEMO_DATA}" == "true" ]; then
 fi
 
 if [ "${IS_DEV}" == "true" ]; then
+  export COMPOSE_BAKE="true"
+
+  if [ "${IS_USE_ENV_AND_SECRETS}" != "true" ]; then
+    export COMPOSE_DISABLE_ENV_FILE=1
+    echo ""
+    echo "⚠️  Loading environment file for compose is disabled..."
+  fi
+
   echo ""
-  echo "Starting Docker Compose services with DEV mode..."
+  echo "💡 Starting Docker Compose services in dev mode..."
   echo ""
 
-  DOCKER_COMPOSE_CONFIG=docker-compose.base.yml
-  DOCKER_COMPOSE_DEV_CONFIG=docker-compose.dev.yml
+  DIR_REPO_UI="../datalens-ui"
+  DIR_REPO_US="../datalens-us"
+  DIR_REPO_AUTH="../datalens-auth"
+  DIR_REPO_META_MANAGER="../datalens-meta-manager"
+  DIR_REPO_BACKEND="../datalens-backend"
 
-  COMPOSE_UP_SERVICES="control-api data-api"
+  DOCKER_COMPOSE_CONFIG=docker-compose.yaml
+  DOCKER_COMPOSE_DEV_CONFIG=docker-compose.dev.yaml
+
+  COMPOSE_UP_SERVICES=""
   COMPOSE_DOWN_SERVICES=""
   COMPOSE_DEV_UP_SERVICES=""
   COMPOSE_LOG_SERVICES=""
 
+  if [ "${IS_POSTGRES_EXTERNAL}" == "true" ]; then
+    COMPOSE_DOWN_SERVICES="${COMPOSE_DOWN_SERVICES} postgres"
+  else
+    COMPOSE_UP_SERVICES="${COMPOSE_UP_SERVICES} postgres"
+  fi
+
+  if [ "${IS_TEMPORAL_ENABLED}" == "true" ]; then
+    COMPOSE_UP_SERVICES="${COMPOSE_UP_SERVICES} temporal"
+    COMPOSE_DEV_UP_SERVICES="${COMPOSE_DEV_UP_SERVICES} temporal-ui"
+  else
+    COMPOSE_DOWN_SERVICES="${COMPOSE_DOWN_SERVICES} temporal"
+  fi
+
+  if [ "${IS_POSTGRES_EXTERNAL}" == "true" ]; then
+    COMPOSE_DOWN_SERVICES="${COMPOSE_DOWN_SERVICES} postgres"
+  else
+    COMPOSE_UP_SERVICES="${COMPOSE_UP_SERVICES} postgres"
+  fi
+
   if [ "${IS_DEV_UI}" == "true" ]; then
+    echo "  - [ui] check repository exists..."
+    if [ ! -d "${DIR_REPO_UI}" ]; then
+      echo "  - [ui] path [${DIR_REPO_UI}] not exists, cloning..."
+      git clone git@github.com:datalens-tech/datalens-ui.git "${DIR_REPO_UI}"
+      echo ""
+    fi
+
     COMPOSE_DEV_UP_SERVICES="${COMPOSE_DEV_UP_SERVICES} ui"
     COMPOSE_LOG_SERVICES="${COMPOSE_LOG_SERVICES} ui"
   elif [ "${IS_UP_UI}" == "true" ]; then
@@ -480,7 +631,30 @@ if [ "${IS_DEV}" == "true" ]; then
     COMPOSE_DOWN_SERVICES="${COMPOSE_DOWN_SERVICES} ui"
   fi
 
+  if [ "${IS_DEV_UI_API}" == "true" ] && [ "${IS_WORKBOOK_EXPORT_ENABLED}" == "true" ]; then
+    echo "  - [ui-api] check repository exists..."
+    if [ ! -d "${DIR_REPO_UI}" ]; then
+      echo "  - [ui-api] path [${DIR_REPO_UI}] not exists, cloning..."
+      git clone git@github.com:datalens-tech/datalens-ui.git "${DIR_REPO_UI}"
+      echo ""
+    fi
+
+    COMPOSE_DEV_UP_SERVICES="${COMPOSE_DEV_UP_SERVICES} ui-api"
+    COMPOSE_LOG_SERVICES="${COMPOSE_LOG_SERVICES} ui-api"
+  elif [ "${IS_UP_UI_API}" == "true" ] && [ "${IS_WORKBOOK_EXPORT_ENABLED}" == "true" ]; then
+    COMPOSE_UP_SERVICES="${COMPOSE_UP_SERVICES} ui-api"
+  else
+    COMPOSE_DOWN_SERVICES="${COMPOSE_DOWN_SERVICES} ui-api"
+  fi
+
   if [ "${IS_DEV_US}" == "true" ]; then
+    echo "  - [us] check repository exists..."
+    if [ ! -d "${DIR_REPO_US}" ]; then
+      echo "  - [us] path [${DIR_REPO_US}] not exists, cloning..."
+      git clone git@github.com:datalens-tech/datalens-us.git "${DIR_REPO_US}"
+      echo ""
+    fi
+
     COMPOSE_DEV_UP_SERVICES="${COMPOSE_DEV_UP_SERVICES} us"
     COMPOSE_LOG_SERVICES="${COMPOSE_LOG_SERVICES} us"
   elif [ "${IS_UP_US}" == "true" ]; then
@@ -489,44 +663,98 @@ if [ "${IS_DEV}" == "true" ]; then
     COMPOSE_DOWN_SERVICES="${COMPOSE_DOWN_SERVICES} us"
   fi
 
-  if [ "${IS_DEV_AUTH}" == "true" ]; then
+  if [ "${IS_DEV_AUTH}" == "true" ] && [ "${IS_AUTH_ENABLED}" == "true" ]; then
+    echo "  - [auth] check repository exists..."
+    if [ ! -d "${DIR_REPO_AUTH}" ]; then
+      echo "  - [auth] path [${DIR_REPO_AUTH}] not exists, cloning..."
+      git clone git@github.com:datalens-tech/datalens-auth.git "${DIR_REPO_AUTH}"
+      echo ""
+    fi
+
     COMPOSE_DEV_UP_SERVICES="${COMPOSE_DEV_UP_SERVICES} auth"
     COMPOSE_LOG_SERVICES="${COMPOSE_LOG_SERVICES} auth"
-  elif [ "${IS_UP_AUTH}" == "true" ]; then
+  elif [ "${IS_UP_AUTH}" == "true" ] && [ "${IS_AUTH_ENABLED}" == "true" ]; then
     COMPOSE_UP_SERVICES="${COMPOSE_UP_SERVICES} auth"
   else
     COMPOSE_DOWN_SERVICES="${COMPOSE_DOWN_SERVICES} auth"
   fi
 
-  if [ "${IS_UP_FILE_CONNECTOR}" == "true" ]; then
-    COMPOSE_UP_SERVICES="${COMPOSE_UP_SERVICES} redis clickhouse s3 file-secure-reader file-uploader-worker file-uploader-api"
-    export CONNECTORS="${CONNECTORS},file"
+  if [ "${IS_DEV_META_MANAGER}" == "true" ] && [ "${IS_WORKBOOK_EXPORT_ENABLED}" == "true" ]; then
+    echo "  - [meta-manager] check repository exists..."
+    if [ ! -d "${DIR_REPO_META_MANAGER}" ]; then
+      echo "  - [meta-manager] path [${DIR_REPO_META_MANAGER}] not exists, cloning..."
+      git clone git@github.com:datalens-tech/datalens-meta-manager.git "${DIR_REPO_META_MANAGER}"
+      echo ""
+    fi
+
+    COMPOSE_DEV_UP_SERVICES="${COMPOSE_DEV_UP_SERVICES} meta-manager"
+    COMPOSE_LOG_SERVICES="${COMPOSE_LOG_SERVICES} meta-manager"
+  elif [ "${IS_UP_META_MANAGER}" == "true" ] && [ "${IS_WORKBOOK_EXPORT_ENABLED}" == "true" ]; then
+    COMPOSE_UP_SERVICES="${COMPOSE_UP_SERVICES} meta-manager"
   else
-    COMPOSE_DOWN_SERVICES="${COMPOSE_DOWN_SERVICES} redis clickhouse s3 file-secure-reader file-uploader-worker file-uploader-api"
+    COMPOSE_DOWN_SERVICES="${COMPOSE_DOWN_SERVICES} meta-manager"
   fi
 
-  if [ ! -z "${COMPOSE_DOWN_SERVICES}" ]; then
+  if [ "${IS_DEV_CONTROL_API}" == "true" ]; then
+    echo "  - [control-api] check repository exists..."
+    if [ ! -d "${DIR_REPO_BACKEND}" ]; then
+      echo "  - [control-api] path [${DIR_REPO_BACKEND}] not exists, cloning..."
+      git clone git@github.com:datalens-tech/datalens-backend.git "${DIR_REPO_BACKEND}"
+      echo ""
+    fi
+
+    COMPOSE_DEV_UP_SERVICES="${COMPOSE_DEV_UP_SERVICES} control-api"
+    COMPOSE_LOG_SERVICES="${COMPOSE_LOG_SERVICES} control-api"
+  elif [ "${IS_UP_CONTROL_API}" == "true" ]; then
+    COMPOSE_UP_SERVICES="${COMPOSE_UP_SERVICES} control-api"
+  else
+    COMPOSE_DOWN_SERVICES="${COMPOSE_DOWN_SERVICES} control-api"
+  fi
+
+  if [ "${IS_DEV_DATA_API}" == "true" ]; then
+    echo "  - [data-api] check repository exists..."
+    if [ ! -d "${DIR_REPO_BACKEND}" ]; then
+      echo "  - [data-api] path [${DIR_REPO_BACKEND}] not exists, cloning..."
+      git clone git@github.com:datalens-tech/datalens-backend.git "${DIR_REPO_BACKEND}"
+      echo ""
+    fi
+
+    COMPOSE_DEV_UP_SERVICES="${COMPOSE_DEV_UP_SERVICES} data-api"
+    COMPOSE_LOG_SERVICES="${COMPOSE_LOG_SERVICES} data-api"
+  elif [ "${IS_UP_DATA_API}" == "true" ]; then
+    COMPOSE_UP_SERVICES="${COMPOSE_UP_SERVICES} data-api"
+  else
+    COMPOSE_DOWN_SERVICES="${COMPOSE_DOWN_SERVICES} data-api"
+  fi
+
+  echo ""
+
+  if [ -n "${COMPOSE_DOWN_SERVICES}" ]; then
     # shellcheck disable=SC2086
-    docker --log-level error compose ${DOCKER_COMPOSE_ADDITIONAL_CONFIG} -f ${DOCKER_COMPOSE_CONFIG} rm --stop --force ${COMPOSE_DOWN_SERVICES} >/dev/null 2>&1
+    docker --log-level error compose -f "${DOCKER_COMPOSE_DEV_CONFIG}" rm --stop --force ${COMPOSE_DOWN_SERVICES}
   fi
 
   # shellcheck disable=SC2086
-  docker --log-level error compose ${DOCKER_COMPOSE_ADDITIONAL_CONFIG} -f ${DOCKER_COMPOSE_CONFIG} up -d --remove-orphans ${COMPOSE_UP_SERVICES}
+  docker --log-level error compose -f "${DOCKER_COMPOSE_CONFIG}" up -d --remove-orphans ${COMPOSE_UP_SERVICES}
 
-  if [ ! -z "${COMPOSE_DEV_UP_SERVICES}" ]; then
+  if [ -n "${COMPOSE_DEV_UP_SERVICES}" ]; then
+    if [ "${IS_DEV_BUILD}" == "true" ]; then
+      # shellcheck disable=SC2086
+      docker --log-level error compose -f "${DOCKER_COMPOSE_DEV_CONFIG}" build ${COMPOSE_DEV_UP_SERVICES}
+    fi
+
     # shellcheck disable=SC2086
-    docker --log-level error compose -f ${DOCKER_COMPOSE_DEV_CONFIG} up -d ${COMPOSE_DEV_UP_SERVICES}
+    docker --log-level error compose -f "${DOCKER_COMPOSE_DEV_CONFIG}" up --no-deps -d ${COMPOSE_DEV_UP_SERVICES}
   fi
 
-  if [ ! -z "${COMPOSE_LOG_SERVICES}" ]; then
-    # shellcheck disable=SC2086
-    docker --log-level error compose -f ${DOCKER_COMPOSE_CONFIG} logs -f ${COMPOSE_LOG_SERVICES}
-  fi
-
-  if [ "${IS_LEGACY_DOCKER_COMPOSE}" == "true" ]; then
-    docker-compose -f docker-compose.production.yaml up --remove-orphans --detach
-  else
-    docker --log-level error compose -f docker-compose.production.yaml up --remove-orphans --detach
+  if [ -n "${COMPOSE_LOG_SERVICES}" ]; then
+    if [ "$(echo "${COMPOSE_LOG_SERVICES}" | wc -w | tr -d ' ')" == "1" ]; then
+      # shellcheck disable=SC2086
+      docker --log-level error compose -f "${DOCKER_COMPOSE_CONFIG}" logs --no-log-prefix -f ${COMPOSE_LOG_SERVICES}
+    else
+      # shellcheck disable=SC2086
+      docker --log-level error compose -f "${DOCKER_COMPOSE_CONFIG}" logs -f ${COMPOSE_LOG_SERVICES}
+    fi
   fi
 
   echo ""

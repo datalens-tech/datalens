@@ -21,7 +21,8 @@ export APP_DEV_MODE=1
 export APP_ENV=development
 
 export US_SURPRESS_DB_STATUS_LOGS="true"
-export SWAGGER_ENABLED="true"
+export SWAGGER_ENABLED="false"
+export DISABLE_SWAGGER="true"
 
 export NODE_OPTIONS="--max-old-space-size=8192"
 

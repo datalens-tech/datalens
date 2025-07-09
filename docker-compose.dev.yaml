@@ -43,7 +43,9 @@ services:
     build:
       context: ./dev/python
       args:
-        - image=ghcr.io/datalens-tech/datalens-control-api:0.2273.1
+        - image=ghcr.io/datalens-tech/datalens-control-api:0.2282.0
+    tty: true
+    user: root
     environment:
       RUN_DEV: /etc/service/dl_api/run
     volumes:
@@ -62,6 +64,19 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    image: datalens-dev:data-api
+    build:
+      context: ./dev/python
+      args:
+        - image=ghcr.io/datalens-tech/datalens-data-api:0.2282.0
+    tty: true
+    user: root
+    environment:
+      RUN_DEV: /etc/service/dl_api/run
+    volumes:
+      - ../datalens-backend/app:/src/app
+      - ../datalens-backend/lib:/src/lib
+      - ../datalens-backend/metapkg:/src/metapkg
     ports:
       - 8020:8080
     networks:
@@ -74,6 +89,20 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    image: datalens-dev:us
+    build:
+      context: ./dev/nodejs
+      args:
+        - image=ghcr.io/datalens-tech/datalens-us:0.358.0
+    tty: true
+    user: root
+    environment:
+      RUN_DEV: npx tsc-watch --onSuccess ./scripts/preflight.sh
+    volumes:
+      - ../datalens-us:/opt/app
+      - ./dev/.env.empty:/opt/app/.env
+      - ./dev/.env.empty:/opt/app/.env.development
+      - node-modules-us:/opt/app/node_modules
     ports:
       - 3030:8080
     networks:
@@ -85,6 +114,19 @@ services:
       service: ui-api
     depends_on:
       - us
+    image: datalens-dev:ui-api
+    build:
+      context: ./dev/nodejs
+      args:
+        - image=ghcr.io/datalens-tech/datalens-ui:0.3038.0
+    tty: true
+    user: root
+    environment:
+      RUN_DEV: npm run i18n:prepare && npx app-builder dev
+    volumes:
+      - ../datalens-ui:/opt/app
+      - ./dev/.env.empty:/opt/app/.env
+      - node-modules-ui-api:/opt/app/node_modules
     ports:
       - 3040:8080
     networks:
@@ -99,6 +141,20 @@ services:
         condition: service_healthy
       ui-api:
         condition: service_started
+    image: datalens-dev:meta-manager
+    build:
+      context: ./dev/nodejs
+      args:
+        - image=ghcr.io/datalens-tech/datalens-meta-manager:0.40.0
+    tty: true
+    user: root
+    environment:
+      RUN_DEV: npx tsc-watch --onSuccess ./scripts/preflight.sh
+    volumes:
+      - ../datalens-meta-manager:/opt/app
+      - ./dev/.env.empty:/opt/app/.env
+      - ./dev/.env.empty:/opt/app/.env.development
+      - node-modules-meta-manager:/opt/app/node_modules
     ports:
       - 3050:8080
     networks:
@@ -115,7 +171,8 @@ services:
     build:
       context: ./dev/nodejs
       args:
-        - image=ghcr.io/datalens-tech/datalens-auth:0.20.0
+        - image=ghcr.io/datalens-tech/datalens-auth:0.21.0
+    tty: true
     user: root
     environment:
       RUN_DEV: npx tsc-watch --onSuccess ./scripts/preflight.sh
@@ -137,10 +194,9 @@ services:
     build:
       context: ./dev/nodejs
       args:
-        - image=ghcr.io/datalens-tech/datalens-ui:0.3013.0
-    ulimits:
-      core: 0
+        - image=ghcr.io/datalens-tech/datalens-ui:0.3038.0
     tty: true
+    user: root
     environment:
       RUN_DEV: npm run i18n:prepare && npx app-builder dev
     volumes:

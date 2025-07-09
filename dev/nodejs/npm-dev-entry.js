@@ -1,6 +1,6 @@
 const {spawn, spawnSync} = require('child_process');
 const {createHash} = require('crypto');
-const {watch, readFileSync, existsSync, writeFileSync} = require('fs');
+const {watch, readFileSync, existsSync, writeFileSync, rmSync} = require('fs');
 
 const HASH_FILE = 'node_modules/.docker-entry.hash';
 const PACKAGE_FILE = 'package.json';
@@ -34,6 +34,9 @@ const installDeps = () => {
 
 // install before first run
 installDeps();
+
+// clear dist/run/client.sock
+rmSync('./dist/run/client.sock', { force: true });
 
 // install dependencies every time package.json changes
 const watcher = watch(PACKAGE_FILE, () => {
