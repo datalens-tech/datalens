@@ -67,7 +67,7 @@ resource "kubernetes_deployment" "temporal" {
           }
           env {
             name  = "POSTGRES_TLS_DISABLE_HOST_VERIFICATION"
-            value = "false"
+            value = "true"
           }
           env {
             name  = "NAMESPACES"
