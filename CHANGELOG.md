@@ -1,3 +1,22 @@
+## v2.4.2 (2025-07-10)
+
+### Image versions
+- datalens-auth: 0.21.0
+- datalens-control-api: 0.2282.0
+- datalens-data-api: 0.2282.0
+- datalens-meta-manager: 0.40.0
+- datalens-ui: 0.3038.0 -> 0.3049.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.3038.0...v0.3049.0))
+- datalens-us: 0.358.0
+
+### Bug fixes
+- **Charts**: Fix markup field in labels. [datalens-tech/datalens-ui#2637](https://github.com/datalens-tech/datalens-ui/pull/2637)
+- **Charts**: Fix order on the Polyline layer. [datalens-tech/datalens-ui#2646](https://github.com/datalens-tech/datalens-ui/pull/2646)
+- **Charts**: Fix menu items in mobile charts menu. [datalens-tech/datalens-ui#2647](https://github.com/datalens-tech/datalens-ui/pull/2647)
+
+### Dependencies
+- **General components**: Fix rspack build in dev docker mode. [datalens-tech/datalens-ui#2659](https://github.com/datalens-tech/datalens-ui/pull/2659)
+
+
 ## v2.4.1 (2025-07-09)
 
 ### Image versions
