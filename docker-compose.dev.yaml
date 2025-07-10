@@ -117,7 +117,7 @@ services:
     build:
       context: ./dev/nodejs
       args:
-        - image=ghcr.io/datalens-tech/datalens-ui:0.3038.0
+        - image=ghcr.io/datalens-tech/datalens-ui:0.3049.0
     tty: true
     ulimits:
       core: 0
@@ -193,7 +193,7 @@ services:
     build:
       context: ./dev/nodejs
       args:
-        - image=ghcr.io/datalens-tech/datalens-ui:0.3038.0
+        - image=ghcr.io/datalens-tech/datalens-ui:0.3049.0
     tty: true
     ulimits:
       core: 0
