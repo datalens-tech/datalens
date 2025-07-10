@@ -37,8 +37,10 @@ jobs:
       - name: commit changed files
         run: |
           git add docker-compose.yaml
+          git add docker-compose.dev.yaml
           git add helm/values.yaml
+          git add helm/Chart.yaml
           if ! git diff-index --quiet HEAD; then
-              git commit --message "update docker-compose.base.yaml and helm/values.yaml" || exit 0
+              git commit --message "update versions for docker and helm" || exit 0
               git push
           fi

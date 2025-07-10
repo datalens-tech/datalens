@@ -1,0 +1,10 @@
+ARG image=ubuntu:22.04
+FROM ${image}
+
+RUN pip install -U watchdog rich
+
+COPY ./entrypoint.sh /opt/dev/entrypoint.sh
+COPY ./pretty-log.py /opt/dev/pretty-log.py
+COPY ./pretty-log.sh /opt/dev/pretty-log.sh
+
+ENTRYPOINT [ "/opt/dev/entrypoint.sh" ]

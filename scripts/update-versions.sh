@@ -68,3 +68,23 @@ RELEASE_VERSION="${RELEASE_VERSION}" \
   .services.meta-manager.image = strenv(META_MANAGER_IMAGE) |
   .services.ui.environment.RELEASE_VERSION = strenv(RELEASE_VERSION)
 ' ./docker-compose.yaml
+
+echo ""
+echo "  update dev docker-compose file: ./docker-compose.dev.yaml"
+
+RELEASE_VERSION="${RELEASE_VERSION}" \
+  CONTROL_API_IMAGE="image=ghcr.io/datalens-tech/datalens-control-api:${BACKEND_VERSION}" \
+  DATA_API_IMAGE="image=ghcr.io/datalens-tech/datalens-data-api:${BACKEND_VERSION}" \
+  UI_IMAGE="image=ghcr.io/datalens-tech/datalens-ui:${UI_VERSION}" \
+  US_IMAGE="image=ghcr.io/datalens-tech/datalens-us:${US_VERSION}" \
+  AUTH_IMAGE="image=ghcr.io/datalens-tech/datalens-auth:${AUTH_VERSION}" \
+  META_MANAGER_IMAGE="image=ghcr.io/datalens-tech/datalens-meta-manager:${META_MANAGER_VERSION}" \
+  yq -i '
+  .services.control-api.build.args.0 = strenv(CONTROL_API_IMAGE) |
+  .services.data-api.build.args.0 = strenv(DATA_API_IMAGE) |
+  .services.ui.build.args.0 = strenv(UI_IMAGE) |
+  .services.ui-api.build.args.0 = strenv(UI_IMAGE) |
+  .services.us.build.args.0 = strenv(US_IMAGE) |
+  .services.auth.build.args.0 = strenv(AUTH_IMAGE) |
+  .services.meta-manager.build.args.0 = strenv(META_MANAGER_IMAGE)
+' ./docker-compose.dev.yaml

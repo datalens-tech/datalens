@@ -1,0 +1,17 @@
+ARG image=ubuntu:22.04
+FROM ${image}
+
+ARG USER=app
+
+USER root
+RUN apt-get update && \
+  apt-get -y install build-essential g++ make nodejs
+
+RUN chown -R ${USER}:${USER} /opt/${USER}
+
+USER ${USER}
+
+COPY ./entrypoint.sh /opt/dev/entrypoint.sh
+COPY ./npm-dev-entry.js /opt/dev/npm-dev-entry.js
+
+ENTRYPOINT [ "/opt/dev/entrypoint.sh" ]
