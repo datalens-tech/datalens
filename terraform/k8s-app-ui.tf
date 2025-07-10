@@ -100,6 +100,10 @@ resource "kubernetes_deployment" "ui" {
             value = "http://auth-cip:8080"
           }
           env {
+            name  = "AUTH_SIGNUP_DISABLED"
+            value = local.is_signup_disabled ? "true" : "false"
+          }
+          env {
             name = "AUTH_TOKEN_PUBLIC_KEY"
             value_from {
               secret_key_ref {

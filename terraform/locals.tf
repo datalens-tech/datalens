@@ -22,6 +22,9 @@ locals {
 
   domain = var.DOMAIN
 
+  # disable signup for new users
+  is_signup_disabled = true
+
   # auto create wildcard domain certificate
   is_create_wildcard_certificate = true
 
