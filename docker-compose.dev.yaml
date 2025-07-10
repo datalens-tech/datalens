@@ -47,6 +47,7 @@ services:
     tty: true
     environment:
       RUN_DEV: /etc/service/dl_api/run
+      PRETTY_LOG: ${PRETTY_LOG:-false}
     volumes:
       - ../datalens-backend/app:/src/app
       - ../datalens-backend/lib:/src/lib
@@ -71,6 +72,7 @@ services:
     tty: true
     environment:
       RUN_DEV: /etc/service/dl_api/run
+      PRETTY_LOG: ${PRETTY_LOG:-false}
     volumes:
       - ../datalens-backend/app:/src/app
       - ../datalens-backend/lib:/src/lib
@@ -117,7 +119,10 @@ services:
       args:
         - image=ghcr.io/datalens-tech/datalens-ui:0.3038.0
     tty: true
+    ulimits:
+      core: 0
     environment:
+      APP_PORT_UNSET: 1
       RUN_DEV: npm run i18n:prepare && npx app-builder dev
     volumes:
       - ../datalens-ui:/opt/app
@@ -190,7 +195,10 @@ services:
       args:
         - image=ghcr.io/datalens-tech/datalens-ui:0.3038.0
     tty: true
+    ulimits:
+      core: 0
     environment:
+      APP_PORT_UNSET: 1
       RUN_DEV: npm run i18n:prepare && npx app-builder dev
     volumes:
       - ../datalens-ui:/opt/app

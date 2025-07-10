@@ -8,7 +8,11 @@ set -eo pipefail
 unset NODE_ENV
 unset APP_BUILDER_CDN
 
-export APP_PORT=8080
+if [ "${APP_PORT_UNSET}" == "1" ]; then
+  unset APP_PORT
+else
+  export APP_PORT=8080
+fi
 
 export APP_BUILDER_ENTRY_FILTER=dl-main
 
