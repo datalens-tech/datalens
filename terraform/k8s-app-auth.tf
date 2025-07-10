@@ -123,6 +123,10 @@ resource "kubernetes_deployment" "auth" {
             value = "https://${local.domain}"
           }
           env {
+            name  = "AUTH_SIGNUP_DISABLED"
+            value = local.is_signup_disabled ? "true" : "false"
+          }
+          env {
             name = "AUTH_ADMIN_PASSWORD"
             value_from {
               secret_key_ref {
