@@ -198,7 +198,10 @@ if [ ! "${YC_PROFILE_EXISTS}" == "true" ]; then
     yc --profile "${PROFILE_NAME}" config set cloud-id "${CLOUD_ID}" &>/dev/null || exit 1
     yc --profile "${PROFILE_NAME}" config set folder-id "${FOLDER_ID}" &>/dev/null || exit 1
     yc --profile "${PROFILE_NAME}" config set endpoint "${API_ENDPOINT}:443" &>/dev/null || exit 1
-    yc config set service-account-key "${SA_FILE}" &>/dev/null || exit 1
+    # shellcheck disable=SC2236
+    if [ ! -z "${SA_FILE}" ]; then
+      yc --profile "${PROFILE_NAME}" config set service-account-key "${SA_FILE}" &>/dev/null || exit 1
+    fi
   else
     echo "❌ service account file '${SA_FILE}' does not exists, configure profile '${PROFILE_NAME}' manually at 'yc' cli or provider sa account file, exit..."
   fi
