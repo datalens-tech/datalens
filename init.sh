@@ -593,8 +593,9 @@ if [ "${IS_RUN_INIT_DEMO_DATA}" == "true" ]; then
 fi
 
 if [ "${IS_DEV}" == "true" ]; then
-  DOCKER_COMPOSE_VERSION=$(docker compose version --short | sed 's|\.||g')
-  DOCKER_COMPOSE_MIN_BAKE_VERSION="2371"
+  DOCKER_COMPOSE_VERSION=$(docker compose version --short)
+  DOCKER_COMPOSE_VERSION=$(IFS='.' read -r DC_MAJOR DC_MINOR DC_PATCH <<<"${DOCKER_COMPOSE_VERSION}" && printf "%03d%03d%03d" "${DC_MAJOR}" "${DC_MINOR}" "${DC_PATCH}")
+  DOCKER_COMPOSE_MIN_BAKE_VERSION="002037001"
 
   if [ "${DOCKER_COMPOSE_VERSION}" -ge "${DOCKER_COMPOSE_MIN_BAKE_VERSION}" ]; then
     export COMPOSE_BAKE="true"
