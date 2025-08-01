@@ -21,6 +21,7 @@ IS_HELP="false"
 IS_DEV="false"
 IS_DEV_ENV="false"
 IS_DEV_BUILD="false"
+IS_DEV_EXPOSE_PORTS="false"
 
 IS_DEV_UI="false"
 IS_DEV_UI_API="false"
@@ -46,6 +47,8 @@ IS_RM_VOLUMES="false"
 DOMAIN=""
 IP=""
 IS_HTTPS="false"
+
+IS_IPV6="false"
 
 POSTGRES_CERT=""
 IS_POSTGRES_EXTERNAL="false"
@@ -139,6 +142,10 @@ for _ in "$@"; do
     IS_HTTPS="true"
     shift # past argument with no value
     ;;
+  --ipv6)
+    export IS_IPV6="true"
+    shift # past argument with no value
+    ;;
   --up)
     IS_UP="true"
     shift # past argument with no value
@@ -167,6 +174,10 @@ for _ in "$@"; do
     ;;
   --dev-build)
     IS_DEV_BUILD="true"
+    shift # past argument with no value
+    ;;
+  --dev-expose-ports)
+    IS_DEV_EXPOSE_PORTS="true"
     shift # past argument with no value
     ;;
   --dev-ui)
@@ -352,6 +363,7 @@ if [ "${IS_HELP}" == "true" ]; then
   echo "  --dev-env - force use environment file in development mode"
   echo "  --dev-light - disable auth, temporal and workbook export for lighter development setup"
   echo "  --dev-build - rebuild development containers before starting"
+  echo "  --dev-expose-ports - expose ports for all containers with socat"
   echo "  --dev-<service> - run [ui/ui-api/us/auth/meta-manager/control-api/data-api] service in development mode"
   echo "  --dev-no-<service> - disable up [ui/ui-api/us/auth/meta-manager/control-api/data-api] service"
   echo ""
@@ -359,6 +371,7 @@ if [ "${IS_HELP}" == "true" ]; then
   echo "  --reinit-db - force reinitialize database before start"
   echo "  --rm-env | --remove-env - remove environment file"
   echo "  --rm-volumes | --remove-volumes - remove all docker volumes"
+  echo "  --ipv6 - enable IPv6 address binding for docker default network"
   echo "  --legacy-docker-compose - use legacy docker-compose command instead of docker compose"
   echo ""
   exit 0
@@ -755,6 +768,46 @@ if [ "${IS_DEV}" == "true" ]; then
 
     # shellcheck disable=SC2086
     docker --log-level error compose -f "${DOCKER_COMPOSE_DEV_CONFIG}" up --no-deps -d ${COMPOSE_DEV_UP_SERVICES}
+  fi
+
+  if [ "${IS_DEV_EXPOSE_PORTS}" == "true" ]; then
+    echo ""
+    echo "✈️  Expose all containers ports with socat..."
+    echo ""
+
+    EXPOSE_PORTS="5432:postgres:5432 7233:temporal:7233"
+
+    if [ "${IS_DEV_UI_API}" != "true" ] && [ "${IS_WORKBOOK_EXPORT_ENABLED}" == "true" ]; then
+      EXPOSE_PORTS="${EXPOSE_PORTS} 3040:ui-api:8080"
+      export EXPOSE_PORTS_3040="3040"
+    fi
+    if [ "${IS_DEV_US}" != "true" ]; then
+      EXPOSE_PORTS="${EXPOSE_PORTS} 3030:us:8080"
+      export EXPOSE_PORTS_3030="3030"
+    fi
+    if [ "${IS_DEV_AUTH}" != "true" ] && [ "${IS_AUTH_ENABLED}" == "true" ]; then
+      EXPOSE_PORTS="${EXPOSE_PORTS} 8088:auth:8080"
+      export EXPOSE_PORTS_8088="8088"
+    fi
+    if [ "${IS_DEV_META_MANAGER}" != "true" ] && [ "${IS_WORKBOOK_EXPORT_ENABLED}" == "true" ]; then
+      EXPOSE_PORTS="${EXPOSE_PORTS} 3050:meta-manager:8080"
+      export EXPOSE_PORTS_3050="3050"
+    fi
+    if [ "${IS_DEV_CONTROL_API}" != "true" ]; then
+      EXPOSE_PORTS="${EXPOSE_PORTS} 8010:control-api:8080"
+      export EXPOSE_PORTS_8010="8010"
+    fi
+    if [ "${IS_DEV_DATA_API}" != "true" ]; then
+      EXPOSE_PORTS="${EXPOSE_PORTS} 8020:data-api:8080"
+      export EXPOSE_PORTS_8020="8020"
+    fi
+
+    export EXPOSE_PORTS="${EXPOSE_PORTS}"
+
+    if [ "${IS_DEV_BUILD}" == "true" ]; then
+      docker --log-level error compose -f "${DOCKER_COMPOSE_DEV_CONFIG}" build socat
+    fi
+    docker --log-level error compose -f "${DOCKER_COMPOSE_DEV_CONFIG}" up --no-deps -d socat
   fi
 
   if [ -n "${COMPOSE_LOG_SERVICES}" ]; then
