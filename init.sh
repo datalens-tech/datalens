@@ -593,7 +593,7 @@ if [ "${IS_RUN_INIT_DEMO_DATA}" == "true" ]; then
 fi
 
 if [ "${IS_DEV}" == "true" ]; then
-  DOCKER_COMPOSE_VERSION=$(docker compose version --short | sed 's|.||')
+  DOCKER_COMPOSE_VERSION=$(docker compose version --short | sed 's|\.||g')
   DOCKER_COMPOSE_MIN_BAKE_VERSION="2371"
 
   if [ "${DOCKER_COMPOSE_VERSION}" -ge "${DOCKER_COMPOSE_MIN_BAKE_VERSION}" ]; then
@@ -808,7 +808,7 @@ if [ "${IS_DEV}" == "true" ]; then
     fi
 
     export EXPOSE_PORTS="${EXPOSE_PORTS}"
-    
+
     if [ "${IS_DEV_BUILD}" == "true" ]; then
       docker compose -f "${DOCKER_COMPOSE_DEV_CONFIG}" build socat
     fi
