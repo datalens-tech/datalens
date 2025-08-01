@@ -593,7 +593,12 @@ if [ "${IS_RUN_INIT_DEMO_DATA}" == "true" ]; then
 fi
 
 if [ "${IS_DEV}" == "true" ]; then
-  export COMPOSE_BAKE="true"
+  DOCKER_COMPOSE_VERSION=$(docker compose version --short | sed 's|.||')
+  DOCKER_COMPOSE_MIN_BAKE_VERSION="2371"
+
+  if [ "${DOCKER_COMPOSE_VERSION}" -ge "${DOCKER_COMPOSE_MIN_BAKE_VERSION}" ]; then
+    export COMPOSE_BAKE="true"
+  fi
 
   if [ "${IS_USE_ENV_AND_SECRETS}" != "true" ]; then
     export COMPOSE_DISABLE_ENV_FILE=1
@@ -803,11 +808,11 @@ if [ "${IS_DEV}" == "true" ]; then
     fi
 
     export EXPOSE_PORTS="${EXPOSE_PORTS}"
-
+    
     if [ "${IS_DEV_BUILD}" == "true" ]; then
-      docker --log-level error compose -f "${DOCKER_COMPOSE_DEV_CONFIG}" build socat
+      docker compose -f "${DOCKER_COMPOSE_DEV_CONFIG}" build socat
     fi
-    docker --log-level error compose -f "${DOCKER_COMPOSE_DEV_CONFIG}" up --no-deps -d socat
+    docker compose -f "${DOCKER_COMPOSE_DEV_CONFIG}" up --no-deps -d socat
   fi
 
   if [ -n "${COMPOSE_LOG_SERVICES}" ]; then
