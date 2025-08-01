@@ -810,9 +810,9 @@ if [ "${IS_DEV}" == "true" ]; then
     export EXPOSE_PORTS="${EXPOSE_PORTS}"
 
     if [ "${IS_DEV_BUILD}" == "true" ]; then
-      docker compose -f "${DOCKER_COMPOSE_DEV_CONFIG}" build socat
+      docker --log-level error compose -f "${DOCKER_COMPOSE_DEV_CONFIG}" build socat
     fi
-    docker compose -f "${DOCKER_COMPOSE_DEV_CONFIG}" up --no-deps -d socat
+    docker --log-level error compose -f "${DOCKER_COMPOSE_DEV_CONFIG}" up --no-deps -d socat
   fi
 
   if [ -n "${COMPOSE_LOG_SERVICES}" ]; then
