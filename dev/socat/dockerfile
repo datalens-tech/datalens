@@ -1,0 +1,11 @@
+FROM alpine:latest
+
+RUN apk update && apk add --no-cache bash socat
+
+COPY ./entrypoint.sh /entrypoint.sh
+
+RUN chmod +x /entrypoint.sh
+
+ENV PORTS=''
+
+ENTRYPOINT [ "/entrypoint.sh" ]

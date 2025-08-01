@@ -279,3 +279,4 @@ volumes:
 #
 networks:
   default:
+    enable_ipv6: ${IS_IPV6:-false}

@@ -3,8 +3,6 @@ services:
     extends:
       file: docker-compose.yaml
       service: postgres
-    ports:
-      - 5432:5432
     networks:
       - default
   #
@@ -17,8 +15,6 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    ports:
-      - 7233:7233
     networks:
       - default
   #
@@ -211,6 +207,25 @@ services:
       - us
     networks:
       - default
+  #
+  socat:
+    container_name: socat
+    image: datalens-dev:socat
+    build:
+      context: ./dev/socat
+    environment:
+      PORTS: ${EXPOSE_PORTS:-}
+    ports:
+      - ${EXPOSE_PORTS_3030:-0}:3030
+      - ${EXPOSE_PORTS_3040:-0}:3040
+      - ${EXPOSE_PORTS_3050:-0}:3050
+      - 5432:5432
+      - 7233:7233
+      - ${EXPOSE_PORTS_8010:-0}:8010
+      - ${EXPOSE_PORTS_8020:-0}:8020
+      - ${EXPOSE_PORTS_8088:-0}:8088
+    networks:
+      - default
 #
 volumes:
   db-postgres:
@@ -222,3 +237,4 @@ volumes:
 #
 networks:
   default:
+    enable_ipv6: ${IS_IPV6:-false}
