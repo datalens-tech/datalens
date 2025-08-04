@@ -593,7 +593,13 @@ if [ "${IS_RUN_INIT_DEMO_DATA}" == "true" ]; then
 fi
 
 if [ "${IS_DEV}" == "true" ]; then
-  export COMPOSE_BAKE="true"
+  DOCKER_COMPOSE_VERSION=$(docker compose version --short)
+  DOCKER_COMPOSE_VERSION=$(IFS='.' read -r DC_MAJOR DC_MINOR DC_PATCH <<<"${DOCKER_COMPOSE_VERSION}" && printf "%03d%03d%03d" "${DC_MAJOR}" "${DC_MINOR}" "${DC_PATCH}")
+  DOCKER_COMPOSE_MIN_BAKE_VERSION="002037001"
+
+  if [ "${DOCKER_COMPOSE_VERSION}" -ge "${DOCKER_COMPOSE_MIN_BAKE_VERSION}" ]; then
+    export COMPOSE_BAKE="true"
+  fi
 
   if [ "${IS_USE_ENV_AND_SECRETS}" != "true" ]; then
     export COMPOSE_DISABLE_ENV_FILE=1
