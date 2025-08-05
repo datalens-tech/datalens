@@ -299,17 +299,20 @@ _init_sh_completions() {
 complete -F _init_sh_completions ./init.sh
 complete -F _init_sh_completions init.sh
 
-echo "Bash completion for init.sh has been loaded!"
-echo "You can now use tab completion with ./init.sh"
+echo "🔋 Options completion for DataLens [init.sh] script has been loaded!"
 EOF
 }
 
-if [ "${IS_AUTOCOMPLETE}" == "true" ]; then
-  echo "# bash completion script for init.sh"
-  echo "# source this script to enable tab completion: source <(./init.sh --autocomplete)"
-  echo ""
-  init_autocomplete
-  exit 0
+if [ "${IS_AUTOCOMPLETE}" = "true" ]; then
+  # shellcheck disable=SC1090
+  source <(init_autocomplete)
+
+  if ! return 0 2>/dev/null; then
+    # shellcheck disable=SC2317
+    echo "❌ Please enable autocomplete with (source ./init.sh --autocomplete)"
+    # shellcheck disable=SC2317
+    exit 0
+  fi
 fi
 
 load_env() {
@@ -393,7 +396,7 @@ if [ "${IS_HELP}" == "true" ]; then
   echo ""
   echo "General options:"
   echo "  --help - show this help message"
-  echo "  --autocomplete - generate bash completion script, use: source <(./init.sh --autocomplete)"
+  echo "  --autocomplete - generate bash completion script, use: source ./init.sh --autocomplete"
   echo ""
   echo "Deployment options:"
   echo "  --hc - enable Highcharts library"
