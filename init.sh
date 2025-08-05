@@ -17,6 +17,7 @@ IS_UP="false"
 IS_DOWN="false"
 IS_STOP="false"
 IS_HELP="false"
+IS_AUTOCOMPLETE="false"
 
 IS_DEV="false"
 IS_DEV_ENV="false"
@@ -70,6 +71,10 @@ for _ in "$@"; do
   case ${1} in
   --help)
     IS_HELP="true"
+    shift # past argument with no value
+    ;;
+  --autocomplete)
+    IS_AUTOCOMPLETE="true"
     shift # past argument with no value
     ;;
   --hc)
@@ -260,6 +265,53 @@ for _ in "$@"; do
   esac
 done
 
+init_autocomplete() {
+  cat <<'EOF'
+#!/bin/bash
+
+_init_sh_completions() {
+    local cur prev opts
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    
+    # all available options
+    opts="--help --autocomplete --hc --yandex-map --yandex-map-token --demo --disable-demo --disable-workbook-export --disable-always-image-pull --disable-auth --disable-temporal --disable-temporal-auth --postgres-external --postgres-ssl --postgres-cert --ip --domain --https --ipv6 --up --down --stop --dev --dev-env --dev-light --dev-build --dev-expose-ports --dev-ui --dev-no-ui --dev-ui-api --dev-no-ui-api --dev-us --dev-no-us --dev-auth --dev-no-auth --dev-meta-manager --dev-no-meta-manager --dev-control-api --dev-no-control-api --dev-data-api --dev-no-data-api --reinit-db --rm-env --remove-env --rm-volumes --remove-volumes --legacy-docker-compose"
+    
+    # handle options that require values
+    case "${prev}" in
+        --yandex-map-token|--postgres-cert|--ip|--domain)
+            # these options require a value, don't suggest other options
+            return 0
+            ;;
+        *)
+            ;;
+    esac
+    
+    # generate completions
+    if [[ ${cur} == -* ]]; then
+        COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+        return 0
+    fi
+}
+
+# register the completion function
+complete -F _init_sh_completions ./init.sh
+complete -F _init_sh_completions init.sh
+
+echo "Bash completion for init.sh has been loaded!"
+echo "You can now use tab completion with ./init.sh"
+EOF
+}
+
+if [ "${IS_AUTOCOMPLETE}" == "true" ]; then
+  echo "# bash completion script for init.sh"
+  echo "# source this script to enable tab completion: source <(./init.sh --autocomplete)"
+  echo ""
+  init_autocomplete
+  exit 0
+fi
+
 load_env() {
   set -a
   # shellcheck source=./.env
@@ -338,6 +390,10 @@ fi
 if [ "${IS_HELP}" == "true" ]; then
   echo ""
   echo "Usage: ./init.sh [--hc] [--domain <domain>] [--https] [--disable-demo] [--disable-auth] [--up]"
+  echo ""
+  echo "General options:"
+  echo "  --help - show this help message"
+  echo "  --autocomplete - generate bash completion script, use: source <(./init.sh --autocomplete)"
   echo ""
   echo "Deployment options:"
   echo "  --hc - enable Highcharts library"
