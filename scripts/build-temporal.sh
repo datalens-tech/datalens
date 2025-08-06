@@ -25,14 +25,24 @@ for _ in "$@"; do
   esac
 done
 
-TEMPORAL_VERSION=1.27.2
+if [ -z "${TEMPORAL_VERSION}" ]; then
+  TEMPORAL_VERSION="1.27.2"
+fi
+
+if [ -z "${TEMPORAL_VERSION_SUFFIX}" ]; then
+  TEMPORAL_VERSION_SUFFIX=$(date -u +"%Y-%m-%dT%H-%M-%SZ")
+fi
+if [ "${IS_DEV}" == "true" ]; then
+  TEMPORAL_VERSION_SUFFIX="dev"
+fi
 
 if [ "${CI}" != "true" ]; then
   docker buildx create --use --name buildx-builder --bootstrap 2>/dev/null || echo "buildx container already exists..."
 fi
 
 if [ "${IS_DEV}" == "true" ]; then
-  docker buildx build "${SCRIPT_DIR}/../temporal" --build-arg "TEMPORAL_VERSION=${TEMPORAL_VERSION}" --load -t "datalens-temporal:${TEMPORAL_VERSION}-dev"
+  docker buildx build "${SCRIPT_DIR}/../temporal" --build-arg "TEMPORAL_VERSION=${TEMPORAL_VERSION}" --load -t "datalens-temporal:${TEMPORAL_VERSION}-${TEMPORAL_VERSION_SUFFIX}"
 else
-  docker buildx build "${SCRIPT_DIR}/../temporal" --build-arg "TEMPORAL_VERSION=${TEMPORAL_VERSION}" --push --platform linux/amd64,linux/arm64 -t "ghcr.io/datalens-tech/datalens-temporal:${TEMPORAL_VERSION}"
+  docker buildx build "${SCRIPT_DIR}/../temporal" --build-arg "TEMPORAL_VERSION=${TEMPORAL_VERSION}" --push --platform linux/amd64,linux/arm64 -t "ghcr.io/datalens-tech/datalens-temporal:${TEMPORAL_VERSION}-${TEMPORAL_VERSION_SUFFIX}"
+  docker buildx imagetools create --tag "ghcr.io/datalens-tech/datalens-temporal:${TEMPORAL_VERSION}" "ghcr.io/datalens-tech/datalens-temporal:${TEMPORAL_VERSION}-${TEMPORAL_VERSION_SUFFIX}"
 fi

@@ -7,6 +7,15 @@ on:
     paths:
       - 'temporal/*'
   workflow_dispatch:
+    inputs:
+      temporal_version:
+        type: string
+        default: '1.27.2'
+        description: 'Temporal main version'
+      temporal_version_suffix:
+        type: string
+        default: '0.1.0'
+        description: 'Container custom version suffix'
 
 concurrency:
   group: ${{ github.workflow }}
@@ -19,7 +28,8 @@ permissions:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: datalens-tech/datalens-temporal
-  TEMPORAL_VERSION: 1.27.2
+  TEMPORAL_VERSION: ${{ github.event.inputs.temporal_version || '1.27.2' }}
+  TEMPORAL_VERSION_SUFFIX: ${{ github.event.inputs.temporal_version_suffix || '0.1.0' }}
 
 jobs:
   run:
@@ -42,6 +52,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=raw,value=${{ env.TEMPORAL_VERSION }}
+            type=raw,value=${{ env.TEMPORAL_VERSION }}-${{ env.TEMPORAL_VERSION_SUFFIX }}
       - uses: docker/build-push-action@v6
         with:
           build-args: |

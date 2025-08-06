@@ -7,6 +7,15 @@ on:
     paths:
       - 'postgres/*'
   workflow_dispatch:
+    inputs:
+      pg_version:
+        type: string
+        default: '16'
+        description: 'PostgreSQL main version'
+      pg_version_suffix:
+        type: string
+        default: '0.1.0'
+        description: 'Container custom version suffix'
 
 concurrency:
   group: ${{ github.workflow }}
@@ -19,7 +28,8 @@ permissions:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: datalens-tech/datalens-postgres
-  POSTGRES_VERSION: 16
+  POSTGRES_VERSION: ${{ github.event.inputs.pg_version || '16' }}
+  POSTGRES_VERSION_SUFFIX: ${{ github.event.inputs.pg_version_suffix || '0.1.0' }}
 
 jobs:
   run:
@@ -42,6 +52,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=raw,value=${{ env.POSTGRES_VERSION }}
+            type=raw,value=${{ env.POSTGRES_VERSION }}-${{ env.POSTGRES_VERSION_SUFFIX }}
       - uses: docker/build-push-action@v6
         with:
           build-args: |

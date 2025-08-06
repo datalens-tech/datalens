@@ -25,14 +25,24 @@ for _ in "$@"; do
   esac
 done
 
-POSTGRES_VERSION=16
+if [ -z "${POSTGRES_VERSION}" ]; then
+  POSTGRES_VERSION="16"
+fi
+
+if [ -z "${POSTGRES_VERSION_SUFFIX}" ]; then
+  POSTGRES_VERSION_SUFFIX=$(date -u +"%Y-%m-%dT%H-%M-%SZ")
+fi
+if [ "${IS_DEV}" == "true" ]; then
+  POSTGRES_VERSION_SUFFIX="dev"
+fi
 
 if [ "${CI}" != "true" ]; then
   docker buildx create --use --name buildx-builder --bootstrap 2>/dev/null || echo "buildx container already exists..."
 fi
 
 if [ "${IS_DEV}" == "true" ]; then
-  docker buildx build "${SCRIPT_DIR}/../postgres" --build-arg "POSTGRES_VERSION=${POSTGRES_VERSION}" --load -t "datalens-postgres:${POSTGRES_VERSION}-dev"
+  docker buildx build "${SCRIPT_DIR}/../postgres" --build-arg "POSTGRES_VERSION=${POSTGRES_VERSION}" --load -t "datalens-postgres:${POSTGRES_VERSION}-${POSTGRES_VERSION_SUFFIX}"
 else
-  docker buildx build "${SCRIPT_DIR}/../postgres" --build-arg "POSTGRES_VERSION=${POSTGRES_VERSION}" --push --platform linux/amd64,linux/arm64 -t "ghcr.io/datalens-tech/datalens-postgres:${POSTGRES_VERSION}"
+  docker buildx build "${SCRIPT_DIR}/../postgres" --build-arg "POSTGRES_VERSION=${POSTGRES_VERSION}" --push --platform linux/amd64,linux/arm64 -t "ghcr.io/datalens-tech/datalens-postgres:${POSTGRES_VERSION}-${POSTGRES_VERSION_SUFFIX}"
+  docker buildx imagetools create --tag "ghcr.io/datalens-tech/datalens-postgres:${POSTGRES_VERSION}" "ghcr.io/datalens-tech/datalens-postgres:${POSTGRES_VERSION}-${POSTGRES_VERSION_SUFFIX}"
 fi
