@@ -24,10 +24,12 @@ jobs:
 
           UI_VERSION=$(echo "${VERSION_CONFIG}" | jq -r '.uiVersion')
           US_VERSION=$(echo "${VERSION_CONFIG}" | jq -r '.usVersion')
+          AUTH_VERSION=$(echo "${VERSION_CONFIG}" | jq -r '.authVersion')
           BACKEND_VERSION=$(echo "${VERSION_CONFIG}" | jq -r '.backendVersion')
 
           echo "UI_VERSION=$UI_VERSION" >> "$GITHUB_ENV"
           echo "US_VERSION=$US_VERSION" >> "$GITHUB_ENV"
+          echo "AUTH_VERSION=$AUTH_VERSION" >> "$GITHUB_ENV"
           echo "CONTROL_API_VERSION=$BACKEND_VERSION" >> "$GITHUB_ENV"
           echo "DATA_API_VERSION=$BACKEND_VERSION" >> "$GITHUB_ENV"
 
@@ -42,6 +44,7 @@ jobs:
         run: npm run test:e2e:docker:check
         env:
           US_VERSION: ${{ env.US_VERSION }}
+          AUTH_VERSION: ${{ env.AUTH_VERSION }}
           CONTROL_API_VERSION: ${{ env.CONTROL_API_VERSION }}
           DATA_API_VERSION: ${{ env.DATA_API_VERSION }}
           UI_VERSION: ${{ env.UI_VERSION }}
@@ -52,6 +55,7 @@ jobs:
         run: npm run test:e2e:docker
         env:
           US_VERSION: ${{ env.US_VERSION }}
+          AUTH_VERSION: ${{ env.AUTH_VERSION }}
           CONTROL_API_VERSION: ${{ env.CONTROL_API_VERSION }}
           DATA_API_VERSION: ${{ env.DATA_API_VERSION }}
           UI_VERSION: ${{ env.UI_VERSION }}
@@ -68,6 +72,7 @@ jobs:
           rm -rf ./tests/artifacts
           npm run test:e2e:docker:report
         env:
+          AUTH_VERSION: ${{ env.AUTH_VERSION }}
           US_VERSION: ${{ env.US_VERSION }}
           CONTROL_API_VERSION: ${{ env.CONTROL_API_VERSION }}
           DATA_API_VERSION: ${{ env.DATA_API_VERSION }}
@@ -79,6 +84,7 @@ jobs:
         run: |
           npm run test:e2e:docker:down
         env:
+          AUTH_VERSION: ${{ env.AUTH_VERSION }}
           US_VERSION: ${{ env.US_VERSION }}
           CONTROL_API_VERSION: ${{ env.CONTROL_API_VERSION }}
           DATA_API_VERSION: ${{ env.DATA_API_VERSION }}
