@@ -172,6 +172,7 @@ for _ in "$@"; do
     shift # past argument with no value
     ;;
   --dev-light)
+    IS_DEV="true"
     IS_AUTH_ENABLED="false"
     IS_TEMPORAL_ENABLED="false"
     IS_WORKBOOK_EXPORT_ENABLED="false"
@@ -186,58 +187,72 @@ for _ in "$@"; do
     shift # past argument with no value
     ;;
   --dev-ui)
+    IS_DEV="true"
     IS_DEV_UI="true"
     shift # past argument with no value
     ;;
   --dev-no-ui)
+    IS_DEV="true"
     IS_UP_UI="false"
     shift # past argument with no value
     ;;
   --dev-ui-api)
+    IS_DEV="true"
     IS_DEV_UI_API="true"
     shift # past argument with no value
     ;;
   --dev-no-ui-api)
+    IS_DEV="true"
     IS_UP_UI_API="false"
     shift # past argument with no value
     ;;
   --dev-us)
+    IS_DEV="true"
     IS_DEV_US="true"
     shift # past argument with no value
     ;;
   --dev-no-us)
+    IS_DEV="true"
     IS_UP_US="false"
     shift # past argument with no value
     ;;
   --dev-auth)
+    IS_DEV="true"
     IS_DEV_AUTH="true"
     shift # past argument with no value
     ;;
   --dev-no-auth)
+    IS_DEV="true"
     IS_UP_AUTH="false"
     shift # past argument with no value
     ;;
   --dev-meta-manager)
+    IS_DEV="true"
     IS_DEV_META_MANAGER="true"
     shift # past argument with no value
     ;;
   --dev-no-meta-manager)
+    IS_DEV="true"
     IS_UP_META_MANAGER="false"
     shift # past argument with no value
     ;;
   --dev-control-api)
+    IS_DEV="true"
     IS_DEV_CONTROL_API="true"
     shift # past argument with no value
     ;;
   --dev-no-control-api)
+    IS_DEV="true"
     IS_UP_CONTROL_API="false"
     shift # past argument with no value
     ;;
   --dev-data-api)
+    IS_DEV="true"
     IS_DEV_DATA_API="true"
     shift # past argument with no value
     ;;
   --dev-no-data-api)
+    IS_DEV="true"
     IS_UP_DATA_API="false"
     shift # past argument with no value
     ;;
