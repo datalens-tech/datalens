@@ -16,6 +16,9 @@ if [ -z "${POSTGRES_PASSWORD_US}" ]; then POSTGRES_PASSWORD_US="${POSTGRES_PASSW
 if [ -z "${POSTGRES_DUMP_FORMAT}" ]; then POSTGRES_DUMP_FORMAT="custom"; fi
 
 POSTGRES_DUMP_ARGS=""
+if [ -z "${POSTGRES_DUMP_ARGS}" ]; then
+  POSTGRES_DUMP_ARGS=""
+fi
 if [ "${POSTGRES_DUMP_SKIP_CONFLICT}" == "true" ] || [ "${POSTGRES_DUMP_SKIP_CONFLICT}" == "1" ]; then
   POSTGRES_DUMP_ARGS="${POSTGRES_DUMP_ARGS} --on-conflict-do-nothing"
 fi
@@ -39,7 +42,7 @@ if [ "${POSTGRES_DUMP_CLEAR_META}" == "true" ] || [ "${POSTGRES_DUMP_CLEAR_META}
     --table workbooks \
     --table collections \
     --table links \
-    ${POSTGRES_DUMP_ARGS} | grep -Ev "^(--|SET|SELECT pg_catalog.set_config|pg_dump:)"
+    ${POSTGRES_DUMP_ARGS} | grep -Ev "^(--|SET|SELECT pg_catalog.set_config|pg_dump:|\\\\restrict|\\\\unrestrict)"
 else
   # shellcheck disable=SC2086
   pg_dump \
