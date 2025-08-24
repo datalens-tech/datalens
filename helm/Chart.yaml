@@ -1,6 +1,6 @@
 apiVersion: v2
 # release version
-appVersion: 2.4.2
+appVersion: 2.5.0
 name: datalens
 description: DataLens Helm chart for Kubernetes
 type: application
