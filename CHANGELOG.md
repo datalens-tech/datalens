@@ -1,4 +1,4 @@
-## v2.5.0 (2025-08-22)
+## v2.5.0 (2025-08-24)
 
 ### Image versions
 - datalens-auth: 0.21.0 -> 0.22.0 ([full changelog](https://github.com/datalens-tech/datalens-auth/compare/v0.21.0...v0.22.0))
@@ -47,22 +47,19 @@
 - **Charts**: Hide axis type in placeholder dialog for charts with yagr visualization. [datalens-tech/datalens-ui#2773](https://github.com/datalens-tech/datalens-ui/pull/2773)
 - **Charts**: Html in treemap labels. [datalens-tech/datalens-ui#2776](https://github.com/datalens-tech/datalens-ui/pull/2776)
 - **Charts**: Html in pie tooltip. [datalens-tech/datalens-ui#2777](https://github.com/datalens-tech/datalens-ui/pull/2777)
-- **Charts**, **General components**: Up @gravity-ui/chartkit 7.5.0 -> 7.5.2. [datalens-tech/datalens-ui#2780](https://github.com/datalens-tech/datalens-ui/pull/2780)
+- **Dashboards**: Fix background transformation after widget copy-pasing. [datalens-tech/datalens-ui#2717](https://github.com/datalens-tech/datalens-ui/pull/2717)
 
 ### Dependencies
-- **General components**: Add getAuthArgs and getAuthHeaders to registry. [datalens-tech/datalens-ui#2639](https://github.com/datalens-tech/datalens-ui/pull/2639)
+- **General components**: Up @gravity-ui/gateway to 4.8.0 & add getAuthArgs and getAuthHeaders to registry. [datalens-tech/datalens-ui#2639](https://github.com/datalens-tech/datalens-ui/pull/2639)
 - **General components**: Update app-builder. [datalens-tech/datalens-ui#2683](https://github.com/datalens-tech/datalens-ui/pull/2683)
 - **General components**: Remove unnecessary dependencies. [datalens-tech/datalens-ui#2684](https://github.com/datalens-tech/datalens-ui/pull/2684)
-- **General components**: Up uikit (-> 7). [datalens-tech/datalens-ui#2537](https://github.com/datalens-tech/datalens-ui/pull/2537)
-- **General components**: Up @gravity-ui/nvaigation@3.5.0. [datalens-tech/datalens-ui#2703](https://github.com/datalens-tech/datalens-ui/pull/2703)
-- **General components**: Update @gravity-ui/chartkit to 7.3.0. [datalens-tech/datalens-ui#2729](https://github.com/datalens-tech/datalens-ui/pull/2729)
-- **General components**: Add auth check for E2E tests. [datalens-tech/datalens-ui#2744](https://github.com/datalens-tech/datalens-ui/pull/2744)
-- **General components**: Up @gravity-ui/chartkit + some chart improvements. [datalens-tech/datalens-ui#2748](https://github.com/datalens-tech/datalens-ui/pull/2748)
+- **General components**: Up uikit 6.* -> 7.*. [datalens-tech/datalens-ui#2537](https://github.com/datalens-tech/datalens-ui/pull/2537)
+- **General components**: Up @gravity-ui/navigation@3.5.0. [datalens-tech/datalens-ui#2703](https://github.com/datalens-tech/datalens-ui/pull/2703)
 - **General components**: Update @gravity-ui/components. [datalens-tech/datalens-ui#2771](https://github.com/datalens-tech/datalens-ui/pull/2771)
-- **General components**: Up chartkit to 7.5.0. [datalens-tech/datalens-ui#2770](https://github.com/datalens-tech/datalens-ui/pull/2770)
+- **General components**: Up chartkit 7.1.0 to 7.5.2. [datalens-tech/datalens-ui#2729](https://github.com/datalens-tech/datalens-ui/pull/2729), [datalens-tech/datalens-ui#2748](https://github.com/datalens-tech/datalens-ui/pull/2748), [datalens-tech/datalens-ui#2770](https://github.com/datalens-tech/datalens-ui/pull/2770), [datalens-tech/datalens-ui#2780](https://github.com/datalens-tech/datalens-ui/pull/2780)
 
 ### Other
-- **Dashboards**: Fix background transformation after widget copy-pasing. [datalens-tech/datalens-ui#2717](https://github.com/datalens-tech/datalens-ui/pull/2717)
+- **General components**: Add auth check for E2E tests. [datalens-tech/datalens-ui#2744](https://github.com/datalens-tech/datalens-ui/pull/2744)
 
 
 ## v2.4.2 (2025-07-10)
