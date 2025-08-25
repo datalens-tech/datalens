@@ -12,6 +12,8 @@
 - **Dashboards**: Add paste values from buffer to manual selector. [datalens-tech/datalens-ui#2690](https://github.com/datalens-tech/datalens-ui/pull/2690)
 - **Dashboards**: Add title widget text color selector. [datalens-tech/datalens-ui#2677](https://github.com/datalens-tech/datalens-ui/pull/2677)
 - **General components**: Rename default palette in wizard to "Classic20". [datalens-tech/datalens-ui#2718](https://github.com/datalens-tech/datalens-ui/pull/2718)
+- **Datasets**: Add undo/redo before save feature. [datalens-tech/datalens-ui#2650](https://github.com/datalens-tech/datalens-ui/pull/2650)
+- **Dashboards**: Add show dash relations button. [datalens-tech/datalens-ui#2664](https://github.com/datalens-tech/datalens-ui/pull/2664)
 
 ### Bug fixes
 - **Charts**: Fix unnecessary scrolling in a table with a linear indicator. [datalens-tech/datalens-ui#2651](https://github.com/datalens-tech/datalens-ui/pull/2651)
