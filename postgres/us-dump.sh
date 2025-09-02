@@ -25,6 +25,21 @@ fi
 
 export PGPASSWORD="${POSTGRES_PASSWORD_US}"
 
+echo "Checking for e2e-entry in keys..." >&2
+E2E_ENTRIES=$(psql \
+  --host "${POSTGRES_HOST}" \
+  --port "${POSTGRES_PORT}" \
+  --username "${POSTGRES_USER_US}" \
+  --dbname "${POSTGRES_DB_US}" \
+  -t \
+  -c "SELECT key FROM entries WHERE key LIKE '%e2e-entry%' AND key NOT LIKE '%__trash/%';")
+
+if [ -n "$E2E_ENTRIES" ]; then
+  echo "WARNING: Found keys containing 'e2e-entry':" >&2
+  echo "$E2E_ENTRIES" >&2
+  echo "These entries might be test entries and should be delete before dump create." >&2
+fi
+
 if [ "${POSTGRES_DUMP_CLEAR_META}" == "true" ] || [ "${POSTGRES_DUMP_CLEAR_META}" == "1" ]; then
   POSTGRES_DUMP_FORMAT="plain"
   # shellcheck disable=SC2086
