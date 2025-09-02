@@ -14,7 +14,7 @@ on:
         description: 'PostgreSQL main version'
       pg_version_suffix:
         type: string
-        default: '0.1.0'
+        default: '0.2.0'
         description: 'Container custom version suffix'
 
 concurrency:
@@ -29,7 +29,7 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: datalens-tech/datalens-postgres
   POSTGRES_VERSION: ${{ github.event.inputs.pg_version || '16' }}
-  POSTGRES_VERSION_SUFFIX: ${{ github.event.inputs.pg_version_suffix || '0.1.0' }}
+  POSTGRES_VERSION_SUFFIX: ${{ github.event.inputs.pg_version_suffix || '0.2.0' }}
 
 jobs:
   run:
