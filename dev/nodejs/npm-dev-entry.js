@@ -36,7 +36,16 @@ const installDeps = () => {
 installDeps();
 
 // clear dist/run/client.sock
-rmSync('./dist/run/client.sock', { force: true });
+try {
+    rmSync('./dist/run/client.sock', { force: true });
+} catch (error) {
+    if (error.code === 'ENOTSUP' || error.code === 'ENOENT') {
+        // Socket file operations not supported in this environment or file doesn't exist
+        console.log('\n\x1b[33m[DOCKER ENTRY]\x1b[0m Socket file cleanup skipped (not supported)');
+    } else {
+        throw error;
+    }
+}
 
 // install dependencies every time package.json changes
 const watcher = watch(PACKAGE_FILE, () => {
