@@ -7,6 +7,9 @@ runcmd:
   - chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg
   - echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null
   - apt update && apt install gh -y
+  # install nodejs
+  - curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash -
+  - apt install -y nodejs python3 python-is-python3 g++ make
   # install task cli
   - su - root -c "curl -o ./task-install.sh -L https://taskfile.dev/install.sh"
   - su - root -c "chmod +x ./task-install.sh && ./task-install.sh -d -b /usr/local/bin"
@@ -34,6 +37,9 @@ runcmd:
   # add non root user
   - useradd -m github --shell /bin/bash && usermod -aG docker github
   - su - github -c "mkdir -p /home/github/actions-runner"
+  # install playwright
+  - su - root -c "PLAYWRIGHT_BROWSERS_PATH=/home/github/.cache/ms-playwright PLAYWRIGHT_DOWNLOAD_HOST=https://storage.yandexcloud.net/playwright npx -y playwright@${PLAYWRIGHT_VERSION} install --with-deps chromium"
+  - su - root -c "apt purge -y fonts-dejavu-core"
   # install github runner agent
   - export RUNNER_ARCH=x64
   - export RUNNER_TOKEN=$(yc lockbox payload get --id ${LOCKBOX_ID} --key ${LOCKBOX_KEY})
