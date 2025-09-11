@@ -7,7 +7,10 @@ locals {
   runner_os_image = "ubuntu-2404-lts-oslogin"
   runner_version  = "2.319.1"
 
-  runners_count = 3
+  node_version       = "22"
+  playwright_version = "1.48.2"
+
+  runners_count = 9
   runners_ids   = local.is_create_github_runner ? [for i in range(0, local.runners_count) : { key = "ind-${i}", ind = i }] : []
 }
 
@@ -108,6 +111,9 @@ resource "yandex_compute_instance" "github-runner" {
 
     user-data = templatefile("github-runner-config.yaml", {
       VERSION = local.runner_version
+
+      NODE_VERSION       = local.node_version
+      PLAYWRIGHT_VERSION = local.playwright_version
 
       OWNER = local.gh_owner
       LABEL = local.gh_label
