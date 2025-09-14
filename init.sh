@@ -23,6 +23,7 @@ IS_DEV="false"
 IS_DEV_ENV="false"
 IS_DEV_BUILD="false"
 IS_DEV_EXPOSE_PORTS="false"
+IS_DEV_NGINX="false"
 
 IS_DEV_UI="false"
 IS_DEV_UI_API="false"
@@ -186,6 +187,10 @@ for _ in "$@"; do
     IS_DEV_EXPOSE_PORTS="true"
     shift # past argument with no value
     ;;
+  --dev-nginx)
+    IS_DEV_NGINX="true"
+    shift # past argument with no value
+    ;;
   --dev-ui)
     IS_DEV="true"
     IS_DEV_UI="true"
@@ -291,7 +296,7 @@ _init_sh_completions() {
     prev="${COMP_WORDS[COMP_CWORD-1]}"
     
     # all available options
-    opts="--help --autocomplete --hc --yandex-map --yandex-map-token --demo --disable-demo --disable-workbook-export --disable-always-image-pull --disable-auth --disable-temporal --disable-temporal-auth --postgres-external --postgres-ssl --postgres-cert --ip --domain --https --ipv6 --up --down --stop --dev --dev-env --dev-light --dev-build --dev-expose-ports --dev-ui --dev-no-ui --dev-ui-api --dev-no-ui-api --dev-us --dev-no-us --dev-auth --dev-no-auth --dev-meta-manager --dev-no-meta-manager --dev-control-api --dev-no-control-api --dev-data-api --dev-no-data-api --reinit-db --rm-env --remove-env --rm-volumes --remove-volumes --legacy-docker-compose"
+    opts="--help --autocomplete --hc --yandex-map --yandex-map-token --demo --disable-demo --disable-workbook-export --disable-always-image-pull --disable-auth --disable-temporal --disable-temporal-auth --postgres-external --postgres-ssl --postgres-cert --ip --domain --https --ipv6 --up --down --stop --dev --dev-env --dev-light --dev-build --dev-expose-ports --dev-nginx --dev-ui --dev-no-ui --dev-ui-api --dev-no-ui-api --dev-us --dev-no-us --dev-auth --dev-no-auth --dev-meta-manager --dev-no-meta-manager --dev-control-api --dev-no-control-api --dev-data-api --dev-no-data-api --reinit-db --rm-env --remove-env --rm-volumes --remove-volumes --legacy-docker-compose"
     
     # handle options that require values
     case "${prev}" in
@@ -438,6 +443,7 @@ if [ "${IS_HELP}" == "true" ]; then
   echo "  --dev-light - disable auth, temporal and workbook export for lighter development setup"
   echo "  --dev-build - rebuild development containers before starting"
   echo "  --dev-expose-ports - expose ports for all containers with socat"
+  echo "  --dev-nginx - up nginx with https and self-signed certificates for development mode"
   echo "  --dev-<service> - run [ui/ui-api/us/auth/meta-manager/control-api/data-api] service in development mode"
   echo "  --dev-no-<service> - disable up [ui/ui-api/us/auth/meta-manager/control-api/data-api] service"
   echo ""
@@ -718,6 +724,13 @@ if [ "${IS_DEV}" == "true" ]; then
     COMPOSE_UP_SERVICES="${COMPOSE_UP_SERVICES} postgres"
   fi
 
+  if [ "${IS_DEV_NGINX}" == "true" ]; then
+    if [ -z "${DOMAIN}" ]; then
+      DOMAIN="datalens.local"
+    fi
+    export UI_APP_ENDPOINT="https://${DOMAIN}"
+  fi
+
   if [ "${IS_DEV_UI}" == "true" ]; then
     echo "  - [ui] check repository exists..."
     if [ ! -d "${DIR_REPO_UI}" ]; then
@@ -888,6 +901,26 @@ if [ "${IS_DEV}" == "true" ]; then
       docker --log-level error compose -f "${DOCKER_COMPOSE_DEV_CONFIG}" build socat
     fi
     docker --log-level error compose -f "${DOCKER_COMPOSE_DEV_CONFIG}" up --no-deps -d socat
+  fi
+
+  if [ "${IS_DEV_NGINX}" == "true" ]; then
+    echo ""
+    echo "🌐 Up nginx server with HTTPS..."
+    echo ""
+
+    if [ ! -f "./dev/certs/${DOMAIN}.crt" ]; then
+      openssl req -x509 -batch -subj "/CN=${DOMAIN}/O=DataLens" -addext "subjectAltName=DNS:${DOMAIN}" -nodes -newkey rsa:2048 -sha256 -days 365 -keyout "./dev/certs/${DOMAIN}.key" -out "./dev/certs/${DOMAIN}.crt" &>/dev/null
+      # shellcheck disable=SC2086
+      rm -rf ./dev/certs/${DOMAIN}.ca.crt && cat ./dev/certs/${DOMAIN}.* >>./dev/certs/${DOMAIN}.ca.crt
+    fi
+
+    if [ "${IS_DEV_BUILD}" == "true" ]; then
+      docker --log-level error compose -f "${DOCKER_COMPOSE_DEV_CONFIG}" build nginx
+    fi
+    docker --log-level error compose -f "${DOCKER_COMPOSE_DEV_CONFIG}" up --no-deps -d nginx
+
+    echo "  nginx port: 443"
+    echo "  domain: ${DOMAIN}"
   fi
 
   if [ -n "${COMPOSE_LOG_SERVICES}" ]; then

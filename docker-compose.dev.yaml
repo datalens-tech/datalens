@@ -208,6 +208,21 @@ services:
     networks:
       - default
   #
+  nginx:
+    container_name: nginx
+    image: datalens-dev:nginx
+    build:
+      context: ./dev/nginx
+    environment:
+      DOMAIN: ${DOMAIN:-datalens.local}
+      ENDPOINT: ui:8080
+    volumes:
+      - ./dev/certs:/etc/certs/:ro
+    ports:
+      - 443:443
+    networks:
+      - default
+  #
   socat:
     container_name: socat
     image: datalens-dev:socat
