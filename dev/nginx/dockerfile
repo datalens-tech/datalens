@@ -1,0 +1,7 @@
+FROM nginx:stable-alpine3.19
+
+COPY ./nginx.conf /etc/nginx/templates/nginx.conf.template
+
+ENV NGINX_ENVSUBST_OUTPUT_DIR='/etc/nginx'
+
+# default endpoint and command
