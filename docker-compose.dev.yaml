@@ -39,7 +39,7 @@ services:
     build:
       context: ./dev/python
       args:
-        - image=ghcr.io/datalens-tech/datalens-control-api:0.2282.0
+        - image=ghcr.io/datalens-tech/datalens-control-api:0.2352.0
     tty: true
     environment:
       RUN_DEV: /etc/service/dl_api/run
@@ -64,7 +64,7 @@ services:
     build:
       context: ./dev/python
       args:
-        - image=ghcr.io/datalens-tech/datalens-data-api:0.2282.0
+        - image=ghcr.io/datalens-tech/datalens-data-api:0.2352.0
     tty: true
     environment:
       RUN_DEV: /etc/service/dl_api/run
@@ -89,7 +89,7 @@ services:
     build:
       context: ./dev/nodejs
       args:
-        - image=ghcr.io/datalens-tech/datalens-us:0.375.0
+        - image=ghcr.io/datalens-tech/datalens-us:0.396.0
     tty: true
     environment:
       RUN_DEV: npx tsc-watch --onSuccess ./scripts/preflight.sh
@@ -113,7 +113,7 @@ services:
     build:
       context: ./dev/nodejs
       args:
-        - image=ghcr.io/datalens-tech/datalens-ui:0.3168.0
+        - image=ghcr.io/datalens-tech/datalens-ui:0.3271.0
     tty: true
     ulimits:
       core: 0
@@ -142,7 +142,7 @@ services:
     build:
       context: ./dev/nodejs
       args:
-        - image=ghcr.io/datalens-tech/datalens-meta-manager:0.46.0
+        - image=ghcr.io/datalens-tech/datalens-meta-manager:0.47.0
     tty: true
     environment:
       RUN_DEV: npx tsc-watch --onSuccess ./scripts/preflight.sh
@@ -167,7 +167,7 @@ services:
     build:
       context: ./dev/nodejs
       args:
-        - image=ghcr.io/datalens-tech/datalens-auth:0.22.0
+        - image=ghcr.io/datalens-tech/datalens-auth:0.23.0
     tty: true
     environment:
       RUN_DEV: npx tsc-watch --onSuccess ./scripts/preflight.sh
@@ -189,7 +189,7 @@ services:
     build:
       context: ./dev/nodejs
       args:
-        - image=ghcr.io/datalens-tech/datalens-ui:0.3168.0
+        - image=ghcr.io/datalens-tech/datalens-ui:0.3271.0
     tty: true
     ulimits:
       core: 0
