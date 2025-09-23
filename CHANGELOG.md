@@ -1,3 +1,71 @@
+## v2.6.0 (2025-09-23)
+
+### Image versions
+- datalens-auth: 0.22.0 -> 0.23.0 ([full changelog](https://github.com/datalens-tech/datalens-auth/compare/v0.22.0...v0.23.0))
+- datalens-control-api: 0.2282.0 -> 0.2351.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2282.0...v0.2351.0))
+- datalens-data-api: 0.2282.0 -> 0.2351.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2282.0...v0.2351.0))
+- datalens-meta-manager: 0.46.0 -> 0.47.0 ([full changelog](https://github.com/datalens-tech/datalens-meta-manager/compare/v0.46.0...v0.47.0))
+- datalens-ui: 0.3168.0 -> 0.3271.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.3168.0...v0.3271.0))
+- datalens-us: 0.375.0 -> 0.396.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.375.0...v0.396.0))
+
+### New features
+- User_info markup function. [datalens-tech/datalens-backend#1148](https://github.com/datalens-tech/datalens-backend/pull/1148)
+- **Dashboards**: Add float controls for dashboard widgets. [datalens-tech/datalens-ui#2790](https://github.com/datalens-tech/datalens-ui/pull/2790)
+- **Charts**: Add description for charts. [datalens-tech/datalens-ui#2803](https://github.com/datalens-tech/datalens-ui/pull/2803)
+- **Navigation**: Add StatusIllustration to a Navigation error layout. [datalens-tech/datalens-ui#2809](https://github.com/datalens-tech/datalens-ui/pull/2809)
+- **Charts**: Add axis labels formatting for highcharts. [datalens-tech/datalens-ui#2792](https://github.com/datalens-tech/datalens-ui/pull/2792)
+- **Datasets**: Add dataset revisions. [datalens-tech/datalens-ui#2828](https://github.com/datalens-tech/datalens-ui/pull/2828)
+- **General components**: Enable empty selector. [datalens-tech/datalens-ui#2832](https://github.com/datalens-tech/datalens-ui/pull/2832)
+- **General components**: Add dynamic middleware to reducer registry. [datalens-tech/datalens-ui#2858](https://github.com/datalens-tech/datalens-ui/pull/2858)
+- **Datasets**: Add disable for dataset revisions. [datalens-tech/datalens-ui#2865](https://github.com/datalens-tech/datalens-ui/pull/2865)
+
+### Bug fixes
+- **Charts**: Fix pie legend name for empty string. [datalens-tech/datalens-ui#2794](https://github.com/datalens-tech/datalens-ui/pull/2794)
+- **Dashboards**: Fix icons for relations dialog dropdowns. [datalens-tech/datalens-ui#2798](https://github.com/datalens-tech/datalens-ui/pull/2798)
+- **Connectors**: Reset yadocs state on new connection. [datalens-tech/datalens-ui#2799](https://github.com/datalens-tech/datalens-ui/pull/2799)
+- **General components**: Add autofocus to a RenameEntryDialog's input. [datalens-tech/datalens-ui#2805](https://github.com/datalens-tech/datalens-ui/pull/2805)
+- **Charts**: Fix double escaping in markup dataLabels. [datalens-tech/datalens-ui#2797](https://github.com/datalens-tech/datalens-ui/pull/2797)
+- **Charts**: Visual fixes in placeholder settings color block. [datalens-tech/datalens-ui#2811](https://github.com/datalens-tech/datalens-ui/pull/2811)
+- **Datasets**: Fix switching data_export_forbidden flag. [datalens-tech/datalens-ui#2825](https://github.com/datalens-tech/datalens-ui/pull/2825)
+- **Charts**: Apply data_export_forbidden setting on ql charts. [datalens-tech/datalens-ui#2829](https://github.com/datalens-tech/datalens-ui/pull/2829)
+- **Dashboards**: Fix Selector edit dialog crash on invalid datasource field. [datalens-tech/datalens-ui#2830](https://github.com/datalens-tech/datalens-ui/pull/2830)
+- **Charts**: Check is label formatter exist. [datalens-tech/datalens-ui#2841](https://github.com/datalens-tech/datalens-ui/pull/2841)
+- **Dashboards**: Fix dashboard favorites section. [datalens-tech/datalens-ui#2842](https://github.com/datalens-tech/datalens-ui/pull/2842)
+- **General components**: Fix skeletons for gallery promo items & add animation. [datalens-tech/datalens-ui#2846](https://github.com/datalens-tech/datalens-ui/pull/2846)
+- **Dashboards**: Stop removing description in data for Dash. [datalens-tech/datalens-ui#2851](https://github.com/datalens-tech/datalens-ui/pull/2851)
+- **Charts**, **Dashboards**: Start saving entry description to annotation object. [datalens-tech/datalens-ui#2840](https://github.com/datalens-tech/datalens-ui/pull/2840)
+- **Charts**: Hide "Open as table" chart menu item when export disabled and add tests. [datalens-tech/datalens-ui#2860](https://github.com/datalens-tech/datalens-ui/pull/2860)
+- **Charts**: Fix checking "Open as table" menu item visibility. [datalens-tech/datalens-ui#2880](https://github.com/datalens-tech/datalens-ui/pull/2880)
+- **Dashboards**: Prevent closing settings modal for dash when edit description. [datalens-tech/datalens-ui#2891](https://github.com/datalens-tech/datalens-ui/pull/2891)
+- **Datasets**: Fix display field editor. [datalens-tech/datalens-ui#2895](https://github.com/datalens-tech/datalens-ui/pull/2895)
+- **Auth**: Save loaded user list with empty filter. [datalens-tech/datalens-ui#2883](https://github.com/datalens-tech/datalens-ui/pull/2883)
+
+### Dependencies
+- **General components**: Update @gravity-ui/chartkit 7.5.2 -> 7.6.0. [datalens-tech/datalens-ui#2795](https://github.com/datalens-tech/datalens-ui/pull/2795)
+- **General components**: Up chartkit 7.6.0 -> 7.6.2. [datalens-tech/datalens-ui#2802](https://github.com/datalens-tech/datalens-ui/pull/2802)
+- **General components**: Update @gravity-ui/charts -> 1.6.4 + fix map legend float. [datalens-tech/datalens-ui#2807](https://github.com/datalens-tech/datalens-ui/pull/2807)
+- **General components**: Update @gravity-ui/charts -> 1.6.5. [datalens-tech/datalens-ui#2813](https://github.com/datalens-tech/datalens-ui/pull/2813)
+- **General components**: Update @gravity-ui/charts -> 1.6.7. [datalens-tech/datalens-ui#2818](https://github.com/datalens-tech/datalens-ui/pull/2818)
+- **General components**: Update @gravity-ui/chartkit 7.6.2 -> 7.7.0. [datalens-tech/datalens-ui#2820](https://github.com/datalens-tech/datalens-ui/pull/2820)
+- **General components**: Update chartkit to v7.8.0. [datalens-tech/datalens-ui#2836](https://github.com/datalens-tech/datalens-ui/pull/2836)
+- **General components**: Update chartkit to v7.9.0. [datalens-tech/datalens-ui#2856](https://github.com/datalens-tech/datalens-ui/pull/2856)
+- **General components**: Update chartkit to v7.9.1. [datalens-tech/datalens-ui#2862](https://github.com/datalens-tech/datalens-ui/pull/2862)
+- **General components**: Entries schemas. [datalens-tech/datalens-ui#2629](https://github.com/datalens-tech/datalens-ui/pull/2629)
+
+### Deprecation
+- **Charts**: Replace table in QL table preview. [datalens-tech/datalens-ui#2808](https://github.com/datalens-tech/datalens-ui/pull/2808)
+
+### Development
+- **General components**: Remove gallery. [datalens-tech/datalens-ui#2872](https://github.com/datalens-tech/datalens-ui/pull/2872)
+
+### Chores
+- **Charts**: Custom color option for indicators. [datalens-tech/datalens-ui#2788](https://github.com/datalens-tech/datalens-ui/pull/2788)
+- **Dashboards**: Move dash description to annotation field. [datalens-tech/datalens-ui#2745](https://github.com/datalens-tech/datalens-ui/pull/2745)
+
+### Other
+- **General components**: Add 'Retry' button to a linked objects modal. [datalens-tech/datalens-ui#2796](https://github.com/datalens-tech/datalens-ui/pull/2796)
+
+
 ## v2.5.0 (2025-08-24)
 
 ### Image versions
