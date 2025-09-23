@@ -2,8 +2,8 @@
 
 ### Image versions
 - datalens-auth: 0.22.0 -> 0.23.0 ([full changelog](https://github.com/datalens-tech/datalens-auth/compare/v0.22.0...v0.23.0))
-- datalens-control-api: 0.2282.0 -> 0.2351.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2282.0...v0.2351.0))
-- datalens-data-api: 0.2282.0 -> 0.2351.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2282.0...v0.2351.0))
+- datalens-control-api: 0.2282.0 -> 0.2352.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2282.0...v0.2352.0))
+- datalens-data-api: 0.2282.0 -> 0.2352.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2282.0...v0.2352.0))
 - datalens-meta-manager: 0.46.0 -> 0.47.0 ([full changelog](https://github.com/datalens-tech/datalens-meta-manager/compare/v0.46.0...v0.47.0))
 - datalens-ui: 0.3168.0 -> 0.3271.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.3168.0...v0.3271.0))
 - datalens-us: 0.375.0 -> 0.396.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.375.0...v0.396.0))
@@ -13,7 +13,9 @@
 - **Dashboards**: Add float controls for dashboard widgets. [datalens-tech/datalens-ui#2790](https://github.com/datalens-tech/datalens-ui/pull/2790)
 - **Charts**: Add description for charts. [datalens-tech/datalens-ui#2803](https://github.com/datalens-tech/datalens-ui/pull/2803)
 - **Navigation**: Add StatusIllustration to a Navigation error layout. [datalens-tech/datalens-ui#2809](https://github.com/datalens-tech/datalens-ui/pull/2809)
+- **Datasets** Add parametrization of dataset sources. [datalens-tech/datalens-backend#1247](https://github.com/datalens-tech/datalens-backend/pull/1247)
 - **Datasets**: Add dataset revisions. [datalens-tech/datalens-ui#2828](https://github.com/datalens-tech/datalens-ui/pull/2828)
+- **Datasets** Add table sources for some connectors and enable them by default. [datalens-tech/datalens-backend#1206](https://github.com/datalens-tech/datalens-backend/pull/1206)
 - **General components**: Change dash empty selector default behaviour. [datalens-tech/datalens-ui#2832](https://github.com/datalens-tech/datalens-ui/pull/2832)
 - **Charts**: Custom color option for indicators. [datalens-tech/datalens-ui#2788](https://github.com/datalens-tech/datalens-ui/pull/2788)
 - **General components**: Add 'Retry' button to a linked objects modal. [datalens-tech/datalens-ui#2796](https://github.com/datalens-tech/datalens-ui/pull/2796)
@@ -32,6 +34,7 @@
 - **Dashboards**: Stop removing description in data for Dash. [datalens-tech/datalens-ui#2851](https://github.com/datalens-tech/datalens-ui/pull/2851)
 - **Charts**, **Dashboards**: Start saving entry description to annotation object. [datalens-tech/datalens-ui#2840](https://github.com/datalens-tech/datalens-ui/pull/2840)
 - **Charts**: Hide "Open as table" chart menu item when export disabled and add tests. [datalens-tech/datalens-ui#2860](https://github.com/datalens-tech/datalens-ui/pull/2860)
+- **Formula** Fix `DATEADD` with `today()` for PostgreSQL. [datalens-tech/datalens-backend#1217](https://github.com/datalens-tech/datalens-backend/pull/1217)
 - **Charts**: Fix checking "Open as table" menu item visibility. [datalens-tech/datalens-ui#2880](https://github.com/datalens-tech/datalens-ui/pull/2880)
 - **Dashboards**: Prevent closing settings modal for dash when edit description. [datalens-tech/datalens-ui#2891](https://github.com/datalens-tech/datalens-ui/pull/2891)
 - **Datasets**: Fix display field editor. [datalens-tech/datalens-ui#2895](https://github.com/datalens-tech/datalens-ui/pull/2895)
