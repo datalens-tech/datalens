@@ -72,6 +72,10 @@ resource "kubernetes_deployment" "ui" {
             value = "disabled"
           }
           env {
+            name  = "RELEASE_VERSION"
+            value = local.release_version
+          }
+          env {
             name  = "US_ENDPOINT"
             value = "http://us-cip:8080"
           }

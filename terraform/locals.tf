@@ -15,6 +15,7 @@ locals {
   auth_version         = local.versions["authVersion"]
   meta_manager_version = local.versions["metaManagerVersion"]
   backend_version      = local.versions["backendVersion"]
+  release_version      = local.versions["releaseVersion"]
 
   profile   = var.PROFILE
   cloud_id  = var.CLOUD_ID
