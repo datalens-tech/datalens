@@ -84,6 +84,10 @@ resource "kubernetes_deployment" "auth" {
             value = "prod"
           }
           env {
+            name  = "DISABLE_WILDCARD_COOKIE"
+            value = "true"
+          }
+          env {
             name = "MASTER_TOKEN"
             value_from {
               secret_key_ref {

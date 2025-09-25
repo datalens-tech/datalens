@@ -36,6 +36,10 @@ spec:
             {{- else if .Values.ingress.ip }}
               value: "http://{{ .Values.ingress.ip }}"
             {{- end }}
+            {{- if and .Values.features.auth.disable_wildcard_cookie }}
+            - name: DISABLE_WILDCARD_COOKIE
+              value: 'true'
+            {{- end }}
             - name: US_ENDPOINT
               value: http://app-us-cip:8080
             - name: TOKEN_PRIVATE_KEY

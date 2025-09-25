@@ -144,6 +144,7 @@ postgres:
 features:
   auth:
     enabled: true
+    disable_wildcard_cookie: true
   demo:
     enabled: true
   hc:
