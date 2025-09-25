@@ -45,6 +45,8 @@ spec:
             - name: META_MANAGER_ENDPOINT
               value: http://app-meta-manager-cip:8080
             {{- end }}
+            - name: RELEASE_VERSION
+              value: {{ .Values.release_version }}
             {{- if .Values.features.hc.enabled }}
             - name: HC
               value: '1'
