@@ -207,7 +207,7 @@ services:
   #
   auth:
     container_name: datalens-auth
-    image: ghcr.io/datalens-tech/datalens-auth:0.23.0
+    image: ghcr.io/datalens-tech/datalens-auth:0.24.0
     environment:
       APP_INSTALLATION: opensource
       APP_ENV: prod
@@ -253,7 +253,7 @@ services:
       #
       US_MASTER_TOKEN: ${US_MASTER_TOKEN:-us-master-token}
       #
-      RELEASE_VERSION: '2.6.0'
+      RELEASE_VERSION: '2.6.1'
       #
       HC: ${HC:-0}
       HC_ENDPOINT: ${HC_ENDPOINT:-}
