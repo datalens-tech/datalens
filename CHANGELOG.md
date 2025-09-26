@@ -9,7 +9,7 @@
 - datalens-us: 0.396.0
 
 ### Changes
-- Minor improvements
+- Minor auth improvements
 
 
 ## v2.6.0 (2025-09-23)
