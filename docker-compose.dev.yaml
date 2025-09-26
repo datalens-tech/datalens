@@ -167,7 +167,7 @@ services:
     build:
       context: ./dev/nodejs
       args:
-        - image=ghcr.io/datalens-tech/datalens-auth:0.23.0
+        - image=ghcr.io/datalens-tech/datalens-auth:0.24.0
     tty: true
     environment:
       RUN_DEV: npx tsc-watch --onSuccess ./scripts/preflight.sh
