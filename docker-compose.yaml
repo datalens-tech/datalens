@@ -226,6 +226,8 @@ services:
       AUTH_SIGNUP_DISABLED: ${AUTH_SIGNUP_DISABLED:-false}
       #
       UI_APP_ENDPOINT: ${UI_APP_ENDPOINT:-}
+      #
+      DISABLE_WILDCARD_COOKIE: 'true'
     depends_on:
       postgres:
         condition: service_healthy
