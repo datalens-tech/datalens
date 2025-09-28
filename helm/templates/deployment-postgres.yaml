@@ -24,6 +24,8 @@ spec:
         ports:
           - containerPort: 5432
         env:
+          - name: PGDATA
+            value: /var/lib/postgresql/data/pgdata
           - name: POSTGRES_USER
             value: {{ .Values.postgres.POSTGRES_USER }}
           - name: POSTGRES_DB_COMPENG
