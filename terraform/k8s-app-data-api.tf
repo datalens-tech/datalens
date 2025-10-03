@@ -30,34 +30,33 @@ resource "kubernetes_deployment" "data-api" {
             container_port = 8080
           }
 
-          # FIXME: after backend 401 public route fix
-          # liveness_probe {
-          #   http_get {
-          #     path = "/ping"
-          #     port = 8080
-          #   }
+          liveness_probe {
+            http_get {
+              path = "/ping"
+              port = 8080
+            }
 
-          #   initial_delay_seconds = 3
-          #   period_seconds        = 5
-          #   timeout_seconds       = 10
+            initial_delay_seconds = 3
+            period_seconds        = 5
+            timeout_seconds       = 10
 
-          #   success_threshold = 1
-          #   failure_threshold = 3
-          # }
+            success_threshold = 1
+            failure_threshold = 3
+          }
 
-          # readiness_probe {
-          #   http_get {
-          #     path = "/ping_ready"
-          #     port = 8080
-          #   }
+          readiness_probe {
+            http_get {
+              path = "/ping_ready"
+              port = 8080
+            }
 
-          #   initial_delay_seconds = 3
-          #   period_seconds        = 5
-          #   timeout_seconds       = 10
+            initial_delay_seconds = 3
+            period_seconds        = 5
+            timeout_seconds       = 10
 
-          #   success_threshold = 1
-          #   failure_threshold = 3
-          # }
+            success_threshold = 1
+            failure_threshold = 3
+          }
 
           resources {
             limits = {
