@@ -32,7 +32,7 @@ resource "kubernetes_deployment" "control-api" {
 
           liveness_probe {
             http_get {
-              path = "/ping"
+              path = "/api/v1/ping"
               port = 8080
             }
 
