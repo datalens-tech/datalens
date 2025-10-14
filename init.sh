@@ -52,6 +52,7 @@ IP=""
 IS_HTTPS="false"
 
 IS_IPV6="false"
+IS_DOCKER_IPV6="false"
 
 POSTGRES_CERT=""
 IS_POSTGRES_EXTERNAL="false"
@@ -151,6 +152,10 @@ for _ in "$@"; do
     ;;
   --ipv6)
     export IS_IPV6="true"
+    shift # past argument with no value
+    ;;
+  --docker-ipv6)
+    IS_DOCKER_IPV6="true"
     shift # past argument with no value
     ;;
   --up)
@@ -301,7 +306,7 @@ _init_sh_completions() {
     prev="${COMP_WORDS[COMP_CWORD-1]}"
     
     # all available options
-    opts="--help --autocomplete --hc --yandex-map --yandex-map-token --demo --disable-demo --disable-workbook-export --disable-always-image-pull --disable-auth --disable-temporal --disable-temporal-auth --postgres-external --postgres-ssl --postgres-cert --ip --domain --https --ipv6 --up --down --stop --dev --dev-env --dev-light --dev-build --dev-expose-ports --dev-nginx --dev-root --dev-ui --dev-no-ui --dev-ui-api --dev-no-ui-api --dev-us --dev-no-us --dev-auth --dev-no-auth --dev-meta-manager --dev-no-meta-manager --dev-control-api --dev-no-control-api --dev-data-api --dev-no-data-api --reinit-db --rm-env --remove-env --rm-volumes --remove-volumes --legacy-docker-compose"
+    opts="--help --autocomplete --hc --yandex-map --yandex-map-token --demo --disable-demo --disable-workbook-export --disable-always-image-pull --disable-auth --disable-temporal --disable-temporal-auth --postgres-external --postgres-ssl --postgres-cert --ip --domain --https --ipv6 --docker-ipv6 --up --down --stop --dev --dev-env --dev-light --dev-build --dev-expose-ports --dev-nginx --dev-root --dev-ui --dev-no-ui --dev-ui-api --dev-no-ui-api --dev-us --dev-no-us --dev-auth --dev-no-auth --dev-meta-manager --dev-no-meta-manager --dev-control-api --dev-no-control-api --dev-data-api --dev-no-data-api --reinit-db --rm-env --remove-env --rm-volumes --remove-volumes --legacy-docker-compose"
     
     # handle options that require values
     case "${prev}" in
@@ -458,6 +463,7 @@ if [ "${IS_HELP}" == "true" ]; then
   echo "  --rm-env | --remove-env - remove environment file"
   echo "  --rm-volumes | --remove-volumes - remove all docker volumes"
   echo "  --ipv6 - enable IPv6 address binding for docker default network"
+  echo "  --docker-ipv6 - auto fix docker IPv6 support for linux systems"
   echo "  --legacy-docker-compose - use legacy docker-compose command instead of docker compose"
   echo ""
   exit 0
@@ -667,6 +673,45 @@ fi
 
 if [ "${IS_ALWAYS_IMAGE_PULL}" != "true" ]; then
   export IMAGE_PULL_POLICY="missing"
+fi
+
+if [ "${IS_DOCKER_IPV6}" == "true" ]; then
+  echo ""
+  echo "🛠️  Docker daemon check IPv6 support..."
+  echo ""
+  if [ "$(uname -s)" == "Linux" ]; then
+    if [ -f "/etc/docker/daemon.json" ]; then
+      echo "  - file [/etc/docker/daemon.json] already exists"
+      if grep -q -s '"ipv6": true' /etc/docker/daemon.json; then
+        echo "  - config IPv6 fixes already applied, skip fix"
+      else
+        echo ""
+        echo "🚨 Docker daemon IPv6 support not found at config [/etc/docker/daemon.json], need manually fix it before run..."
+        echo ""
+        exit 1
+      fi
+    else
+      echo "  - create file [/etc/docker/daemon.json] with IPv6 fixes"
+
+      sudo mkdir -p /etc/docker
+      echo '{
+          "experimental": true,
+          "ip6tables": true,
+          "ipv6": true,
+
+          "fixed-cidr-v6": "fd00::/80",
+          "default-address-pools":[
+            {"base": "172.31.0.0/16", "size": 24},
+            {"base": "fd00:501::/64", "size": 80}
+          ]
+        }' | sudo tee /etc/docker/daemon.json &>/dev/null
+
+      echo "  - restart docker daemon"
+      sudo systemctl restart docker
+    fi
+  else
+    echo "  - skip daemon fix for non Linux systems"
+  fi
 fi
 
 if [ "${IS_RUN_INIT_DEMO_DATA}" == "true" ]; then
