@@ -710,7 +710,7 @@ if [ "${IS_DOCKER_IPV6}" == "true" ]; then
       sudo systemctl restart docker
     fi
   else
-    echo "  skip daemon fix for non Linux systems"
+    echo "  - skip daemon fix for non Linux systems"
   fi
 fi
 
