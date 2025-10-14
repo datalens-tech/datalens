@@ -52,6 +52,7 @@ IP=""
 IS_HTTPS="false"
 
 IS_IPV6="false"
+IS_DOCKER_IPV6="false"
 
 POSTGRES_CERT=""
 IS_POSTGRES_EXTERNAL="false"
@@ -151,6 +152,10 @@ for _ in "$@"; do
     ;;
   --ipv6)
     export IS_IPV6="true"
+    shift # past argument with no value
+    ;;
+  --docker-ipv6)
+    IS_DOCKER_IPV6="true"
     shift # past argument with no value
     ;;
   --up)
@@ -667,6 +672,44 @@ fi
 
 if [ "${IS_ALWAYS_IMAGE_PULL}" != "true" ]; then
   export IMAGE_PULL_POLICY="missing"
+fi
+
+if [ "${IS_DOCKER_IPV6}" == "true" ]; then
+  echo ""
+  echo "🛠️ Docker daemon check IPv6 support..."
+  if [ "$(uname -s)" == "Linux" ]; then
+    if [ -f "/etc/docker/daemon.json" ]; then
+      echo "  file [/etc/docker/daemon.json] already exists"
+      if grep -q '"ipv6": true' /etc/docker/daemon.json; then
+        echo "  config IPv6 fixes already applied, skip fix"
+      else
+        echo ""
+        echo "🚨 Docker daemon IPv6 support not found at config [/etc/docker/daemon.json], need manually fix it before run..."
+        echo ""
+        exit 1
+      fi
+    else
+      echo "  create file [/etc/docker/daemon.json] with IPv6 fixes"
+
+      sudo mkdir -p /etc/docker
+      echo '{
+          "experimental": true,
+          "ip6tables": true,
+          "ipv6": true,
+
+          "fixed-cidr-v6": "fd00::/80",
+          "default-address-pools":[
+            {"base": "172.31.0.0/16", "size": 24},
+            {"base": "fd00:501::/64", "size": 80}
+          ]
+        }' | sudo tee /etc/docker/daemon.json
+
+      echo "  restart docker daemon"
+      sudo systemctl restart docker
+    fi
+  else
+    echo "  skip daemon fix for non Linux systems"
+  fi
 fi
 
 if [ "${IS_RUN_INIT_DEMO_DATA}" == "true" ]; then
