@@ -10,7 +10,11 @@ concurrency:
 jobs:
   run-e2e:
     name: Run E2E Tests
-    runs-on: ubuntu-latest
+    runs-on:
+      - self-hosted
+      - linux
+      - cloud
+      - datalens-opensource
     steps:
       - uses: actions/checkout@v4
 
