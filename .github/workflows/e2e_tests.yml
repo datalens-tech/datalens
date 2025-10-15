@@ -63,6 +63,8 @@ jobs:
           E2E_TEST_TIMEOUT: 90000
           E2E_ACTION_TIMEOUT: 10000
           E2E_EXPECT_TIMEOUT: 10000
+          E2E_MAX_FAILURES: 30
+          E2E_MAX_WORKERS: 12
 
       - name: Copy tests report from docker run
         if: always()
