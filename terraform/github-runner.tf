@@ -64,7 +64,7 @@ resource "yandex_compute_disk" "github-runner" {
 
   name     = "github-runner-${each.key}-disk"
   type     = "network-ssd"
-  size     = 200
+  size     = 256
   zone     = local.zones[each.value % length(local.zones)]
   image_id = data.yandex_compute_image.this.id
 
@@ -87,8 +87,8 @@ resource "yandex_compute_instance" "github-runner" {
   service_account_id = yandex_iam_service_account.github-runner["main"].id
 
   resources {
-    cores  = 8
-    memory = 16
+    cores  = 16
+    memory = 32
   }
 
   boot_disk {
