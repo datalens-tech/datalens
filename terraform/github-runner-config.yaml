@@ -45,6 +45,6 @@ runcmd:
   - export RUNNER_TOKEN=$(yc lockbox payload get --id ${LOCKBOX_ID} --key ${LOCKBOX_KEY})
   - su - github -c "cd /home/github/actions-runner && curl -O -L https://github.com/actions/runner/releases/download/v${VERSION}/actions-runner-linux-$${RUNNER_ARCH}-${VERSION}.tar.gz"
   - su - github -c "cd /home/github/actions-runner && tar xzf ./actions-runner-linux-$${RUNNER_ARCH}-${VERSION}.tar.gz && rm -rf ./actions-runner-linux-$${RUNNER_ARCH}-${VERSION}.tar.gz"
-  - su - github -c "cd /home/github/actions-runner && ./config.sh --unattended --url https://github.com/${OWNER} --token $${RUNNER_TOKEN} --name github-runner-${LABEL}-ind-${IND} --runnergroup default --work _work --labels cloud,${LABEL}"
+  - su - github -c "cd /home/github/actions-runner && ./config.sh --unattended --url https://github.com/${OWNER} --token $${RUNNER_TOKEN} --name github-runner-${LABEL}-ind-${IND} --runnergroup default --work _work --labels cloud,${LABEL},${LABEL}-ind-${IND}"
   - su - root -c "cd /home/github/actions-runner && ./svc.sh install github"
   - su - root -c "cd /home/github/actions-runner && ./svc.sh start"

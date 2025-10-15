@@ -10,7 +10,11 @@ concurrency:
 jobs:
   run-e2e:
     name: Run E2E Tests
-    runs-on: ubuntu-latest
+    runs-on:
+      - self-hosted
+      - linux
+      - cloud
+      - datalens-opensource
     steps:
       - uses: actions/checkout@v4
 
@@ -63,6 +67,8 @@ jobs:
           E2E_TEST_TIMEOUT: 90000
           E2E_ACTION_TIMEOUT: 10000
           E2E_EXPECT_TIMEOUT: 10000
+          E2E_MAX_FAILURES: 30
+          E2E_MAX_WORKERS: 12
 
       - name: Copy tests report from docker run
         if: always()

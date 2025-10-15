@@ -1,0 +1,32 @@
+name: Runners clear
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 6'
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    name: runners-clear
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        runner:
+          - datalens-opensource-ind-0
+          - datalens-opensource-ind-1
+          - datalens-opensource-ind-2
+          - datalens-opensource-ind-3
+          - datalens-opensource-ind-4
+          - datalens-opensource-ind-5
+          - datalens-opensource-ind-6
+          - datalens-opensource-ind-7
+          - datalens-opensource-ind-8
+    steps:
+      - run: echo "running on runner ${{ matrix.runner }}"
+      - run: |-
+          docker system prune --volumes --all --force
+          docker image prune --filter "until=72h" --all --force
+          rm -rf /home/github/actions-runner/_work/*
