@@ -1,3 +1,17 @@
+## v2.7.0 (2025-10-17)
+
+### Image versions
+- datalens-auth: 0.24.0
+- datalens-control-api: 0.2352.0 -> 0.2360.1 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2352.0...v0.2360.1))
+- datalens-data-api: 0.2352.0 -> 0.2360.1 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2352.0...v0.2360.1))
+- datalens-meta-manager: 0.47.0
+- datalens-ui: 0.3271.0
+- datalens-us: 0.396.0
+
+### Changes
+- Minor improvements
+
+
 ## v2.6.1 (2025-09-26)
 
 ### Image versions
