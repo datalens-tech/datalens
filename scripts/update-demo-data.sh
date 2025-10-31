@@ -75,7 +75,8 @@ docker --log-level error compose -f "${COMPOSE_FILE}" exec \
   sed -E 's|"host": "[^"]+"|"host": "{{POSTGRES_HOST}}"|' |
   sed -E 's|"port": [^,]+,|"port": {{POSTGRES_PORT}},|' |
   sed -E 's|"db_name": "[^"]+"|"db_name": "{{POSTGRES_DB}}"|' |
-  sed -E 's|"username": "[^"]+"|"username": "{{POSTGRES_USER}}"|' \
+  sed -E 's|"username": "[^"]+"|"username": "{{POSTGRES_USER}}"|' |
+  sed -E "s| 'OpenSource Demo', | '{{DEMO_DATA_NAME}}', |" \
     >>"${DUMP_FILE}"
 
 EXIT="$?"
