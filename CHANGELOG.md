@@ -30,7 +30,6 @@
 - **Charts**, **Datasets**: Allow field settings to be stored in the dataset by default. [datalens-tech/datalens-ui#3066](https://github.com/datalens-tech/datalens-ui/pull/3066)
 - **Charts**: Use ColorPickerInput in wizard for bar indicator color setting. [datalens-tech/datalens-ui#3083](https://github.com/datalens-tech/datalens-ui/pull/3083)
 - **Charts**: Axis label rotation. [datalens-tech/datalens-ui#3102](https://github.com/datalens-tech/datalens-ui/pull/3102)
-- **Datasets**: Add dataset description. [datalens-tech/datalens-ui#3030](https://github.com/datalens-tech/datalens-ui/pull/3030)
 - **Dashboards**: Redesign chart widget settings dialog. [datalens-tech/datalens-ui#3089](https://github.com/datalens-tech/datalens-ui/pull/3089)
 
 ### Bug fixes
