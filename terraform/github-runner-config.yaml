@@ -39,7 +39,8 @@ runcmd:
   - su - github -c "mkdir -p /home/github/actions-runner"
   # install playwright
   - su - root -c "PLAYWRIGHT_BROWSERS_PATH=/home/github/.cache/ms-playwright PLAYWRIGHT_DOWNLOAD_HOST=https://storage.yandexcloud.net/playwright npx -y playwright@${PLAYWRIGHT_VERSION} install --with-deps chromium"
-  - su - root -c "apt purge -y fonts-dejavu-core"
+  # remove DejaVuSans fonts
+  - apt purge -y fonts-dejavu-core fonts-dejavu-mono
   # install github runner agent
   - export RUNNER_ARCH=x64
   - export RUNNER_TOKEN=$(yc lockbox payload get --id ${LOCKBOX_ID} --key ${LOCKBOX_KEY})
