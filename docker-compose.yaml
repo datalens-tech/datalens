@@ -161,7 +161,7 @@ services:
   #
   ui-api:
     container_name: datalens-ui-api
-    image: ghcr.io/datalens-tech/datalens-ui:0.3497.0
+    image: ghcr.io/datalens-tech/datalens-ui:0.3498.0
     environment:
       APP_MODE: api
       APP_ENV: production
@@ -237,7 +237,7 @@ services:
   #
   ui:
     container_name: datalens-ui
-    image: ghcr.io/datalens-tech/datalens-ui:0.3497.0
+    image: ghcr.io/datalens-tech/datalens-ui:0.3498.0
     environment:
       APP_MODE: full
       APP_ENV: production
