@@ -55,7 +55,7 @@ locals {
   k8s_logging = true
 
   # install argo cd
-  k8s_argo_cd = true
+  k8s_argo_cd = false
 
   # use local k8s ipv4 or external ipv4
   k8s_allow_from_public_net    = true

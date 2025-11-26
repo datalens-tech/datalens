@@ -166,6 +166,16 @@ resource "yandex_lockbox_secret_version" "this" {
   }
 }
 
+resource "kubernetes_secret" "this" {
+  metadata {
+    name      = "k8s-lockbox-secret"
+    namespace = kubernetes_namespace.this.metadata[0].name
+  }
+  type = "Opaque"
+
+  data = { for entry in yandex_lockbox_secret_version.this.entries : entry.key => base64encode(entry.text_value) }
+}
+
 resource "kubernetes_manifest" "lockbox" {
   for_each = toset(local.k8s_cluster_ready ? ["main"] : [])
 
