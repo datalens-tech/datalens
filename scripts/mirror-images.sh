@@ -7,34 +7,42 @@ set -eo pipefail
 # [-o pipefail] - if any command in a pipeline fails, that return code will be used as the return code of the whole pipeline
 
 MIRROR_PREFIX="ghcr.io/datalens-tech"
+DOCKER_COMPOSE_FILE="docker-compose.yaml"
 
 echo ""
 echo "List images for mirror:"
 echo "  prefix: ${MIRROR_PREFIX}"
+echo "  compose file: ${DOCKER_COMPOSE_FILE}"
 
 IMAGES_PULL=$(
-  grep -h image: docker-compose.*.yaml |
-    awk '{print $2}' |
-    grep -v "${MIRROR_PREFIX}" |
+  yq -r '.services[].image' "${DOCKER_COMPOSE_FILE}" |
+    { grep -v "${MIRROR_PREFIX}" || true; } |
+    sort |
     uniq
 )
 
-IMAGES_PRETTY=$(echo "${IMAGES_PULL}" | sort | sed 's|^|  - |')
-echo "${IMAGES_PRETTY}"
-echo ""
-echo "Mirror images..."
+if [ -n "$(echo "${IMAGES_PULL}" | tr -d '\n')" ]; then
+  IMAGES_PRETTY=$(echo "${IMAGES_PULL}" | sort | sed 's|^|  - |')
+  echo "${IMAGES_PRETTY}"
+  echo ""
+  echo "Mirror images..."
+fi
 
 for IMG in ${IMAGES_PULL}; do
+  echo "  mirror start: ${IMG}"
+
   IMG_TARGET=$(
-    echo "${IMG}" |
-      sed -E 's|^.+/(.+):.+\.[0-9]{2}([0-9]+)-([0-9]+)-.+$|\1:\2.\3|' |
-      sed -E 's|temporalio/ui|temporal-ui|' |
-      sed -E 's|cr.fluentbit.io/fluent/||'
+    echo "${IMG}" | rev | cut -d '/' -f1 | rev |
+      sed -E 's|^.+/(.+):.+\.[0-9]{2}([0-9]+)-([0-9]+)-.+$|\1:\2.\3|'
   )
+  IMG_TARGET="${MIRROR_PREFIX}/${IMG_TARGET}"
 
-  echo "  mirror start: [${IMG}] -> [${MIRROR_PREFIX}/${IMG_TARGET}]"
+  docker buildx imagetools create --tag "${IMG_TARGET}" "${IMG}"
 
-  docker buildx imagetools create --tag "${MIRROR_PREFIX}/${IMG_TARGET}" "${IMG}"
+  echo "  mirror finish: ${IMG}"
 
-  echo "  mirror finish: [${IMG}] -> [${MIRROR_PREFIX}/${IMG_TARGET}]"
+  echo "  replace mirror image from [${IMG}] to [${IMG_TARGET}]"
+  IMG="${IMG}" IMG_TARGET="${IMG_TARGET}" yq -i '(.services[].image | select(. == strenv(IMG))) = strenv(IMG_TARGET)' "${DOCKER_COMPOSE_FILE}" # bash-spec ignore
+
+  echo ""
 done
