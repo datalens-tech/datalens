@@ -136,6 +136,10 @@
       {
         "id": "infra",
         "text": "Infrastructure"
+      },
+      {
+        "id": "eas",
+        "text": "Enterprise"
       }
     ]
   },
