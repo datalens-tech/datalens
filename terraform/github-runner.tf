@@ -29,8 +29,7 @@ locals {
 
   runners_recreate_counter = 0 # for force recreate if config was not changed
 
-  # GITHUB_RUNNER_[LABEL]_TOKEN
-  runner_lockbox_key = "GITHUB_RUNNER_${upper(replace(local.gh_label, "-", "_"))}_TOKEN"
+  runner_lockbox_key = "GITHUB_RUNNER_TOKEN"
   runner_config = templatefile("github-runner-config.yaml", {
     VERSION = local.runner_version
 
