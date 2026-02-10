@@ -13,6 +13,14 @@ terraform {
       source  = "hashicorp/helm"
       version = "2.17.0" # 20.12.2024
     }
+    jwt = {
+      source  = "camptocamp/jwt"
+      version = "1.1.2"
+    }
+    terracurl = {
+      source  = "devops-rob/terracurl"
+      version = "2.2.0"
+    }
   }
 
   backend "s3" {
@@ -54,4 +62,12 @@ provider "helm" {
     username = "iam"
     password = var.YC_TOKEN
   }
+}
+
+provider "jwt" {
+  # ...
+}
+
+provider "terracurl" {
+  # ...
 }
