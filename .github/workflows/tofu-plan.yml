@@ -24,12 +24,6 @@ jobs:
       - datalens-opensource
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - uses: opentofu/setup-opentofu@v1
-        with:
-          tofu_version: 1.8.2
       - run: |
           ../scripts/tofu.sh --tofurc --cleanup --init --silent --plan --plan-out "../plan.tfplan" --plan-md
         working-directory: ./terraform

@@ -310,16 +310,7 @@ if [ "${IS_LOCK}" == "true" ]; then
     -platform=linux_amd64 \
     -platform=linux_arm64 \
     -platform=darwin_arm64 \
-    -platform=darwin_amd64 \
-    hashicorp/dns \
-    hashicorp/helm \
-    hashicorp/http \
-    hashicorp/local \
-    hashicorp/random \
-    hashicorp/time \
-    hashicorp/tls \
-    hashicorp/kubernetes \
-    registry.terraform.io/yandex-cloud/yandex
+    -platform=darwin_amd64
 fi
 
 echo ""
