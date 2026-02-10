@@ -1,3 +1,28 @@
+## v2.8.0 (2026-02-10)
+
+### Image versions
+- datalens-auth: 0.24.0
+- datalens-control-api: 0.2396.0 -> 0.2457.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2396.0...v0.2457.0))
+- datalens-data-api: 0.2396.0 -> 0.2457.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2396.0...v0.2457.0))
+- datalens-meta-manager: 0.50.0
+- datalens-ui: 0.3498.0
+- datalens-us: 0.413.0
+
+### New features
+- **Formula**: Add hash functions. [datalens-tech/datalens-backend#1329](https://github.com/datalens-tech/datalens-backend/pull/1329)
+- **Formula**: Use IN operator in CONTAINS function for ClickHouse. [datalens-tech/datalens-backend#1371](https://github.com/datalens-tech/datalens-backend/pull/1371)
+- **Formula**: New ArgTypeMatcher for DB_CALL functions. [datalens-tech/datalens-backend#1398](https://github.com/datalens-tech/datalens-backend/pull/1398)
+- **Connectors**: Gp7 support. [datalens-tech/datalens-backend#1438](https://github.com/datalens-tech/datalens-backend/pull/1438)
+- **Connectors**: Support YDB VIEW. [datalens-tech/datalens-backend#1245](https://github.com/datalens-tech/datalens-backend/pull/1245)
+
+### Bug fixes
+- **Formula**: Fix Oracle's 'date not valid for month specified' error. [datalens-tech/datalens-backend#1441](https://github.com/datalens-tech/datalens-backend/pull/1441)
+- **Connectors**: Fix postgres schema filters by adding escaping. [datalens-tech/datalens-backend#1468](https://github.com/datalens-tech/datalens-backend/pull/1468)
+
+### Refactor
+- **Formula**: Simplify ARRAY_DISTINCT and ARRAY_INDEX_OF definitions. [datalens-tech/datalens-backend#1384](https://github.com/datalens-tech/datalens-backend/pull/1384)
+
+
 ## v2.7.0 (2025-11-21)
 
 ### Image versions
