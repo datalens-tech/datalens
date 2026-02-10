@@ -10,17 +10,15 @@
 
 ### New features
 - **Formula**: Add hash functions. [datalens-tech/datalens-backend#1329](https://github.com/datalens-tech/datalens-backend/pull/1329)
-- **Formula**: Use IN operator in CONTAINS function for ClickHouse. [datalens-tech/datalens-backend#1371](https://github.com/datalens-tech/datalens-backend/pull/1371)
-- **Formula**: New ArgTypeMatcher for DB_CALL functions. [datalens-tech/datalens-backend#1398](https://github.com/datalens-tech/datalens-backend/pull/1398)
-- **Connectors**: Gp7 support. [datalens-tech/datalens-backend#1438](https://github.com/datalens-tech/datalens-backend/pull/1438)
-- **Connectors**: Support YDB VIEW. [datalens-tech/datalens-backend#1245](https://github.com/datalens-tech/datalens-backend/pull/1245)
+- **Formula**: Optimize `CONTAINS` function for ClickHouse by using the `IN` operator. [datalens-tech/datalens-backend#1371](https://github.com/datalens-tech/datalens-backend/pull/1371)
+- **Formula**: Add `DB_CALL` functions, allowing to use any functions available in the data source. [datalens-tech/datalens-backend#1398](https://github.com/datalens-tech/datalens-backend/pull/1398)
+- **Formula**: Add new array functions: `ARRAY_DISTINCT` and `ARRAY_INDEX_OF`. [datalens-tech/datalens-backend#1384](https://github.com/datalens-tech/datalens-backend/pull/1384)
+- **Connectors**: Add Greenplum 7 support. [datalens-tech/datalens-backend#1438](https://github.com/datalens-tech/datalens-backend/pull/1438)
+- **Connectors**: Add VIEW support for YDB connector. [datalens-tech/datalens-backend#1245](https://github.com/datalens-tech/datalens-backend/pull/1245)
 
 ### Bug fixes
 - **Formula**: Fix Oracle's 'date not valid for month specified' error. [datalens-tech/datalens-backend#1441](https://github.com/datalens-tech/datalens-backend/pull/1441)
-- **Connectors**: Fix postgres schema filters by adding escaping. [datalens-tech/datalens-backend#1468](https://github.com/datalens-tech/datalens-backend/pull/1468)
-
-### Refactor
-- **Formula**: Simplify ARRAY_DISTINCT and ARRAY_INDEX_OF definitions. [datalens-tech/datalens-backend#1384](https://github.com/datalens-tech/datalens-backend/pull/1384)
+- **Connectors**: Fix PostgreSQL schema filters by adding escaping. [datalens-tech/datalens-backend#1468](https://github.com/datalens-tech/datalens-backend/pull/1468)
 
 
 ## v2.7.0 (2025-11-21)
