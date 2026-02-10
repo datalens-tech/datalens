@@ -6,6 +6,9 @@ provider "registry.opentofu.org/camptocamp/jwt" {
   constraints = "1.1.2"
   hashes = [
     "h1:2JuA7fMtozWS9TUPus+AxEvlIjk/NJrWRxLHhApQblk=",
+    "h1:CkC+nuM2eTPdPh1jba3RfySaivnsXvwlosqJKAI+nhk=",
+    "h1:ngs0KYAep5CxHTU+0hk+kbLXKZ1npjUSbAsSlQavKac=",
+    "h1:y3oUklItL3zsCBZKC39nEfyz2byCBj93llk0yjCBbkI=",
   ]
 }
 
@@ -14,6 +17,9 @@ provider "registry.opentofu.org/devops-rob/terracurl" {
   constraints = "2.2.0"
   hashes = [
     "h1:/g8tWUaOj7IUY6szahHYR3SUly9/zm6T4uIGkZHyLM4=",
+    "h1:P/4CnMTi1sqDLVqUoQPUOF9Ixxbskr7WdR+fY4CL8Bw=",
+    "h1:Rhrbkat9EVlKsua0zbgLMB95u2el3Yp2GgQ0hHtiog8=",
+    "h1:iyWZMiVLQ2ueLGGb+QDsEl3cxHnJDMBMrzU4yLxIGBg=",
   ]
 }
 
