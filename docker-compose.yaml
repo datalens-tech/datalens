@@ -1,7 +1,7 @@
 services:
   postgres:
     container_name: datalens-postgres
-    image: ghcr.io/datalens-tech/datalens-postgres:16
+    image: datalens-postgres:16-dev
     pull_policy: ${IMAGE_PULL_POLICY:-always}
     healthcheck:
       test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB_US:-pg-us-db}", "-U", "${POSTGRES_USER:-pg-user}"]
