@@ -27,6 +27,7 @@ jobs:
     steps:
       - run: echo "running on runner ${{ matrix.runner }}"
       - run: |-
+          pnpm store prune --force
           docker system prune --volumes --all --force
           docker image prune --filter "until=72h" --all --force
           rm -rf /home/github/actions-runner/_work/*

@@ -52,6 +52,9 @@ runcmd:
   # install playwright
   - su - root -c "PLAYWRIGHT_BROWSERS_PATH=/home/github/.cache/ms-playwright PLAYWRIGHT_DOWNLOAD_HOST=https://storage.yandexcloud.net/playwright npx -y playwright@${PLAYWRIGHT_VERSION} install --with-deps chromium"
   - su - root -c "chown -R github:github /home/github/.cache"
+  # install pnpm
+  - su - github -c "curl -o ./pnpm-install.sh -L https://get.pnpm.io/install.sh"
+  - su - github -c "chmod +x ./pnpm-install.sh && PNPM_VERSION='${PNPM_VERSION}' ./pnpm-install.sh && rm -rf ./pnpm-install.sh"
   # remove DejaVuSans fonts
   - apt purge -y fonts-dejavu-core fonts-dejavu-mono
   # install github runner agent

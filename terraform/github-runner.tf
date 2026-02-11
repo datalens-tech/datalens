@@ -11,6 +11,7 @@ locals {
   runner_version  = "2.331.0"
 
   node_version       = "22"
+  pnpm_version       = "10.17.1"
   task_version       = "3.48.0"
   awscli_version     = "2.33.17"
   yc_version         = "0.191.0"
@@ -34,6 +35,7 @@ locals {
     VERSION = local.runner_version
 
     NODE_VERSION       = local.node_version
+    PNPM_VERSION       = local.pnpm_version
     TASK_VERSION       = local.task_version
     AWSCLI_VERSION     = local.awscli_version
     YC_VERSION         = local.yc_version
