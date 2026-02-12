@@ -125,13 +125,17 @@ AUTH_TOKEN_PRIVATE_KEY=$(openssl genpkey -algorithm RSA -pkeyopt "rsa_keygen_bit
 AUTH_TOKEN_PUBLIC_KEY=$(echo "${AUTH_TOKEN_PRIVATE_KEY}" | openssl rsa -pubout 2>/dev/null)
 TEMPORAL_AUTH_PRIVATE_KEY=$(openssl genpkey -algorithm RSA -pkeyopt "rsa_keygen_bits:4096" 2>/dev/null)
 TEMPORAL_AUTH_PUBLIC_KEY=$(echo "${TEMPORAL_AUTH_PRIVATE_KEY}" | openssl rsa -pubout 2>/dev/null)
+US_DYNAMIC_MASTER_TOKEN_PRIVATE_KEY=$(openssl genpkey -algorithm RSA -pkeyopt "rsa_keygen_bits:4096" 2>/dev/null)
+UI_MASTER_TOKEN_PUBLIC_KEY_PRIMARY=$(echo "${TEMPORAL_AUTH_PRIVATE_KEY}" | openssl rsa -pubout 2>/dev/null)
 
 helm upgrade --install datalens oci://ghcr.io/datalens-tech/helm/datalens \
 --namespace datalens --create-namespace \
 --set "secrets.AUTH_TOKEN_PRIVATE_KEY=${AUTH_TOKEN_PRIVATE_KEY}" \
 --set "secrets.AUTH_TOKEN_PUBLIC_KEY=${AUTH_TOKEN_PUBLIC_KEY}" \
 --set "secrets.TEMPORAL_AUTH_PRIVATE_KEY=${TEMPORAL_AUTH_PRIVATE_KEY}" \
---set "secrets.TEMPORAL_AUTH_PUBLIC_KEY=${TEMPORAL_AUTH_PUBLIC_KEY}"
+--set "secrets.TEMPORAL_AUTH_PUBLIC_KEY=${TEMPORAL_AUTH_PUBLIC_KEY}" \
+--set "secrets.US_DYNAMIC_MASTER_TOKEN_PRIVATE_KEY=${US_DYNAMIC_MASTER_TOKEN_PRIVATE_KEY}" \
+--set "secrets.UI_MASTER_TOKEN_PUBLIC_KEY_PRIMARY=${UI_MASTER_TOKEN_PUBLIC_KEY_PRIMARY}"
 ```
 
 **Note:** Helm template engine does not provide built-in functions for creating private and public RSA keys.
