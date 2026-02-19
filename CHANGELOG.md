@@ -1,4 +1,4 @@
-## v2.9.0 (2026-02-18)
+## v2.9.0 (2026-02-19)
 
 ### Image versions
 - datalens-auth: 0.24.0 -> 0.27.0 ([full changelog](https://github.com/datalens-tech/datalens-auth/compare/v0.24.0...v0.27.0))
