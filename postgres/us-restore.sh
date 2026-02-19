@@ -131,7 +131,6 @@ pg_restore \
   --host "${POSTGRES_HOST}" \
   --port "${POSTGRES_PORT}" \
   --disable-triggers \
-  --clean \
   --username "${POSTGRES_USER_US}" \
   --dbname "${POSTGRES_DB_US}" \
   <"${RESTORE_FILE}"
