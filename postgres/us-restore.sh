@@ -13,6 +13,7 @@ IS_FIX_CONNECTIONS="false"
 IS_FIX_CRYPTO_KEY="false"
 IS_RESET_PASSWORDS="false"
 IS_RESET_CRYPTO_KEY="false"
+IS_CLEAR_TABLES="false"
 RESTORE_FILE="/tmp/datalens_db.dump"
 
 # parse args
@@ -36,6 +37,10 @@ for _ in "$@"; do
     ;;
   --reset-crypto-key)
     IS_RESET_CRYPTO_KEY="true"
+    shift # past argument with no value
+    ;;
+  --clear)
+    IS_CLEAR_TABLES="true"
     shift # past argument with no value
     ;;
   --demo)
@@ -110,7 +115,18 @@ else
   exit 1
 fi
 
-echo 123
+if [ "${IS_CLEAR_TABLES}" == "true" ]; then
+  echo "  clear tables before restore..."
+
+  psql \
+    --host "${POSTGRES_HOST}" \
+    --port "${POSTGRES_PORT}" \
+    --username "${POSTGRES_USER_US}" \
+    --dbname "${POSTGRES_DB_US}" <<-EOSQL
+  TRUNCATE TABLE entries, revisions, workbooks, collections, links CASCADE;
+EOSQL
+fi
+
 pg_restore \
   --host "${POSTGRES_HOST}" \
   --port "${POSTGRES_PORT}" \

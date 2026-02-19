@@ -9,6 +9,7 @@ set -eo pipefail
 IS_RESTORE_DEMO="false"
 IS_FIX_CONNECTIONS_DISABLED="false"
 IS_FIX_CRYPTO_KEY_DISABLED="false"
+IS_CLEAR_TABLES="false"
 RESTORE_FILE="/tmp/datalens_db.dump"
 
 # parse args
@@ -20,6 +21,10 @@ for _ in "$@"; do
     ;;
   --disable-fix-crypto-key)
     IS_FIX_CRYPTO_KEY_DISABLED="true"
+    shift # past argument with no value
+    ;;
+  --clear)
+    IS_CLEAR_TABLES="true"
     shift # past argument with no value
     ;;
   --demo)
@@ -60,6 +65,9 @@ if [ "${IS_FIX_CRYPTO_KEY_DISABLED}" != "true" ]; then
 fi
 if [ "${IS_RESTORE_DEMO}" == "true" ]; then
   RESTORE_ARGS="${RESTORE_ARGS} --demo"
+fi
+if [ "${IS_CLEAR_TABLES}" == "true" ]; then
+  RESTORE_ARGS="${RESTORE_ARGS} --clear"
 fi
 
 if docker compose ps --services postgres | grep -q -s postgres; then
