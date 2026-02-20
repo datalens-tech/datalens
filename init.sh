@@ -535,6 +535,10 @@ if [ "${IS_USE_ENV_AND_SECRETS}" == "true" ]; then
   gen_sec POSTGRES_PASSWORD 32
   echo "  - US_MASTER_TOKEN"
   gen_sec US_MASTER_TOKEN 32
+  echo "  - BI_DYNAMIC_US_AUTH [RSA 4096]"
+  gen_sec BI_DYNAMIC_US_AUTH 4096 rsa
+  echo "  - UI_DYNAMIC_US_AUTH [RSA 4096]"
+  gen_sec UI_DYNAMIC_US_AUTH 4096 rsa
   echo "  - CONTROL_API_CRYPTO_KEY"
   gen_sec CONTROL_API_CRYPTO_KEY 32 base64
 fi
