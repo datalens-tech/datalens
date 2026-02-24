@@ -202,7 +202,7 @@ services:
       APP_PORT_UNSET: 1
       RUN_DEV: npm run i18n:prepare && npx app-builder dev
     volumes:
-      - ../datalens-ui:/opt/app
+      - ${REPO_UI_PATH:-../datalens-ui}:/opt/app
       - ./dev/.env.empty:/opt/app/.env
       - node-modules-ui:/opt/app/node_modules
     ports:
@@ -253,8 +253,7 @@ volumes:
   node-modules-ui-api:
   node-modules-us:
   node-modules-auth:
-  node-modules-meta-manager:
-#
+  node-modules-meta-manager: #
 networks:
   default:
     enable_ipv6: ${IS_IPV6:-false}

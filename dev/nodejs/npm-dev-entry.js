@@ -18,6 +18,8 @@ const installDeps = () => {
         hash = createHash('sha1').update(buffer).digest('hex').toString();
     }
 
+    // TODO: pnpm fix
+
     if (oldHash !== hash || oldHash === null) {
         const result = spawnSync('npm ci', {
             stdio: 'inherit',
