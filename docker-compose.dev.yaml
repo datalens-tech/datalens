@@ -89,7 +89,7 @@ services:
     build:
       context: ./dev/nodejs
       args:
-        - image=ghcr.io/datalens-tech/datalens-us:0.413.0
+        - image=ghcr.io/datalens-tech/datalens-us:1.39.0
     tty: true
     user: ${USER_DEV:-app}
     environment:
@@ -114,7 +114,7 @@ services:
     build:
       context: ./dev/nodejs
       args:
-        - image=ghcr.io/datalens-tech/datalens-ui:0.3498.0
+        - image=ghcr.io/datalens-tech/datalens-ui:0.3831.0
     tty: true
     user: ${USER_DEV:-app}
     ulimits:
@@ -144,7 +144,7 @@ services:
     build:
       context: ./dev/nodejs
       args:
-        - image=ghcr.io/datalens-tech/datalens-meta-manager:0.50.0
+        - image=ghcr.io/datalens-tech/datalens-meta-manager:0.52.0
     tty: true
     user: ${USER_DEV:-app}
     environment:
@@ -170,7 +170,7 @@ services:
     build:
       context: ./dev/nodejs
       args:
-        - image=ghcr.io/datalens-tech/datalens-auth:0.24.0
+        - image=ghcr.io/datalens-tech/datalens-auth:0.27.0
     tty: true
     user: ${USER_DEV:-app}
     environment:
@@ -193,7 +193,7 @@ services:
     build:
       context: ./dev/nodejs
       args:
-        - image=ghcr.io/datalens-tech/datalens-ui:0.3498.0
+        - image=ghcr.io/datalens-tech/datalens-ui:0.3831.0
     tty: true
     user: ${USER_DEV:-app}
     ulimits:

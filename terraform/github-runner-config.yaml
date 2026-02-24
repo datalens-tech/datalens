@@ -1,6 +1,6 @@
 #cloud-config
 runcmd:
-  - apt update && apt install -y jq zip unzip curl wget git devscripts docker.io docker-compose-v2 docker-buildx
+  - apt update && apt install -y jq zip unzip curl wget git git-lfs devscripts docker.io docker-compose-v2 docker-buildx
   # install github cli
   - mkdir -p -m 755 /etc/apt/keyrings
   - wget -qO- https://cli.github.com/packages/githubcli-archive-keyring.gpg | tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null

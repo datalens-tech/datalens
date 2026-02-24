@@ -133,7 +133,7 @@ services:
   #
   us:
     container_name: datalens-us
-    image: ghcr.io/datalens-tech/datalens-us:0.413.0
+    image: ghcr.io/datalens-tech/datalens-us:1.39.0
     environment:
       APP_INSTALLATION: opensource
       APP_ENV: prod
@@ -165,7 +165,7 @@ services:
   #
   ui-api:
     container_name: datalens-ui-api
-    image: ghcr.io/datalens-tech/datalens-ui:0.3498.0
+    image: ghcr.io/datalens-tech/datalens-ui:0.3831.0
     environment:
       APP_MODE: api
       APP_ENV: production
@@ -180,7 +180,7 @@ services:
   #
   meta-manager:
     container_name: datalens-meta-manager
-    image: ghcr.io/datalens-tech/datalens-meta-manager:0.50.0
+    image: ghcr.io/datalens-tech/datalens-meta-manager:0.52.0
     environment:
       APP_INSTALLATION: opensource
       APP_ENV: prod
@@ -211,7 +211,7 @@ services:
   #
   auth:
     container_name: datalens-auth
-    image: ghcr.io/datalens-tech/datalens-auth:0.24.0
+    image: ghcr.io/datalens-tech/datalens-auth:0.27.0
     environment:
       APP_INSTALLATION: opensource
       APP_ENV: prod
@@ -241,7 +241,7 @@ services:
   #
   ui:
     container_name: datalens-ui
-    image: ghcr.io/datalens-tech/datalens-ui:0.3498.0
+    image: ghcr.io/datalens-tech/datalens-ui:0.3831.0
     environment:
       APP_MODE: full
       APP_ENV: production
@@ -258,7 +258,7 @@ services:
       US_MASTER_TOKEN: ${US_MASTER_TOKEN:-us-master-token}
       UI_DYNAMIC_US_AUTH_PRIVATE_KEY: ${UI_DYNAMIC_US_AUTH_PRIVATE_KEY:-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCu1vvLrYaTUDId\nx6gvTKxfAnqjI5vreR8CFfHFg16fh6ud/IQCAoJ0xOObplWPQ8VmcaG0NAOur774\nf/1hzXxep3fT6Hv+CM3lcDgxU7nPsCfzrg2bOdGirqSsJVqe6ISCyEn/+nt3W2Oi\nkfoHlicSly8YMs6rMccqEViQVa915j4ZRM04a/BpU1UJNXi3OKTbLA+it0h/l+un\n77+iakVWWS3D/NRD4NRgsHGW/NFdAI894cDc1jc/D4TLbHcxnw0IaKH/H/CLrKIS\nEjC8I1Ou9I5sIQ6St75dT3Ar9QDi8jV/o9d5acq0p+FZK27t0yIv3JATpqHnit80\npNufnZ0NAgMBAAECggEAAT8OEhsdY6JwNlnMf0h8IryT9DgWQ0eclXljklAH63oz\nmnozf1zWN4/fEXvOOKm32ALvr1GpmblYp/vS6hC6wLqlNjD+OpwvH4y9Ec5He6Kv\n/jgw56OHX4dVgYFN/pD+FNKUWHXyzbHXPtBB6IOaVAhuMQLNCgJeVD9FvYL8L7Ue\nmsN5602Bsrs40fEDyxYkVQVUw+NgYVx5OVhxKKEbZ+2f6I5MGH0dH4AtQ824N+pP\njMhja6ZwlvVn3E35yZ98Zx8OigDvkwlv+91tW0siUpF4Vgx5Ruj/91i1kDCnhKwU\n+EWbVXN3RKNJleZEaR/gTl2Le5qpILD+pjspm5QcnwKBgQDZbL927WYOpd2jo0EX\nU5PDvDyVkIgbQMY3/jIbAZWy0yNLTZcIn1Y5A/OunwptC5GHjYtMquA96yRjZ9G0\nIA0sHWJ4AFFulsbufuDzicjzCx/zOltb5SOXzvlzawwu0xZb1VQRLN9igM4n7J2d\noVyGE8HW2hV8iYnDe5oL5OH1ewKBgQDN3A9UOOOKgOxlDCz32MP59wacBGgz36Qs\nIth99MzhleqgVNue00eCRmExrA89hRxlEaOEVu9bp8M6BkNO14QqMqZFLcOwF/Y4\nkcehcr8NPEimDW98Zl8nvHP+RSDf8qtd/gUZeDcVrI8q2H8I4xfYtlowsfQc3Ppv\n5bb3gkL9FwKBgAlQ14NI+K53/N8eB5PwSMyCLDZcUviX9eZARfVSRA+9bC21zVrZ\nOOCIgtBgkBnL/RhJwEYwrBr7EDwSHrIRDX9uYuGxYcvTOgLN/OVyaeHAAEZzoaZ2\nUugWPinr1EHNWY/lvAxgV9Hoouyi/r3aRBSalBuYjIMhgX2Wtir8S5IxAoGAdbne\njlTGU8Ps7NCsusSdNss9XWXrzZadBZyb4FRqAqxAdJZyzn6XS3pCRSzXvl/sYCRZ\nNeqdkfX74KgKQAFiFNvIWJGWcpMRfUJpPvwnJEOQbF4MnsDQtCHC1+vipA/cTrFh\nazJjliKL8X3EEGoGjimipGxwZT0+f1WIcD1vX9sCgYEAnQXSgURkk/RODt9Zzd8k\nW3/bQUGYtCrzE6P65osx8nVZNNEbcOoL4MxYSpSr4F+DGbNqQ4XkJW3I3xEI47oR\nF9wla5slb9AUjDtS5HrWnxpxyvhFVd6Z4I5Ej7j9i0wSCEWY/Ij50+WJTz2MifFz\ngMR9BUcBxbrA9gJyt0zoXCI=\n-----END PRIVATE KEY-----}
       #
-      RELEASE_VERSION: '2.8.0'
+      RELEASE_VERSION: '2.9.0'
       #
       HC: ${HC:-0}
       HC_ENDPOINT: ${HC_ENDPOINT:-}
