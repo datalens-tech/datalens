@@ -75,7 +75,7 @@ echo "  update dev docker-compose file: ./docker-compose.dev.yaml"
 RELEASE_VERSION="${RELEASE_VERSION}" \
   CONTROL_API_IMAGE="image=ghcr.io/datalens-tech/datalens-control-api:${BACKEND_VERSION}" \
   DATA_API_IMAGE="image=ghcr.io/datalens-tech/datalens-data-api:${BACKEND_VERSION}" \
-  UI_IMAGE="image=ghcr.io/datalens-tech/datalens-ui:${UI_VERSION}" \
+  UI_IMAGE="image=\${REPO_UI_IMAGE:-ghcr.io/datalens-tech/datalens-ui:${UI_VERSION}}" \
   US_IMAGE="image=ghcr.io/datalens-tech/datalens-us:${US_VERSION}" \
   AUTH_IMAGE="image=ghcr.io/datalens-tech/datalens-auth:${AUTH_VERSION}" \
   META_MANAGER_IMAGE="image=ghcr.io/datalens-tech/datalens-meta-manager:${META_MANAGER_VERSION}" \
