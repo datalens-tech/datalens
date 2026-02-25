@@ -371,6 +371,10 @@ write_env() {
     fi
     return 0
   else
+    # ensure file ends with newline before appending
+    if [ -s "${ENV_FILE_PATH}" ] && [ -n "$(tail -c 1 "${ENV_FILE_PATH}")" ]; then
+      echo "" >>"${ENV_FILE_PATH}"
+    fi
     echo "${1}=${2}" >>"${ENV_FILE_PATH}"
   fi
   return 0
@@ -748,7 +752,16 @@ if [ "${IS_DEV}" == "true" ]; then
   echo "💡 Starting Docker Compose services in dev mode..."
   echo ""
 
-  DIR_REPO_UI="../datalens-ui"
+  # load REPO_UI_PATH and REPO_UI_IMAGE from .env even without --dev-env
+  if [ "${IS_USE_ENV_AND_SECRETS}" != "true" ] && [ -f "${ENV_FILE_PATH}" ]; then
+    REPO_UI_PATH=$(grep -v "^#" "${ENV_FILE_PATH}" | grep "^REPO_UI_PATH=" | sed "s|REPO_UI_PATH=||" | tr -d ' ' || true)
+    REPO_UI_IMAGE=$(grep -v "^#" "${ENV_FILE_PATH}" | grep "^REPO_UI_IMAGE=" | sed "s|REPO_UI_IMAGE=||" | tr -d ' ' || true)
+  fi
+
+  export REPO_UI_PATH="${REPO_UI_PATH:-../datalens-ui}"
+  export REPO_UI_IMAGE="${REPO_UI_IMAGE:-}"
+
+  DIR_REPO_UI="${REPO_UI_PATH}"
   DIR_REPO_US="../datalens-us"
   DIR_REPO_AUTH="../datalens-auth"
   DIR_REPO_META_MANAGER="../datalens-meta-manager"
@@ -794,6 +807,14 @@ if [ "${IS_DEV}" == "true" ]; then
       echo "  - [ui] path [${DIR_REPO_UI}] not exists, cloning..."
       git clone git@github.com:datalens-tech/datalens-ui.git "${DIR_REPO_UI}"
       echo ""
+    fi
+
+    if [ -n "${REPO_UI_IMAGE}" ] && [ -d "${DIR_REPO_UI}" ]; then
+      if ! docker image inspect "${REPO_UI_IMAGE}" >/dev/null 2>&1; then
+        echo "  - [ui] building image [${REPO_UI_IMAGE}] from [${DIR_REPO_UI}]..."
+        docker build -t "${REPO_UI_IMAGE}" "${DIR_REPO_UI}"
+        echo ""
+      fi
     fi
 
     COMPOSE_DEV_UP_SERVICES="${COMPOSE_DEV_UP_SERVICES} ui"
