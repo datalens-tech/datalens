@@ -2,6 +2,7 @@ ARG image=ubuntu:24.04
 FROM ${image}
 
 ARG USER=app
+ARG PNPM_VERSION=10.17.1
 
 USER root
 RUN apt-get update && \
@@ -9,7 +10,7 @@ RUN apt-get update && \
 
 RUN chown -R ${USER}:${USER} /opt/${USER}
 
-RUN npm install -g pnpm@10.17.1
+RUN npm install -g pnpm@${PNPM_VERSION}
 
 USER ${USER}
 
