@@ -114,7 +114,7 @@ services:
     build:
       context: ./dev/nodejs
       args:
-        - image=${REPO_UI_IMAGE:-ghcr.io/datalens-tech/datalens-ui:0.3831.0}
+        - image=ghcr.io/datalens-tech/datalens-ui:0.3831.0
     tty: true
     user: ${USER_DEV:-app}
     ulimits:
@@ -126,7 +126,7 @@ services:
       - ${REPO_UI_PATH:-../datalens-ui}:/opt/app
       - ./dev/.env.empty:/opt/app/.env
       - node-modules-ui-api:/opt/app/node_modules
-      - pnpm-store-ui-api:/opt/app/.pnpm-store
+      - pnpm-store-ui:/opt/app/.pnpm-store
     ports:
       - 3040:8080
     networks:
@@ -194,14 +194,14 @@ services:
     build:
       context: ./dev/nodejs
       args:
-        - image=${REPO_UI_IMAGE:-ghcr.io/datalens-tech/datalens-ui:0.3831.0}
+        - image=ghcr.io/datalens-tech/datalens-ui:0.3831.0
     tty: true
     user: ${USER_DEV:-app}
     ulimits:
       core: 0
     environment:
       APP_PORT_UNSET: 1
-      RUN_DEV: ${RUN_DEV_UI:-pnpm run i18n:prepare && pnpm exec app-builder dev}
+      RUN_DEV: pnpm run i18n:prepare && pnpm exec app-builder dev
     volumes:
       - ${REPO_UI_PATH:-../datalens-ui}:/opt/app
       - ./dev/.env.empty:/opt/app/.env
@@ -259,7 +259,7 @@ volumes:
   node-modules-auth:
   node-modules-meta-manager:
   pnpm-store-ui:
-  pnpm-store-ui-api: #
+#
 networks:
   default:
     enable_ipv6: ${IS_IPV6:-false}
