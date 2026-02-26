@@ -126,7 +126,7 @@ services:
       - ${REPO_UI_PATH:-../datalens-ui}:/opt/app
       - ./dev/.env.empty:/opt/app/.env
       - node-modules-ui-api:/opt/app/node_modules
-      - pnpm-store-ui:/opt/app/.pnpm-store
+      - pnpm-store:/opt/app/.pnpm-store
     ports:
       - 3040:8080
     networks:
@@ -206,7 +206,7 @@ services:
       - ${REPO_UI_PATH:-../datalens-ui}:/opt/app
       - ./dev/.env.empty:/opt/app/.env
       - node-modules-ui:/opt/app/node_modules
-      - pnpm-store-ui:/opt/app/.pnpm-store
+      - pnpm-store:/opt/app/.pnpm-store
     ports:
       - 8080:8080
       - 8880:8880
@@ -258,7 +258,7 @@ volumes:
   node-modules-us:
   node-modules-auth:
   node-modules-meta-manager:
-  pnpm-store-ui:
+  pnpm-store:
 #
 networks:
   default:
