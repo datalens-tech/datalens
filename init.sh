@@ -752,7 +752,6 @@ if [ "${IS_DEV}" == "true" ]; then
   echo "💡 Starting Docker Compose services in dev mode..."
   echo ""
 
-  
   DIR_REPO_UI="../datalens-ui"
 
   if [ -n "${REPO_UI_PATH}" ]; then
@@ -805,8 +804,6 @@ if [ "${IS_DEV}" == "true" ]; then
       git clone git@github.com:datalens-tech/datalens-ui.git "${DIR_REPO_UI}"
       echo ""
     fi
-
-
 
     COMPOSE_DEV_UP_SERVICES="${COMPOSE_DEV_UP_SERVICES} ui"
     COMPOSE_LOG_SERVICES="${COMPOSE_LOG_SERVICES} ui"
@@ -932,7 +929,7 @@ if [ "${IS_DEV}" == "true" ]; then
     # shellcheck disable=SC2086
     docker --log-level error compose -f "${DOCKER_COMPOSE_DEV_CONFIG}" up --no-deps -d ${COMPOSE_DEV_UP_SERVICES}
   fi
-  
+
   echo ""
   echo "📌 Running Docker Compose services..."
   echo ""
