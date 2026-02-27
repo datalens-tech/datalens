@@ -117,7 +117,7 @@ services:
       args:
         - image=ghcr.io/datalens-tech/datalens-ui:0.3831.0
     tty: true
-    user: root
+    user: ${USER_DEV:-app}
     ulimits:
       core: 0
     environment:
@@ -197,7 +197,7 @@ services:
       args:
         - image=ghcr.io/datalens-tech/datalens-ui:0.3831.0
     tty: true
-    user: root
+    user: ${USER_DEV:-app}
     ulimits:
       core: 0
     environment:
