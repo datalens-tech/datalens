@@ -8,11 +8,14 @@ USER root
 RUN apt-get update && \
   apt-get -y install build-essential g++ make nodejs
 
-RUN rm -rf /opt/${USER} && mkdir -p /opt/${USER} && chown -R ${USER}:${USER} /opt/${USER}
-
-RUN mkdir -p /opt/${USER}/.pnpm-store && chown -R ${USER}:${USER} /opt/${USER}/.pnpm-store
+RUN id -u ${USER} &>/dev/null || useradd -m -u 1001 ${USER}
 
 RUN npm install -g pnpm@${PNPM_VERSION}
+
+RUN rm -rf /opt/${USER} && mkdir -p /opt/${USER} && chown -R ${USER}:${USER} /opt/${USER}
+
+RUN mkdir -p /opt/${USER}/.pnpm-store && chown ${USER}:${USER} /opt/${USER}/.pnpm-store
+RUN mkdir -p /opt/${USER}/node_modules && chown ${USER}:${USER} /opt/${USER}/node_modules
 
 USER ${USER}
 

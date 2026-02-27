@@ -95,10 +95,11 @@ services:
     environment:
       RUN_DEV: npx tsc-watch --onSuccess ./scripts/preflight.sh
     volumes:
-      - ../datalens-us:/opt/app
+      - ${DIR_REPO_US:-../datalens-us}:/opt/app
       - ./dev/.env.empty:/opt/app/.env
       - ./dev/.env.empty:/opt/app/.env.development
       - node-modules-us:/opt/app/node_modules
+      - pnpm-store:/opt/app/.pnpm-store
     ports:
       - 3030:8080
     networks:
@@ -123,7 +124,7 @@ services:
       APP_PORT_UNSET: 1
       RUN_DEV: pnpm run i18n:prepare && pnpm exec app-builder dev
     volumes:
-      - ${REPO_UI_PATH:-../datalens-ui}:/opt/app
+      - ${DIR_REPO_UI:-../datalens-ui}:/opt/app
       - ./dev/.env.empty:/opt/app/.env
       - node-modules-ui-api:/opt/app/node_modules
       - pnpm-store:/opt/app/.pnpm-store
@@ -203,7 +204,7 @@ services:
       APP_PORT_UNSET: 1
       RUN_DEV: pnpm run i18n:prepare && pnpm exec app-builder dev
     volumes:
-      - ${REPO_UI_PATH:-../datalens-ui}:/opt/app
+      - ${DIR_REPO_UI:-../datalens-ui}:/opt/app
       - ./dev/.env.empty:/opt/app/.env
       - node-modules-ui:/opt/app/node_modules
       - pnpm-store:/opt/app/.pnpm-store
@@ -258,8 +259,7 @@ volumes:
   node-modules-us:
   node-modules-auth:
   node-modules-meta-manager:
-  pnpm-store:
-#
+  pnpm-store: #
 networks:
   default:
     enable_ipv6: ${IS_IPV6:-false}
