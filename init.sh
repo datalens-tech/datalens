@@ -758,7 +758,7 @@ if [ "${IS_DEV}" == "true" ]; then
 
   # force load path from env file (force load only repo path)
   REPO_UI_PATH=$(get_env "REPO_UI_PATH")
-  REPO_US_PATH=$(get_env "REPO_UI_PATH")
+  REPO_US_PATH=$(get_env "REPO_US_PATH")
 
   if [ -n "${REPO_UI_PATH}" ]; then
     DIR_REPO_UI="${REPO_UI_PATH}"
