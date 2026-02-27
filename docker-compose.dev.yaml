@@ -259,7 +259,8 @@ volumes:
   node-modules-us:
   node-modules-auth:
   node-modules-meta-manager:
-  pnpm-store: #
+  pnpm-store: 
+#
 networks:
   default:
     enable_ipv6: ${IS_IPV6:-false}
