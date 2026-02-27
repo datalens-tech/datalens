@@ -8,9 +8,9 @@ USER root
 RUN apt-get update && \
   apt-get -y install build-essential g++ make nodejs
 
-RUN id -u ${USER} &>/dev/null || useradd -m -u 1001 ${USER}
-
 RUN npm install -g pnpm@${PNPM_VERSION}
+
+RUN id -u ${USER} &>/dev/null || useradd -m -u 1001 ${USER}
 
 RUN rm -rf /opt/${USER} && mkdir -p /opt/${USER} && chown -R ${USER}:${USER} /opt/${USER}
 
