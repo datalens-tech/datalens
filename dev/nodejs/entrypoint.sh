@@ -30,4 +30,7 @@ export DISABLE_SWAGGER="true"
 
 export NODE_OPTIONS="--max-old-space-size=8192"
 
+# Configure pnpm store to use the mounted Docker volume (env var, not .npmrc)
+export PNPM_STORE_DIR=/opt/app/.pnpm-store
+
 exec 'node' '/opt/dev/dev-entry.js'
