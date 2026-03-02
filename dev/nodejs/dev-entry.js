@@ -3,7 +3,14 @@ const {createHash} = require('crypto');
 const {watch, readFileSync, existsSync, writeFileSync, rmSync} = require('fs');
 
 const HASH_FILE = 'node_modules/.docker-entry.hash';
-const PACKAGE_FILE = 'package.json';
+
+const isPnpm = existsSync('pnpm-lock.yaml');
+const LOCK_FILE = isPnpm ? 'pnpm-lock.yaml' : 'package-lock.json';
+const INSTALL_CMD = isPnpm ? 'pnpm install --frozen-lockfile' : 'npm ci';
+const DEV_CMD = isPnpm ? 'pnpm run dev' : 'npm run dev';
+
+// eslint-disable-next-line no-console
+console.log(`\n\x1b[32m[DOCKER ENTRY]\x1b[0m detected package manager: ${isPnpm ? 'pnpm' : 'npm'}`);
 
 const installDeps = () => {
     let oldHash = null;
@@ -13,13 +20,13 @@ const installDeps = () => {
         oldHash = readFileSync(HASH_FILE).toString();
     }
 
-    if (existsSync(PACKAGE_FILE)) {
-        const buffer = readFileSync(PACKAGE_FILE);
+    if (existsSync(LOCK_FILE)) {
+        const buffer = readFileSync(LOCK_FILE);
         hash = createHash('sha1').update(buffer).digest('hex').toString();
     }
 
     if (oldHash !== hash || oldHash === null) {
-        const result = spawnSync('npm ci', {
+        const result = spawnSync(INSTALL_CMD, {
             stdio: 'inherit',
             shell: true,
         });
@@ -47,13 +54,13 @@ try {
     }
 }
 
-// install dependencies every time package.json changes
-const watcher = watch(PACKAGE_FILE, () => {
+// install dependencies every time lock file changes
+const watcher = watch(LOCK_FILE, () => {
     installDeps();
 });
 
 // restart dev process when a source file changes
-const appProcess = spawn(process.env.RUN_DEV || 'npm run dev', {
+const appProcess = spawn(process.env.RUN_DEV || DEV_CMD, {
     stdio: 'inherit',
     shell: true,
 });

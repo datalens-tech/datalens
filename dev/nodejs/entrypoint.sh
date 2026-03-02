@@ -30,4 +30,4 @@ export DISABLE_SWAGGER="true"
 
 export NODE_OPTIONS="--max-old-space-size=8192"
 
-exec 'node' '/opt/dev/npm-dev-entry.js'
+exec 'node' '/opt/dev/dev-entry.js'

@@ -354,7 +354,7 @@ load_env() {
 }
 
 get_env() {
-  if grep -v "^#" "${ENV_FILE_PATH}" 2>/dev/null | grep -q -s "^${1}="; then
+  if [ -f "${ENV_FILE_PATH}" ] && grep -v "^#" "${ENV_FILE_PATH}" 2>/dev/null | grep -q -s "^${1}="; then
     ENV_VAL=$(grep -v "^#" "${ENV_FILE_PATH}" | grep "${1}=" | sed "s|${1}=||" | tr -d ' ')
     echo "$ENV_VAL"
   fi
@@ -371,6 +371,10 @@ write_env() {
     fi
     return 0
   else
+    # ensure file ends with newline before appending
+    if [ -s "${ENV_FILE_PATH}" ] && [ -n "$(tail -c 1 "${ENV_FILE_PATH}")" ]; then
+      echo "" >>"${ENV_FILE_PATH}"
+    fi
     echo "${1}=${2}" >>"${ENV_FILE_PATH}"
   fi
   return 0
@@ -748,8 +752,24 @@ if [ "${IS_DEV}" == "true" ]; then
   echo "💡 Starting Docker Compose services in dev mode..."
   echo ""
 
+  # default values
   DIR_REPO_UI="../datalens-ui"
   DIR_REPO_US="../datalens-us"
+
+  # force load path from env file (force load only repo path)
+  REPO_UI_PATH=$(get_env "REPO_UI_PATH")
+  REPO_US_PATH=$(get_env "REPO_US_PATH")
+
+  if [ -n "${REPO_UI_PATH}" ]; then
+    DIR_REPO_UI="${REPO_UI_PATH}"
+    export DIR_REPO_UI="${DIR_REPO_UI}"
+  fi
+
+  if [ -n "${REPO_US_PATH}" ]; then
+    DIR_REPO_US="${REPO_US_PATH}"
+    export DIR_REPO_US="${DIR_REPO_US}"
+  fi
+
   DIR_REPO_AUTH="../datalens-auth"
   DIR_REPO_META_MANAGER="../datalens-meta-manager"
   DIR_REPO_BACKEND="../datalens-backend"
@@ -795,6 +815,7 @@ if [ "${IS_DEV}" == "true" ]; then
       git clone git@github.com:datalens-tech/datalens-ui.git "${DIR_REPO_UI}"
       echo ""
     fi
+    echo "  - [ui] path: ${DIR_REPO_UI}"
 
     COMPOSE_DEV_UP_SERVICES="${COMPOSE_DEV_UP_SERVICES} ui"
     COMPOSE_LOG_SERVICES="${COMPOSE_LOG_SERVICES} ui"
@@ -811,6 +832,7 @@ if [ "${IS_DEV}" == "true" ]; then
       git clone git@github.com:datalens-tech/datalens-ui.git "${DIR_REPO_UI}"
       echo ""
     fi
+    echo "  - [ui-api] path: ${DIR_REPO_UI}"
 
     COMPOSE_DEV_UP_SERVICES="${COMPOSE_DEV_UP_SERVICES} ui-api"
     COMPOSE_LOG_SERVICES="${COMPOSE_LOG_SERVICES} ui-api"
@@ -827,6 +849,7 @@ if [ "${IS_DEV}" == "true" ]; then
       git clone git@github.com:datalens-tech/datalens-us.git "${DIR_REPO_US}"
       echo ""
     fi
+    echo "  - [us] path: ${DIR_REPO_US}"
 
     COMPOSE_DEV_UP_SERVICES="${COMPOSE_DEV_UP_SERVICES} us"
     COMPOSE_LOG_SERVICES="${COMPOSE_LOG_SERVICES} us"
@@ -843,6 +866,7 @@ if [ "${IS_DEV}" == "true" ]; then
       git clone git@github.com:datalens-tech/datalens-auth.git "${DIR_REPO_AUTH}"
       echo ""
     fi
+    echo "  - [auth] path: ${DIR_REPO_AUTH}"
 
     COMPOSE_DEV_UP_SERVICES="${COMPOSE_DEV_UP_SERVICES} auth"
     COMPOSE_LOG_SERVICES="${COMPOSE_LOG_SERVICES} auth"
@@ -859,6 +883,7 @@ if [ "${IS_DEV}" == "true" ]; then
       git clone git@github.com:datalens-tech/datalens-meta-manager.git "${DIR_REPO_META_MANAGER}"
       echo ""
     fi
+    echo "  - [meta-manager] path: ${DIR_REPO_META_MANAGER}"
 
     COMPOSE_DEV_UP_SERVICES="${COMPOSE_DEV_UP_SERVICES} meta-manager"
     COMPOSE_LOG_SERVICES="${COMPOSE_LOG_SERVICES} meta-manager"
@@ -875,6 +900,7 @@ if [ "${IS_DEV}" == "true" ]; then
       git clone git@github.com:datalens-tech/datalens-backend.git "${DIR_REPO_BACKEND}"
       echo ""
     fi
+    echo "  - [control-api] path: ${DIR_REPO_BACKEND}"
 
     COMPOSE_DEV_UP_SERVICES="${COMPOSE_DEV_UP_SERVICES} control-api"
     COMPOSE_LOG_SERVICES="${COMPOSE_LOG_SERVICES} control-api"
@@ -891,6 +917,7 @@ if [ "${IS_DEV}" == "true" ]; then
       git clone git@github.com:datalens-tech/datalens-backend.git "${DIR_REPO_BACKEND}"
       echo ""
     fi
+    echo "  - [data-api] path: ${DIR_REPO_BACKEND}"
 
     COMPOSE_DEV_UP_SERVICES="${COMPOSE_DEV_UP_SERVICES} data-api"
     COMPOSE_LOG_SERVICES="${COMPOSE_LOG_SERVICES} data-api"
@@ -920,7 +947,7 @@ if [ "${IS_DEV}" == "true" ]; then
     # shellcheck disable=SC2086
     docker --log-level error compose -f "${DOCKER_COMPOSE_DEV_CONFIG}" up --no-deps -d ${COMPOSE_DEV_UP_SERVICES}
   fi
-  
+
   echo ""
   echo "📌 Running Docker Compose services..."
   echo ""
