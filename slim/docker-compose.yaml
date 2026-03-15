@@ -1,0 +1,26 @@
+services:
+  datalens:
+    container_name: datalens
+    image: datalens:dev
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:8080/ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
+    stop_grace_period: 30s
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      AUTH_ADMIN_PASSWORD: ${AUTH_ADMIN_PASSWORD:-admin}
+    volumes:
+      - datalens-data:/data    
+    ports:
+      - "${UI_PORT:-8080}:8080"
+    networks:
+      - default
+
+volumes:
+  datalens-data:
+
+networks:
+  default:

@@ -1,0 +1,207 @@
+# ================================================================
+# DataLens Monolith Image
+# All DataLens services in a single container managed by supervisord
+#
+# Services and internal ports:
+#   PostgreSQL    : 5432
+#   Temporal      : 7233
+#   control-api   : 8001  (Python/uWSGI)
+#   data-api      : 8002  (Python/Gunicorn+aiohttp)
+#   us            : 8003  (Node.js)
+#   auth          : 8004  (Node.js)
+#   meta-manager  : 8005  (Node.js)
+#   ui-api        : 8006  (Node.js, APP_MODE=api)
+#   ui node       : 3030  (Node.js, APP_MODE=full)
+#   nginx (ui)    : 8080  -> exposed externally
+# ================================================================
+
+# ----------------------------------------------------------------
+# Source stages — pull each service image for COPY access
+# ----------------------------------------------------------------
+FROM ghcr.io/datalens-tech/datalens-control-api:0.2396.0 AS control-api-src
+FROM ghcr.io/datalens-tech/datalens-data-api:0.2396.0    AS data-api-src
+FROM ghcr.io/datalens-tech/datalens-us:0.413.0           AS us-src
+FROM ghcr.io/datalens-tech/datalens-auth:0.24.0          AS auth-src
+FROM ghcr.io/datalens-tech/datalens-meta-manager:0.50.0  AS meta-manager-src
+FROM ghcr.io/datalens-tech/datalens-ui:0.3498.0          AS ui-src
+FROM ghcr.io/datalens-tech/datalens-postgres:16          AS postgres-src
+
+# Temporal: locate the server binary before final copy
+FROM ghcr.io/datalens-tech/datalens-temporal:1.27.2 AS temporal-src
+RUN mkdir -p /opt/temporal-export && \
+    # Try common binary locations and copy the first one found
+    for p in \
+        /usr/local/bin/temporal-server \
+        /usr/bin/temporal-server \
+        /home/temporal/temporal-server \
+        /temporal-server \
+        /opt/temporal/temporal-server; \
+    do \
+        if [ -x "$p" ]; then \
+            cp "$p" /opt/temporal-export/temporal-server && break; \
+        fi; \
+    done && \
+    # If still not found, try searching (may be slow)
+    if [ ! -f /opt/temporal-export/temporal-server ]; then \
+        find / -maxdepth 5 -name "temporal-server" -type f -executable 2>/dev/null \
+          | head -1 | xargs -r cp -t /opt/temporal-export/ ; \
+    fi && \
+    ls -la /opt/temporal-export/
+
+# ----------------------------------------------------------------
+# Main monolith image
+# ----------------------------------------------------------------
+FROM ubuntu:24.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Etc/UTC
+
+RUN ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# Base tools
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release \
+    software-properties-common \
+    openssl \
+    supervisor \
+    nginx \
+    gosu \
+    postgresql-client \
+    # Python service system deps
+    libpcre3 \
+    libpq5 \
+    unixodbc \
+    libtcmalloc-minimal4 \
+    # Misc
+    procps \
+    psmisc \
+    && rm -rf /var/lib/apt/lists/*
+
+# MSSQL libs (optional for data-api connector support)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libct4 libsybdb5 tdsodbc 2>/dev/null || true \
+    && rm -rf /var/lib/apt/lists/*
+
+# Python 3.10 (required by control-api and data-api)
+RUN add-apt-repository ppa:deadsnakes/ppa && \
+    apt-get update && apt-get install -y --no-install-recommends \
+        python3.10 \
+        python3.10-dev \
+        python3.10-distutils \
+    && rm -rf /var/lib/apt/lists/*
+
+# Ensure python3.10 is accessible as python3.10 and python3
+RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1 2>/dev/null || true
+
+# PostgreSQL 16
+RUN install -d /usr/share/postgresql-common/pgdg && \
+    curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc \
+        -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc && \
+    echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] \
+        https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" \
+        > /etc/apt/sources.list.d/pgdg.list && \
+    apt-get update && apt-get install -y --no-install-recommends \
+        postgresql-16 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Node.js 22
+RUN mkdir -p /etc/apt/keyrings && \
+    curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key \
+        | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \
+    echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] \
+        https://deb.nodesource.com/node_22.x nodistro main" \
+        > /etc/apt/sources.list.d/nodesource.list && \
+    apt-get update && apt-get install -y nodejs && \
+    rm -rf /var/lib/apt/lists/*
+
+# Configure ODBC for MSSQL
+RUN if [ -f /usr/share/tdsodbc/odbcinst.ini ]; then \
+        cat /usr/share/tdsodbc/odbcinst.ini >> /etc/odbcinst.ini; \
+    fi
+
+# ================================================================
+# Python services
+# ================================================================
+
+# --- control-api ---
+COPY --from=control-api-src /venv /opt/services/control-api/venv
+COPY --from=control-api-src /code /opt/services/control-api/code
+COPY --from=control-api-src /etc/backend-configs /opt/services/control-api/etc/backend-configs
+
+# Fix venv paths that reference the original /venv location
+RUN grep -rl '^#!/venv/' /opt/services/control-api/venv/bin/ 2>/dev/null \
+    | xargs -r sed -i 's|^#!/venv/|#!/opt/services/control-api/venv/|g' && \
+    sed -i 's|^home = .*|home = /usr/bin|' \
+        /opt/services/control-api/venv/pyvenv.cfg 2>/dev/null || true
+
+# --- data-api ---
+COPY --from=data-api-src /venv /opt/services/data-api/venv
+COPY --from=data-api-src /code /opt/services/data-api/code
+COPY --from=data-api-src /etc/backend-configs /opt/services/data-api/etc/backend-configs
+
+RUN grep -rl '^#!/venv/' /opt/services/data-api/venv/bin/ 2>/dev/null \
+    | xargs -r sed -i 's|^#!/venv/|#!/opt/services/data-api/venv/|g' && \
+    sed -i 's|^home = .*|home = /usr/bin|' \
+        /opt/services/data-api/venv/pyvenv.cfg 2>/dev/null || true
+
+# ================================================================
+# Node.js services
+# ================================================================
+COPY --from=us-src           /opt/app /opt/services/us
+COPY --from=auth-src         /opt/app /opt/services/auth
+COPY --from=meta-manager-src /opt/app /opt/services/meta-manager
+COPY --from=ui-src           /opt/app /opt/services/ui
+
+# ================================================================
+# nginx — use config from UI service
+# ================================================================
+COPY --from=ui-src /etc/nginx /etc/nginx
+
+# Point nginx root to the correct path in the monolith
+RUN sed -i 's|root /opt/app/dist/public|root /opt/services/ui/dist/public|' \
+    /etc/nginx/nginx.conf 2>/dev/null || true
+
+# Remove default nginx site to avoid conflicts
+RUN rm -f /etc/nginx/sites-enabled/default /etc/nginx/conf.d/default.conf 2>/dev/null || true
+
+# ================================================================
+# Temporal
+# ================================================================
+COPY --from=temporal-src     /etc/temporal              /etc/temporal
+COPY --from=temporal-src     /opt/temporal-export/temporal-server \
+                              /usr/local/bin/temporal-server
+
+# ================================================================
+# PostgreSQL init scripts from custom datalens-postgres image
+# ================================================================
+COPY --from=postgres-src /init /opt/postgres-init
+
+# ================================================================
+# System setup
+# ================================================================
+# Create persistent data directory and postgresql runtime dir
+RUN mkdir -p /data/pgdata /data/secrets /run/postgresql && \
+    chown -R postgres:postgres /run/postgresql && \
+    chmod g+s /run/postgresql
+
+# Allow postgres user to write logs to /var/log/postgresql
+RUN mkdir -p /var/log/postgresql && chown postgres:postgres /var/log/postgresql
+
+# ================================================================
+# Entry point
+# ================================================================
+COPY bootstrap.sh     /bootstrap.sh
+COPY supervisord.conf /etc/supervisor/supervisord.conf
+
+RUN chmod +x /bootstrap.sh && \
+    # Remove default supervisor config if present
+    rm -f /etc/supervisor/conf.d/*.conf 2>/dev/null || true
+
+EXPOSE 8080
+
+VOLUME ["/data"]
+
+ENTRYPOINT ["/bootstrap.sh"]
