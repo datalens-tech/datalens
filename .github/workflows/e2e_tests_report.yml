@@ -18,11 +18,11 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout main
-        uses: actions/checkout@v2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: main
       - name: Download Artifacts
-        uses: dawidd6/action-download-artifact@v6
+        uses: dawidd6/action-download-artifact@09f2f74827fd3a8607589e5ad7f9398816f540fe # v3.1.4
         with:
           workflow: ${{ github.event.workflow_run.workflow_id }}
           run_id: ${{ github.event.workflow_run.id }}
@@ -32,7 +32,7 @@ jobs:
           echo "REPORT_PR_NUMBER=$(cat playwright-report/report-pr)" >> "$GITHUB_ENV"
       - name: Upload HTML Report
         timeout-minutes: 3
-        uses: shallwefootball/s3-upload-action@master
+        uses: shallwefootball/s3-upload-action@4350529f410221787ccf424e50133cbc1b52704e # v1.3.3
         with:
           aws_key_id: ${{ secrets.E2E_REPORT_S3_ACCESS_KEY }}
           aws_secret_access_key: ${{ secrets.E2E_REPORT_S3_SECRET_KEY}}
@@ -46,7 +46,7 @@ jobs:
           echo "FULL_HTML_REPORT_URL=${FULL_HTML_REPORT_URL}" >> "$GITHUB_ENV"
           echo "::notice title=📋 Published Playwright Test Report::$FULL_HTML_REPORT_URL"
       - name: Create Comment
-        uses: marocchino/sticky-pull-request-comment@v2
+        uses: marocchino/sticky-pull-request-comment@d4d6b0936434b21bc8345ad45a440c5f7d2c40ff # v3.0.3
         with:
           header: e2e-report
           number: ${{ env.REPORT_PR_NUMBER }}
