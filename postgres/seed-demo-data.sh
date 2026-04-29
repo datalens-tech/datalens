@@ -23,6 +23,19 @@ else
   export PGPORT="${POSTGRES_PORT}"
 fi
 
+# TLS support for postgres connection
+POSTGRES_SSL_ENABLED="false"
+POSTGRES_SSL_CA="null"
+if [ -n "${POSTGRES_TLS_CA_FILE}" ] && [ -f "${POSTGRES_TLS_CA_FILE}" ]; then
+  export PGSSLMODE="verify-full"
+  export PGSSLROOTCERT="${POSTGRES_TLS_CA_FILE}"
+  echo "  [demo] tls ca file: ${POSTGRES_TLS_CA_FILE}"
+
+  POSTGRES_SSL_ENABLED="true"
+  POSTGRES_SSL_CA=$(awk '{printf "%s\\n", $0}' "${POSTGRES_TLS_CA_FILE}" | sed 's/\\n$//')
+  POSTGRES_SSL_CA="${POSTGRES_SSL_CA//\\/\\\\}"
+fi
+
 echo "  [demo] start demo data migration..."
 
 # shellcheck disable=SC2236
@@ -77,6 +90,8 @@ if [ "${HC}" == "1" ]; then
     sed "s|{{POSTGRES_DB}}|${POSTGRES_DB_DEMO}|" |
     sed "s|{{POSTGRES_USER}}|${POSTGRES_USER_DEMO}|" |
     sed "s|{{POSTGRES_PASSWORD}}|${FERNET_POSTGRES_PASSWORD}|" |
+    sed "s|{{POSTGRES_SSL_CA}}|${POSTGRES_SSL_CA}|" |
+    sed "s|{{POSTGRES_SSL_ENABLED}}|${POSTGRES_SSL_ENABLED}|" |
     psql -v ON_ERROR_STOP=1 --username "${POSTGRES_USER_US}" --dbname "${POSTGRES_DB_US}" || exit 1
 else
   echo "  [demo] mode: d3"
@@ -88,6 +103,8 @@ else
     sed "s|{{POSTGRES_DB}}|${POSTGRES_DB_DEMO}|" |
     sed "s|{{POSTGRES_USER}}|${POSTGRES_USER_DEMO}|" |
     sed "s|{{POSTGRES_PASSWORD}}|${FERNET_POSTGRES_PASSWORD}|" |
+    sed "s|{{POSTGRES_SSL_CA}}|${POSTGRES_SSL_CA}|" |
+    sed "s|{{POSTGRES_SSL_ENABLED}}|${POSTGRES_SSL_ENABLED}|" |
     psql -v ON_ERROR_STOP=1 --username "${POSTGRES_USER_US}" --dbname "${POSTGRES_DB_US}" || exit 1
 fi
 

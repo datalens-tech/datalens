@@ -35,6 +35,8 @@ ENV INIT_DEMO_DATA='true'
 
 ENV INIT_EXTERNAL_POSTGRES='false'
 
+ENV POSTGRES_TLS_CA_FILE=''
+
 RUN apt update && apt upgrade -y && apt install -y bash curl python3 python3-cryptography
 
 RUN ln -s /usr/bin/python3 /usr/bin/python
