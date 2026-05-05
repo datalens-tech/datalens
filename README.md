@@ -215,8 +215,6 @@ If you use IP address as endpoint, you can generate docker compose file with thi
 
 #### How can I specify external PostgreSQL database?
 
-You can check a production deployment example with high availability in a Kubernetes cluster using Tofu (Terraform) in the `terraform/` directory.
-
 If you want to use external PostgreSQL database with Docker, you can specify its connection string in environment variables:
 
 ```bash

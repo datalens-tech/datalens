@@ -638,7 +638,6 @@ docker compose exec -T postgres psql --username pg-user --dbname pg-us-db -c "UP
 ### Deploy
 - **Backend**: Add linux/arm64 images for all services [datalens-tech/datalens-backend#893](https://github.com/datalens-tech/datalens-backend/pull/893)
 - Add Helm chart support for Kubernetes deployment with customizable configuration options (see `helm/` directory)
-- Add Terraform example for infrastructure deployment on cloud providers with complete application setup (see `terraform/` directory)
 - Add help argument for `init.sh` script with all available options (run `./init.sh --help` for details)
 
 ### New features
