@@ -19,6 +19,9 @@ ENV POSTGRES_DB_DEMO='pg-demo-db'
 ENV POSTGRES_DB_META_MANAGER='pg-meta-manager-db'
 ENV POSTGRES_DB_TEMPORAL='pg-temporal-db'
 ENV POSTGRES_DB_TEMPORAL_VISIBILITY='pg-temporal-visibility-db'
+ENV POSTGRES_DB_NOTIFY='pg-notify-db'
+ENV POSTGRES_DB_NOTIFY_PGBOSS='pg-notify-pgboss-db'
+ENV POSTGRES_DB_NOTIFY_CSAT='pg-notify-csat-db'
 
 ENV POSTGRES_DUMP_FORMAT='custom'
 ENV POSTGRES_DUMP_SKIP_CONFLICT='true'
@@ -28,6 +31,7 @@ ENV INIT_DB_DEMO='true'
 ENV INIT_DB_AUTH='true'
 ENV INIT_DB_META_MANAGER='true'
 ENV INIT_DB_TEMPORAL='true'
+ENV INIT_DB_NOTIFY='true'
 
 ENV DEMO_DATA_SLEEP='3'
 ENV DEMO_DATA_NAME='OpenSource Demo'
@@ -50,6 +54,7 @@ COPY ./init-postgres.sh /docker-entrypoint-initdb.d/init-postgres.sh
 COPY ./init-db-auth.sh /init/init-db-auth.sh
 COPY ./init-db-meta-manager.sh /init/init-db-meta-manager.sh
 COPY ./init-db-temporal.sh /init/init-db-temporal.sh
+COPY ./init-db-notify.sh /init/init-db-notify.sh
 COPY ./init-db-demo.sh /init/init-db-demo.sh
 
 COPY ./seed-demo-data.sh /init/seed-demo-data.sh
@@ -65,6 +70,7 @@ RUN chmod +x /docker-entrypoint-initdb.d/init-postgres.sh && \
   chmod +x /init/init-db-auth.sh && \
   chmod +x /init/init-db-meta-manager.sh && \
   chmod +x /init/init-db-temporal.sh && \
+  chmod +x /init/init-db-notify.sh && \
   chmod +x /init/init-db-demo.sh && \
   chmod +x /init/seed-demo-data.sh && \
   chmod +x /init/us-dump.sh && \
