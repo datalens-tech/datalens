@@ -54,7 +54,5 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_BRANCH: ${{ github.event.pull_request.head.ref }}
         run: |
-          # GITHUB_TOKEN-driven pushes don't trigger workflows, so dispatch them explicitly.
-          # Note: workflow_dispatch runs are NOT linked to the PR as required checks.
-          gh workflow run e2e-tests.yml --ref "$PR_BRANCH"
-          gh workflow run helm-lint.yml --ref "$PR_BRANCH"
+          gh workflow run e2e-tests.yml --ref "${PR_BRANCH}"
+          gh workflow run helm-lint.yml --ref "${PR_BRANCH}"
