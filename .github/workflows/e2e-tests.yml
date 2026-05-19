@@ -2,6 +2,7 @@ name: E2E Tests
 
 on:
   pull_request:
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
@@ -10,11 +11,7 @@ concurrency:
 jobs:
   run-e2e:
     name: Run E2E Tests
-    runs-on:
-      - self-hosted
-      - linux
-      - cloud
-      - datalens-opensource
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
@@ -109,4 +106,5 @@ jobs:
         with:
           name: playwright-report
           path: ./datalens-ui/tests/artifacts/
-          retention-days: 30
+          retention-days: 3
+          overwrite: true

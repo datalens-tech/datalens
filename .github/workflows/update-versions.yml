@@ -18,6 +18,7 @@ concurrency:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   run:
@@ -27,7 +28,7 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: '${{ github.event.pull_request.head.ref }}${{ inputs.pr_head }}'
-          token: ${{ secrets.GH_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
       - uses: frenck/action-setup-yq@c4b5be8b4a215c536a41d436757d9feb92836d4f # v1.0.2
       - name: script update-versions
         run: ./scripts/update-versions.sh
@@ -36,6 +37,7 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email noreply@github.com
       - name: commit changed files
+        id: commit
         run: |
           git add docker-compose.yaml
           git add docker-compose.dev.yaml
@@ -44,4 +46,15 @@ jobs:
           if ! git diff-index --quiet HEAD; then
               git commit --message "update versions for docker and helm" || exit 0
               git push
+              echo "pushed=true" >> "$GITHUB_OUTPUT"
           fi
+      - name: re-trigger PR checks
+        if: steps.commit.outputs.pushed == 'true' && github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          # GITHUB_TOKEN-driven pushes don't trigger workflows, so dispatch them explicitly.
+          # Note: workflow_dispatch runs are NOT linked to the PR as required checks.
+          gh workflow run e2e-tests.yml --ref "$PR_BRANCH"
+          gh workflow run helm-lint.yml --ref "$PR_BRANCH"

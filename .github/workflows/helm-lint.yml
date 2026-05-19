@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'helm/*'
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
