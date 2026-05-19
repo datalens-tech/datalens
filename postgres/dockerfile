@@ -15,6 +15,7 @@ ENV POSTGRES_USER='pg-user'
 ENV POSTGRES_DB_COMPENG='pg-compeng-db'
 ENV POSTGRES_DB_AUTH='pg-auth-db'
 ENV POSTGRES_DB_US='pg-us-db'
+ENV POSTGRES_DB_AUX='pg-aux-db'
 ENV POSTGRES_DB_DEMO='pg-demo-db'
 ENV POSTGRES_DB_META_MANAGER='pg-meta-manager-db'
 ENV POSTGRES_DB_TEMPORAL='pg-temporal-db'
@@ -32,6 +33,7 @@ ENV INIT_DB_AUTH='true'
 ENV INIT_DB_META_MANAGER='true'
 ENV INIT_DB_TEMPORAL='true'
 ENV INIT_DB_NOTIFY='false'
+ENV INIT_DB_AUX='false'
 
 ENV DEMO_DATA_SLEEP='3'
 ENV DEMO_DATA_NAME='OpenSource Demo'
@@ -55,6 +57,7 @@ COPY ./init-db-auth.sh /init/init-db-auth.sh
 COPY ./init-db-meta-manager.sh /init/init-db-meta-manager.sh
 COPY ./init-db-temporal.sh /init/init-db-temporal.sh
 COPY ./init-db-notify.sh /init/init-db-notify.sh
+COPY ./init-db-aux.sh /init/init-db-aux.sh
 COPY ./init-db-demo.sh /init/init-db-demo.sh
 
 COPY ./seed-demo-data.sh /init/seed-demo-data.sh
@@ -71,6 +74,7 @@ RUN chmod +x /docker-entrypoint-initdb.d/init-postgres.sh && \
   chmod +x /init/init-db-meta-manager.sh && \
   chmod +x /init/init-db-temporal.sh && \
   chmod +x /init/init-db-notify.sh && \
+  chmod +x /init/init-db-aux.sh && \
   chmod +x /init/init-db-demo.sh && \
   chmod +x /init/seed-demo-data.sh && \
   chmod +x /init/us-dump.sh && \
