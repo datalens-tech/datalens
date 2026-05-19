@@ -18,6 +18,7 @@ ingress:
 infra:
   postgres:
     enabled: true
+    use_data_subdirectory: false
     resources:
       requests:
         cpu: 0.25
