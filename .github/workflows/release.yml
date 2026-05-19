@@ -94,7 +94,7 @@ jobs:
         id: gather_changelog
         working-directory: .github/workflows/scripts/changelog
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           python releaser.py \
             --config-path="./changelog_config.json" \
@@ -125,7 +125,7 @@ jobs:
 
       - name: Create PR
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           pr_body="
             This PR is created by a GitHub action.
