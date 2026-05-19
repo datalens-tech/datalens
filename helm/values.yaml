@@ -1,7 +1,7 @@
 registry:
   url: 'ghcr.io/datalens-tech'
 #
-release_version: '2.9.2'
+release_version: '2.9.0'
 #
 ingress:
   ip: null
