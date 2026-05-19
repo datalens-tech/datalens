@@ -47,12 +47,14 @@ jobs:
               git commit --message "update versions for docker and helm" || exit 0
               git push
               echo "pushed=true" >> "$GITHUB_OUTPUT"
+              echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           fi
       - name: re-trigger PR checks
         if: steps.commit.outputs.pushed == 'true' && github.event_name == 'pull_request'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_BRANCH: ${{ github.event.pull_request.head.ref }}
+          COMMIT_SHA: ${{ steps.commit.outputs.sha }}
         run: |
-          gh workflow run e2e-tests.yml --ref "${PR_BRANCH}"
-          gh workflow run helm-lint.yml --ref "${PR_BRANCH}"
+          gh workflow run e2e-tests.yml --ref "${PR_BRANCH}" -f sha="${COMMIT_SHA}"
+          gh workflow run helm-lint.yml --ref "${PR_BRANCH}" -f sha="${COMMIT_SHA}"
