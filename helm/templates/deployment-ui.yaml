@@ -93,6 +93,10 @@ spec:
                   name: {{ default "datalens-secrets" .Values.secrets.ref }}
                   key: AUTH_TOKEN_PUBLIC_KEY
             {{- end }}
+            {{- if not .Values.features.auth.signup }}
+            - name: AUTH_SIGNUP_DISABLED
+              value: "true"
+            {{- end }}
           resources:
             requests:
               cpu: {{ .Values.application.ui.resources.requests.cpu }}
