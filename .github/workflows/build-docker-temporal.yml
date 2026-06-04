@@ -29,7 +29,7 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: datalens-tech/datalens-temporal
   TEMPORAL_VERSION: ${{ github.event.inputs.temporal_version || '1.27.2' }}
-  TEMPORAL_VERSION_SUFFIX: ${{ github.event.inputs.temporal_version_suffix || '0.1.0' }}
+  TEMPORAL_VERSION_SUFFIX: ${{ github.event.inputs.temporal_version_suffix || '0.2.0' }}
 
 jobs:
   run:
