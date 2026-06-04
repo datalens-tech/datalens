@@ -25,6 +25,15 @@ if [ -n "${POSTGRES_TLS_CA_FILE}" ]; then
   export SQL_TLS_CA_FILE="${POSTGRES_TLS_CA_FILE}"
 fi
 
+# Drop sslmode/sslrootcert: Go pq driver derives them from SQL_TLS_*; duplicate DSN keys are rejected.
+if [ "${POSTGRES_TLS_ENABLED}" == "true" ] && [ -n "${POSTGRES_CONNECT_ATTRIBUTES}" ]; then
+  POSTGRES_CONNECT_ATTRIBUTES=$(echo "${POSTGRES_CONNECT_ATTRIBUTES}" \
+    | sed -E 's/(^|&)sslmode=[^&]*//g' \
+    | sed -E 's/(^|&)sslrootcert=[^&]*//g' \
+    | sed -E 's/^&//')
+  export POSTGRES_CONNECT_ATTRIBUTES
+fi
+
 if [ -z "${BIND_ON_IP}" ]; then
   HOSTNAME="$(hostname)"
   BIND_ON_IP=$(getent hosts "${HOSTNAME}" | cut -d ' ' -f 1)
