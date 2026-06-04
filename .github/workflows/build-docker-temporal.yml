@@ -14,7 +14,7 @@ on:
         description: 'Temporal main version'
       temporal_version_suffix:
         type: string
-        default: '0.1.0'
+        default: '0.2.0'
         description: 'Container custom version suffix'
 
 concurrency:
