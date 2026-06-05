@@ -8,6 +8,7 @@ set -eo pipefail
 
 IS_ROOT_USER="false"
 IS_RESET_ADMIN_PASSWORD="false"
+IS_UPDATE_TEMPLATE_COLLATION="false"
 
 # parse args
 for _ in "$@"; do
@@ -18,6 +19,10 @@ for _ in "$@"; do
     ;;
   --root-user)
     IS_ROOT_USER="true"
+    shift # past argument with no value
+    ;;
+  --update-template-collation)
+    IS_UPDATE_TEMPLATE_COLLATION="true"
     shift # past argument with no value
     ;;
   -*)
@@ -83,6 +88,28 @@ if [ "${IS_RESET_ADMIN_PASSWORD}" == "true" ]; then
     --username "${POSTGRES_USER_AUTH}" \
     --dbname "${POSTGRES_DB_AUTH}" <<-EOSQL
   UPDATE auth_users SET password = '${PASSWORD_HASH}' WHERE login = 'admin';
+EOSQL
+  exit 0
+fi
+
+if [ "${IS_UPDATE_TEMPLATE_COLLATION}" == "true" ]; then
+  export PGPASSWORD="${POSTGRES_PASSWORD}"
+
+  echo "  update template database collation..."
+
+  psql \
+    --host "${POSTGRES_HOST}" \
+    --port "${POSTGRES_PORT}" \
+    --username "${POSTGRES_USER}" \
+    --dbname "template1" <<-EOSQL
+  REINDEX DATABASE template1;
+EOSQL
+
+  psql \
+    --host "${POSTGRES_HOST}" \
+    --port "${POSTGRES_PORT}" \
+    --username "${POSTGRES_USER}" <<-EOSQL
+  ALTER DATABASE template1 REFRESH COLLATION VERSION;
 EOSQL
   exit 0
 fi
