@@ -14,7 +14,7 @@ on:
         description: 'Temporal main version'
       temporal_version_suffix:
         type: string
-        default: '0.2.0'
+        default: '0.3.0'
         description: 'Container custom version suffix'
 
 concurrency:
@@ -29,7 +29,7 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: datalens-tech/datalens-temporal
   TEMPORAL_VERSION: ${{ github.event.inputs.temporal_version || '1.27.2' }}
-  TEMPORAL_VERSION_SUFFIX: ${{ github.event.inputs.temporal_version_suffix || '0.2.0' }}
+  TEMPORAL_VERSION_SUFFIX: ${{ github.event.inputs.temporal_version_suffix || '0.3.0' }}
 
 jobs:
   run:
