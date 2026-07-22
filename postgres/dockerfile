@@ -86,3 +86,5 @@ RUN sed -i 's|_main() {|_main() {\n        export PGPORT="\${PGPORT:-\$POSTGRES_
 
 # demo data
 COPY ./demo-data/ /init/demo-data/
+
+CMD ["postgres", "-c", "max_connections=200"]
