@@ -1,7 +1,6 @@
 name: Update version in yaml
 
 on:
-  pull_request:
   workflow_call:
     inputs:
       pr_head:
