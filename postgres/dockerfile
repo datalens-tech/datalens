@@ -11,6 +11,7 @@ ENV HC=0
 ENV POSTGRES_HOST='localhost'
 ENV POSTGRES_PORT='5432'
 ENV POSTGRES_USER='pg-user'
+ENV POSTGRES_MAX_CONNECTIONS='512'
 
 ENV POSTGRES_DB_COMPENG='pg-compeng-db'
 ENV POSTGRES_DB_AUTH='pg-auth-db'
@@ -52,6 +53,7 @@ RUN apt -y autoremove && \
   rm -rf /var/lib/apt/lists/*
 
 COPY ./init-postgres.sh /docker-entrypoint-initdb.d/init-postgres.sh
+COPY ./docker-entrypoint-wrapper.sh /usr/local/bin/docker-entrypoint-wrapper.sh
 
 COPY ./init-db-auth.sh /init/init-db-auth.sh
 COPY ./init-db-meta-manager.sh /init/init-db-meta-manager.sh
@@ -70,6 +72,7 @@ COPY ./utils.sh /init/utils.sh
 COPY ./crypto.py /init/crypto.py
 
 RUN chmod +x /docker-entrypoint-initdb.d/init-postgres.sh && \
+  chmod +x /usr/local/bin/docker-entrypoint-wrapper.sh && \
   chmod +x /init/init-db-auth.sh && \
   chmod +x /init/init-db-meta-manager.sh && \
   chmod +x /init/init-db-temporal.sh && \
@@ -86,3 +89,7 @@ RUN sed -i 's|_main() {|_main() {\n        export PGPORT="\${PGPORT:-\$POSTGRES_
 
 # demo data
 COPY ./demo-data/ /init/demo-data/
+
+ENTRYPOINT ["docker-entrypoint-wrapper.sh"]
+
+CMD ["postgres"]

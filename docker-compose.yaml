@@ -16,6 +16,7 @@ services:
       #
       POSTGRES_HOST: ${POSTGRES_HOST:-localhost}
       POSTGRES_PORT: ${POSTGRES_PORT:-5432}
+      POSTGRES_MAX_CONNECTIONS: ${POSTGRES_MAX_CONNECTIONS:-512}
       #
       POSTGRES_USER: ${POSTGRES_USER:-pg-user}
       #
