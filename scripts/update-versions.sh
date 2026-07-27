@@ -15,6 +15,7 @@ UI_VERSION=$(yq -r '.uiVersion' ./versions-config.json)
 US_VERSION=$(yq -r '.usVersion' ./versions-config.json)
 AUTH_VERSION=$(yq -r '.authVersion' ./versions-config.json)
 META_MANAGER_VERSION=$(yq -r '.metaManagerVersion' ./versions-config.json)
+POSTGRESQL_VERSION=$(yq -r '.postgresqlVersion' ./versions-config.json)
 
 echo "  release: ${RELEASE_VERSION}"
 echo "  backend: ${BACKEND_VERSION}"
@@ -22,6 +23,7 @@ echo "  ui: ${UI_VERSION}"
 echo "  us: ${US_VERSION}"
 echo "  auth: ${AUTH_VERSION}"
 echo "  meta-manager: ${META_MANAGER_VERSION}"
+echo "  postgresql: ${POSTGRESQL_VERSION}"
 
 echo ""
 echo "  update helm values file: ./helm/values.yaml"
@@ -52,6 +54,7 @@ echo ""
 echo "  update docker-compose file: ./docker-compose.yaml"
 
 RELEASE_VERSION="${RELEASE_VERSION}" \
+  POSTGRES_IMAGE="ghcr.io/datalens-tech/datalens-postgres:${POSTGRESQL_VERSION}" \
   CONTROL_API_IMAGE="ghcr.io/datalens-tech/datalens-control-api:${BACKEND_VERSION}" \
   DATA_API_IMAGE="ghcr.io/datalens-tech/datalens-data-api:${BACKEND_VERSION}" \
   UI_IMAGE="ghcr.io/datalens-tech/datalens-ui:${UI_VERSION}" \
@@ -59,6 +62,7 @@ RELEASE_VERSION="${RELEASE_VERSION}" \
   AUTH_IMAGE="ghcr.io/datalens-tech/datalens-auth:${AUTH_VERSION}" \
   META_MANAGER_IMAGE="ghcr.io/datalens-tech/datalens-meta-manager:${META_MANAGER_VERSION}" \
   yq -i '
+  .services.postgres.image = strenv(POSTGRES_IMAGE) |
   .services.control-api.image = strenv(CONTROL_API_IMAGE) |
   .services.data-api.image = strenv(DATA_API_IMAGE) |
   .services.ui.image = strenv(UI_IMAGE) |
