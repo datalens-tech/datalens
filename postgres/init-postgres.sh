@@ -95,8 +95,6 @@ EOSQL
 /init/init-db-auth.sh
 /init/init-db-meta-manager.sh
 /init/init-db-temporal.sh
-/init/init-db-notify.sh
-/init/init-db-aux.sh
 
 # demo database and demo data
 /init/init-db-demo.sh

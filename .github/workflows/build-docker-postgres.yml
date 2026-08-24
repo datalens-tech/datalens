@@ -5,17 +5,9 @@ on:
     branches:
       - main
     paths:
-      - 'postgres/*'
+      - 'postgres/**'
+      - 'versions-config.json'
   workflow_dispatch:
-    inputs:
-      pg_version:
-        type: string
-        default: '16'
-        description: 'PostgreSQL main version'
-      pg_version_suffix:
-        type: string
-        default: '1.2.0'
-        description: 'Container custom version suffix'
 
 concurrency:
   group: ${{ github.workflow }}
@@ -28,8 +20,6 @@ permissions:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: datalens-tech/datalens-postgres
-  POSTGRES_VERSION: ${{ github.event.inputs.pg_version || '16' }}
-  POSTGRES_VERSION_SUFFIX: ${{ github.event.inputs.pg_version_suffix || '1.2.0' }}
 
 jobs:
   run:
@@ -37,6 +27,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: postgres_version
+        name: Read PostgreSQL version
+        shell: bash
+        run: |
+          postgresql_version="$(jq -er '.postgresqlVersion | select(type == "string")' versions-config.json)"
+          postgres_version="$(echo "${postgresql_version}" | sed 's|-.*||')"
+          echo "postgres_version=${postgres_version}" >> "${GITHUB_OUTPUT}"
+          echo "image_version=${postgresql_version}" >> "${GITHUB_OUTPUT}"
       - uses: docker/setup-qemu-action@ce360397dd3f832beb865e1373c09c0e9f86d70a # v4.0.0
         with:
           platforms: 'arm64'
@@ -51,12 +49,12 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=${{ env.POSTGRES_VERSION }}
-            type=raw,value=${{ env.POSTGRES_VERSION }}-${{ env.POSTGRES_VERSION_SUFFIX }}
+            type=raw,value=${{ steps.postgres_version.outputs.postgres_version }}
+            type=raw,value=${{ steps.postgres_version.outputs.image_version }}
       - uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294 # v7.0.0
         with:
           build-args: |
-            POSTGRES_VERSION=${{ env.POSTGRES_VERSION }}
+            POSTGRES_VERSION=${{ steps.postgres_version.outputs.postgres_version }}
           context: ./postgres
           push: true
           tags: ${{ steps.meta.outputs.tags }}
