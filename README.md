@@ -164,7 +164,7 @@ DataLens consists of three main parts:
 
 ## What's already available
 
-DataLens already supports a growing number of data sources, including ClickHouse, PostgreSQL, MySQL, YDB, YTsaurus CHYT, Greenplum, SQL Server, Oracle Database, StarRocks, Prometheus, Snowflake, and Trino.
+DataLens already supports a growing number of data sources, including ClickHouse, PostgreSQL, MySQL, YDB, YTsaurus CHYT, Greenplum, SQL Server, Oracle Database and Trino.
 
 The project also provides the core functionality required for analytics workloads, including the data processing engine, user interface, and a minimal authentication layer. We plan to further extend DataLens capabilities based on community priorities and feedback.
 
